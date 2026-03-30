@@ -1,0 +1,816 @@
+{
+  "portal": {
+    "title": "Portal Kierowania Pacjentów — SOR Chojnice",
+    "hospital": "Szpital Specjalistyczny im. J.K. Łukowicza w Chojnicach",
+    "last_updated": "2026-03-30",
+    "lpr_phone": "22 22 99 999",
+    "lpr_ezt": "https://ezt.lpr.com.pl",
+    "origin": { "lat": 53.70, "lng": 17.56, "city": "Chojnice" }
+  },
+  "categories": [
+    {
+      "id": "oparzenia",
+      "name": "Oparzenia",
+      "icon": "🔥",
+      "description": "Centra leczenia oparzeń",
+      "file": "oparzenia.html",
+      "alert": "TBSA >20% (dorośli) lub >10% (dzieci/starsi) → transfer do CLO. Oparzenia twarzy, rąk, stóp, krocza, stawów — zawsze centrum oparzeniowe.",
+      "facilities": [
+        {
+          "id": 1,
+          "name": "Centrum Leczenia Oparzeń im. dr. S. Sakiela",
+          "city": "Siemianowice Śląskie",
+          "voivodeship": "śląskie",
+          "addr": "ul. Jana Pawła II 2, 41-100 Siemianowice Śląskie",
+          "distance_km": 450,
+          "url": "https://clo.com.pl",
+          "ul": "clo.com.pl",
+          "transport": {
+            "heli_min": 120,
+            "drive_min": 300,
+            "notes": "Lądowisko: TAK. Samolot via GDN → KTW"
+          },
+          "ph": [
+            { "r": "Izba Przyjęć", "n": "32 735 74 75", "h": true, "h24": true, "lvl": 1, "src": "clo.com.pl ✅" },
+            { "r": "Izba Przyjęć (kom.)", "n": "603 156 818", "h": false, "h24": true, "lvl": 1, "src": "clo.com.pl ✅" },
+            { "r": "Dyżurny chirurg", "n": "695 914 465", "h": false, "h24": true, "lvl": 2, "src": "clo.com.pl ✅" },
+            { "r": "Dyżurny anestezjolog", "n": "601 790 922", "h": false, "h24": true, "lvl": 2, "src": "clo.com.pl ✅" },
+            { "r": "Dyżurny HBO", "n": "603 197 877", "h": false, "h24": true, "lvl": 2, "src": "clo.com.pl ✅" },
+            { "r": "Post pielęgniarski (chir. og. 1)", "n": "32 735 74 10", "h": false, "h24": true, "lvl": 2, "src": "clo.com.pl ✅" }
+          ],
+          "mo": [
+            { "r": "Blok operacyjny", "n": "32 735 74 55", "h": false, "h24": false, "lvl": 3, "src": "clo.com.pl ✅" },
+            { "r": "Blok operacyjny (alt.)", "n": "32 735 74 51", "h": false, "h24": false, "lvl": 3, "src": "clo.com.pl ✅" },
+            { "r": "Centrala (portiernia)", "n": "32 735 76 96", "h": false, "h24": true, "lvl": 3, "src": "clo.com.pl ✅" },
+            { "r": "Sekretariat medyczny", "n": "32 735 74 44", "h": false, "h24": false, "lvl": 3, "src": "clo.com.pl ✅" }
+          ],
+          "caps": [
+            { "t": "OIOM oparzeniowy", "ok": true },
+            { "t": "Bank skóry", "ok": true },
+            { "t": "HBO", "ok": true },
+            { "t": "Chirurgia plastyczna", "ok": true },
+            { "t": "Endoskopia", "ok": true },
+            { "t": "Medycyna nuklearna", "ok": true },
+            { "t": "Dzieci >3 lat", "ok": true },
+            { "t": "Dzieci <3 lat", "ok": false }
+          ],
+          "badges": ["CLO", "24h", "Lądowisko", "HBO"],
+          "priority": 1,
+          "notes": "Jedyne samodzielne centrum oparzeniowe w Polsce. Pełna baza kontaktowa potwierdzona.",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "✅"
+        },
+        {
+          "id": 2,
+          "name": "Wschodnie Centrum Leczenia Oparzeń i Chirurgii Rekonstrukcyjnej",
+          "city": "Łęczna",
+          "voivodeship": "lubelskie",
+          "addr": "ul. Krasnystawska 52, 21-010 Łęczna",
+          "distance_km": 550,
+          "url": "https://www.szpital.leczna.pl",
+          "ul": "szpital.leczna.pl",
+          "transport": {
+            "heli_min": 150,
+            "drive_min": 380,
+            "notes": "Samolot via GDN"
+          },
+          "ph": [
+            { "r": "SOR (rejestracja)", "n": "81 752 65 01", "h": true, "h24": true, "lvl": 1, "src": "szpital.leczna.pl ✅" },
+            { "r": "Telefon alarmowy 24h", "n": "665 270 535", "h": false, "h24": true, "lvl": 1, "src": "szpital.leczna.pl ✅" },
+            { "r": "Lekarz dyżurny WCLO", "n": "81 752 65 38", "h": false, "h24": true, "lvl": 2, "src": "szpital.leczna.pl ✅" },
+            { "r": "Dyżurka pielęgniarek WCLO", "n": "81 752 65 36", "h": false, "h24": true, "lvl": 2, "src": "szpital.leczna.pl ✅" },
+            { "r": "Sekretariat WCLO", "n": "81 752 65 31", "h": false, "h24": false, "lvl": 2, "src": "szpital.leczna.pl ✅" }
+          ],
+          "mo": [
+            { "r": "Lekarz dyżurny ambulatorium", "n": "81 752 61 10", "h": false, "h24": true, "lvl": 3, "src": "szpital.leczna.pl ✅" },
+            { "r": "Centrala szpitala", "n": "81 752 63 00", "h": false, "h24": true, "lvl": 3, "src": "szpital.leczna.pl ✅" }
+          ],
+          "caps": [
+            { "t": "Dorośli", "ok": true },
+            { "t": "Dzieci", "ok": true },
+            { "t": "Chirurgia rekonstrukcyjna", "ok": true }
+          ],
+          "badges": ["CLO", "24h"],
+          "priority": 2,
+          "notes": "Pełna nazwa: Wschodnie (nie 'Wschodniopomorskie') Centrum Leczenia Oparzeń.",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "✅"
+        },
+        {
+          "id": 3,
+          "name": "Pododdział Leczenia Oparzeń",
+          "city": "Poznań",
+          "voivodeship": "wielkopolskie",
+          "addr": "ul. Szwajcarska 3, 61-285 Poznań",
+          "distance_km": 230,
+          "url": "https://szpital-strusia.poznan.pl",
+          "ul": "szpital-strusia.poznan.pl",
+          "transport": {
+            "heli_min": 70,
+            "drive_min": 180,
+            "notes": "Samolot via GDN"
+          },
+          "ph": [
+            { "r": "SOR", "n": "61 873 93 46", "h": true, "h24": true, "lvl": 1, "src": "szpital-strusia.poznan.pl ✅" },
+            { "r": "SOR (alt.)", "n": "61 873 94 32", "h": false, "h24": true, "lvl": 1, "src": "szpital-strusia.poznan.pl ✅" }
+          ],
+          "mo": [
+            { "r": "Centrala szpitala", "n": "61 873 90 00", "h": false, "h24": true, "lvl": 3, "src": "szpital-strusia.poznan.pl ✅" }
+          ],
+          "caps": [
+            { "t": "Dorośli", "ok": true },
+            { "t": "Dzieci", "ok": false }
+          ],
+          "badges": ["Pododdział"],
+          "priority": 3,
+          "notes": "To pododdział w ramach Oddziału Chirurgii Ogólnej i Obrażeń Wielonarządowych, nie samodzielne CLO. Bezpośredni numer oddziału oparzeń nie opublikowany na stronie — dzwonić przez SOR.",
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 4,
+          "name": "Zachodniopomorskie Centrum Leczenia Ciężkich Oparzeń i Chirurgii Plastycznej",
+          "city": "Gryfice",
+          "voivodeship": "zachodniopomorskie",
+          "addr": "ul. Niechorska 27, 72-300 Gryfice",
+          "distance_km": 330,
+          "url": "https://medicam.pl",
+          "ul": "medicam.pl",
+          "transport": {
+            "heli_min": 90,
+            "drive_min": 240,
+            "notes": "Samolot via GDN"
+          },
+          "ph": [
+            { "r": "SOR (punkt informacyjny)", "n": "91 384 20 60", "h": true, "h24": true, "lvl": 1, "src": "medicam.pl ✅" },
+            { "r": "Dyżurka lekarska I piętro", "n": "91 384 20 61 wew. 437", "h": false, "h24": true, "lvl": 2, "src": "medicam.pl ✅" },
+            { "r": "Dyżurka lekarska IV piętro", "n": "91 384 20 61 wew. 364", "h": false, "h24": true, "lvl": 2, "src": "medicam.pl ✅" },
+            { "r": "Sekretariat CLO", "n": "91 384 33 98", "h": false, "h24": false, "lvl": 2, "src": "medicam.pl ✅" }
+          ],
+          "mo": [
+            { "r": "Centrala szpitala", "n": "91 384 20 61", "h": false, "h24": true, "lvl": 3, "src": "medicam.pl ✅" }
+          ],
+          "caps": [
+            { "t": "Dorośli", "ok": true },
+            { "t": "Dzieci", "ok": true },
+            { "t": "HBO (Ośrodek Terapii Hiperbarycznej)", "ok": true }
+          ],
+          "badges": ["CLO", "Dzieci", "HBO"],
+          "priority": 4,
+          "notes": "Lekarz kierujący: Krzysztof Piorun. Numery wewnętrzne wymagają najpierw centrali 91 384 20 61.",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "✅"
+        },
+        {
+          "id": 5,
+          "name": "Małopolskie Centrum Oparzeniowo-Plastyczne, Replantacji Kończyn z Ośrodkiem Terapii Hiperbarycznej",
+          "city": "Kraków",
+          "voivodeship": "małopolskie",
+          "addr": "os. Złotej Jesieni 1, 31-826 Kraków",
+          "distance_km": 600,
+          "url": "https://www.szpitalrydygier.pl",
+          "ul": "szpitalrydygier.pl",
+          "transport": {
+            "heli_min": 160,
+            "drive_min": 400,
+            "notes": "Samolot via GDN → KRK"
+          },
+          "ph": [
+            { "r": "SOR (sekretariat)", "n": "12 64 68 680", "h": true, "h24": true, "lvl": 1, "src": "szpitalrydygier.pl ✅" },
+            { "r": "Oddział oparzeń", "n": "12 64 68 625", "h": false, "h24": true, "lvl": 2, "src": "szpitalrydygier.pl ✅" },
+            { "r": "Chirurgia plastyczna", "n": "12 64 68 282", "h": false, "h24": true, "lvl": 2, "src": "szpitalrydygier.pl ✅" },
+            { "r": "Sekretariat CLO", "n": "12 64 68 291", "h": false, "h24": false, "lvl": 2, "src": "szpitalrydygier.pl ✅" }
+          ],
+          "mo": [
+            { "r": "Centrala szpitala", "n": "12 646 80 00", "h": false, "h24": false, "lvl": 3, "src": "szpitalrydygier.pl ✅" }
+          ],
+          "caps": [
+            { "t": "Dorośli", "ok": true },
+            { "t": "Dzieci", "ok": true },
+            { "t": "Replantacja kończyn", "ok": true },
+            { "t": "HBO", "ok": true },
+            { "t": "Mikrochirurgia", "ok": true },
+            { "t": "47 łóżek", "ok": true },
+            { "t": "4 sale operacyjne", "ok": true },
+            { "t": "OIT oparzeniowy", "ok": true }
+          ],
+          "badges": ["CLO", "Replantacja", "HBO", "Dzieci"],
+          "priority": 5,
+          "notes": "Ordynator: dr hab. n. med. Anna Chrapusta. Centrala czynna tylko pon.-pt. 7:00-15:00. Nr 501 431 430 (replantacyjny alarmowy) — NIE znaleziony na stronie, wymaga weryfikacji tel.",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "✅"
+        },
+        {
+          "id": 6,
+          "name": "Oddział Chirurgii Plastycznej i Oparzeń",
+          "city": "Łódź",
+          "voivodeship": "łódzkie",
+          "addr": "ul. Żeromskiego 113, 90-549 Łódź",
+          "distance_km": 340,
+          "url": "https://usk2.lodz.pl",
+          "ul": "usk2.lodz.pl",
+          "transport": {
+            "heli_min": 95,
+            "drive_min": 240,
+            "notes": "Samolot via GDN → LCJ"
+          },
+          "ph": [
+            { "r": "SOR", "n": "42 639 37 01", "h": true, "h24": true, "lvl": 1, "src": "usk2.lodz.pl ✅" },
+            { "r": "SOR (alt.)", "n": "42 639 34 25", "h": false, "h24": true, "lvl": 1, "src": "usk2.lodz.pl ✅" },
+            { "r": "Oddział (niepotwierdzony)", "n": "42 639 35 21", "h": false, "h24": false, "lvl": 2, "src": "⚠️ stary JSON" }
+          ],
+          "mo": [
+            { "r": "Przyjęcia planowe", "n": "42 639 34 24", "h": false, "h24": false, "lvl": 3, "src": "usk2.lodz.pl ✅" },
+            { "r": "Centrala szpitala", "n": "42 639 34 20", "h": false, "h24": true, "lvl": 3, "src": "usk2.lodz.pl ✅" }
+          ],
+          "caps": [
+            { "t": "Dorośli", "ok": true },
+            { "t": "Dzieci", "ok": true }
+          ],
+          "badges": ["CLO"],
+          "priority": 6,
+          "notes": "Pełna nazwa szpitala: Uniwersytecki Szpital Kliniczny nr 2 im. WAM (dawniej: USK im. WAM / CSK UM). Nr 42 639 35 21 pochodzi ze starego JSON — wymaga weryfikacji telefonicznej.",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        }
+      ]
+    },
+    {
+      "id": "neurochirurgia",
+      "name": "Neurochirurgia",
+      "icon": "🧠",
+      "description": "Urazy czaszkowo-mózgowe, guzy, kręgosłup",
+      "file": "neurochirurgia.html",
+      "alert": null,
+      "facilities": [
+        {
+          "id": 1,
+          "name": "Klinika Neurochirurgii, Neurochirurgii Czynnościowej i Stereotaktycznej",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "Szpital Biziela, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://biziel.umk.pl",
+          "ul": "biziel.umk.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": "Lądowisko szpitalne" },
+          "ph": [
+            { "r": "Izba Przyjęć", "n": "52 371 26 35", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Oddział neurochirurgii", "n": "52 365 55 05", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Oddział (alt.)", "n": "52 365 57 74", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala", "n": "52 365 57 99", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Guzy mózgu", "ok": true },
+            { "t": "DBS", "ok": true },
+            { "t": "Stereotaksja", "ok": true },
+            { "t": "Neuronawigacja", "ok": true },
+            { "t": "Trombektomia udarowa", "ok": true }
+          ],
+          "badges": ["Lądowisko"],
+          "priority": 1,
+          "notes": "Ordynator: dr hab. n. med. Paweł Sokal, prof. UMK",
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 2,
+          "name": "Klinika Neurochirurgii, Neurotraumatologii i Neurochirurgii Dziecięcej",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "Szpital Jurasza, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://jurasza.umk.pl",
+          "ul": "jurasza.umk.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": "Lądowisko przy CU" },
+          "ph": [
+            { "r": "SOR", "n": "52 585 42 22", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Klinika (sekr.)", "n": "52 585 45 10", "h": false, "h24": false, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Klinika (alt.)", "n": "52 585 40 31", "h": false, "h24": false, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala", "n": "52 585 40 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Neurotraumatologia", "ok": true },
+            { "t": "Neurochirurgia dziecięca", "ok": true },
+            { "t": "Guzy mózgu", "ok": true }
+          ],
+          "badges": ["CU", "Lądowisko", "Dzieci"],
+          "priority": 2,
+          "notes": "Ordynator: prof. dr hab. n. med. Maciej Śniegocki",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 3,
+          "name": "Oddział Neurochirurgii Dziecięcej",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "Wojewódzki Szpital Dziecięcy, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://wsd.org.pl",
+          "ul": "wsd.org.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": null },
+          "ph": [
+            { "r": "Oddział (punkt pielęgn.)", "n": "52 326 21 67", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Gabinet lekarski", "n": "52 326 23 48", "h": false, "h24": false, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Ordynator", "n": "52 326 22 94", "h": false, "h24": false, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala", "n": "52 326 21 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Stereotaksja dziecięca (jedyny w PL)", "ok": true },
+            { "t": "Pentero 900", "ok": true },
+            { "t": "Neuronawigacja Medtronic", "ok": true },
+            { "t": "8 łóżek", "ok": true }
+          ],
+          "badges": ["Tylko dzieci"],
+          "priority": 3,
+          "notes": "Ordynator: dr n. med. Dariusz Paczkowski. Tylko dzieci!",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 4,
+          "name": "Klinika Neurochirurgii",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "UCK Gdańsk",
+          "distance_km": 170,
+          "url": "https://uck.pl",
+          "ul": "uck.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": "Lądowisko UCK" },
+          "ph": [
+            { "r": "KOR (SOR) linia 1", "n": "58 349 37 84", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "KOR (SOR) linia 2", "n": "58 349 37 94", "h": false, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Klinika (sekr. do 15:00)", "n": "58 349 33 20", "h": false, "h24": false, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala UCK", "n": "58 349 20 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Śródoperacyjny MRI", "ok": true },
+            { "t": "DBS", "ok": true },
+            { "t": "5-ALA", "ok": true },
+            { "t": "Guzy przysadki endoskopowo", "ok": true }
+          ],
+          "badges": ["Lądowisko"],
+          "priority": 4,
+          "notes": "Ordynator: dr hab. n. med. Piotr Zieliński",
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 5,
+          "name": "Oddział Neurochirurgii",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "Copernicus, Szpital Kopernika, Gdańsk",
+          "distance_km": 170,
+          "url": "https://copernicus.gda.pl",
+          "ul": "copernicus.gda.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": null },
+          "ph": [
+            { "r": "Centrala Kopernika", "n": "58 764 01 00", "h": true, "h24": true, "lvl": 1, "src": "placowki.mp.pl" }
+          ],
+          "mo": [],
+          "caps": [
+            { "t": "Dyżur 24h", "ok": true },
+            { "t": "Neurotraumatologia", "ok": true },
+            { "t": "TK", "ok": true },
+            { "t": "MR", "ok": true }
+          ],
+          "badges": ["24h"],
+          "priority": 5,
+          "notes": "Ordynator: prof. dr hab. n. med. Wojciech Kloc. Tylko 1 numer — wymaga enrichmentu.",
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 6,
+          "name": "Oddział Kliniczny Neurochirurgiczny",
+          "city": "Olsztyn",
+          "voivodeship": "warmińsko-mazurskie",
+          "addr": "WSS Olsztyn",
+          "distance_km": 250,
+          "url": "https://wss.olsztyn.pl",
+          "ul": "wss.olsztyn.pl",
+          "transport": { "heli_min": 70, "drive_min": 180, "notes": null },
+          "ph": [
+            { "r": "Ordynator", "n": "89 538 62 46", "h": true, "h24": false, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Blok operacyjny", "n": "89 538 62 71", "h": false, "h24": false, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Neurotraumatologia", "ok": true },
+            { "t": "Guzy", "ok": true },
+            { "t": "Kręgosłup", "ok": true },
+            { "t": "Naczynia", "ok": true }
+          ],
+          "badges": [],
+          "priority": 6,
+          "notes": "Ordynator: dr hab. n. med. Waldemar Och. Brak numeru SOR — wymaga enrichmentu.",
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        }
+      ]
+    },
+    {
+      "id": "centrum-urazowe",
+      "name": "Centrum Urazowe / Politrauma",
+      "icon": "🚑",
+      "description": "Obrażenia wielonarządowe, politrauma",
+      "file": "centrum-urazowe.html",
+      "alert": "Kwalifikacja: ≥2 obrażenia anatomiczne LUB ≥2 zaburzenia parametrów fizjologicznych (RR≤80, HR≥120, oddech<10/>29, GCS≤8, SpO₂≤90%)",
+      "facilities": [
+        {
+          "id": 1,
+          "name": "Centrum Urazowe — jedyne w regionie kuj.-pom.",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "Szpital Jurasza, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://jurasza.umk.pl",
+          "ul": "jurasza.umk.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": "Lądowisko przy CU" },
+          "ph": [
+            { "r": "SOR", "n": "52 585 42 22", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "SOR (alt.)", "n": "52 585 43 33", "h": false, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Pediatryczna IP", "n": "52 585 43 42", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala", "n": "52 585 40 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "OIT 2 stanowiska", "ok": true },
+            { "t": "Blok operacyjny 24h", "ok": true },
+            { "t": "Endoskopia 24h", "ok": true },
+            { "t": "Neurochirurgia", "ok": true },
+            { "t": "Ortopedia", "ok": true },
+            { "t": "Chir. naczyniowa", "ok": true },
+            { "t": "Trombektomia", "ok": true },
+            { "t": "Kardiochirurgia", "ok": true }
+          ],
+          "badges": ["CU", "Lądowisko", "24h"],
+          "priority": 1,
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 2,
+          "name": "Centrum Urazowe — jedyne w woj. pomorskim",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "UCK Gdańsk",
+          "distance_km": 170,
+          "url": "https://uck.pl",
+          "ul": "uck.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": "Lądowisko UCK" },
+          "ph": [
+            { "r": "KOR (SOR) linia 1", "n": "58 349 37 84", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "KOR (SOR) linia 2", "n": "58 349 37 94", "h": false, "h24": true, "lvl": 1, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala UCK", "n": "58 349 20 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Pełna diagnostyka 24h", "ok": true },
+            { "t": "Neurochirurgia", "ok": true },
+            { "t": "Śródoperacyjny MRI", "ok": true },
+            { "t": "Ortopedia", "ok": true },
+            { "t": "Chir. naczyniowa", "ok": true },
+            { "t": "OIT", "ok": true }
+          ],
+          "badges": ["CU", "Lądowisko", "24h"],
+          "priority": 2,
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        }
+      ]
+    },
+    {
+      "id": "udar-trombektomia",
+      "name": "Udar / Trombektomia",
+      "icon": "⚡",
+      "description": "Mechaniczna trombektomia w ostrym udarze niedokrwiennym",
+      "file": "udar-trombektomia.html",
+      "alert": "OKNO CZASOWE: 6-8h (do 24h w wybranych przypadkach). NIHSS ≥6. Każda minuta = neurony! NOAC i przebyty uraz NIE SĄ przeciwwskazaniem.",
+      "facilities": [
+        {
+          "id": 1,
+          "name": "Centrum Interwencyjnego Leczenia Udarów Mózgu",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "Szpital Biziela, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://biziel.umk.pl",
+          "ul": "biziel.umk.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": "⚠ Lądowisko Biziela TYMCZASOWO NIECZYNNE! LPR ląduje w Jurasza → karetka ~10min do Biziela" },
+          "ph": [
+            { "r": "SOR (Izba Przyjęć)", "n": "52 365 54 93", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Neurologia (MOBIL!)", "n": "697 093 586", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Oddział Neurologii", "n": "52 365 55 66", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Oddział (alt.)", "n": "52 365 55 67", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala", "n": "52 365 57 99", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Trombektomia mechaniczna 24h", "ok": true },
+            { "t": "Radiologia zabiegowa", "ok": true },
+            { "t": "Neurochirurgia w szpitalu", "ok": true },
+            { "t": "DBS", "ok": true }
+          ],
+          "badges": ["Trombektomia", "24h", "Mobil"],
+          "priority": 1,
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 2,
+          "name": "Klinika Neurologii Dorosłych + Zakład Radiologii",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "UCK Gdańsk",
+          "distance_km": 170,
+          "url": "https://uck.pl",
+          "ul": "uck.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": "Lądowisko czynne" },
+          "ph": [
+            { "r": "KOR (SOR) linia 1", "n": "58 349 37 84", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "KOR (SOR) linia 2", "n": "58 349 37 94", "h": false, "h24": true, "lvl": 1, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala UCK", "n": "58 349 20 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Trombektomia od 2015", "ok": true },
+            { "t": "Hemodynamika 24h", "ok": true },
+            { "t": "Neurochirurgia", "ok": true },
+            { "t": "Śródoperacyjny MRI", "ok": true }
+          ],
+          "badges": ["Trombektomia", "24h", "Lądowisko"],
+          "priority": 2,
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        }
+      ]
+    },
+    {
+      "id": "kardiochirurgia",
+      "name": "Kardiochirurgia",
+      "icon": "❤️",
+      "description": "Chirurgia serca i aorty, zastawki, CABG",
+      "file": "kardiochirurgia.html",
+      "alert": "Dissection aorty typ A → NATYCHMIAST kardiochirurgia! Typ B → chirurgia naczyniowa.",
+      "facilities": [
+        {
+          "id": 1,
+          "name": "Klinika Kardiochirurgii",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "Szpital Jurasza, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://jurasza.umk.pl",
+          "ul": "jurasza.umk.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": "Lądowisko" },
+          "ph": [
+            { "r": "SOR", "n": "52 585 42 22", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Hemodynamika", "n": "52 585 48 25", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Po 15:00 + weekendy", "n": "52 585 40 00", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Sekretariat", "n": "52 585 47 00", "h": false, "h24": false, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala", "n": "52 585 40 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Sala hybrydowa", "ok": true },
+            { "t": "CABG", "ok": true },
+            { "t": "OPCABG", "ok": true },
+            { "t": "TAVI", "ok": true },
+            { "t": "MitraClip", "ok": true },
+            { "t": "Impella", "ok": true },
+            { "t": "Operacje aorty", "ok": true },
+            { "t": "Chirurgia robotowa", "ok": true }
+          ],
+          "badges": ["Największy w PL małoinwazyjny", "Lądowisko"],
+          "priority": 1,
+          "notes": "Ordynator: dr hab. n. med. Wojciech Pawliszak, prof. UMK",
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 2,
+          "name": "Klinika Kardiologii i Kardiochirurgii",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "10 WSK, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://www.10wsk.mil.pl",
+          "ul": "10wsk.mil.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": null },
+          "ph": [
+            { "r": "Klinika", "n": "261 417 031", "h": true, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Klinika (alt.)", "n": "261 417 155", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala", "n": "261 417 300", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "CABG", "ok": true },
+            { "t": "OPCABG", "ok": true },
+            { "t": "TAVI", "ok": true },
+            { "t": "Impella", "ok": true },
+            { "t": "IABP", "ok": true },
+            { "t": "OIOK 13 stanowisk", "ok": true }
+          ],
+          "badges": [],
+          "priority": 2,
+          "notes": "Brak numeru SOR 10 WSK — wymaga enrichmentu.",
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 3,
+          "name": "Klinika Kardiochirurgii i Chirurgii Naczyniowej",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "UCK Gdańsk",
+          "distance_km": 170,
+          "url": "https://uck.pl",
+          "ul": "uck.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": "Lądowisko" },
+          "ph": [
+            { "r": "KOR (SOR) linia 1", "n": "58 349 37 84", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Klinika Kardiochirurgii", "n": "58 584 42 00", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Klinika (alt.)", "n": "58 584 42 10", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" },
+            { "r": "Transplantacja Płuc (do 15:00)", "n": "58 584 42 22", "h": false, "h24": false, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala UCK", "n": "58 349 20 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "Transplantacja serca", "ok": true },
+            { "t": "Transplantacja płuc", "ok": true },
+            { "t": "Mech. wspomaganie serca", "ok": true },
+            { "t": "CABG", "ok": true },
+            { "t": "Chir. naczyniowa", "ok": true }
+          ],
+          "badges": ["Transplantacja", "Lądowisko"],
+          "priority": 3,
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 4,
+          "name": "Oddział Kardiochirurgii Dziecięcej im. WOŚP",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "Copernicus, Szpital św. Wojciecha, Gdańsk",
+          "distance_km": 170,
+          "url": "https://copernicus.gda.pl",
+          "ul": "copernicus.gda.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": null },
+          "ph": [
+            { "r": "Dyżurka lekarska", "n": "58 768 48 84", "h": true, "h24": true, "lvl": 2, "src": "wada-serca.pl" },
+            { "r": "Dyżurka pielęgniarska", "n": "58 768 48 88", "h": false, "h24": true, "lvl": 2, "src": "wada-serca.pl" },
+            { "r": "Sekretariat", "n": "58 768 48 81", "h": false, "h24": false, "lvl": 2, "src": "wada-serca.pl" }
+          ],
+          "mo": [],
+          "caps": [
+            { "t": "Jedyny na Polskę Północną", "ok": true },
+            { "t": "ECMO dziecięce", "ok": true },
+            { "t": "NO", "ok": true },
+            { "t": "Wady wrodzone serca", "ok": true },
+            { "t": "300+ operacji/rok", "ok": true }
+          ],
+          "badges": ["Tylko dzieci", "ECMO", "24h"],
+          "priority": 4,
+          "notes": "Ordynator: dr hab. n. med. Ireneusz Haponiuk. Brak SOR Copernicus — wymaga enrichmentu.",
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        }
+      ]
+    },
+    {
+      "id": "ecmo",
+      "name": "ECMO",
+      "icon": "🫁",
+      "description": "Pozaustrojowa oksygenacja membranowa (VV + VA)",
+      "file": "ecmo.html",
+      "alert": "ECMO = terapia ostatniej szansy. Kwalifikacja musi nastąpić WCZEŚNIE! Dzwonić przy PaO₂/FiO₂ <150 z tendencją spadkową. Mobilny zespół ECMO Jurasza może przyjechać do Chojnic!",
+      "facilities": [
+        {
+          "id": 1,
+          "name": "Uniwersyteckie Centrum Terapii Pozaustrojowych (UCTP)",
+          "city": "Bydgoszcz",
+          "voivodeship": "kujawsko-pomorskie",
+          "addr": "Szpital Jurasza, Bydgoszcz",
+          "distance_km": 100,
+          "url": "https://jurasza.umk.pl",
+          "ul": "jurasza.umk.pl",
+          "transport": { "heli_min": 30, "drive_min": 75, "notes": "MOBILNY ZESPÓŁ ECMO — mogą przyjechać do Chojnic i kaniulować na miejscu!" },
+          "ph": [
+            { "r": "SOR", "n": "52 585 42 22", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Centrala (prosić o UCTP/OIT)", "n": "52 585 40 00", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [],
+          "caps": [
+            { "t": "4 aparaty ECMO (VV+VA)", "ok": true },
+            { "t": "Mobilny zespół ECMO", "ok": true },
+            { "t": "Karetka ECMO", "ok": true },
+            { "t": "MARS", "ok": true },
+            { "t": "Plazmafereza", "ok": true },
+            { "t": "CRRT", "ok": true },
+            { "t": "30+ stanowisk OIT", "ok": true },
+            { "t": "Bridge to transplant", "ok": true }
+          ],
+          "badges": ["ECMO", "Mobilny", "Jedyny w regionie"],
+          "priority": 1,
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 2,
+          "name": "Pododdział Mechanicznego Wspomagania Serca (VA-ECMO)",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "UCK Gdańsk, Klinika Kardiochirurgii",
+          "distance_km": 170,
+          "url": "https://uck.pl",
+          "ul": "uck.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": "Lądowisko" },
+          "ph": [
+            { "r": "KOR (SOR) linia 1", "n": "58 349 37 84", "h": true, "h24": true, "lvl": 1, "src": "strona szpitala" },
+            { "r": "Klinika Kardiochirurgii", "n": "58 584 42 00", "h": false, "h24": true, "lvl": 2, "src": "strona szpitala" }
+          ],
+          "mo": [
+            { "r": "Centrala UCK", "n": "58 349 20 00", "h": false, "h24": true, "lvl": 3, "src": "strona szpitala" }
+          ],
+          "caps": [
+            { "t": "VA-ECMO", "ok": true },
+            { "t": "Mech. wspomaganie serca", "ok": true },
+            { "t": "Transplantacja serca", "ok": true },
+            { "t": "Transplantacja płuc", "ok": true }
+          ],
+          "badges": ["VA-ECMO", "Transplantacja"],
+          "priority": 2,
+          "children": false,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        },
+        {
+          "id": 3,
+          "name": "ECMO dziecięce — Oddział Kardiochirurgii Dziecięcej im. WOŚP",
+          "city": "Gdańsk",
+          "voivodeship": "pomorskie",
+          "addr": "Copernicus, Szpital św. Wojciecha, Gdańsk",
+          "distance_km": 170,
+          "url": "https://copernicus.gda.pl",
+          "ul": "copernicus.gda.pl",
+          "transport": { "heli_min": 50, "drive_min": 120, "notes": null },
+          "ph": [
+            { "r": "Dyżurka lekarska", "n": "58 768 48 84", "h": true, "h24": true, "lvl": 2, "src": "copernicus.gda.pl" },
+            { "r": "Dyżurka pielęgniarska", "n": "58 768 48 88", "h": false, "h24": true, "lvl": 2, "src": "copernicus.gda.pl" }
+          ],
+          "mo": [],
+          "caps": [
+            { "t": "ECMO dziecięce", "ok": true },
+            { "t": "NO", "ok": true },
+            { "t": "Kardiochirurgia dziecięca", "ok": true }
+          ],
+          "badges": ["Tylko dzieci", "ECMO"],
+          "priority": 3,
+          "children": true,
+          "last_verified": "2026-03-30",
+          "data_quality": "⚠️"
+        }
+      ]
+    }
+  ]
+}
