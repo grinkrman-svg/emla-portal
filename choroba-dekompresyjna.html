@@ -16,34 +16,34 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
-      <strong>Szpital im. J.K. Lukowicza</strong><br>
-      Chojnice &middot; Choroba dekompresyjna
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Choroba dekompresyjna
     </div>
   </div>
   <div class="tba">
     <button class="tb-btn" onclick="openCmd()" title="Szybkie wyszukiwanie">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <span class="kbd">&#8984;K</span>
+      <span class="kbd">⌘K</span>
     </button>
     <button class="tb-btn" onclick="printAll()" title="Drukuj wszystko">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
     </button>
-    <button class="tb-btn" onclick="toggleFs()" title="Pelny ekran">
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
     </button>
-    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przelacz motyw"></div>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
   </div>
 </header>
 
 <div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCmd()">
   <div class="cmd-box">
-    <input class="cmd-input" id="cmdInput" placeholder="Szukaj osrodka, miasta, mozliwosci..." oninput="filterCmd()">
+    <input class="cmd-input" id="cmdInput" placeholder="Szukaj ośrodka, miasta, możliwości..." oninput="filterCmd()">
     <div class="cmd-results" id="cmdResults"></div>
     <div class="cmd-footer">
-      <span><kbd>&uarr;&darr;</kbd> nawigacja</span>
-      <span><kbd>Enter</kbd> przejdz</span>
+      <span><kbd>↑↓</kbd> nawigacja</span>
+      <span><kbd>Enter</kbd> przejdź</span>
       <span><kbd>Esc</kbd> zamknij</span>
     </div>
   </div>
@@ -52,13 +52,13 @@
 <div class="app" id="app">
 
   <div class="sbar">
-    <input type="text" id="search" placeholder="Szukaj osrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj osrodka">
+    <input type="text" id="search" placeholder="Szukaj ośrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj ośrodka">
     <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
   </div>
 
   <div class="flt">
     <span class="chip on" data-f="all" onclick="setChip(this)">Wszystkie</span>
-    <span class="slbl">sortowanie: odleglosc</span>
+    <span class="slbl">sortowanie: odległość</span>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -66,11 +66,11 @@
   <div class="lpr">
     <div class="lpr-l">
       <span class="lpr-b">LPR</span>
-      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiowac">
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
         <span class="pulse-dot"></span>
         2222 99999
       </span>
-      <span class="lpr-s">Centrum Operacyjne &middot; transport lotniczy</span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
     </div>
     <div class="lpr-r">
       <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
@@ -79,9 +79,9 @@
   </div>
 
   <div class="foot">
-    Dane z web search 2026-03-30 &middot; Dostepnosc wymaga potwierdzenia telefonicznego &middot; <span onclick="showToast('1-2: przejdz do karty &middot; /: szukaj &middot; &#8984;K: paleta &middot; Esc: wyczysc')">Skroty klawiszowe</span>
+    Dane z web search 2026-03-30 · Dostępność wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-2: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
     <br>
-    <span class="eps-note">TRANSPORT: Helikopter na minimalnej wysokosci (max 300m AGL)! Poinformowac LPR przy zamawianiu.</span>
+    <span class="eps-note">TRANSPORT: Helikopter na minimalnej wysokości (max 300m AGL)! Poinformować LPR przy zamawianiu.</span>
   </div>
 
 </div>
@@ -90,7 +90,7 @@
 const D = [
   {
     id:1, city:"Gdynia", s:"sg", glow:"glow-g",
-    name:"KOMH — Krajowy Osrodek Medycyny Hiperbarycznej",
+    name:"KOMH — Krajowy Ośrodek Medycyny Hiperbarycznej",
     addr:"ul. Powstania Styczniowego 9B, 81-519 Gdynia",
     url:"https://komh.pl", ul:"komh.pl",
     tr:{m:"Helikopter",t:"~30 min",r:"~2h",icon:"\uD83D\uDE81"},
@@ -98,7 +98,7 @@ const D = [
     ph:[
       {r:"TELEFON ALARMOWY 24h — linia 1",n:"58 622 51 63",h:true,h24:true},
       {r:"TELEFON ALARMOWY 24h — linia 2",n:"58 699 86 55",h:true,h24:true},
-      {r:"Kontakt ogolny KOMH",n:"58 699 86 10",h:false,h24:false}
+      {r:"Kontakt ogólny KOMH",n:"58 699 86 10",h:false,h24:false}
     ],
     mo:[
       {r:"Kierownik (prof. Jacek Kot)",n:"58 699 86 32",h:false,h24:false}
@@ -108,30 +108,33 @@ const D = [
       {t:"Choroba dekompresyjna",y:true},
       {t:"Zator gazowy",y:true},
       {t:"Barotrauma",y:true},
-      {t:"Osrodek referencyjny",y:true}
+      {t:"Ośrodek referencyjny",y:true}
     ],
     tags:[],
     sios:null
   },
   {
-    id:2, city:"Gdansk", s:"sg", glow:"glow-g",
+    id:2, city:"Gdańsk", s:"sg", glow:"glow-g",
     name:"7 Szpital Marynarki Wojennej (szpital bazowy KOMH)",
-    addr:"ul. Polanki 117, 80-305 Gdansk",
+    addr:"ul. Polanki 117, 80-305 Gdańsk",
     url:"https://7szmw.pl", ul:"7szmw.pl",
     tr:{m:"Helikopter",t:"~30 min",r:"~2h",icon:"\uD83D\uDE81"},
     mapXY:{x:36,y:8}, dist:165, maxDist:165,
     ph:[
-      {r:"Izba Przyjec 24h",n:"58 552 63 18",h:true,h24:true},
-      {r:"Izba Przyjec (mobil)",n:"785 773 020",h:true,h24:true}
+      {r:"Izba Przyjęć 24h",n:"58 552 63 18",h:true,h24:true},
+      {r:"Izba Przyjęć (mobil)",n:"785 773 020",h:true,h24:true},
+      {r:"Lekarz dyżurny IP",n:"58 552 62 67",h:false,h24:true},
+      {r:"Pielęgniarka oddziałowa IP",n:"58 552 63 23",h:false,h24:true}
     ],
     mo:[
-      {r:"Izba Przyjec (linia wojskowa)",n:"261 21 63 18",h:false,h24:true},
+      {r:"Izba Przyjęć (linia wojskowa)",n:"261 21 63 18",h:false,h24:true},
+      {r:"Lekarz dyżurny (linia wojskowa)",n:"261 21 63 67",h:false,h24:true},
       {r:"Rejestracja (pon-pt 7:30-18:00)",n:"58 500 46 10",h:false,h24:false},
       {r:"Sekretariat Komendanta",n:"58 552 63 01",h:false,h24:false}
     ],
     caps:[
-      {t:"Wspolpraca z KOMH Gdynia",y:true},
-      {t:"Przyjecia pacjentow z wypadkami nurkowymi",y:true}
+      {t:"Współpraca z KOMH Gdynia",y:true},
+      {t:"Przyjęcia pacjentów z wypadkami nurkowymi",y:true}
     ],
     tags:[],
     sios:null
@@ -139,7 +142,7 @@ const D = [
 ];
 
 const CHOJ = {x:27.1, y:13.0};
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

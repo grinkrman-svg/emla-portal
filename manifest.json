@@ -1,7 +1,7 @@
 {
   "name": "EMLA — Emergency Medical Logistics Assistant",
   "short_name": "EMLA",
-  "start_url": "/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#1e40af",

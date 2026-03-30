@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Torakochirurgia — EMLA Portal</title>
+<title>Torakochirurgia — SOR Chojnice</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Torakochirurgia
@@ -103,11 +103,13 @@ const D = [
     mapXY: { x: 32, y: 18 },
     dist: 100,
     maxDist: 170,
+    priority: 1,
     ph: [
-      { r: "Klinika Chirurgiczna (kl. piersiowej + naczyniowa)", n: "261 417 051", h: true, h24: true }
+      { r: "Klinika Chirurgiczna (kl. piersiowej + naczyniowa)", n: "261 417 051", h: true, h24: true, lvl: 1, src: "10wsk.mil.pl" },
+      { r: "SOR", n: "261 417 112", h: false, h24: true, lvl: 2, src: "10wsk.mil.pl" }
     ],
     mo: [
-      { r: "Centrala", n: "261 417 300", h: false, h24: true }
+      { r: "Centrala", n: "261 417 300", h: false, h24: true, lvl: 3, src: "10wsk.mil.pl" }
     ],
     caps: [
       { t: "Chirurgia kl. piersiowej", y: true },
@@ -132,14 +134,18 @@ const D = [
     mapXY: { x: 32, y: 18 },
     dist: 100,
     maxDist: 170,
+    priority: 2,
     ph: [
-      { r: "Sekretariat Oddziału", n: "52 374 35 73", h: true, h24: false },
-      { r: "Centrala CO (Romanowska)", n: "52 374 31 10", h: false, h24: true }
+      { r: "Koordynator oddziału", n: "52 374 35 61", h: true, h24: true, lvl: 1, src: "co.bydgoszcz.pl" },
+      { r: "Dyżurka pielęgniarska", n: "52 374 35 63", h: false, h24: true, lvl: 2, src: "co.bydgoszcz.pl" },
+      { r: "Izba Przyjęć KPCP — lekarz dyżurny", n: "52 325 66 19", h: false, h24: true, lvl: 2, src: "kpcp.pl" },
+      { r: "Izba Przyjęć KPCP — pielęgniarki", n: "52 325 67 19", h: false, h24: true, lvl: 2, src: "kpcp.pl" }
     ],
     mo: [
-      { r: "Centrala KPCP (Seminaryjna)", n: "52 325 66 00", h: false, h24: true },
-      { r: "Centrala KPCP (alt.)", n: "52 325 67 00", h: false, h24: true },
-      { r: "Koordynator Polikliniki", n: "52 374 32 64", h: false, h24: false }
+      { r: "Sekretariat Oddziału", n: "52 374 35 73", h: false, h24: false, lvl: 3, src: "co.bydgoszcz.pl" },
+      { r: "Kierownik opieki medycznej", n: "52 374 35 62", h: false, h24: false, lvl: 3, src: "co.bydgoszcz.pl" },
+      { r: "Centrala CO (Romanowska)", n: "52 374 31 10", h: false, h24: true, lvl: 3, src: "co.bydgoszcz.pl" },
+      { r: "Centrala KPCP (Seminaryjna)", n: "52 325 66 00", h: false, h24: true, lvl: 3, src: "kpcp.pl" }
     ],
     caps: [
       { t: "Pełna torakochirurgia", y: true },
@@ -164,12 +170,14 @@ const D = [
     mapXY: { x: 36, y: 8 },
     dist: 170,
     maxDist: 170,
+    priority: 3,
     ph: [
-      { r: "Klinika Chirurgii Klatki Piersiowej", n: "58 349 31 30", h: true, h24: true },
-      { r: "KOR (SOR)", n: "58 349 37 84", h: false, h24: true }
+      { r: "Klinika Chirurgii Klatki Piersiowej", n: "58 349 31 30", h: true, h24: true, lvl: 1, src: "uck.pl" },
+      { r: "KOR (SOR)", n: "58 349 37 84", h: false, h24: true, lvl: 2, src: "uck.pl" },
+      { r: "KOR (alt.)", n: "58 349 37 94", h: false, h24: true, lvl: 2, src: "uck.pl" }
     ],
     mo: [
-      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true }
+      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true, lvl: 3, src: "uck.pl" }
     ],
     caps: [
       { t: "Klinika uniwersytecka", y: true },
@@ -182,7 +190,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

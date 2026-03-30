@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Replantacja / Mikrochirurgia
@@ -108,12 +108,12 @@ const D = [
     dist: 170,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie replantacji (prof. Mazurek)", n: "606 620 546", h: true, h24: true },
-      { r: "Sekretariat Kliniki Ortopedii", n: "58 764 02 10", h: false, h24: false },
-      { r: "Post pielęgniarski", n: "58 764 02 30", h: false, h24: true }
+      { r: "Zgłoszenie replantacji (prof. Mazurek)", n: "606 620 546", h: true, h24: true, lvl: 1 },
+      { r: "SOR (Szpital Kopernika)", n: "58 764 01 00", h: false, h24: true, lvl: 2 },
+      { r: "Post pielęgniarski", n: "58 764 02 30", h: false, h24: true, lvl: 2 }
     ],
     mo: [
-      { r: "Centrala Copernicus (Kopernika)", n: "58 764 01 00", h: false, h24: true }
+      { r: "Sekretariat Kliniki Ortopedii", n: "58 764 02 10", h: false, h24: false, lvl: 3 }
     ],
     caps: [
       { t: "Jedyny na Pomorzu", y: true },
@@ -139,11 +139,13 @@ const D = [
     dist: 200,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie replantacji (dr Kulmaczewski)", n: "604 420 790", h: true, h24: true },
-      { r: "Izba Przyjęć", n: "55 239 44 44", h: false, h24: true }
+      { r: "Zgłoszenie replantacji (dr Kulmaczewski)", n: "604 420 790", h: true, h24: true, lvl: 1 },
+      { r: "Izba Przyjęć", n: "55 239 44 44", h: false, h24: true, lvl: 2 },
+      { r: "Dyżurka pielęgniarska (Chirurgia Ręki)", n: "55 239 44 61", h: false, h24: true, lvl: 2 }
     ],
     mo: [
-      { r: "Blok operacyjny", n: "55 239 44 32", h: false, h24: true }
+      { r: "Gabinet lekarski (Chirurgia Ręki)", n: "55 239 44 62", h: false, h24: false, lvl: 3 },
+      { r: "Blok operacyjny", n: "55 239 44 32", h: false, h24: true, lvl: 3 }
     ],
     caps: [
       { t: "Chirurgia ręki", y: true },
@@ -166,10 +168,13 @@ const D = [
     dist: 230,
     maxDist: 600,
     ph: [
-      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "604 953 973", h: true, h24: true },
-      { r: "SOR / Izba Przyjęć", n: "61 831 03 69", h: false, h24: true }
+      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "604 953 973", h: true, h24: true, lvl: 1 },
+      { r: "Izba Przyjęć (24h)", n: "61 831 03 69", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Portiernia / Ochrona (24h)", n: "61 831 03 50", h: false, h24: true, lvl: 3 },
+      { r: "Informacja dla pacjentów", n: "61 831 01 00", h: false, h24: false, lvl: 3 }
+    ],
     caps: [
       { t: "Chirurgia ręki", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -191,10 +196,14 @@ const D = [
     dist: 300,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie (dr Walaszek)", n: "501 557 455", h: true, h24: true },
-      { r: "Zgłoszenie (dr Giżewska)", n: "609 691 636", h: true, h24: true }
+      { r: "Zgłoszenie (dr Walaszek)", n: "501 557 455", h: true, h24: true, lvl: 1 },
+      { r: "Zgłoszenie (dr Giżewska)", n: "609 691 636", h: true, h24: true, lvl: 1 },
+      { r: "SOR z Ogólną Izbą Przyjęć", n: "91 425 32 91", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Klinika Chirurgii Ogólnej i Ręki", n: "91 425 31 96", h: false, h24: false, lvl: 3 },
+      { r: "Centrala USK1", n: "91 425 30 00", h: false, h24: true, lvl: 3 }
+    ],
     caps: [
       { t: "Chirurgia ręki", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -216,10 +225,13 @@ const D = [
     dist: 350,
     maxDist: 600,
     ph: [
-      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "882 164 732", h: true, h24: true },
-      { r: "Izba Przyjęć", n: "22 788 56 74", h: false, h24: true }
+      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "882 164 732", h: true, h24: true, lvl: 1 },
+      { r: "Izba Przyjęć", n: "22 788 56 74", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Klinika Ortopedii Dziecięcej", n: "22 788 91 97", h: false, h24: false, lvl: 3 },
+      { r: "Centrala szpitala", n: "22 431 30 20", h: false, h24: true, lvl: 3 }
+    ],
     caps: [
       { t: "Ortopedia dziecięca", y: true },
       { t: "Replantacja u dzieci", y: true },
@@ -242,10 +254,12 @@ const D = [
     dist: 400,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie replantacji", n: "71 312 06 08", h: true, h24: true },
-      { r: "Linia 2", n: "71 312 09 20", h: false, h24: true }
+      { r: "Zgłoszenie replantacji", n: "71 312 06 08", h: true, h24: true, lvl: 1 },
+      { r: "SOR / Izba Przyjęć", n: "71 312 09 20", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat Chirurgii Plastycznej i Ręki", n: "71 312 09 20 w.231", h: false, h24: false, lvl: 3 }
+    ],
     caps: [
       { t: "Chirurgia plastyczna i ręki", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -267,11 +281,14 @@ const D = [
     dist: 400,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie replantacji (linia 1)", n: "601 708 931", h: true, h24: true },
-      { r: "Zgłoszenie replantacji (linia 2)", n: "609 705 854", h: true, h24: true },
-      { r: "Lekarz dyżurny", n: "71 327 05 98", h: false, h24: true }
+      { r: "Zgłoszenie replantacji (linia 1)", n: "601 708 931", h: true, h24: true, lvl: 1 },
+      { r: "Zgłoszenie replantacji (linia 2)", n: "609 705 854", h: true, h24: true, lvl: 1 },
+      { r: "Lekarz dyżurny (oddział)", n: "71 327 05 98", h: false, h24: true, lvl: 2 },
+      { r: "SOR", n: "71 327 03 68", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Centrala WSS", n: "71 327 01 00", h: false, h24: true, lvl: 3 }
+    ],
     caps: [
       { t: "Chirurgia urazowo-ortopedyczna", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -293,9 +310,15 @@ const D = [
     dist: 500,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie replantacji", n: "784 659 676", h: true, h24: true }
+      { r: "Zgłoszenie replantacji", n: "784 659 676", h: true, h24: true, lvl: 1 },
+      { r: "SOR dla Dzieci (lekarze)", n: "32 347 12 33", h: false, h24: true, lvl: 2 },
+      { r: "Dyżurka lekarska (Chir. Dziecięca)", n: "32 349 00 12", h: false, h24: true, lvl: 2 },
+      { r: "Dyżurka pielęgniarska (Chir. Dziecięca)", n: "32 349 00 11", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat Chirurgii Dziecięcej", n: "32 349 00 14", h: false, h24: false, lvl: 3 },
+      { r: "Centrala (Truchana)", n: "32 349 00 00", h: false, h24: true, lvl: 3 }
+    ],
     caps: [
       { t: "Chirurgia dziecięca", y: true },
       { t: "Replantacja u dzieci", y: true },
@@ -318,10 +341,16 @@ const D = [
     dist: 600,
     maxDist: 600,
     ph: [
-      { r: "Telefon alarmowy (replantacja)", n: "501 431 430", h: true, h24: true },
-      { r: "Ordynator", n: "12 646 88 37", h: false, h24: false }
+      { r: "Telefon alarmowy (replantacja)", n: "501 431 430", h: true, h24: true, lvl: 1 },
+      { r: "Dyżurka lekarska MCOP (dzień)", n: "12 646 86 63", h: false, h24: false, lvl: 2 },
+      { r: "Punkt pielęgniarski MCOP", n: "12 646 84 94", h: false, h24: true, lvl: 2 },
+      { r: "SOR (rejestracja 24h)", n: "12 646 83 24", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat MCOP", n: "12 646 85 44", h: false, h24: false, lvl: 3 },
+      { r: "Ordynator", n: "12 646 88 37", h: false, h24: false, lvl: 3 },
+      { r: "Centrala Rydygier", n: "12 646 80 00", h: false, h24: true, lvl: 3 }
+    ],
     caps: [
       { t: "Centrum oparzeniowo-plastyczne", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -343,9 +372,13 @@ const D = [
     dist: 600,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie (płk Nowak / lek. Maleta)", n: "510 756 318", h: true, h24: true }
+      { r: "Zgłoszenie (płk Nowak / lek. Maleta)", n: "510 756 318", h: true, h24: true, lvl: 1 },
+      { r: "SOR 5WSK", n: "12 630 81 40", h: false, h24: true, lvl: 2 },
+      { r: "Dyżurka lekarza (Ortopedia)", n: "12 630 82 07", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat Kliniki Ortopedii", n: "12 630 82 03", h: false, h24: false, lvl: 3 }
+    ],
     caps: [
       { t: "Ortopedia", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -367,10 +400,13 @@ const D = [
     dist: 500,
     maxDist: 600,
     ph: [
-      { r: "Zgłoszenie replantacji (dr hab. Szyluk)", n: "692 433 623", h: true, h24: true },
-      { r: "Izba Przyjęć", n: "32 393 43 00", h: false, h24: true }
+      { r: "Zgłoszenie replantacji (dr hab. Szyluk)", n: "692 433 623", h: true, h24: true, lvl: 1 },
+      { r: "Izba Przyjęć", n: "32 393 43 00", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Izba Przyjęć (fax/linia 2)", n: "32 393 42 14", h: false, h24: true, lvl: 3 },
+      { r: "Centrala szpitala", n: "32 393 41 00", h: false, h24: true, lvl: 3 }
+    ],
     caps: [
       { t: "Chirurgia urazowa", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -392,10 +428,13 @@ const D = [
     dist: 400,
     maxDist: 600,
     ph: [
-      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "794 352 000", h: true, h24: true },
-      { r: "SOR", n: "85 831 83 17", h: false, h24: true }
+      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "794 352 000", h: true, h24: true, lvl: 1 },
+      { r: "SOR USK", n: "85 831 83 17", h: false, h24: true, lvl: 2 },
+      { r: "Pielęgniarki (Klinika Ortopedii)", n: "85 831 82 81", h: false, h24: true, lvl: 2 }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat Kliniki Ortopedii", n: "85 831 82 82", h: false, h24: false, lvl: 3 }
+    ],
     caps: [
       { t: "Chirurgia ręki", y: true },
       { t: "Serwis replantacyjny", y: true }
@@ -406,7 +445,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

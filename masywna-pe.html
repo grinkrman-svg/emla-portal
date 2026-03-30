@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Lukowicza</strong><br>
       Chojnice &middot; Masywna zatorowosc plucna (PE)
@@ -100,10 +100,12 @@ const D = [
     mapXY:{x:32,y:18}, dist:100, maxDist:170,
     ph:[
       {r:"Hemodynamika",n:"52 585 48 25",h:true,h24:false},
-      {r:"SOR",n:"52 585 42 22",h:false,h24:true}
+      {r:"SOR (linia 1)",n:"52 585 42 22",h:false,h24:true},
+      {r:"SOR (linia 2)",n:"52 585 43 33",h:false,h24:true}
     ],
     mo:[
-      {r:"Centrala (po 15:00)",n:"52 585 40 00",h:false,h24:true}
+      {r:"Sekretariat Kardiologii",n:"52 585 40 23",h:false,h24:false},
+      {r:"Centrala 24h",n:"52 585 40 00",h:false,h24:true}
     ],
     caps:[
       {t:"Trombektomia kateterowa PE",y:true},
@@ -122,9 +124,13 @@ const D = [
     mapXY:{x:32,y:18}, dist:100, maxDist:170,
     ph:[
       {r:"Sekretariat kardiochirurgia",n:"52 585 47 00",h:true,h24:false},
-      {r:"Centrala (po 15:00)",n:"52 585 40 00",h:false,h24:true}
+      {r:"SOR (linia 1)",n:"52 585 42 22",h:false,h24:true},
+      {r:"SOR (linia 2)",n:"52 585 43 33",h:false,h24:true}
     ],
-    mo:[],
+    mo:[
+      {r:"Kardiochirurgia (linia 2)",n:"52 585 40 26",h:false,h24:false},
+      {r:"Centrala 24h",n:"52 585 40 00",h:false,h24:true}
+    ],
     caps:[
       {t:"Embolektomia chirurgiczna",y:true},
       {t:"Sala hybrydowa",y:true}
@@ -140,7 +146,9 @@ const D = [
     tr:{m:"Helikopter",t:"~25 min",r:"~1h 15min",icon:"\uD83D\uDE81"},
     mapXY:{x:32,y:18}, dist:100, maxDist:170,
     ph:[
-      {r:"UCTP (centrala)",n:"52 585 40 00",h:true,h24:true}
+      {r:"Centrala 24h (prosic o UCTP)",n:"52 585 40 00",h:true,h24:true},
+      {r:"SOR (linia 1)",n:"52 585 42 22",h:false,h24:true},
+      {r:"SOR (linia 2)",n:"52 585 43 33",h:false,h24:true}
     ],
     mo:[],
     caps:[
@@ -160,9 +168,13 @@ const D = [
     mapXY:{x:32,y:18}, dist:100, maxDist:170,
     ph:[
       {r:"SOR",n:"261 417 112",h:true,h24:true},
-      {r:"Sekretariat Kardiologia",n:"261 417 031",h:false,h24:false}
+      {r:"Sekretariat Kardiologia",n:"261 417 031",h:false,h24:false},
+      {r:"Gabinet lekarski Kardiochirurgia",n:"261 417 158",h:false,h24:false}
     ],
-    mo:[],
+    mo:[
+      {r:"Sekretariat Kardiochirurgia",n:"261 417 155",h:false,h24:false},
+      {r:"Centrala",n:"261 417 222",h:false,h24:true}
+    ],
     caps:[
       {t:"Interwencyjne leczenie PE",y:true},
       {t:"Hemodynamika",y:true}
@@ -178,9 +190,14 @@ const D = [
     tr:{m:"Helikopter",t:"~35 min",r:"~2h",icon:"\uD83D\uDE81"},
     mapXY:{x:36,y:8}, dist:170, maxDist:170,
     ph:[
-      {r:"Kardiochirurgia",n:"58 584 42 00",h:true,h24:false}
+      {r:"Kardiochirurgia",n:"58 584 42 00",h:true,h24:false},
+      {r:"KOR (SOR) UCK 24h",n:"58 349 37 84",h:false,h24:true}
     ],
-    mo:[],
+    mo:[
+      {r:"Kardiochirurgia (linia 2)",n:"58 584 42 10",h:false,h24:false},
+      {r:"KOR (SOR) linia 2",n:"58 349 37 94",h:false,h24:true},
+      {r:"Centrala UCK",n:"58 349 20 00",h:false,h24:true}
+    ],
     caps:[
       {t:"Embolektomia chirurgiczna",y:true},
       {t:"Mechaniczne wspomaganie krazenia",y:true},
@@ -192,7 +209,7 @@ const D = [
 ];
 
 const CHOJ = {x:27.1, y:13.0};
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

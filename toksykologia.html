@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Toksykologia Kliniczna
@@ -109,9 +109,12 @@ const D = [
     ph: [
       { r: "TELEFON ALARMOWY 24h (dyżurny toksykolog)", n: "58 682 04 04", h: true, h24: true },
       { r: "TELEFON ALARMOWY (mobil)", n: "512 069 737", h: true, h24: true },
-      { r: "Administracja", n: "58 682 19 39", h: false, h24: false }
+      { r: "Izba Przyjęć / SOR", n: "58 682 04 04", h: false, h24: true }
     ],
-    mo: [],
+    mo: [
+      { r: "Administracja / Sekretariat", n: "58 682 19 39", h: false, h24: false },
+      { r: "Fax", n: "58 682 57 67", h: false, h24: false }
+    ],
     caps: [
       { t: "Regionalny Ośrodek Toksykologii", y: true },
       { t: "Konsultacja telefoniczna 24h", y: true },
@@ -128,7 +131,7 @@ const D = [
     s: "sr",
     glow: "",
     name: "Ośrodek Kontroli Zatruć",
-    addr: "Halinów k. Warszawy",
+    addr: "ul. Piłsudskiego 33, 05-074 Halinów",
     url: "https://gov.pl/web/urpl",
     ul: "gov.pl/urpl",
     tr: { m: "—", t: "—", r: "—", icon: "📞" },
@@ -151,18 +154,27 @@ const D = [
     city: "Poznań",
     s: "sr",
     glow: "",
-    name: "Ośrodek Kontroli Zatruć — Szpital Raszei",
-    addr: "Poznań",
-    url: "https://gov.pl/web/urpl",
-    ul: "gov.pl/urpl",
+    name: "Oddział Toksykologii im. dr W. Błeńskiej — Szpital Raszei",
+    addr: "ul. Mickiewicza 2, 60-834 Poznań",
+    url: "https://raszeja.poznan.pl/service/oddzial-toksykologiczny/",
+    ul: "raszeja.poznan.pl",
     tr: { m: "—", t: "—", r: "—", icon: "📞" },
     mapXY: { x: 22, y: 26 },
     dist: 230,
     maxDist: 600,
     ph: [
-      { r: "OIT — telefon alarmowy", n: "61 847 69 46", h: true, h24: true }
+      { r: "Dyżurka lekarska / telefon alarmowy", n: "61 847 69 46", h: true, h24: true },
+      { r: "Dyżurka lekarska (linia 2)", n: "61 224 53 41", h: true, h24: true },
+      { r: "Dyżurka pielęgniarska", n: "61 224 53 15", h: false, h24: true },
+      { r: "Izba Przyjęć (linia 1)", n: "61 847 69 46", h: false, h24: true },
+      { r: "Izba Przyjęć (linia 2)", n: "61 224 53 74", h: false, h24: true }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat oddziału (linia 1)", n: "61 224 52 65", h: false, h24: false },
+      { r: "Sekretariat oddziału (linia 2)", n: "61 848 13 51", h: false, h24: false },
+      { r: "Pielęgniarka oddziałowa", n: "61 224 52 90", h: false, h24: false },
+      { r: "IOM (Intensywna Obserwacja Medyczna)", n: "61 224 52 72", h: false, h24: true }
+    ],
     caps: [
       { t: "Konsultacja telefoniczna", y: true },
       { t: "Region: wielkopolskie, lubuskie, dolnośląskie, opolskie", y: false }
@@ -175,18 +187,20 @@ const D = [
     city: "Kraków",
     s: "sr",
     glow: "",
-    name: "Pracownia IT UJ CM — Ośrodek Kontroli Zatruć",
-    addr: "Kraków",
-    url: "https://gov.pl/web/urpl",
-    ul: "gov.pl/urpl",
+    name: "Pracownia Informacji Toksykologicznej UJ CM",
+    addr: "ul. Jakubowskiego 2, 30-688 Kraków",
+    url: "https://oit.cm.uj.edu.pl/",
+    ul: "oit.cm.uj.edu.pl",
     tr: { m: "—", t: "—", r: "—", icon: "📞" },
     mapXY: { x: 38, y: 48 },
     dist: 600,
     maxDist: 600,
     ph: [
-      { r: "Telefon alarmowy", n: "12 411 99 99", h: true, h24: true }
+      { r: "Telefon alarmowy 24h", n: "12 411 99 99", h: true, h24: true }
     ],
-    mo: [],
+    mo: [
+      { r: "Centrala / sekretariat", n: "12 400 26 60", h: false, h24: false }
+    ],
     caps: [
       { t: "Konsultacja telefoniczna", y: true },
       { t: "Region: małopolskie, podkarpackie, śląskie, świętokrzyskie", y: false }
@@ -197,7 +211,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Udar / Trombektomia
@@ -108,16 +108,19 @@ const D = [
     mapXY: { x: 32, y: 18 },
     dist: 100,
     maxDist: 340,
+    priority: 1,
     ph: [
-      { r: "Oddział Neurologii (mobilny!)", n: "697 093 586", h: true, h24: true },
-      { r: "SOR (Izba Przyjęć)", n: "52 365 54 93", h: false, h24: true },
-      { r: "Oddział Neurologii", n: "52 365 55 66", h: false, h24: true },
-      { r: "Oddział Neurologii (alt.)", n: "52 365 55 67", h: false, h24: true },
-      { r: "Oddział Neurologii (alt.)", n: "52 365 57 67", h: false, h24: true },
-      { r: "Oddział Neurochirurgii", n: "52 365 55 05", h: false, h24: true }
+      { r: "Oddział Neurologii (mobilny!)", n: "697 093 586", h: true, h24: true, lvl: 1, src: "biziel.umk.pl" },
+      { r: "SOR (Izba Przyjęć)", n: "52 365 54 93", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
+      { r: "SOR — OKMR (linia bezpośrednia)", n: "52 365 52 09", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
+      { r: "Oddział Neurologii", n: "52 365 55 66", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
+      { r: "Oddział Neurologii (alt.)", n: "52 365 55 67", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
+      { r: "Oddział Neurologii (alt.)", n: "52 365 57 67", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
+      { r: "Oddział Neurochirurgii", n: "52 365 55 05", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" }
     ],
     mo: [
-      { r: "Centrala szpitala", n: "52 365 57 99", h: false, h24: true }
+      { r: "Punkt Przyjęć", n: "52 371 26 35", h: false, h24: true, lvl: 3, src: "biziel.umk.pl" },
+      { r: "Centrala szpitala", n: "52 365 57 99", h: false, h24: true, lvl: 3, src: "biziel.umk.pl" }
     ],
     caps: [
       { t: "Trombektomia 24h", y: true },
@@ -143,13 +146,15 @@ const D = [
     mapXY: { x: 36, y: 8 },
     dist: 170,
     maxDist: 340,
+    priority: 2,
     ph: [
-      { r: "KOR (SOR) — linia 1", n: "58 349 37 84", h: true, h24: true },
-      { r: "KOR (SOR) — linia 2", n: "58 349 37 94", h: false, h24: true },
-      { r: "Klinika Neurologii (sekr. do 15:00)", n: "58 349 33 20", h: false, h24: false }
+      { r: "KOR (SOR) — linia 1", n: "58 349 37 84", h: true, h24: true, lvl: 1, src: "uck.pl" },
+      { r: "KOR (SOR) — linia 2", n: "58 349 37 94", h: false, h24: true, lvl: 2, src: "uck.pl" },
+      { r: "Klinika Neurologii Dorosłych", n: "58 584 48 20", h: false, h24: true, lvl: 2, src: "uck.pl" },
+      { r: "Klinika Neurologii (sekr. do 15:00)", n: "58 349 33 20", h: false, h24: false, lvl: 2, src: "uck.pl" }
     ],
     mo: [
-      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true }
+      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true, lvl: 3, src: "uck.pl" }
     ],
     caps: [
       { t: "Trombektomia (od 2015)", y: true },
@@ -175,17 +180,19 @@ const D = [
     mapXY: { x: 48, y: 14 },
     dist: 250,
     maxDist: 340,
+    priority: 4,
     ph: [
-      { r: "Koordynator udarowy (dr Zwiernik)", n: "89 538 62 13", h: true, h24: true },
-      { r: "Oddział Udarowy — gabinet lekarski", n: "89 538 62 73", h: false, h24: true },
-      { r: "SOR — segregacja medyczna", n: "89 538 65 11", h: false, h24: true },
-      { r: "SOR — segregacja (alt.)", n: "89 538 64 32", h: false, h24: true },
-      { r: "SOR — gabinet lekarski", n: "89 538 65 88", h: false, h24: true },
-      { r: "Oddział Udarowy — sekretariat", n: "89 538 63 40", h: false, h24: false },
-      { r: "Oddział Udarowy — post pielęgniarski", n: "89 538 64 14", h: false, h24: true }
+      { r: "Koordynator udarowy (dr Zwiernik)", n: "89 538 62 13", h: true, h24: true, lvl: 1, src: "wss.olsztyn.pl" },
+      { r: "SOR — segregacja medyczna", n: "89 538 65 11", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "SOR — segregacja (alt.)", n: "89 538 64 32", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "SOR — gabinet lekarski", n: "89 538 65 88", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "Oddział Udarowy — gabinet lekarski", n: "89 538 62 73", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "Oddział Udarowy — post pielęgniarski", n: "89 538 64 14", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" }
     ],
     mo: [
-      { r: "Centrala szpitala", n: "89 538 63 56", h: false, h24: true }
+      { r: "SOR — koordynator (dr Jalali)", n: "89 538 62 89", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Oddział Udarowy — sekretariat", n: "89 538 63 40", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Centrala szpitala", n: "89 538 63 56", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" }
     ],
     caps: [
       { t: "Pilotaż trombektomii MZ", y: true },
@@ -204,18 +211,24 @@ const D = [
     s: "sr",
     glow: "",
     name: "Neurologia z poddz. udarowym — USK1 Sokołowskiego",
-    addr: "Szczecin",
+    addr: "ul. Unii Lubelskiej 1, 71-252 Szczecin",
     url: "https://usk1.szczecin.pl",
     ul: "usk1.szczecin.pl",
     tr: { m: "LPR", t: "~1h 30min", r: "~4h", icon: "🚁" },
     mapXY: { x: 12, y: 12 },
     dist: 340,
     maxDist: 340,
+    priority: 5,
     ph: [
-      { r: "SOR", n: "91 425 30 10", h: true, h24: true },
-      { r: "Neurologia", n: "91 425 32 51", h: false, h24: true }
+      { r: "SOR z Izbą Przyjęć", n: "91 425 30 10", h: true, h24: true, lvl: 1, src: "usk1.szczecin.pl" },
+      { r: "SOR (linia oddziałowa)", n: "91 425 32 91", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" },
+      { r: "Neurologia — oddział", n: "91 425 32 51", h: false, h24: true, lvl: 2, src: "pum.edu.pl" },
+      { r: "Neurologia — dyżurka pielęgniarska", n: "91 425 31 98", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Neurologia — sekretariat", n: "91 425 32 02", h: false, h24: false, lvl: 3, src: "usk1.szczecin.pl" },
+      { r: "Centrala szpitala", n: "91 425 30 00", h: false, h24: true, lvl: 3, src: "usk1.szczecin.pl" }
+    ],
     caps: [
       { t: "Trombektomia", y: true },
       { t: "Neurologia z poddz. udarowym", y: true }
@@ -229,18 +242,20 @@ const D = [
     s: "sa",
     glow: "",
     name: "Neurologia — Szpital Święcickiego / USK",
-    addr: "Poznań",
+    addr: "ul. Przybyszewskiego 49, 60-355 Poznań",
     url: "https://usk.poznan.pl",
     ul: "usk.poznan.pl",
     tr: { m: "LPR", t: "~1h 10min", r: "~3h", icon: "🚁" },
     mapXY: { x: 22, y: 26 },
     dist: 230,
     maxDist: 340,
+    priority: 3,
     ph: [
-      { r: "Neurologia", n: "61 669 82 22", h: true, h24: true }
+      { r: "Neurologia — oddział", n: "61 669 82 22", h: true, h24: true, lvl: 1, src: "usk.poznan.pl" },
+      { r: "SOR (ul. Grunwaldzka 55)", n: "61 669 82 07", h: false, h24: true, lvl: 2, src: "usk.poznan.pl" }
     ],
     mo: [
-      { r: "Centrala", n: "61 869 11 00", h: false, h24: true }
+      { r: "Centrala szpitala", n: "61 869 11 00", h: false, h24: true, lvl: 3, src: "usk.poznan.pl" }
     ],
     caps: [
       { t: "Trombektomia", y: true },
@@ -252,7 +267,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <!-- Shared application logic -->

@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Neurochirurgia
@@ -108,12 +108,14 @@ const D = [
     dist: 100,
     maxDist: 350,
     ph: [
-      { r: "SOR / Oddział Med. Ratunkowej", n: "52 365 52 09", h: true, h24: true, lvl: 1, src: "biziel.umk.pl" },
-      { r: "Oddział neurochirurgii", n: "52 365 55 05", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
-      { r: "Oddział (alt.)", n: "52 365 57 74", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
-      { r: "Punkt Przyjęć (Izba Przyjęć)", n: "52 371 26 35", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" }
+      { r: "Oddział neurochirurgii (dyżurka)", n: "52 365 55 05", h: true, h24: true, lvl: 1, src: "biziel.umk.pl" },
+      { r: "SOR — lekarz dyżurny", n: "52 365 57 64", h: false, h24: true, lvl: 2, src: "okmr.biziel.pl" },
+      { r: "SOR — rejestracja 24h", n: "52 371 26 35", h: false, h24: true, lvl: 2, src: "okmr.biziel.pl" },
+      { r: "SOR — piel. koordynująca", n: "52 365 52 07", h: false, h24: true, lvl: 2, src: "okmr.biziel.pl" }
     ],
     mo: [
+      { r: "Oddział (alt.)", n: "52 365 57 74", h: false, h24: true, lvl: 3, src: "biziel.umk.pl" },
+      { r: "SOR — sekretariat", n: "52 365 52 09", h: false, h24: false, lvl: 3, src: "okmr.biziel.pl" },
       { r: "Centrala szpitala", n: "52 365 57 99", h: false, h24: true, lvl: 3, src: "biziel.umk.pl" }
     ],
     caps: [
@@ -143,11 +145,16 @@ const D = [
     dist: 100,
     maxDist: 350,
     ph: [
-      { r: "Izba Przyjęć — Med. Ratunkowa", n: "52 585 40 08", h: true, h24: true, lvl: 1, src: "jurasza.umk.pl" },
-      { r: "Klinika neurochirurgii (sekr.)", n: "52 585 45 10", h: false, h24: false, lvl: 2, src: "jurasza.umk.pl" }
+      { r: "Klinika neurochirurgii (po 15:00 i weekendy)", n: "52 585 40 00", h: true, h24: true, lvl: 1, src: "jurasza.umk.pl" },
+      { r: "SOR — Klinika Med. Ratunkowej", n: "52 585 42 22", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" },
+      { r: "SOR (linia 2)", n: "52 585 43 33", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" },
+      { r: "Intensywny nadzór neurochir.", n: "52 585 44 14", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" }
     ],
     mo: [
-      { r: "Centrala szpitala", n: "52 585 40 00", h: false, h24: true, lvl: 3, src: "jurasza.umk.pl" }
+      { r: "Sekretariat Kliniki", n: "52 585 45 10", h: false, h24: false, lvl: 3, src: "jurasza.umk.pl" },
+      { r: "Sekretariat medyczny", n: "52 585 76 99", h: false, h24: false, lvl: 3, src: "jurasza.umk.pl" },
+      { r: "Sekretariat (fax)", n: "52 585 40 31", h: false, h24: false, lvl: 3, src: "jurasza.umk.pl" },
+      { r: "Centrala / Infolinia 24h", n: "52 585 40 00", h: false, h24: true, lvl: 3, src: "jurasza.umk.pl" }
     ],
     caps: [
       { t: "Neurotraumatologia", y: true },
@@ -173,12 +180,12 @@ const D = [
     dist: 100,
     maxDist: 350,
     ph: [
-      { r: "Oddział (punkt pielęgniarski)", n: "52 326 21 67", h: true, h24: true, lvl: 1, src: "wsd.org.pl" },
-      { r: "Gabinet lekarski", n: "52 326 23 48", h: false, h24: true, lvl: 2, src: "wsd.org.pl" },
-      { r: "Gabinet ordynatora", n: "52 326 22 94", h: false, h24: false, lvl: 2, src: "wsd.org.pl" }
+      { r: "Gabinet lekarski", n: "52 326 23 48", h: true, h24: true, lvl: 1, src: "wsd.org.pl" },
+      { r: "Izba Przyjęć / Centrala", n: "52 326 21 00", h: false, h24: true, lvl: 2, src: "wsd.org.pl" },
+      { r: "Sekretariat Oddziału", n: "52 326 21 67", h: false, h24: false, lvl: 2, src: "wsd.org.pl" }
     ],
     mo: [
-      { r: "Centrala szpitala", n: "52 326 21 00", h: false, h24: true, lvl: 3, src: "wsd.org.pl" },
+      { r: "Gabinet ordynatora", n: "52 326 22 94", h: false, h24: false, lvl: 3, src: "wsd.org.pl" },
       { r: "Centrala (alt.)", n: "52 326 21 01", h: false, h24: true, lvl: 3, src: "wsd.org.pl" }
     ],
     caps: [
@@ -208,12 +215,13 @@ const D = [
     maxDist: 350,
     ph: [
       { r: "Klinika neurochirurgii", n: "52 378 70 94", h: true, h24: true, lvl: 1, src: "placowki.mp.pl" },
+      { r: "SOR — rejestracja 24h", n: "261 417 112", h: false, h24: true, lvl: 2, src: "10wsk.mil.pl" },
       { r: "Sekretariat Kliniki", n: "261 417 093", h: false, h24: false, lvl: 2, src: "10wsk.mil.pl" }
     ],
     mo: [
       { r: "Centrala", n: "261 417 220", h: false, h24: true, lvl: 3, src: "10wsk.mil.pl" },
       { r: "Centrala (alt.)", n: "261 417 100", h: false, h24: true, lvl: 3, src: "nfz.org.pl" },
-      { r: "Rejestracja poliklinika", n: "52 526 21 11", h: false, h24: false, lvl: 3, src: "10wsk.mil.pl" }
+      { r: "Rejestracja poliklinika", n: "261 417 300", h: false, h24: false, lvl: 3, src: "10wsk.mil.pl" }
     ],
     caps: [
       { t: "Neurochirurgia dorosłych", y: true },
@@ -348,10 +356,12 @@ const D = [
     maxDist: 350,
     ph: [
       { r: "Oddział Neurochirurgii", n: "58 302 30 31", h: true, h24: true, lvl: 1, src: "placowki.mp.pl" },
+      { r: "SOR szpitala", n: "58 764 01 16", h: false, h24: true, lvl: 2, src: "copernicus.gda.pl" },
       { r: "Rejestracja szpitala", n: "58 764 08 70", h: false, h24: false, lvl: 2, src: "copernicus.gda.pl" }
     ],
     mo: [
-      { r: "Centrala Szpitala Kopernika", n: "58 764 01 00", h: false, h24: true, lvl: 3, src: "placowki.mp.pl" },
+      { r: "Neurochirurgia (alt.)", n: "58 764 03 40", h: false, h24: true, lvl: 3, src: "copernicus.gda.pl" },
+      { r: "Centrala Szpitala Kopernika", n: "58 764 01 00", h: false, h24: true, lvl: 3, src: "copernicus.gda.pl" },
       { r: "Rejestracja (alt.)", n: "58 764 07 53", h: false, h24: false, lvl: 3, src: "copernicus.gda.pl" }
     ],
     caps: [
@@ -379,11 +389,15 @@ const D = [
     dist: 250,
     maxDist: 350,
     ph: [
-      { r: "Izba Przyjęć — koordynator", n: "89 538 62 89", h: true, h24: true, lvl: 1, src: "wss.olsztyn.pl" },
-      { r: "Oddział neurochirurgii (ordynator)", n: "89 538 62 46", h: false, h24: false, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "Gabinet lekarski neurochir.", n: "89 538 64 92", h: true, h24: true, lvl: 1, src: "wss.olsztyn.pl" },
+      { r: "Punkt pielęgniarski neurochir.", n: "89 538 62 51", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "Izba Przyjęć — koordynator", n: "89 538 62 89", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
       { r: "Izba Przyjęć — piel. oddziałowa", n: "89 538 65 82", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" }
     ],
     mo: [
+      { r: "Ordynator neurochir.", n: "89 538 62 46", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Pielęgniarka oddziałowa neurochir.", n: "89 538 63 55", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Sekretariat neurochir.", n: "89 538 65 44", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
       { r: "Blok Operacyjny", n: "89 538 62 71", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
       { r: "Izba Przyjęć — planowe", n: "89 538 63 02", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
       { r: "Centrala / Informacja", n: "89 538 63 56", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" }
@@ -453,9 +467,13 @@ const D = [
     dist: 350,
     maxDist: 350,
     ph: [
-      { r: "Sekretariat Kliniki", n: "91 425 35 61", h: true, h24: false, lvl: 1, src: "pum.edu.pl" }
+      { r: "Klinika Neurochirurgii", n: "91 425 35 61", h: true, h24: true, lvl: 1, src: "usk1.szczecin.pl" },
+      { r: "SOR z Izbą Przyjęć", n: "91 425 30 10", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" },
+      { r: "Pediatryczna Izba Przyjęć", n: "91 425 31 41", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Centrala szpitala", n: "91 425 30 00", h: false, h24: true, lvl: 3, src: "usk1.szczecin.pl" }
+    ],
     caps: [
       { t: "Neurochirurgia dziecięca", y: true },
       { t: "Neurochirurgia dorosłych", y: true },
@@ -469,7 +487,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <!-- Shared application logic -->

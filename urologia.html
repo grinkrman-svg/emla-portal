@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Urologia nagła
@@ -105,11 +105,12 @@ const D = [
     dist: 0,
     maxDist: 100,
     ph: [
-      { r: "Ordynator urologii", n: "52 395 68 22", h: true, h24: false },
-      { r: "Gabinet lekarski", n: "52 395 67 32", h: false, h24: false },
-      { r: "Post pielęgniarski", n: "52 395 68 32", h: false, h24: true }
+      { r: "Gabinet lekarski (dyżur)", n: "52 395 67 32", h: true, h24: false },
+      { r: "Post pielęgniarski", n: "52 395 68 32", h: false, h24: true },
+      { r: "SOR — lekarz dyżurny", n: "52 395 67 79", h: false, h24: true }
     ],
     mo: [
+      { r: "Ordynator", n: "52 395 68 22", h: false, h24: false },
       { r: "Sekretariat", n: "52 395 67 28", h: false, h24: false },
       { r: "Centrala szpitala", n: "52 395 65 00", h: false, h24: true }
     ],
@@ -136,13 +137,16 @@ const D = [
     dist: 100,
     maxDist: 100,
     ph: [
-      { r: "Klinika Urologii", n: "52 365 53 06", h: true, h24: true },
-      { r: "Klinika (alt.)", n: "52 365 53 08", h: false, h24: true },
+      { r: "Dyżurka lekarska", n: "52 365 53 02", h: true, h24: true },
+      { r: "Dyżurka pielęgniarska", n: "52 365 53 14", h: false, h24: true },
       { r: "Izba Przyjęć", n: "52 371 26 35", h: false, h24: true }
     ],
     mo: [
-      { r: "Rejestracja poradni", n: "52 365 59 97", h: false, h24: false },
-      { r: "Poradnia urologiczna", n: "52 365 54 36", h: false, h24: false }
+      { r: "Oddział (sekretariat)", n: "52 365 53 06", h: false, h24: false },
+      { r: "Kierownik kliniki", n: "52 365 53 08", h: false, h24: false },
+      { r: "Pielęgniarka oddziałowa", n: "52 365 55 82", h: false, h24: false },
+      { r: "Poradnia urologiczna", n: "52 365 54 36", h: false, h24: false },
+      { r: "Centrala", n: "52 365 57 99", h: false, h24: true }
     ],
     caps: [
       { t: "Robot da Vinci", y: true },
@@ -170,12 +174,12 @@ const D = [
     dist: 100,
     maxDist: 100,
     ph: [
-      { r: "Punkt przyjęć", n: "261 417 067", h: true, h24: true },
-      { r: "Sekretariat Oddziału", n: "261 417 064", h: false, h24: false }
+      { r: "Punkt przyjęć (dyżur)", n: "261 417 067", h: true, h24: true },
+      { r: "Lada pielęgniarek", n: "261 417 066", h: false, h24: true }
     ],
     mo: [
+      { r: "Sekretariat Oddziału", n: "261 417 064", h: false, h24: false },
       { r: "Pielęgniarka Oddziałowa", n: "261 417 065", h: false, h24: false },
-      { r: "Lada pielęgniarek", n: "261 417 066", h: false, h24: true },
       { r: "Centrala", n: "261 417 300", h: false, h24: true }
     ],
     caps: [
@@ -190,7 +194,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

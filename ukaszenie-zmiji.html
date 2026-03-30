@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Lukowicza</strong><br>
       Chojnice &middot; Ukaszenie zmiji zygzakowatej
@@ -98,11 +98,10 @@ const D = [
     ph:[
       {r:"PCT alarmowy 24h",n:"58 682 04 04",h:true,h24:true},
       {r:"PCT mobil",n:"512 069 737",h:true,h24:true},
-      {r:"Porada toksykologiczna",n:"58 349 28 31",h:false,h24:true}
+      {r:"Administracja PCT",n:"58 682 19 39",h:false,h24:false}
     ],
     mo:[
-      {r:"PCT tel./fax",n:"58 682 19 39",h:false,h24:false},
-      {r:"Porada toksykologiczna (linia 2)",n:"58 301 65 16",h:false,h24:false}
+      {r:"PCT tel. biuro",n:"58 682 57 67",h:false,h24:false}
     ],
     caps:[
       {t:"Konsultacja toksykologiczna 24h",y:true},
@@ -114,15 +113,17 @@ const D = [
   },
   {
     id:2, city:"Krakow", s:"sr", glow:"glow-r",
-    name:"OIT Krakow — Informacja Toksykologiczna",
-    addr:"Krakow",
-    url:"https://gov.pl/urpl", ul:"gov.pl/urpl",
+    name:"OIT Krakow — Informacja Toksykologiczna (UJ CM)",
+    addr:"ul. Jakubowskiego 2, 30-688 Krakow",
+    url:"https://oit.cm.uj.edu.pl", ul:"oit.cm.uj.edu.pl",
     tr:{m:"Telefon",t:"konsultacja telefoniczna",r:"—",icon:"\u260E\uFE0F"},
     mapXY:{x:38,y:48}, dist:420, maxDist:420,
     ph:[
       {r:"Alarmowy 24h",n:"12 411 99 99",h:true,h24:true}
     ],
-    mo:[],
+    mo:[
+      {r:"Biuro OIT",n:"12 400 26 60",h:false,h24:false}
+    ],
     caps:[
       {t:"Konsultacja toksykologiczna ogolnopolska",y:true}
     ],
@@ -132,7 +133,7 @@ const D = [
   {
     id:3, city:"Warszawa", s:"sr", glow:"glow-r",
     name:"OKZ Warszawa (Halinow) — Informacja Toksykologiczna",
-    addr:"Halinow k. Warszawy",
+    addr:"ul. Pilsudskiego 33, 05-074 Halinow",
     url:"https://gov.pl/urpl", ul:"gov.pl/urpl",
     tr:{m:"Telefon",t:"konsultacja telefoniczna",r:"—",icon:"\u260E\uFE0F"},
     mapXY:{x:44,y:30}, dist:350, maxDist:420,
@@ -148,15 +149,17 @@ const D = [
   },
   {
     id:4, city:"Poznan", s:"sr", glow:"glow-r",
-    name:"OIT Poznan — Informacja Toksykologiczna",
-    addr:"Poznan",
-    url:"https://gov.pl/urpl", ul:"gov.pl/urpl",
+    name:"OIT Poznan — Informacja Toksykologiczna (Szpital Raszei)",
+    addr:"ul. Mickiewicza 2, 60-834 Poznan",
+    url:"https://raszeja.poznan.pl", ul:"raszeja.poznan.pl",
     tr:{m:"Telefon",t:"konsultacja telefoniczna",r:"—",icon:"\u260E\uFE0F"},
     mapXY:{x:22,y:26}, dist:250, maxDist:420,
     ph:[
       {r:"Alarmowy",n:"61 847 69 46",h:true,h24:true}
     ],
-    mo:[],
+    mo:[
+      {r:"Biuro OIT",n:"61 224 52 65",h:false,h24:false}
+    ],
     caps:[
       {t:"Konsultacja toksykologiczna ogolnopolska",y:true}
     ],
@@ -166,7 +169,7 @@ const D = [
 ];
 
 const CHOJ = {x:27.1, y:13.0};
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

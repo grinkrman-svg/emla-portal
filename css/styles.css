@@ -235,6 +235,8 @@ body::before {
   border-radius: 12px;
   border: 1px solid oklch(0.55 0.22 25 / 0.15);
 }
+a.tb-logo { text-decoration: none; color: #fff; cursor: pointer; transition: transform 0.15s ease }
+a.tb-logo:hover { transform: scale(1.08) }
 .tb-info { font-size: 12px; color: var(--t2); line-height: 1.35 }
 .tb-info strong { color: var(--t0); font-weight: 600; font-size: 13px }
 .tba { display: flex; align-items: center; gap: 8px }
@@ -1085,4 +1087,320 @@ body::before {
   .cstr { height: 4px; -webkit-print-color-adjust: exact; print-color-adjust: exact }
   .mw { grid-template-rows: 1fr !important }
   .mw > div { overflow: visible !important }
+  .pin-overlay { display: none !important }
+}
+
+/* ═══════════════════════════════════════════════
+   PIN ACCESS SCREEN
+   ═══════════════════════════════════════════════ */
+.pin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0.13 0.015 260 / 0.6);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  animation: pinFadeIn 0.3s ease;
+}
+
+@keyframes pinFadeIn {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+
+.pin-card {
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  box-shadow: var(--shh), 0 0 80px oklch(0.55 0.18 250 / 0.08);
+  padding: 2.5rem 2rem 2rem;
+  width: min(380px, 90vw);
+  text-align: center;
+  animation: pinSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pinSlideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.96) }
+  to   { opacity: 1; transform: translateY(0) scale(1) }
+}
+
+.pin-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--f);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 4px 16px oklch(0.55 0.22 25 / 0.25);
+}
+
+.pin-title {
+  font-family: var(--f);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--t0);
+  margin-bottom: 0.25rem;
+}
+
+.pin-subtitle {
+  font-family: var(--f);
+  font-size: 0.82rem;
+  color: var(--t2);
+  margin-bottom: 1.6rem;
+  line-height: 1.4;
+}
+
+.pin-inputs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.pin-digit {
+  width: 54px;
+  height: 62px;
+  border: 1.5px solid var(--bd);
+  border-radius: var(--rs);
+  background: var(--bg1);
+  color: var(--t0);
+  font-family: var(--m);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  -moz-appearance: textfield;
+  caret-color: var(--ac);
+}
+
+.pin-digit::-webkit-outer-spin-button,
+.pin-digit::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pin-digit:focus {
+  border-color: var(--ac);
+  box-shadow: 0 0 0 3px var(--acs);
+  background: var(--bg0);
+}
+
+.pin-digit.pin-error {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--reds);
+  background: var(--bg0);
+}
+
+.pin-msg {
+  font-family: var(--f);
+  font-size: 0.82rem;
+  color: var(--red);
+  min-height: 1.4em;
+  margin-bottom: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.pin-msg:empty {
+  opacity: 0;
+}
+
+@keyframes pinShake {
+  0%, 100% { transform: translateX(0) }
+  15%      { transform: translateX(-8px) }
+  30%      { transform: translateX(8px) }
+  45%      { transform: translateX(-6px) }
+  60%      { transform: translateX(6px) }
+  75%      { transform: translateX(-3px) }
+  90%      { transform: translateX(3px) }
+}
+
+.pin-shake .pin-inputs {
+  animation: pinShake 0.45s ease;
+}
+
+/* Logout link in footer */
+.pin-logout {
+  display: inline-block;
+  margin-left: 0.6em;
+  color: var(--t3);
+  cursor: pointer;
+  font-size: 11px;
+  transition: color 0.2s;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--t3);
+}
+.pin-logout:hover {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+/* ═══════════════════════════════════════════════
+   BED AVAILABILITY DISPLAY
+   ═══════════════════════════════════════════════ */
+
+/* Bed display row — injected after .caps */
+.bed-display {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: var(--rs);
+  background: var(--grns);
+  border: 1px solid oklch(0.6 0.18 155 / 0.15);
+  animation: fadeSlideUp 0.25s ease;
+}
+.bed-display.bed-old {
+  background: var(--ambs);
+  border-color: oklch(0.65 0.18 70 / 0.18);
+}
+
+.bed-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-family: var(--f);
+  color: var(--t1);
+  line-height: 1.4;
+}
+
+.bed-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.bed-ward {
+  font-size: 12px;
+  white-space: nowrap;
+}
+.bed-ward strong {
+  font-family: var(--m);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+/* Green = beds available */
+.bed-avail {
+  color: var(--grn);
+}
+.bed-avail strong {
+  color: var(--grn);
+}
+[data-theme="dark"] .bed-avail { color: var(--grn-bright) }
+[data-theme="dark"] .bed-avail strong { color: var(--grn-bright) }
+
+/* Red = zero beds */
+.bed-zero {
+  color: var(--red);
+}
+.bed-zero strong {
+  color: var(--red);
+}
+[data-theme="dark"] .bed-zero { color: var(--red-bright) }
+[data-theme="dark"] .bed-zero strong { color: var(--red-bright) }
+
+/* Separator pipe */
+.bed-sep {
+  color: var(--t3);
+  font-weight: 300;
+  margin: 0 2px;
+}
+
+/* Timestamp */
+.bed-time {
+  font-size: 11px;
+  font-family: var(--m);
+  color: var(--t2);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Warning badge for >4h old data */
+.bed-warn-badge {
+  font-size: 10px;
+  color: var(--amb);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Clear button */
+.bed-clear {
+  background: none;
+  border: none;
+  color: var(--t3);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  font-family: var(--f);
+  flex-shrink: 0;
+}
+.bed-clear:hover {
+  color: var(--red);
+  background: var(--reds);
+}
+
+/* ── Bed input field ── */
+.bed-input-wrap {
+  margin-top: 8px;
+  animation: fadeSlideUp 0.2s ease;
+}
+
+.bed-input {
+  width: 100%;
+  padding: 9px 14px;
+  background: var(--bg1);
+  border: 1.5px solid var(--bd);
+  border-radius: var(--rs);
+  font-size: 13px;
+  font-family: var(--f);
+  color: var(--t0);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.bed-input:focus {
+  border-color: var(--ac);
+  box-shadow: 0 0 0 3px var(--acs);
+}
+.bed-input::placeholder {
+  color: var(--t3);
+  font-size: 12px;
+}
+.bed-input.bed-input-err {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--reds);
+  animation: pinShake 0.35s ease;
+}
+
+/* Bed button style — inherits .ca but with subtle highlight */
+.bed-btn {
+  color: var(--t2) !important;
+}
+.bed-btn:hover {
+  color: var(--grn) !important;
+  background: var(--grns) !important;
+}
+
+/* Print: hide bed inputs, show bed displays */
+@media print {
+  .bed-input-wrap { display: none !important }
+  .bed-btn { display: none !important }
+  .bed-clear { display: none !important }
+  .bed-display {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

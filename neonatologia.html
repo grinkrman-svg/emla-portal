@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Neonatologia III st.
@@ -109,11 +109,13 @@ const D = [
     ph: [
       { r: "Oddział Noworodków i IT — lekarz dyżurny", n: "52 370 92 81", h: true, h24: true },
       { r: "Oddział Noworodków i IT — lekarz (linia 2)", n: "52 370 92 84", h: true, h24: true },
-      { r: "Sekretariat oddziału", n: "52 370 92 13", h: false, h24: false },
-      { r: "Koordynator (dr Szułczyński)", n: "52 370 92 80", h: false, h24: false },
-      { r: "Poradnia noworodkowa/wcześniaków", n: "52 370 92 85", h: false, h24: false }
+      { r: "Dyżurka pielęgniarska", n: "52 370 92 82", h: false, h24: true },
+      { r: "Ogólna Izba Przyjęć (24h)", n: "52 370 91 80", h: false, h24: true },
+      { r: "Koordynator (dr Szułczyński)", n: "52 370 92 80", h: false, h24: false }
     ],
     mo: [
+      { r: "Sekretariat oddziału", n: "52 370 92 13", h: false, h24: false },
+      { r: "Poradnia noworodkowa/wcześniaków", n: "52 370 92 85", h: false, h24: false },
       { r: "Centrala szpitala", n: "52 370 94 00", h: false, h24: true }
     ],
     caps: [
@@ -140,11 +142,11 @@ const D = [
     ph: [
       { r: "OITN — Oddział Intensywnej Terapii Noworodka", n: "58 584 41 52", h: true, h24: true },
       { r: "Oddział Patologii Noworodka", n: "58 584 41 42", h: false, h24: true },
-      { r: "Sekretariat Kliniki Neonatologii", n: "58 584 41 40", h: false, h24: false },
-      { r: "Sekretariat (linia 2)", n: "58 584 41 50", h: false, h24: false },
-      { r: "Klinika Neonatologii / Położnictwo", n: "58 349 34 65", h: false, h24: false }
+      { r: "Poradnia Patologii Noworodka", n: "58 584 40 56", h: false, h24: false }
     ],
     mo: [
+      { r: "Sekretariat Kliniki Neonatologii", n: "58 584 41 40", h: false, h24: false },
+      { r: "Sekretariat (linia 2)", n: "58 584 41 50", h: false, h24: false },
       { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true },
       { r: "Rejestracja UCK", n: "58 727 05 05", h: false, h24: false }
     ],
@@ -171,7 +173,8 @@ const D = [
     dist: 170,
     maxDist: 170,
     ph: [
-      { r: "Centrala Szp. św. Wojciecha (prosić o neonatologię)", n: "58 768 40 00", h: true, h24: true }
+      { r: "Centrala Szp. św. Wojciecha (prosić o neonatologię)", n: "58 768 40 00", h: true, h24: true },
+      { r: "SOR Szp. św. Wojciecha (24h)", n: "58 768 45 03", h: false, h24: true }
     ],
     mo: [
       { r: "Centrala Copernicus (Kopernika)", n: "58 764 01 00", h: false, h24: true }
@@ -199,7 +202,8 @@ const D = [
     dist: 100,
     maxDist: 170,
     ph: [
-      { r: "Oddział Patologii Noworodka", n: "52 326 21 22", h: true, h24: true }
+      { r: "Oddział Patologii Noworodka (sekretariat)", n: "52 326 21 22", h: true, h24: true },
+      { r: "Izba Przyjęć WSD (24h)", n: "52 326 22 24", h: false, h24: true }
     ],
     mo: [
       { r: "Centrala WSD", n: "52 326 21 00", h: false, h24: true }
@@ -214,7 +218,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

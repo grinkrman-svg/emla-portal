@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · ECMO
@@ -110,17 +110,17 @@ const D = [
     dist: 100,
     maxDist: 500,
     ph: [
-      { r: "Koordynator UCTP", n: "52 585 71 34", h: true, h24: true },
-      { r: "Koordynator UCTP (alt.)", n: "52 585 46 66", h: true, h24: true },
-      { r: "Zespół ECMO", n: "52 585 46 00", h: false, h24: true },
-      { r: "Zespół ECMO (alt.)", n: "52 585 44 40", h: false, h24: true },
-      { r: "SOR (Klinika Med. Ratunkowej)", n: "52 585 42 22", h: false, h24: true },
-      { r: "SOR (alt.)", n: "52 585 43 33", h: false, h24: true },
-      { r: "Anestezjologia i IT (sekretariat)", n: "52 585 47 50", h: false, h24: false },
-      { r: "Kardiochirurgia (sekretariat)", n: "52 585 47 00", h: false, h24: false }
+      { r: "Koordynator UCTP", n: "52 585 71 34", h: true, h24: true, lvl: 1, src: "jurasza.umk.pl" },
+      { r: "Koordynator UCTP (alt.)", n: "52 585 46 66", h: true, h24: true, lvl: 1, src: "jurasza.umk.pl" },
+      { r: "Zespół ECMO", n: "52 585 46 00", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" },
+      { r: "Zespół ECMO (alt.)", n: "52 585 44 40", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" },
+      { r: "SOR (Klinika Med. Ratunkowej)", n: "52 585 42 22", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" },
+      { r: "SOR (alt.)", n: "52 585 43 33", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" }
     ],
     mo: [
-      { r: "Centrala szpitala", n: "52 585 40 00", h: false, h24: true }
+      { r: "Anestezjologia i IT (sekretariat)", n: "52 585 47 50", h: false, h24: false, lvl: 3, src: "jurasza.umk.pl" },
+      { r: "Kardiochirurgia (sekretariat)", n: "52 585 47 00", h: false, h24: false, lvl: 3, src: "jurasza.umk.pl" },
+      { r: "Centrala szpitala", n: "52 585 40 00", h: false, h24: true, lvl: 3, src: "jurasza.umk.pl" }
     ],
     caps: [
       { t: "Jedyne centrum ECMO w regionie", y: true },
@@ -152,12 +152,13 @@ const D = [
     dist: 170,
     maxDist: 500,
     ph: [
-      { r: "Klinika Kardiochirurgii", n: "58 584 42 00", h: true, h24: true },
-      { r: "Klinika (alt.)", n: "58 584 42 10", h: false, h24: true },
-      { r: "KOR (SOR)", n: "58 349 37 84", h: false, h24: true }
+      { r: "Klinika Kardiochirurgii", n: "58 584 42 00", h: true, h24: true, lvl: 1, src: "uck.pl" },
+      { r: "Klinika (alt.)", n: "58 584 42 10", h: false, h24: true, lvl: 2, src: "uck.pl" },
+      { r: "KOR (SOR)", n: "58 349 37 84", h: false, h24: true, lvl: 2, src: "uck.pl" },
+      { r: "KOR (alt.)", n: "58 349 37 94", h: false, h24: true, lvl: 2, src: "uck.pl" }
     ],
     mo: [
-      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true }
+      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true, lvl: 3, src: "uck.pl" }
     ],
     caps: [
       { t: "VA-ECMO (kardiochirurgia)", y: true },
@@ -184,11 +185,14 @@ const D = [
     dist: 170,
     maxDist: 500,
     ph: [
-      { r: "Dyżurka lekarska", n: "58 768 48 84", h: true, h24: true },
-      { r: "Dyżurka pielęgniarska", n: "58 768 48 88", h: false, h24: true },
-      { r: "Sekretariat", n: "58 768 48 81", h: false, h24: false }
+      { r: "Dyżurka lekarska", n: "58 768 48 84", h: true, h24: true, lvl: 1, src: "copernicus.gda.pl" },
+      { r: "Dyżurka pielęgniarska", n: "58 768 48 88", h: false, h24: true, lvl: 2, src: "copernicus.gda.pl" },
+      { r: "SOR (Szpital św. Wojciecha)", n: "58 768 45 03", h: false, h24: true, lvl: 2, src: "copernicus.gda.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat", n: "58 768 48 81", h: false, h24: false, lvl: 3, src: "copernicus.gda.pl" },
+      { r: "Centrala Copernicus", n: "58 768 40 00", h: false, h24: true, lvl: 3, src: "copernicus.gda.pl" }
+    ],
     caps: [
       { t: "ECMO dziecięce (kontrakt NFZ)", y: true },
       { t: "Jedyny na Polskę Północną", y: true },
@@ -212,9 +216,13 @@ const D = [
     dist: 500,
     maxDist: 500,
     ph: [
-      { r: "Telefon ECMO 24h", n: "12 400 18 87", h: true, h24: true }
+      { r: "Telefon ECMO 24h", n: "12 400 18 87", h: true, h24: true, lvl: 1, src: "su.krakow.pl" },
+      { r: "SOR", n: "12 400 17 50", h: false, h24: true, lvl: 2, src: "su.krakow.pl" },
+      { r: "Centrum Terapii Pozaustrojowych", n: "12 400 18 00", h: false, h24: true, lvl: 2, src: "su.krakow.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Centrala szpitala", n: "12 400 10 00", h: false, h24: true, lvl: 3, src: "su.krakow.pl" }
+    ],
     caps: [
       { t: "Członek ELSO", y: true },
       { t: "Ośrodek referencyjny", y: true },
@@ -237,10 +245,14 @@ const D = [
     dist: 500,
     maxDist: 500,
     ph: [
-      { r: "Dyżurka lekarska", n: "12 63 08 266", h: true, h24: true },
-      { r: "Dyżurny lekarz (mobilny)", n: "729 317 568", h: true, h24: true }
+      { r: "Dyżurka lekarska", n: "12 63 08 266", h: true, h24: true, lvl: 1, src: "5wszk.com.pl" },
+      { r: "Dyżurny lekarz (mobilny)", n: "729 317 568", h: true, h24: true, lvl: 1, src: "5wszk.com.pl" },
+      { r: "Dyżurka pielęgniarska", n: "12 63 08 264", h: false, h24: true, lvl: 2, src: "5wszk.com.pl" },
+      { r: "SOR", n: "12 63 08 140", h: false, h24: true, lvl: 2, src: "5wszk.com.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Centrala szpitala", n: "12 630 83 24", h: false, h24: true, lvl: 3, src: "5wszk.com.pl" }
+    ],
     caps: [
       { t: "Regionalne centrum VV-ECMO", y: true },
       { t: "3x Cardiohelp", y: true }
@@ -262,9 +274,15 @@ const D = [
     dist: 230,
     maxDist: 500,
     ph: [
-      { r: "Kontakt e-mail: kontakt@ecmo.pl", n: "—", h: true, h24: false }
+      { r: "Dyżurka lekarska (Kardiochirurgia)", n: "61 854 92 33", h: true, h24: true, lvl: 1, src: "skpp.edu.pl" },
+      { r: "Oddział pooperacyjny", n: "61 854 93 11", h: false, h24: true, lvl: 2, src: "skpp.edu.pl" },
+      { r: "Oddział Kardiochirurgii „E" (pacjenci)", n: "61 854 95 01", h: false, h24: true, lvl: 2, src: "skpp.edu.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat Kardiochirurgii", n: "61 854 90 85", h: false, h24: false, lvl: 3, src: "skpp.edu.pl" },
+      { r: "Sekretariat (alt.)", n: "61 854 92 10", h: false, h24: false, lvl: 3, src: "skpp.edu.pl" },
+      { r: "Centrala szpitala", n: "61 854 90 00", h: false, h24: true, lvl: 3, src: "skpp.edu.pl" }
+    ],
     caps: [
       { t: "Zespół wyjazdowy ECMO", y: true },
       { t: "VV-ECMO + VA-ECMO", y: true }
@@ -286,9 +304,13 @@ const D = [
     dist: 340,
     maxDist: 500,
     ph: [
-      { r: "OIT 2 — ECMO", n: "47 722 18 41", h: true, h24: true }
+      { r: "OIT 2 — ECMO", n: "47 722 18 41", h: true, h24: true, lvl: 1, src: "gov.pl/pimmswia" },
+      { r: "SOR (rejestracja 24h)", n: "47 722 15 10", h: false, h24: true, lvl: 2, src: "gov.pl/pimmswia" },
+      { r: "OIT 3", n: "47 722 19 38", h: false, h24: true, lvl: 2, src: "gov.pl/pimmswia" }
     ],
-    mo: [],
+    mo: [
+      { r: "Centrala PIM MSWiA", n: "47 722 15 52", h: false, h24: true, lvl: 3, src: "gov.pl/pimmswia" }
+    ],
     caps: [
       { t: "ECMO", y: true },
       { t: "Leczenie hipotermii", y: true }
@@ -299,7 +321,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <!-- Shared application logic -->

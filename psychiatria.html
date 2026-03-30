@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Psychiatria nagła
@@ -107,13 +107,16 @@ const D = [
     maxDist: 100,
     ph: [
       { r: "Izba Przyjęć (24h)", n: "52 33 08 307", h: true, h24: true },
-      { r: "Centrala", n: "52 33 11 031", h: false, h24: true }
+      { r: "Dyżurka pielęgniarska — Oddz. I", n: "52 33 08 310", h: false, h24: true },
+      { r: "Dyżurka pielęgniarska — Oddz. II", n: "52 33 08 311", h: false, h24: true }
     ],
     mo: [
       { r: "Sekretariat", n: "52 33 08 305", h: false, h24: false },
-      { r: "Oddział I (ogólnopsychiatryczny)", n: "52 33 08 330", h: false, h24: false },
-      { r: "Oddział II (ogólnopsychiatryczny)", n: "52 33 08 331", h: false, h24: false },
-      { r: "Oddział VII (dzieci i młodzież)", n: "52 33 08 348", h: false, h24: false },
+      { r: "Lekarz / koordynator — Oddz. I", n: "52 33 08 330", h: false, h24: false },
+      { r: "Lekarz / koordynator — Oddz. II", n: "52 33 08 331", h: false, h24: false },
+      { r: "Lekarz / koordynator — Oddz. VII (dzieci)", n: "52 33 08 348", h: false, h24: false },
+      { r: "Dyżurka pielęgniarska — Oddz. VII (dzieci)", n: "52 33 08 328", h: false, h24: true },
+      { r: "Centrala", n: "52 33 11 031", h: false, h24: true },
       { r: "Z-ca Dyrektora ds. Medycznych", n: "52 33 08 302", h: false, h24: false }
     ],
     caps: [
@@ -140,11 +143,12 @@ const D = [
     dist: 90,
     maxDist: 100,
     ph: [
-      { r: "Centrala / Izba Przyjęć (24h)", n: "58 562 06 00", h: true, h24: true },
-      { r: "Izba Przyjęć (wew.)", n: "58 562 06 00 w. 2191", h: false, h24: true }
+      { r: "Izba Przyjęć (24h)", n: "58 562 06 00 w. 2191", h: true, h24: true },
+      { r: "Centrala (24h)", n: "58 562 06 00", h: false, h24: true }
     ],
     mo: [
-      { r: "Sekretariat (wew.)", n: "58 562 06 00 w. 2294", h: false, h24: false }
+      { r: "Sekretariat Dyrektora (wew.)", n: "58 562 06 00 w. 2294", h: false, h24: false },
+      { r: "Dział Metodyczno-Organizacyjny (wew.)", n: "58 562 06 00 w. 2122", h: false, h24: false }
     ],
     caps: [
       { t: "IP 24h", y: true },
@@ -177,10 +181,13 @@ const D = [
     mo: [
       { r: "Lekarz dyżurny (alt.)", n: "52 585 72 53", h: false, h24: false },
       { r: "Lekarz dyżurny (alt.)", n: "52 585 72 84", h: false, h24: false },
+      { r: "Sekretariat Kliniki Psychiatrii", n: "52 585 42 60", h: false, h24: false },
       { r: "Oddział Psychiatryczny", n: "52 585 42 65", h: false, h24: false },
-      { r: "Oddział Psychiatryczny (koordynator)", n: "52 585 42 62", h: false, h24: false },
+      { r: "Oddz. Zaburzeń Lękowych i Afektywnych", n: "52 585 42 72", h: false, h24: false },
+      { r: "Oddz. Leczenia Uzależnień", n: "52 585 42 82", h: false, h24: false },
+      { r: "Oddz. Psychiatrii Dzieci i Młodzieży", n: "52 585 72 52", h: false, h24: false },
       { r: "Poradnia Zdrowia Psychicznego", n: "52 585 42 90", h: false, h24: false },
-      { r: "Po 15:00 + weekendy", n: "52 585 40 00", h: false, h24: true }
+      { r: "Po 15:00 + weekendy (centrala)", n: "52 585 40 00", h: false, h24: true }
     ],
     caps: [
       { t: "IP 24h", y: true },
@@ -196,7 +203,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <script src="js/app.js"></script>

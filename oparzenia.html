@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Centra Oparzeń
@@ -85,7 +85,7 @@
   </div>
 
   <div class="foot">
-    Dane z web search 2026-03-30 · Dostępność miejsc wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-9: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
+    Dane z web search 2026-03-30 · 10 ośrodków · Dostępność miejsc wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-9: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
     <br>
     <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
   </div>
@@ -100,8 +100,8 @@ const D = [
     city: "Poznań",
     s: "sa",
     glow: "",
-    name: "Oddział Chirurgii i Leczenia Oparzeń — Szpital im. K. Jonschera (SZOZ)",
-    addr: "ul. Szpitalna 27/33, 60-572 Poznań, woj. wielkopolskie",
+    name: "Oddział Chirurgii i Leczenia Oparzeń — Szpital im. K. Jonschera SZOZ (DZIECI)",
+    addr: "ul. Krysiewicza 7/8, 60-120 Poznań, woj. wielkopolskie",
     url: "https://szoz.pl",
     ul: "szoz.pl",
     tr: { m: "🚁 LPR", t: "~1h 05min + podlot", r: "~3h", icon: "🚁" },
@@ -109,9 +109,18 @@ const D = [
     dist: 230,
     maxDist: 570,
     ph: [
-      { r: "Sekretariat Oddziału (9:00–14:00)", n: "61 616 21 00", h: true, h24: false, lvl: 1, src: "szoz.pl" }
+      { r: "Dyżurka lekarska 24h", n: "61 616 21 09", h: true, h24: true, lvl: 1, src: "szoz.pl" },
+      { r: "Dyżurka lekarska (2)", n: "61 616 21 10", h: true, h24: true, lvl: 1, src: "szoz.pl" },
+      { r: "Dyżurka lekarska (3)", n: "61 616 21 11", h: true, h24: true, lvl: 1, src: "szoz.pl" },
+      { r: "Dyżurka lekarska (4)", n: "61 616 21 12", h: true, h24: true, lvl: 1, src: "szoz.pl" },
+      { r: "SOR pediatryczny 24h", n: "61 616 20 50", h: false, h24: true, lvl: 2, src: "szoz.pl" },
+      { r: "Pielęgniarka SOR", n: "61 616 20 54", h: false, h24: true, lvl: 2, src: "szoz.pl" },
+      { r: "Pielęgniarka Oddziałowa", n: "61 616 21 05", h: false, h24: false, lvl: 2, src: "szoz.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Sekretariat Oddziału (9:00–14:00)", n: "61 616 21 00", h: false, h24: false, lvl: 3, src: "szoz.pl" },
+      { r: "Centrala szpitala", n: "61 616 20 00", h: false, h24: true, lvl: 3, src: "szoz.pl" }
+    ],
     caps: [
       { t: "Oparzenia dzieci", y: true },
       { t: "Oparzenia rozległe", y: true },
@@ -126,6 +135,39 @@ const D = [
   },
   {
     id: 2,
+    city: "Poznań",
+    s: "sa",
+    glow: "",
+    name: "Oddział Chirurgii Ogólnej i Obrażeń Wielonarządowych z Pododdziałem Oparzeń — Szpital Strusia",
+    addr: "ul. Szwajcarska 3, 61-285 Poznań, woj. wielkopolskie",
+    url: "https://szpital-strusia.poznan.pl",
+    ul: "szpital-strusia.poznan.pl",
+    tr: { m: "🚁 LPR", t: "~1h 05min + podlot", r: "~3h", icon: "🚁" },
+    mapXY: { x: 35.5, y: 33.0 },
+    dist: 230,
+    maxDist: 570,
+    ph: [
+      { r: "Dyżur lekarski", n: "61 873 92 59", h: true, h24: true, lvl: 1, src: "szpital-strusia.poznan.pl" },
+      { r: "Dyżur lekarski (2)", n: "61 873 92 57", h: true, h24: true, lvl: 1, src: "szpital-strusia.poznan.pl" },
+      { r: "Dyżurka pielęgniarska oparzenia", n: "61 873 92 63", h: false, h24: true, lvl: 2, src: "szpital-strusia.poznan.pl" },
+      { r: "Dyżurka pielęgniarska urazowy", n: "61 873 92 58", h: false, h24: true, lvl: 2, src: "szpital-strusia.poznan.pl" }
+    ],
+    mo: [
+      { r: "Sekretariat ordynatora", n: "61 873 92 67", h: false, h24: false, lvl: 3, src: "szpital-strusia.poznan.pl" },
+      { r: "Sekretariat (2)", n: "61 873 93 98", h: false, h24: false, lvl: 3, src: "szpital-strusia.poznan.pl" },
+      { r: "Centrala szpitala", n: "61 873 90 00", h: false, h24: true, lvl: 3, src: "szpital-strusia.poznan.pl" }
+    ],
+    caps: [
+      { t: "Oparzenia dorośli", y: true },
+      { t: "Chirurgia urazowa", y: true },
+      { t: "Obrażenia wielonarządowe", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 2
+  },
+  {
+    id: 3,
     city: "Gryfice",
     s: "sa",
     glow: "",
@@ -138,14 +180,16 @@ const D = [
     dist: 310,
     maxDist: 570,
     ph: [
-      { r: "Centrala szpitala", n: "91 384 20 61", h: true, h24: true, lvl: 1, src: "medicam.pl" },
+      { r: "Dyżurka I piętro (wew. 437)", n: "91 384 20 61", h: true, h24: true, lvl: 1, src: "medicam.pl" },
+      { r: "Dyżurka IV piętro (wew. 341/364)", n: "91 384 20 61", h: true, h24: true, lvl: 1, src: "medicam.pl" },
+      { r: "SOR — punkt informacyjny", n: "91 384 20 60", h: false, h24: true, lvl: 2, src: "medicam.pl" },
       { r: "Sekretariat Centrum Oparzeń", n: "91 384 58 64", h: false, h24: false, lvl: 2, src: "medicam.pl" },
-      { r: "Dyżurka I piętro (wew. 437)", n: "91 384 20 61", h: false, h24: true, lvl: 2, src: "medicam.pl" },
-      { r: "Dyżurka IV piętro (wew. 341/364)", n: "91 384 20 61", h: false, h24: true, lvl: 2, src: "medicam.pl" },
       { r: "Infolinia szpitala", n: "459 595 400", h: false, h24: false, lvl: 2, src: "medicam.pl" }
     ],
     mo: [
-      { r: "Gabinet lekarski (wew. 431/204)", n: "91 384 20 61", h: false, h24: false, lvl: 3, src: "medicam.pl" }
+      { r: "Gabinet lekarski (wew. 431/204)", n: "91 384 20 61", h: false, h24: false, lvl: 3, src: "medicam.pl" },
+      { r: "Centrala szpitala", n: "91 384 20 61", h: false, h24: true, lvl: 3, src: "medicam.pl" },
+      { r: "Sekretariat szpitala", n: "91 384 33 98", h: false, h24: false, lvl: 3, src: "medicam.pl" }
     ],
     caps: [
       { t: "11 stanowisk oparzeniowych", y: true },
@@ -157,10 +201,10 @@ const D = [
     ],
     tags: [],
     sios: null,
-    priority: 2
+    priority: 3
   },
   {
-    id: 3,
+    id: 4,
     city: "Warszawa",
     s: "sa",
     glow: "",
@@ -173,10 +217,16 @@ const D = [
     dist: 340,
     maxDist: 570,
     ph: [
-      { r: "Sekretariat Oddziału", n: "261 817 219", h: true, h24: false, lvl: 1, src: "wim.mil.pl" }
+      { r: "Gabinet lekarski oddziału", n: "261 817 218", h: true, h24: true, lvl: 1, src: "wim.mil.pl" },
+      { r: "Sekretariat Oddziału", n: "261 817 219", h: false, h24: false, lvl: 2, src: "wim.mil.pl" },
+      { r: "SOR WIM", n: "261 817 522", h: false, h24: true, lvl: 2, src: "wim.mil.pl" },
+      { r: "SOR — pielęgniarka dyżurna", n: "22 810 08 16", h: false, h24: true, lvl: 2, src: "wim.mil.pl" },
+      { r: "SOR (alt.)", n: "22 810 44 80", h: false, h24: true, lvl: 2, src: "wim.mil.pl" }
     ],
     mo: [
-      { r: "Centrala WIM", n: "22 810 80 89", h: false, h24: true, lvl: 3, src: "wim.mil.pl" }
+      { r: "Informacja szpitala", n: "22 810 80 80", h: false, h24: true, lvl: 3, src: "wim.mil.pl" },
+      { r: "Centrala WIM", n: "22 810 80 89", h: false, h24: true, lvl: 3, src: "wim.mil.pl" },
+      { r: "Poradnia chir. plastycznej", n: "22 330 56 50", h: false, h24: false, lvl: 3, src: "wim.mil.pl" }
     ],
     caps: [
       { t: "Chirurgia plastyczna", y: true },
@@ -188,10 +238,10 @@ const D = [
     ],
     tags: [],
     sios: "https://szpitale.mazowieckie.pl/page/",
-    priority: 3
+    priority: 4
   },
   {
-    id: 4,
+    id: 5,
     city: "Łódź",
     s: "sa",
     glow: "",
@@ -204,8 +254,10 @@ const D = [
     dist: 350,
     maxDist: 570,
     ph: [
-      { r: "Sekretariat Oddziału (do 15:00)", n: "42 677 67 41", h: true, h24: false, lvl: 1, src: "barlicki.pl" },
-      { r: "Post pielęgniarski (po 15:00)", n: "42 677 67 45", h: false, h24: true, lvl: 2, src: "barlicki.pl" }
+      { r: "Post pielęgniarski 24h", n: "42 677 67 45", h: true, h24: true, lvl: 1, src: "barlicki.pl" },
+      { r: "Sekretariat Oddziału (do 15:00)", n: "42 677 67 41", h: false, h24: false, lvl: 2, src: "barlicki.pl" },
+      { r: "SOR Barlicki", n: "42 677 66 07", h: false, h24: true, lvl: 2, src: "barlicki.pl" },
+      { r: "Izba Przyjęć", n: "42 677 66 00", h: false, h24: true, lvl: 2, src: "barlicki.pl" }
     ],
     mo: [
       { r: "Informacja szpitala (centrala)", n: "42 677 68 00", h: false, h24: true, lvl: 3, src: "barlicki.pl" },
@@ -219,10 +271,10 @@ const D = [
     ],
     tags: ["dzieci"],
     sios: null,
-    priority: 4
+    priority: 5
   },
   {
-    id: 5,
+    id: 6,
     city: "Nowa Sól",
     s: "sa",
     glow: "",
@@ -235,15 +287,15 @@ const D = [
     dist: 350,
     maxDist: 570,
     ph: [
-      { r: "Dyżurka lekarska", n: "68 388 22 70", h: true, h24: true, lvl: 1, src: "naszemiasto.pl" },
-      { r: "Dyżurka pielęgniarska", n: "68 388 22 72", h: false, h24: true, lvl: 2, src: "naszemiasto.pl" },
-      { r: "SOR szpitala", n: "68 387 75 00", h: false, h24: true, lvl: 2, src: "naszemiasto.pl" }
+      { r: "Dyżurka lekarska", n: "68 388 22 70", h: true, h24: true, lvl: 1, src: "szpital-nowasol.pl" },
+      { r: "Dyżurka pielęgniarska", n: "68 388 22 72", h: false, h24: true, lvl: 2, src: "szpital-nowasol.pl" },
+      { r: "SOR szpitala", n: "68 387 75 00", h: false, h24: true, lvl: 2, src: "szpital-nowasol.pl" }
     ],
     mo: [
-      { r: "Pielęgniarka Oddziałowa", n: "68 388 22 71", h: false, h24: false, lvl: 3, src: "naszemiasto.pl" },
-      { r: "Kierownik Oddziału", n: "68 388 23 92", h: false, h24: false, lvl: 3, src: "naszemiasto.pl" },
-      { r: "SOR — Sekretariat", n: "68 388 23 68", h: false, h24: false, lvl: 3, src: "naszemiasto.pl" },
-      { r: "SOR — TRIAGE", n: "68 388 22 37", h: false, h24: true, lvl: 3, src: "naszemiasto.pl" },
+      { r: "Pielęgniarka Oddziałowa", n: "68 388 22 71", h: false, h24: false, lvl: 3, src: "szpital-nowasol.pl" },
+      { r: "Kierownik Oddziału", n: "68 388 23 92", h: false, h24: false, lvl: 3, src: "szpital-nowasol.pl" },
+      { r: "SOR — Sekretariat", n: "68 388 23 68", h: false, h24: false, lvl: 3, src: "szpital-nowasol.pl" },
+      { r: "SOR — TRIAGE", n: "68 388 22 37", h: false, h24: true, lvl: 3, src: "szpital-nowasol.pl" },
       { r: "Centrala szpitala", n: "68 388 21 00", h: false, h24: true, lvl: 3, src: "szpital-nowasol.pl" }
     ],
     caps: [
@@ -253,10 +305,10 @@ const D = [
     ],
     tags: [],
     sios: null,
-    priority: 5
+    priority: 6
   },
   {
-    id: 6,
+    id: 7,
     city: "Siemianowice Śl.",
     s: "sr",
     glow: "",
@@ -273,22 +325,28 @@ const D = [
       { r: "Lekarz dyżurny anestezjolog", n: "601 790 922", h: true, h24: true, lvl: 1, src: "clo.com.pl" },
       { r: "Lekarz dyżurny HBO", n: "603 197 877", h: true, h24: true, lvl: 1, src: "clo.com.pl" },
       { r: "Izba Przyjęć — gabinet główny", n: "32 735 74 75", h: false, h24: true, lvl: 2, src: "clo.com.pl" },
+      { r: "Izba Przyjęć — komórkowy", n: "603 156 818", h: false, h24: true, lvl: 2, src: "clo.com.pl" },
       { r: "Izba Przyjęć — pielęgniarka", n: "32 735 75 94", h: false, h24: true, lvl: 2, src: "clo.com.pl" },
       { r: "OIT — nadzór", n: "32 735 74 40", h: false, h24: true, lvl: 2, src: "clo.com.pl" }
     ],
     mo: [
-      { r: "Blok operacyjny — nadzór", n: "32 735 74 50", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
       { r: "Blok operacyjny — piel. koordynująca", n: "32 735 74 55", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
+      { r: "Blok operacyjny — nadzór", n: "32 735 74 51", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
       { r: "Blok operacyjny — pokój lekarzy", n: "32 735 74 54", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
       { r: "Blok operacyjny — sala niebieska", n: "32 735 74 57", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
       { r: "Blok operacyjny — sala zielona", n: "32 735 74 58", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
-      { r: "Chir. Ogólna odc. 1", n: "32 735 74 10", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
-      { r: "Chir. Ogólna odc. 2", n: "32 735 74 20", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
+      { r: "Chir. Ogólna odc. 1 — pielęgniarki", n: "32 735 74 10", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
+      { r: "Chir. Ogólna odc. 1 — piel. koord.", n: "32 735 74 11", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
+      { r: "Chir. Ogólna odc. 2 — pielęgniarki", n: "32 735 74 20", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
+      { r: "Chir. Ogólna odc. 2 — piel. koord.", n: "32 735 74 15", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
       { r: "Chir. Ogólna odc. 3", n: "32 735 74 33", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
       { r: "Chir. Plastyczna — pielęgniarki", n: "32 735 74 30", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
+      { r: "Chir. Plastyczna — piel. koord.", n: "32 735 74 31", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
       { r: "OIT — pokój pielęgniarek", n: "32 735 74 41", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
-      { r: "Pracownia HBO", n: "32 735 74 56", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
+      { r: "Pracownia HBO — rejestracja", n: "32 735 74 56", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
+      { r: "Pracownia HBO — piel. koord.", n: "32 735 75 96", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
       { r: "Endoskopia / bronchoskopia", n: "32 735 74 82", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
+      { r: "Sekretariat medyczny", n: "32 735 74 44", h: false, h24: false, lvl: 3, src: "clo.com.pl" },
       { r: "Centrala szpitala", n: "32 229 20 00", h: false, h24: true, lvl: 3, src: "clo.com.pl" },
       { r: "Portiernia", n: "32 735 76 96", h: false, h24: true, lvl: 3, src: "clo.com.pl" }
     ],
@@ -303,10 +361,10 @@ const D = [
     ],
     tags: ["oit", "hbo"],
     sios: "https://sios.slask.eu:4433/sios/",
-    priority: 6
+    priority: 7
   },
   {
-    id: 7,
+    id: 8,
     city: "Kraków",
     s: "sr",
     glow: "",
@@ -319,13 +377,18 @@ const D = [
     dist: 530,
     maxDist: 570,
     ph: [
-      { r: "Oddział Oparzeń (piel.)", n: "12 646 86 25", h: true, h24: true, lvl: 1, src: "szpitalrydygier.pl" },
       { r: "Dyżurka lekarska dzienna", n: "12 646 86 63", h: true, h24: false, lvl: 1, src: "szpitalrydygier.pl" },
+      { r: "Dyżurka lekarska (2)", n: "12 646 87 89", h: true, h24: false, lvl: 1, src: "szpitalrydygier.pl" },
+      { r: "Oddział Oparzeń (piel.) 24h", n: "12 646 86 25", h: true, h24: true, lvl: 1, src: "szpitalrydygier.pl" },
       { r: "Punkt Pielęgniarski", n: "12 646 86 39", h: false, h24: true, lvl: 2, src: "szpitalrydygier.pl" },
-      { r: "Sekretariat Oddziału", n: "12 646 82 91", h: false, h24: false, lvl: 2, src: "szpitalrydygier.pl" },
-      { r: "SOR Rydygier", n: "12 646 86 80", h: false, h24: true, lvl: 2, src: "szpitalrydygier.pl" }
+      { r: "Punkt Pielęgniarski (2)", n: "12 646 84 94", h: false, h24: true, lvl: 2, src: "szpitalrydygier.pl" },
+      { r: "SOR Rydygier — rejestracja", n: "12 646 83 24", h: false, h24: true, lvl: 2, src: "szpitalrydygier.pl" },
+      { r: "SOR — pielęgniarki", n: "12 646 88 00", h: false, h24: true, lvl: 2, src: "szpitalrydygier.pl" },
+      { r: "SOR — pielęgniarki (2)", n: "12 646 89 93", h: false, h24: true, lvl: 2, src: "szpitalrydygier.pl" },
+      { r: "Sekretariat Oddziału", n: "12 646 82 91", h: false, h24: false, lvl: 2, src: "szpitalrydygier.pl" }
     ],
     mo: [
+      { r: "SOR — sekretariat", n: "12 646 86 80", h: false, h24: false, lvl: 3, src: "szpitalrydygier.pl" },
       { r: "Blok Operacyjny — sekretariat", n: "12 646 86 77", h: false, h24: false, lvl: 3, src: "szpitalrydygier.pl" },
       { r: "Blok Operacyjny (alt.)", n: "12 646 82 83", h: false, h24: false, lvl: 3, src: "szpitalrydygier.pl" },
       { r: "Chirurgia Plastyczna", n: "12 646 82 82", h: false, h24: false, lvl: 3, src: "szpitalrydygier.pl" },
@@ -341,10 +404,10 @@ const D = [
     ],
     tags: ["dzieci", "hbo"],
     sios: null,
-    priority: 7
+    priority: 8
   },
   {
-    id: 8,
+    id: 9,
     city: "Kraków",
     s: "sr",
     glow: "",
@@ -357,9 +420,14 @@ const D = [
     dist: 530,
     maxDist: 570,
     ph: [
-      { r: "Centrala szpitala", n: "12 658 20 11", h: true, h24: true, lvl: 1, src: "usd.krakow.pl" }
+      { r: "Sekretariat Oddziału", n: "12 658 53 41", h: true, h24: false, lvl: 1, src: "usd.krakow.pl" },
+      { r: "SOR dziecięcy", n: "12 333 91 86", h: false, h24: true, lvl: 2, src: "nfz-krakow.pl" },
+      { r: "Dyżurka pielęgniarska (wew. 1658)", n: "12 658 20 11", h: false, h24: true, lvl: 2, src: "usd.krakow.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Centrala szpitala (24h)", n: "12 333 90 00", h: false, h24: true, lvl: 3, src: "usd.krakow.pl" },
+      { r: "Centrala szpitala (alt.)", n: "12 658 20 11", h: false, h24: true, lvl: 3, src: "usd.krakow.pl" }
+    ],
     caps: [
       { t: "Dzieci (wyłącznie)", y: true },
       { t: "Dziecięce Centrum Oparzeniowe", y: true },
@@ -367,10 +435,10 @@ const D = [
     ],
     tags: ["dzieci"],
     sios: null,
-    priority: 8
+    priority: 9
   },
   {
-    id: 9,
+    id: 10,
     city: "Łęczna",
     s: "sr",
     glow: "",
@@ -384,10 +452,20 @@ const D = [
     maxDist: 570,
     ph: [
       { r: "Telefon alarmowy WCLO 24h", n: "665 270 535", h: true, h24: true, lvl: 1, src: "szpital.leczna.pl" },
+      { r: "Lekarz dyżurny WCLO", n: "81 752 65 38", h: true, h24: true, lvl: 1, src: "szpital.leczna.pl" },
+      { r: "Dyżurka pielęgniarska", n: "81 752 65 36", h: false, h24: true, lvl: 2, src: "szpital.leczna.pl" },
+      { r: "Dyżurka pielęgniarska (2)", n: "81 752 65 37", h: false, h24: true, lvl: 2, src: "szpital.leczna.pl" },
+      { r: "SOR szpitala", n: "81 752 65 01", h: false, h24: true, lvl: 2, src: "szpital.leczna.pl" },
       { r: "Sekretariat WCLO", n: "81 752 65 31", h: false, h24: false, lvl: 2, src: "szpital.leczna.pl" },
       { r: "Klinika Chir. Plastycznej UM Lublin", n: "81 752 65 34", h: false, h24: false, lvl: 2, src: "szpital.leczna.pl" }
     ],
-    mo: [],
+    mo: [
+      { r: "Lekarz koordynujący", n: "81 752 65 32", h: false, h24: false, lvl: 3, src: "szpital.leczna.pl" },
+      { r: "Dyżurka pielęgniarska (3)", n: "81 752 65 51", h: false, h24: true, lvl: 3, src: "szpital.leczna.pl" },
+      { r: "Ambulatorium — lekarz dyżurny", n: "81 752 61 10", h: false, h24: true, lvl: 3, src: "szpital.leczna.pl" },
+      { r: "Ambulatorium — pielęgniarka", n: "81 752 61 11", h: false, h24: true, lvl: 3, src: "szpital.leczna.pl" },
+      { r: "Centrala szpitala", n: "81 752 63 00", h: false, h24: true, lvl: 3, src: "szpital.leczna.pl" }
+    ],
     caps: [
       { t: "58 łóżek", y: true },
       { t: "OIT oparzeniowy (8 łóżek)", y: true },
@@ -399,12 +477,12 @@ const D = [
     ],
     tags: ["oit", "dzieci"],
     sios: "https://szpitale.lublin.uw.gov.pl/page/",
-    priority: 9
+    priority: 10
   }
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <!-- Shared application logic -->

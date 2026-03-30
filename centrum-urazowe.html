@@ -16,7 +16,7 @@
 
 <header class="topbar" id="topbar">
   <div class="tbl">
-    <div class="tb-logo">SOR</div>
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
     <div class="tb-info">
       <strong>Szpital im. J.K. Łukowicza</strong><br>
       Chojnice · Centrum Urazowe
@@ -148,11 +148,12 @@ const D = [
     maxDist: 340,
     ph: [
       { r: "KOR (SOR) — linia 1", n: "58 349 37 84", h: true, h24: true, lvl: 1, src: "uck.pl" },
-      { r: "KOR (SOR) — linia 2", n: "58 349 37 94", h: false, h24: true, lvl: 2, src: "uck.pl" }
+      { r: "KOR (SOR) — linia 2", n: "58 349 37 83", h: false, h24: true, lvl: 2, src: "uck.pl" },
+      { r: "KOR (SOR) — linia 3", n: "58 349 37 94", h: false, h24: true, lvl: 2, src: "uck.pl" }
     ],
     mo: [
       { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true, lvl: 3, src: "uck.pl" },
-      { r: "Sekretariat UCK", n: "58 584 40 00", h: false, h24: false, lvl: 3, src: "uck.pl" },
+      { r: "Sekretariat Dyrekcji UCK", n: "58 584 40 00", h: false, h24: false, lvl: 3, src: "uck.pl" },
       { r: "Rejestracja ogólna", n: "58 727 05 05", h: false, h24: false, lvl: 3, src: "uck.pl" }
     ],
     caps: [
@@ -220,8 +221,8 @@ const D = [
     dist: 230,
     maxDist: 340,
     ph: [
-      { r: "SOR", n: "61 873 93 46", h: true, h24: true, lvl: 1, src: "placowki.mp.pl" },
-      { r: "SOR (alt.)", n: "61 873 94 32", h: false, h24: true, lvl: 2, src: "placowki.mp.pl" }
+      { r: "SOR", n: "61 873 93 46", h: true, h24: true, lvl: 1, src: "szpital-strusia.poznan.pl" },
+      { r: "SOR (alt.)", n: "61 873 94 32", h: false, h24: true, lvl: 2, src: "szpital-strusia.poznan.pl" }
     ],
     mo: [
       { r: "Centrala szpitala", n: "61 873 90 00", h: false, h24: true, lvl: 3, src: "szpital-strusia.poznan.pl" }
@@ -250,7 +251,8 @@ const D = [
     dist: 340,
     maxDist: 340,
     ph: [
-      { r: "SOR", n: "91 425 30 10", h: true, h24: true, lvl: 1, src: "usk1.szczecin.pl" },
+      { r: "SOR z Izbą Przyjęć", n: "91 425 30 10", h: true, h24: true, lvl: 1, src: "usk1.szczecin.pl" },
+      { r: "SOR (alt.)", n: "91 425 32 50", h: false, h24: true, lvl: 2, src: "nfz-szczecin.pl" },
       { r: "Centrum Urazowe (Klinika AIT)", n: "91 425 33 78", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" },
       { r: "CU — post pielęgniarski", n: "91 425 35 83", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" }
     ],
@@ -273,7 +275,7 @@ const D = [
 ];
 
 const CHOJ = { x: 27.1, y: 13.0 };
-const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+const PL_PATH = "M5,34 L3,28 2,22 3,16 4,12 3,8 1,6 5,5 10,4 14,3 18,3 21,2 24,1 27,1 30,1 32,2 33,4 31,4 30,5 32,6 35,7 37,7 39,6 41,4 44,4 48,3 52,4 56,4 60,5 63,6 66,9 67,12 66,16 65,20 64,25 65,30 66,34 67,38 68,43 67,49 64,53 60,56 55,55 50,54 46,54 42,54 38,53 35,52 32,51 30,49 27,47 23,45 18,43 13,40 9,37Z";
 </script>
 
 <!-- Shared application logic -->
