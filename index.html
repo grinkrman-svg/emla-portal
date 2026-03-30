@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EMLA — Portal Kierowania Pacjentów</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180x180.png">
+<link rel="icon" href="icons/icon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* ═══════════════════════════════════════════════
+   DASHBOARD-SPECIFIC STYLES
+   ═══════════════════════════════════════════════ */
+
+.dash-title {
+  text-align: center;
+  padding: 2rem 1rem 0.5rem;
+  color: var(--t0);
+}
+.dash-title h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.dash-title p {
+  color: var(--t2);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  padding: 0 1rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.2rem 1.3rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  box-shadow: var(--sh);
+  text-decoration: none;
+  color: var(--t0);
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+  cursor: pointer;
+}
+.cat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shh);
+  border-color: var(--bdh);
+}
+.cat-card:active {
+  transform: translateY(0);
+}
+
+.cat-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+.cat-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--t0);
+}
+.cat-desc {
+  font-size: 0.82rem;
+  color: var(--t2);
+  line-height: 1.35;
+}
+
+.cat-card[data-hidden="true"] {
+  display: none;
+}
+
+/* Search bar adjustments for dashboard */
+.sbar {
+  max-width: 600px;
+  margin: 1rem auto;
+}
+
+/* Footer update line */
+.foot-update {
+  text-align: center;
+  color: var(--t3);
+  font-size: 0.78rem;
+  padding: 0.5rem 1rem 0;
+}
+</style>
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <div class="tb-logo">SOR</div>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Portal SOR
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="document.getElementById('search').focus()" title="Szybkie wyszukiwanie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<div class="app" id="app">
+
+  <div class="dash-title">
+    <h1>EMLA — Portal Kierowania Pacjentów</h1>
+    <p>28 kategorii medycznych · SOR Chojnice</p>
+  </div>
+
+  <div class="sbar">
+    <input type="text" id="search" placeholder="Szukaj kategorii... (np. oparzenia, udar, ECMO)" oninput="filterCategories()" aria-label="Szukaj kategorii">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </div>
+
+  <div class="cat-grid" id="catGrid">
+
+    <a class="cat-card" href="oparzenia.html" data-search="oparzenia centra leczenia oparzen">
+      <span class="cat-icon">🔥</span>
+      <span class="cat-name">Oparzenia</span>
+      <span class="cat-desc">Centra leczenia oparzeń</span>
+    </a>
+
+    <a class="cat-card" href="neurochirurgia.html" data-search="neurochirurgia urazy czaszkowo mozgowe">
+      <span class="cat-icon">🧠</span>
+      <span class="cat-name">Neurochirurgia</span>
+      <span class="cat-desc">Urazy czaszkowo-mózgowe</span>
+    </a>
+
+    <a class="cat-card" href="centrum-urazowe.html" data-search="centrum urazowe politrauma">
+      <span class="cat-icon">🚑</span>
+      <span class="cat-name">Centrum Urazowe</span>
+      <span class="cat-desc">Politrauma</span>
+    </a>
+
+    <a class="cat-card" href="udar-trombektomia.html" data-search="udar trombektomia mechaniczna">
+      <span class="cat-icon">⚡</span>
+      <span class="cat-name">Udar / Trombektomia</span>
+      <span class="cat-desc">Mechaniczna trombektomia</span>
+    </a>
+
+    <a class="cat-card" href="kardiochirurgia.html" data-search="kardiochirurgia chirurgia serca aorty">
+      <span class="cat-icon">❤️</span>
+      <span class="cat-name">Kardiochirurgia</span>
+      <span class="cat-desc">Chirurgia serca i aorty</span>
+    </a>
+
+    <a class="cat-card" href="ecmo.html" data-search="ecmo pozaustrojowa oksygenacja membranowa">
+      <span class="cat-icon">🫁</span>
+      <span class="cat-name">ECMO</span>
+      <span class="cat-desc">Pozaustrojowa oksygenacja</span>
+    </a>
+
+    <a class="cat-card" href="hemodynamika-pci.html" data-search="hemodynamika pci stemi kardiologia interwencyjna">
+      <span class="cat-icon">💓</span>
+      <span class="cat-name">Hemodynamika / PCI</span>
+      <span class="cat-desc">STEMI</span>
+    </a>
+
+    <a class="cat-card" href="toksykologia.html" data-search="toksykologia ostre zatrucia">
+      <span class="cat-icon">☠️</span>
+      <span class="cat-name">Toksykologia</span>
+      <span class="cat-desc">Ostre zatrucia</span>
+    </a>
+
+    <a class="cat-card" href="komory-hiperbaryczne.html" data-search="komory hiperbaryczne hbo zatrucie co tlenoterapia">
+      <span class="cat-icon">🫧</span>
+      <span class="cat-name">Komory hiperbaryczne</span>
+      <span class="cat-desc">HBO, zatrucie CO</span>
+    </a>
+
+    <a class="cat-card" href="replantacja.html" data-search="replantacja amputacje urazowe mikrochirurgia">
+      <span class="cat-icon">✋</span>
+      <span class="cat-name">Replantacja</span>
+      <span class="cat-desc">Amputacje urazowe</span>
+    </a>
+
+    <a class="cat-card" href="chirurgia-naczyniowa.html" data-search="chirurgia naczyniowa aaa tetniaki aorty">
+      <span class="cat-icon">🩸</span>
+      <span class="cat-name">Chirurgia naczyniowa</span>
+      <span class="cat-desc">AAA</span>
+    </a>
+
+    <a class="cat-card" href="neonatologia.html" data-search="neonatologia perinatologia noworodki">
+      <span class="cat-icon">👶</span>
+      <span class="cat-name">Neonatologia</span>
+      <span class="cat-desc">Perinatologia III°</span>
+    </a>
+
+    <a class="cat-card" href="chirurgia-dziecieca.html" data-search="chirurgia dziecieca stany nagle u dzieci pediatria">
+      <span class="cat-icon">🧒</span>
+      <span class="cat-name">Chirurgia dziecięca</span>
+      <span class="cat-desc">Stany nagłe u dzieci</span>
+    </a>
+
+    <a class="cat-card" href="okulistyka.html" data-search="okulistyka urazy oka">
+      <span class="cat-icon">👁️</span>
+      <span class="cat-name">Okulistyka</span>
+      <span class="cat-desc">Urazy oka</span>
+    </a>
+
+    <a class="cat-card" href="psychiatria.html" data-search="psychiatria stany nagle">
+      <span class="cat-icon">🧩</span>
+      <span class="cat-name">Psychiatria</span>
+      <span class="cat-desc">Stany nagłe</span>
+    </a>
+
+    <a class="cat-card" href="choroby-zakazne.html" data-search="choroby zakazne izolacja infekcje">
+      <span class="cat-icon">🦠</span>
+      <span class="cat-name">Choroby zakaźne</span>
+      <span class="cat-desc">Izolacja</span>
+    </a>
+
+    <a class="cat-card" href="chirurgia-szczekowa.html" data-search="chirurgia szczekowo twarzowa szczekowa">
+      <span class="cat-icon">🦷</span>
+      <span class="cat-name">Chirurgia szczękowo-twarzowa</span>
+      <span class="cat-desc">Urazy twarzoczaszki</span>
+    </a>
+
+    <a class="cat-card" href="torakochirurgia.html" data-search="torakochirurgia klatka piersiowa">
+      <span class="cat-icon">🫁</span>
+      <span class="cat-name">Torakochirurgia</span>
+      <span class="cat-desc">Klatka piersiowa</span>
+    </a>
+
+    <a class="cat-card" href="urologia.html" data-search="urologia stany nagle">
+      <span class="cat-icon">🔬</span>
+      <span class="cat-name">Urologia</span>
+      <span class="cat-desc">Stany nagłe</span>
+    </a>
+
+    <a class="cat-card" href="ginekologia.html" data-search="ginekologia poloznictwo">
+      <span class="cat-icon">🤰</span>
+      <span class="cat-name">Ginekologia / Położnictwo</span>
+      <span class="cat-desc">Stany nagłe położnicze</span>
+    </a>
+
+    <a class="cat-card" href="ciala-obce.html" data-search="ciala obce drogi oddechowe aspiracja">
+      <span class="cat-icon">🌬️</span>
+      <span class="cat-name">Ciała obce w drogach oddechowych</span>
+      <span class="cat-desc">Aspiracja ciał obcych</span>
+    </a>
+
+    <a class="cat-card" href="radiologia-interwencyjna.html" data-search="radiologia interwencyjna embolizacja">
+      <span class="cat-icon">📡</span>
+      <span class="cat-name">Radiologia interwencyjna</span>
+      <span class="cat-desc">Embolizacja, stentowanie</span>
+    </a>
+
+    <a class="cat-card" href="transplantologia.html" data-search="transplantologia przeszczepianie narzadow">
+      <span class="cat-icon">🏥</span>
+      <span class="cat-name">Transplantologia</span>
+      <span class="cat-desc">Koordynacja przeszczepów</span>
+    </a>
+
+    <a class="cat-card" href="choroba-dekompresyjna.html" data-search="choroba dekompresyjna nurkowanie">
+      <span class="cat-icon">🤿</span>
+      <span class="cat-name">Choroba dekompresyjna</span>
+      <span class="cat-desc">Wypadki nurkowe</span>
+    </a>
+
+    <a class="cat-card" href="ukaszenie-zmiji.html" data-search="ukaszenie zmiji zaskroniec waz jad surowica">
+      <span class="cat-icon">🐍</span>
+      <span class="cat-name">Ukąszenie żmiji</span>
+      <span class="cat-desc">Surowica antyjadowa</span>
+    </a>
+
+    <a class="cat-card" href="plazmafereza.html" data-search="plazmafereza ttp hus zespol hemolityczno mocznicowy">
+      <span class="cat-icon">🩸</span>
+      <span class="cat-name">Plazmafereza / TTP / HUS</span>
+      <span class="cat-desc">Plazmowe zabiegi lecznicze</span>
+    </a>
+
+    <a class="cat-card" href="masywna-pe.html" data-search="masywna zatorowosc plucna pe embolektomia">
+      <span class="cat-icon">🫀</span>
+      <span class="cat-name">Masywna zatorowość płucna</span>
+      <span class="cat-desc">Embolektomia, liza, ECMO</span>
+    </a>
+
+    <a class="cat-card" href="ciezka-hipotermia.html" data-search="ciezka hipotermia hipotermia gleboka ogrzewanie">
+      <span class="cat-icon">🥶</span>
+      <span class="cat-name">Ciężka hipotermia</span>
+      <span class="cat-desc">Ogrzewanie pozaustrojowe</span>
+    </a>
+
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot-update">
+    Ostatnia aktualizacja: 2026-03-30
+  </div>
+
+  <div class="foot">
+    EMLA — Emergency Medical Logistics Assistant · SOR Chojnice · <span onclick="showToast('/: szukaj · Esc: wyczyść')">Skróty klawiszowe</span>
+    <br>
+    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DASHBOARD — Category Search / Filter
+   ═══════════════════════════════════════════════ */
+function normPl(s) {
+  return s.toLowerCase()
+    .replace(/ą/g,'a').replace(/ć/g,'c').replace(/ę/g,'e')
+    .replace(/ł/g,'l').replace(/ń/g,'n').replace(/ó/g,'o')
+    .replace(/ś/g,'s').replace(/ź/g,'z').replace(/ż/g,'z');
+}
+
+function filterCategories() {
+  const q = normPl(document.getElementById('search').value.trim());
+  const cards = document.querySelectorAll('.cat-card');
+  cards.forEach(c => {
+    if (!q) {
+      c.setAttribute('data-hidden', 'false');
+      return;
+    }
+    const name = normPl(c.querySelector('.cat-name').textContent);
+    const desc = normPl(c.querySelector('.cat-desc').textContent);
+    const tags = normPl(c.getAttribute('data-search') || '');
+    const match = name.includes(q) || desc.includes(q) || tags.includes(q);
+    c.setAttribute('data-hidden', match ? 'false' : 'true');
+  });
+}
+
+/* Keyboard shortcuts for dashboard */
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+  if (e.key === 'Escape') {
+    const s = document.getElementById('search');
+    if (s.value) { s.value = ''; filterCategories(); }
+    s.blur();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+});
+</script>
+
+</body>
+</html>

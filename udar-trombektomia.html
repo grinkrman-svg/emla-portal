@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Udar / Trombektomia — SOR Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <div class="tb-logo">SOR</div>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Udar / Trombektomia
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="openCmd()" title="Szybkie wyszukiwanie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="tb-btn" onclick="printAll()" title="Drukuj wszystko">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<!-- Command palette -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCmd()">
+  <div class="cmd-box">
+    <input class="cmd-input" id="cmdInput" placeholder="Szukaj ośrodka, miasta, możliwości..." oninput="filterCmd()">
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> nawigacja</span>
+      <span><kbd>Enter</kbd> przejdź</span>
+      <span><kbd>Esc</kbd> zamknij</span>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+
+  <div class="sbar">
+    <input type="text" id="search" placeholder="Szukaj ośrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj ośrodka">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </div>
+
+  <div class="flt">
+    <span class="chip on" data-f="all" onclick="setChip(this)">Wszystkie</span>
+    <span class="chip" data-f="trombektomia" onclick="setChip(this)">Trombektomia</span>
+    <span class="chip" data-f="neurochirurgia" onclick="setChip(this)">Neurochirurgia</span>
+    <span class="chip" data-f="dzieci" onclick="setChip(this)">Dzieci</span>
+    <span class="slbl">sortowanie: odległość od Chojnic</span>
+  </div>
+
+  <div class="grid" id="grid">
+    <!-- Cards are rendered dynamically by app.js render() -->
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    Dane z web search 2026-03-30 · Dostępność wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-5: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
+    <br>
+    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
+  </div>
+
+</div>
+
+<!-- DATA — define BEFORE app.js -->
+<script>
+const D = [
+  {
+    id: 1,
+    city: "Bydgoszcz",
+    s: "sg",
+    glow: "",
+    name: "Centrum Interwencyjnego Leczenia Udarów Mózgu — Szpital Biziela",
+    addr: "ul. Ujejskiego 75, 85-168 Bydgoszcz",
+    url: "https://biziel.umk.pl",
+    ul: "biziel.umk.pl",
+    tr: { m: "LPR", t: "~30 min + 10 min karetka", r: "~1h 15min", icon: "🚁" },
+    mapXY: { x: 32, y: 18 },
+    dist: 100,
+    maxDist: 340,
+    ph: [
+      { r: "Oddział Neurologii (mobilny!)", n: "697 093 586", h: true, h24: true },
+      { r: "SOR (Izba Przyjęć)", n: "52 365 54 93", h: false, h24: true },
+      { r: "Oddział Neurologii", n: "52 365 55 66", h: false, h24: true },
+      { r: "Oddział Neurologii (alt.)", n: "52 365 55 67", h: false, h24: true },
+      { r: "Oddział Neurologii (alt.)", n: "52 365 57 67", h: false, h24: true },
+      { r: "Oddział Neurochirurgii", n: "52 365 55 05", h: false, h24: true }
+    ],
+    mo: [
+      { r: "Centrala szpitala", n: "52 365 57 99", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Trombektomia 24h", y: true },
+      { t: "Pracownia hemodynamiki 24h", y: true },
+      { t: "Neurologia + oddział udarowy", y: true },
+      { t: "Neurochirurgia", y: true },
+      { t: "DBS / stereotaksja", y: true },
+      { t: "Lądowisko (tymcz. Jurasz!)", y: false }
+    ],
+    tags: ["trombektomia", "neurochirurgia"],
+    sios: null
+  },
+  {
+    id: 2,
+    city: "Gdańsk",
+    s: "sg",
+    glow: "",
+    name: "Klinika Neurologii Dorosłych — Uniwersyteckie Centrum Kliniczne",
+    addr: "ul. Smoluchowskiego 17, 80-214 Gdańsk",
+    url: "https://uck.pl",
+    ul: "uck.pl",
+    tr: { m: "LPR", t: "~50 min", r: "~2h", icon: "🚁" },
+    mapXY: { x: 36, y: 8 },
+    dist: 170,
+    maxDist: 340,
+    ph: [
+      { r: "KOR (SOR) — linia 1", n: "58 349 37 84", h: true, h24: true },
+      { r: "KOR (SOR) — linia 2", n: "58 349 37 94", h: false, h24: true },
+      { r: "Klinika Neurologii (sekr. do 15:00)", n: "58 349 33 20", h: false, h24: false }
+    ],
+    mo: [
+      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Trombektomia (od 2015)", y: true },
+      { t: "Pracownia hemodynamiki 24h", y: true },
+      { t: "Neurochirurgia", y: true },
+      { t: "Oddział udarowy", y: true },
+      { t: "Śródoperacyjny MRI", y: true },
+      { t: "Lądowisko", y: true }
+    ],
+    tags: ["trombektomia", "neurochirurgia"],
+    sios: null
+  },
+  {
+    id: 3,
+    city: "Olsztyn",
+    s: "sa",
+    glow: "",
+    name: "Oddział Udarowy — Wojewódzki Szpital Specjalistyczny",
+    addr: "ul. Żołnierska 18, 10-561 Olsztyn",
+    url: "https://wss.olsztyn.pl",
+    ul: "wss.olsztyn.pl",
+    tr: { m: "LPR", t: "~1h 10min", r: "~3h", icon: "🚁" },
+    mapXY: { x: 48, y: 14 },
+    dist: 250,
+    maxDist: 340,
+    ph: [
+      { r: "Koordynator udarowy (dr Zwiernik)", n: "89 538 62 13", h: true, h24: true },
+      { r: "Oddział Udarowy — gabinet lekarski", n: "89 538 62 73", h: false, h24: true },
+      { r: "SOR — segregacja medyczna", n: "89 538 65 11", h: false, h24: true },
+      { r: "SOR — segregacja (alt.)", n: "89 538 64 32", h: false, h24: true },
+      { r: "SOR — gabinet lekarski", n: "89 538 65 88", h: false, h24: true },
+      { r: "Oddział Udarowy — sekretariat", n: "89 538 63 40", h: false, h24: false },
+      { r: "Oddział Udarowy — post pielęgniarski", n: "89 538 64 14", h: false, h24: true }
+    ],
+    mo: [
+      { r: "Centrala szpitala", n: "89 538 63 56", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Pilotaż trombektomii MZ", y: true },
+      { t: "Centrum Udarowe", y: true },
+      { t: "TK i MR 24h", y: true },
+      { t: "Neurochirurgia", y: true },
+      { t: "Lądowisko", y: true },
+      { t: "Trombektomia 24/7 — do weryfikacji!", y: false }
+    ],
+    tags: ["trombektomia", "neurochirurgia"],
+    sios: null
+  },
+  {
+    id: 4,
+    city: "Szczecin",
+    s: "sr",
+    glow: "",
+    name: "Neurologia z poddz. udarowym — USK1 Sokołowskiego",
+    addr: "Szczecin",
+    url: "https://usk1.szczecin.pl",
+    ul: "usk1.szczecin.pl",
+    tr: { m: "LPR", t: "~1h 30min", r: "~4h", icon: "🚁" },
+    mapXY: { x: 12, y: 12 },
+    dist: 340,
+    maxDist: 340,
+    ph: [
+      { r: "SOR", n: "91 425 30 10", h: true, h24: true },
+      { r: "Neurologia", n: "91 425 32 51", h: false, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Trombektomia", y: true },
+      { t: "Neurologia z poddz. udarowym", y: true }
+    ],
+    tags: ["trombektomia"],
+    sios: null
+  },
+  {
+    id: 5,
+    city: "Poznań",
+    s: "sa",
+    glow: "",
+    name: "Neurologia — Szpital Święcickiego / USK",
+    addr: "Poznań",
+    url: "https://usk.poznan.pl",
+    ul: "usk.poznan.pl",
+    tr: { m: "LPR", t: "~1h 10min", r: "~3h", icon: "🚁" },
+    mapXY: { x: 22, y: 26 },
+    dist: 230,
+    maxDist: 340,
+    ph: [
+      { r: "Neurologia", n: "61 669 82 22", h: true, h24: true }
+    ],
+    mo: [
+      { r: "Centrala", n: "61 869 11 00", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Trombektomia", y: true },
+      { t: "Neurologia", y: true }
+    ],
+    tags: ["trombektomia"],
+    sios: null
+  }
+];
+
+const CHOJ = { x: 27.1, y: 13.0 };
+const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+</script>
+
+<!-- Shared application logic -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

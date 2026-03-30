@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neurochirurgia — SOR Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <div class="tb-logo">SOR</div>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Neurochirurgia
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="openCmd()" title="Szybkie wyszukiwanie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="tb-btn" onclick="printAll()" title="Drukuj wszystko">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<!-- Command palette -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCmd()">
+  <div class="cmd-box">
+    <input class="cmd-input" id="cmdInput" placeholder="Szukaj ośrodka, miasta, możliwości..." oninput="filterCmd()">
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> nawigacja</span>
+      <span><kbd>Enter</kbd> przejdź</span>
+      <span><kbd>Esc</kbd> zamknij</span>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+
+  <div class="sbar">
+    <input type="text" id="search" placeholder="Szukaj ośrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj ośrodka">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </div>
+
+  <div class="flt">
+    <span class="chip on" data-f="all" onclick="setChip(this)">Wszystkie</span>
+    <span class="chip" data-f="dzieci" onclick="setChip(this)">Dzieci</span>
+    <span class="chip" data-f="trombektomia" onclick="setChip(this)">Trombektomia</span>
+    <span class="slbl">sortowanie: czas dostawy</span>
+  </div>
+
+  <div class="grid" id="grid">
+    <!-- Cards are rendered dynamically by app.js render() -->
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    Dane z web search 2026-03-30 · Dostępność miejsc wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-9: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
+    <br>
+    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
+  </div>
+
+</div>
+
+<!-- DATA — define BEFORE app.js -->
+<script>
+const D = [
+  {
+    id: 1,
+    city: "Bydgoszcz",
+    s: "sg",
+    glow: "",
+    name: "Klinika Neurochirurgii — Szpital Biziela",
+    addr: "ul. Ujejskiego 75, Paw. 7A, 85-168 Bydgoszcz, woj. kujawsko-pomorskie",
+    url: "https://biziel.umk.pl",
+    ul: "biziel.umk.pl",
+    tr: { m: "🚁 LPR", t: "~30 min", r: "~1h 15min", icon: "🚁" },
+    mapXY: { x: 38.0, y: 19.5 },
+    dist: 100,
+    maxDist: 350,
+    ph: [
+      { r: "SOR / Oddział Med. Ratunkowej", n: "52 365 52 09", h: true, h24: true, lvl: 1, src: "biziel.umk.pl" },
+      { r: "Oddział neurochirurgii", n: "52 365 55 05", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
+      { r: "Oddział (alt.)", n: "52 365 57 74", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" },
+      { r: "Punkt Przyjęć (Izba Przyjęć)", n: "52 371 26 35", h: false, h24: true, lvl: 2, src: "biziel.umk.pl" }
+    ],
+    mo: [
+      { r: "Centrala szpitala", n: "52 365 57 99", h: false, h24: true, lvl: 3, src: "biziel.umk.pl" }
+    ],
+    caps: [
+      { t: "Guzy mózgu", y: true },
+      { t: "Neurotraumatologia", y: true },
+      { t: "Tętniaki mózgu", y: true },
+      { t: "Kręgosłup", y: true },
+      { t: "DBS", y: true },
+      { t: "Trombektomia", y: true },
+      { t: "Lądowisko", y: true }
+    ],
+    tags: ["trombektomia"],
+    sios: null,
+    priority: 1
+  },
+  {
+    id: 2,
+    city: "Bydgoszcz",
+    s: "sg",
+    glow: "",
+    name: "Klinika Neurochirurgii, Neurotraumatologii i Neurochir. Dziecięcej — Szpital Jurasza",
+    addr: "ul. M. Skłodowskiej-Curie 9, 85-094 Bydgoszcz, woj. kujawsko-pomorskie",
+    url: "https://jurasza.umk.pl",
+    ul: "jurasza.umk.pl",
+    tr: { m: "🚁 LPR", t: "~30 min", r: "~1h 15min", icon: "🚁" },
+    mapXY: { x: 38.0, y: 20.0 },
+    dist: 100,
+    maxDist: 350,
+    ph: [
+      { r: "Izba Przyjęć — Med. Ratunkowa", n: "52 585 40 08", h: true, h24: true, lvl: 1, src: "jurasza.umk.pl" },
+      { r: "Klinika neurochirurgii (sekr.)", n: "52 585 45 10", h: false, h24: false, lvl: 2, src: "jurasza.umk.pl" }
+    ],
+    mo: [
+      { r: "Centrala szpitala", n: "52 585 40 00", h: false, h24: true, lvl: 3, src: "jurasza.umk.pl" }
+    ],
+    caps: [
+      { t: "Neurotraumatologia", y: true },
+      { t: "Neurochirurgia dziecięca", y: true },
+      { t: "Guzy mózgu", y: true },
+      { t: "Kręgosłup", y: true }
+    ],
+    tags: ["dzieci"],
+    sios: null,
+    priority: 2
+  },
+  {
+    id: 3,
+    city: "Bydgoszcz",
+    s: "sg",
+    glow: "",
+    name: "Oddział Neurochirurgii Dziecięcej — Woj. Szpital Dziecięcy (TYLKO DZIECI)",
+    addr: "ul. Chodkiewicza 44, 85-667 Bydgoszcz, woj. kujawsko-pomorskie",
+    url: "https://wsd.org.pl",
+    ul: "wsd.org.pl",
+    tr: { m: "🚁 LPR", t: "~30 min", r: "~1h 15min", icon: "🚁" },
+    mapXY: { x: 38.5, y: 19.0 },
+    dist: 100,
+    maxDist: 350,
+    ph: [
+      { r: "Oddział (punkt pielęgniarski)", n: "52 326 21 67", h: true, h24: true, lvl: 1, src: "wsd.org.pl" },
+      { r: "Gabinet lekarski", n: "52 326 23 48", h: false, h24: true, lvl: 2, src: "wsd.org.pl" },
+      { r: "Gabinet ordynatora", n: "52 326 22 94", h: false, h24: false, lvl: 2, src: "wsd.org.pl" }
+    ],
+    mo: [
+      { r: "Centrala szpitala", n: "52 326 21 00", h: false, h24: true, lvl: 3, src: "wsd.org.pl" },
+      { r: "Centrala (alt.)", n: "52 326 21 01", h: false, h24: true, lvl: 3, src: "wsd.org.pl" }
+    ],
+    caps: [
+      { t: "Dzieci (wyłącznie)", y: true },
+      { t: "Mikroskop Pentero 900", y: true },
+      { t: "Neuronawigacja Medtronic", y: true },
+      { t: "Stereotaksja DBS u dzieci", y: true },
+      { t: "Neuroendoskopy", y: true },
+      { t: "Neuromonitoring", y: true }
+    ],
+    tags: ["dzieci"],
+    sios: null,
+    priority: 3
+  },
+  {
+    id: 4,
+    city: "Bydgoszcz",
+    s: "sg",
+    glow: "",
+    name: "Klinika Neurochirurgii — 10 Wojskowy Szpital Kliniczny",
+    addr: "ul. Powstańców Warszawy 5, 85-915 Bydgoszcz, woj. kujawsko-pomorskie",
+    url: "https://www.10wsk.mil.pl",
+    ul: "10wsk.mil.pl",
+    tr: { m: "🚁 LPR", t: "~30 min", r: "~1h 15min", icon: "🚁" },
+    mapXY: { x: 37.5, y: 20.5 },
+    dist: 100,
+    maxDist: 350,
+    ph: [
+      { r: "Klinika neurochirurgii", n: "52 378 70 94", h: true, h24: true, lvl: 1, src: "placowki.mp.pl" },
+      { r: "Sekretariat Kliniki", n: "261 417 093", h: false, h24: false, lvl: 2, src: "10wsk.mil.pl" }
+    ],
+    mo: [
+      { r: "Centrala", n: "261 417 220", h: false, h24: true, lvl: 3, src: "10wsk.mil.pl" },
+      { r: "Centrala (alt.)", n: "261 417 100", h: false, h24: true, lvl: 3, src: "nfz.org.pl" },
+      { r: "Rejestracja poliklinika", n: "52 526 21 11", h: false, h24: false, lvl: 3, src: "10wsk.mil.pl" }
+    ],
+    caps: [
+      { t: "Neurochirurgia dorosłych", y: true },
+      { t: "Neurotraumatologia", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 4
+  },
+  {
+    id: 5,
+    city: "Toruń",
+    s: "sg",
+    glow: "",
+    name: "Oddział Neurochirurgii — Woj. Szpital Zespolony im. Rydygiera",
+    addr: "ul. Św. Józefa 53-59, 87-100 Toruń, woj. kujawsko-pomorskie",
+    url: "https://www.wszz.torun.pl",
+    ul: "wszz.torun.pl",
+    tr: { m: "🚁 LPR", t: "~45 min", r: "~1h 45min", icon: "🚁" },
+    mapXY: { x: 40.0, y: 22.0 },
+    dist: 150,
+    maxDist: 350,
+    ph: [
+      { r: "Gabinet lekarski / Koordynator", n: "56 679 33 01", h: true, h24: true, lvl: 1, src: "wszz.torun.pl" },
+      { r: "Punkt pielęgniarski", n: "56 679 36 34", h: false, h24: true, lvl: 2, src: "wszz.torun.pl" },
+      { r: "SOR szpitala", n: "56 679 31 00", h: false, h24: true, lvl: 2, src: "wszz.torun.pl" },
+      { r: "Izba Przyjęć — lekarz dyżurny", n: "56 679 31 20", h: false, h24: true, lvl: 2, src: "wszz.torun.pl" }
+    ],
+    mo: [
+      { r: "Gabinet lekarski (alt.)", n: "56 679 32 75", h: false, h24: true, lvl: 3, src: "wszz.torun.pl" },
+      { r: "Sekretariat Oddziału", n: "56 679 33 02", h: false, h24: false, lvl: 3, src: "wszz.torun.pl" },
+      { r: "Sekretariat (alt.)", n: "56 679 32 78", h: false, h24: false, lvl: 3, src: "wszz.torun.pl" },
+      { r: "Pielęgniarka koordynująca", n: "56 679 32 76", h: false, h24: false, lvl: 3, src: "wszz.torun.pl" },
+      { r: "SOR — rejestracja", n: "56 679 31 28", h: false, h24: true, lvl: 3, src: "wszz.torun.pl" },
+      { r: "SOR — sekretariat", n: "56 679 51 00", h: false, h24: false, lvl: 3, src: "wszz.torun.pl" },
+      { r: "SOR — obserwacja", n: "56 679 52 60", h: false, h24: true, lvl: 3, src: "wszz.torun.pl" },
+      { r: "Izba Przyjęć — piel. oddziałowa", n: "56 679 31 25", h: false, h24: true, lvl: 3, src: "wszz.torun.pl" },
+      { r: "Centrala szpitala", n: "56 679 31 00", h: false, h24: true, lvl: 3, src: "wszz.torun.pl" }
+    ],
+    caps: [
+      { t: "Neurochirurgia dorosłych", y: true },
+      { t: "Neurotraumatologia", y: true },
+      { t: "Kręgosłup", y: true },
+      { t: "SOR pełne zaplecze", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 5
+  },
+  {
+    id: 6,
+    city: "Toruń",
+    s: "sg",
+    glow: "",
+    name: "Oddział Neurochirurgii — Spec. Szpital Miejski im. Kopernika",
+    addr: "ul. Stefana Batorego 17/19, 87-100 Toruń, woj. kujawsko-pomorskie",
+    url: "https://www.med.torun.pl",
+    ul: "med.torun.pl",
+    tr: { m: "🚁 LPR", t: "~45 min", r: "~1h 45min", icon: "🚁" },
+    mapXY: { x: 40.5, y: 22.5 },
+    dist: 150,
+    maxDist: 350,
+    ph: [
+      { r: "Gabinet Lekarzy", n: "56 610 02 33", h: true, h24: true, lvl: 1, src: "med.torun.pl" },
+      { r: "Dyżurka Pielęgniarek", n: "56 610 02 25", h: false, h24: true, lvl: 2, src: "med.torun.pl" },
+      { r: "SOR szpitala", n: "56 610 02 91", h: false, h24: true, lvl: 2, src: "med.torun.pl" }
+    ],
+    mo: [
+      { r: "Sekretariat", n: "56 610 03 44", h: false, h24: false, lvl: 3, src: "med.torun.pl" },
+      { r: "SOR (alt.)", n: "56 610 02 16", h: false, h24: true, lvl: 3, src: "med.torun.pl" },
+      { r: "Centrala szpitala", n: "56 610 02 09", h: false, h24: true, lvl: 3, src: "med.torun.pl" }
+    ],
+    caps: [
+      { t: "12 łóżek", y: true },
+      { t: "Neurochirurgia dorosłych", y: true },
+      { t: "Neurotraumatologia", y: true },
+      { t: "Kręgosłup", y: true },
+      { t: "SOR pełne zaplecze", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 6
+  },
+  {
+    id: 7,
+    city: "Gdańsk",
+    s: "sg",
+    glow: "",
+    name: "Klinika Neurochirurgii — UCK (Uniwersyteckie Centrum Kliniczne)",
+    addr: "CMI, ul. Smoluchowskiego 17, II piętro, 80-214 Gdańsk, woj. pomorskie",
+    url: "https://uck.pl",
+    ul: "uck.pl",
+    tr: { m: "🚁 LPR", t: "~50 min", r: "~2h", icon: "🚁" },
+    mapXY: { x: 38.5, y: 11.0 },
+    dist: 170,
+    maxDist: 350,
+    ph: [
+      { r: "SOR (KOR) — linia 1", n: "58 349 37 83", h: true, h24: true, lvl: 1, src: "placowki.mp.pl" },
+      { r: "SOR (KOR) — linia 2", n: "58 349 37 84", h: false, h24: true, lvl: 2, src: "placowki.mp.pl" },
+      { r: "Klinika Neurochirurgii (sekr.)", n: "58 349 33 20", h: false, h24: false, lvl: 2, src: "uck.pl" }
+    ],
+    mo: [
+      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true, lvl: 3, src: "uck.pl" },
+      { r: "Centrala (alt.)", n: "58 584 40 00", h: false, h24: true, lvl: 3, src: "uck.pl" },
+      { r: "Rejestracja ogólna", n: "58 727 05 05", h: false, h24: false, lvl: 3, src: "uck.pl" }
+    ],
+    caps: [
+      { t: "Onkoneurochirurgia", y: true },
+      { t: "Śródoperacyjny MRI", y: true },
+      { t: "Tętniaki", y: true },
+      { t: "Neurotraumatologia", y: true },
+      { t: "Kręgosłup MIS", y: true },
+      { t: "DBS", y: true },
+      { t: "Lądowisko", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 7
+  },
+  {
+    id: 8,
+    city: "Gdańsk",
+    s: "sg",
+    glow: "",
+    name: "Oddział Neurochirurgii — COPERNICUS, Szpital Kopernika",
+    addr: "ul. Nowe Ogrody 1-6, 80-803 Gdańsk, woj. pomorskie",
+    url: "https://copernicus.gda.pl",
+    ul: "copernicus.gda.pl",
+    tr: { m: "🚁 LPR", t: "~50 min", r: "~2h", icon: "🚁" },
+    mapXY: { x: 38.0, y: 11.5 },
+    dist: 170,
+    maxDist: 350,
+    ph: [
+      { r: "Oddział Neurochirurgii", n: "58 302 30 31", h: true, h24: true, lvl: 1, src: "placowki.mp.pl" },
+      { r: "Rejestracja szpitala", n: "58 764 08 70", h: false, h24: false, lvl: 2, src: "copernicus.gda.pl" }
+    ],
+    mo: [
+      { r: "Centrala Szpitala Kopernika", n: "58 764 01 00", h: false, h24: true, lvl: 3, src: "placowki.mp.pl" },
+      { r: "Rejestracja (alt.)", n: "58 764 07 53", h: false, h24: false, lvl: 3, src: "copernicus.gda.pl" }
+    ],
+    caps: [
+      { t: "Neurochirurgia 24h", y: true },
+      { t: "Neurotraumatologia", y: true },
+      { t: "Guzy mózgu", y: true },
+      { t: "Kręgosłup", y: true },
+      { t: "SOR (TK, MR)", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 8
+  },
+  {
+    id: 9,
+    city: "Olsztyn",
+    s: "sa",
+    glow: "",
+    name: "Oddział Kliniczny Neurochirurgiczny — Woj. Szpital Specjalistyczny",
+    addr: "ul. Żołnierska 18, 10-561 Olsztyn, woj. warmińsko-mazurskie",
+    url: "https://wss.olsztyn.pl",
+    ul: "wss.olsztyn.pl",
+    tr: { m: "🚁 LPR", t: "~1h 10min", r: "~3h", icon: "🚁" },
+    mapXY: { x: 50.0, y: 14.0 },
+    dist: 250,
+    maxDist: 350,
+    ph: [
+      { r: "Izba Przyjęć — koordynator", n: "89 538 62 89", h: true, h24: true, lvl: 1, src: "wss.olsztyn.pl" },
+      { r: "Oddział neurochirurgii (ordynator)", n: "89 538 62 46", h: false, h24: false, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "Izba Przyjęć — piel. oddziałowa", n: "89 538 65 82", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" }
+    ],
+    mo: [
+      { r: "Blok Operacyjny", n: "89 538 62 71", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Izba Przyjęć — planowe", n: "89 538 63 02", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Centrala / Informacja", n: "89 538 63 56", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" }
+    ],
+    caps: [
+      { t: "Neurotraumatologia", y: true },
+      { t: "Guzy mózgu", y: true },
+      { t: "Kręgosłup", y: true },
+      { t: "Naczynia mózgowe", y: true },
+      { t: "Oddział udarowy", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 9
+  },
+  {
+    id: 10,
+    city: "Szczecin",
+    s: "sa",
+    glow: "",
+    name: "Oddział Neurochirurgii i Neurotraumatologii — SPWSZ, Szpital Arkońska",
+    addr: "ul. Arkońska 4, 71-455 Szczecin, woj. zachodniopomorskie",
+    url: "https://www.spwsz.szczecin.pl",
+    ul: "spwsz.szczecin.pl",
+    tr: { m: "🚁 LPR", t: "~1h 30min", r: "~4h", icon: "🚁" },
+    mapXY: { x: 16.0, y: 13.0 },
+    dist: 350,
+    maxDist: 350,
+    ph: [
+      { r: "Gabinet Lekarza Dyżurnego", n: "91 813 97 76", h: true, h24: true, lvl: 1, src: "spwsz.szczecin.pl" },
+      { r: "Gabinet Lekarski", n: "91 813 97 75", h: false, h24: true, lvl: 2, src: "spwsz.szczecin.pl" },
+      { r: "Dyżurka Pielęgniarek", n: "91 813 97 73", h: false, h24: true, lvl: 2, src: "spwsz.szczecin.pl" },
+      { r: "SOR szpitala (Arkońska)", n: "91 813 98 00", h: false, h24: true, lvl: 2, src: "spwsz.szczecin.pl" }
+    ],
+    mo: [
+      { r: "Sekretariat", n: "91 813 97 70", h: false, h24: false, lvl: 3, src: "spwsz.szczecin.pl" },
+      { r: "Kierownik Oddziału", n: "91 813 97 71", h: false, h24: false, lvl: 3, src: "spwsz.szczecin.pl" },
+      { r: "Pielęgniarka Oddziałowa", n: "91 813 97 72", h: false, h24: false, lvl: 3, src: "spwsz.szczecin.pl" },
+      { r: "Gabinet Zabiegowy", n: "91 813 97 77", h: false, h24: false, lvl: 3, src: "spwsz.szczecin.pl" },
+      { r: "Sala Intensywnego Nadzoru", n: "91 813 97 78", h: false, h24: true, lvl: 3, src: "spwsz.szczecin.pl" },
+      { r: "Centrala szpitala (Arkońska)", n: "91 813 90 00", h: false, h24: true, lvl: 3, src: "spwsz.szczecin.pl" }
+    ],
+    caps: [
+      { t: "Neurochirurgia", y: true },
+      { t: "Neurotraumatologia", y: true },
+      { t: "Guzy mózgu", y: true },
+      { t: "Kręgosłup", y: true },
+      { t: "Naczynia mózgowe", y: true },
+      { t: "Sala intensywnego nadzoru", y: true },
+      { t: "SOR pełne zaplecze", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 10
+  },
+  {
+    id: 11,
+    city: "Szczecin",
+    s: "sa",
+    glow: "",
+    name: "Klinika Neurochirurgii i Neurochir. Dziecięcej — SPSK1 PUM",
+    addr: "ul. Unii Lubelskiej 1, 71-252 Szczecin, woj. zachodniopomorskie",
+    url: "https://www.pum.edu.pl",
+    ul: "pum.edu.pl",
+    tr: { m: "🚁 LPR", t: "~1h 30min", r: "~4h", icon: "🚁" },
+    mapXY: { x: 16.5, y: 13.5 },
+    dist: 350,
+    maxDist: 350,
+    ph: [
+      { r: "Sekretariat Kliniki", n: "91 425 35 61", h: true, h24: false, lvl: 1, src: "pum.edu.pl" }
+    ],
+    mo: [],
+    caps: [
+      { t: "Neurochirurgia dziecięca", y: true },
+      { t: "Neurochirurgia dorosłych", y: true },
+      { t: "Neurotraumatologia", y: true },
+      { t: "Guzy mózgu", y: true }
+    ],
+    tags: ["dzieci"],
+    sios: null,
+    priority: 11
+  }
+];
+
+const CHOJ = { x: 27.1, y: 13.0 };
+const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+</script>
+
+<!-- Shared application logic -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Okulistyka Nagła — SOR Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <div class="tb-logo">SOR</div>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Okulistyka Nagła
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="openCmd()" title="Szybkie wyszukiwanie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="tb-btn" onclick="printAll()" title="Drukuj wszystko">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<!-- Command palette -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCmd()">
+  <div class="cmd-box">
+    <input class="cmd-input" id="cmdInput" placeholder="Szukaj ośrodka, miasta, możliwości..." oninput="filterCmd()">
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> nawigacja</span>
+      <span><kbd>Enter</kbd> przejdź</span>
+      <span><kbd>Esc</kbd> zamknij</span>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+
+  <div class="sbar">
+    <input type="text" id="search" placeholder="Szukaj ośrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj ośrodka">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </div>
+
+  <div class="flt">
+    <span class="chip on" data-f="all" onclick="setChip(this)">Wszystkie</span>
+    <span class="chip" data-f="dzieci" onclick="setChip(this)">Dzieci</span>
+    <span class="slbl">sortowanie: odległość od Chojnic</span>
+  </div>
+
+  <div class="grid" id="grid">
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    Dane z web search 2026-03-30 · Dostępność miejsc wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-3: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
+    <br>
+    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
+  </div>
+
+</div>
+
+<!-- DATA -->
+<script>
+const D = [
+  {
+    id: 1,
+    city: "Bydgoszcz",
+    s: "sg",
+    glow: "",
+    name: "10 WSK — Oddział Okulistyczny",
+    addr: "ul. Powstańców Warszawy 5, 85-681 Bydgoszcz",
+    url: "https://10wsk.mil.pl",
+    ul: "10wsk.mil.pl",
+    tr: { m: "Helikopter", t: "~30 min", r: "~1h 15min", icon: "🚁" },
+    mapXY: { x: 32, y: 18 },
+    dist: 100,
+    maxDist: 170,
+    ph: [
+      { r: "Oddział Kliniczny Okulistyczny (sekretariat)", n: "261 417 109", h: true, h24: false }
+    ],
+    mo: [
+      { r: "Centrala 10 WSK", n: "261 417 300", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Oddział okulistyczny", y: true },
+      { t: "Najbliższy", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 2,
+    city: "Gdańsk",
+    s: "sg",
+    glow: "",
+    name: "UCK — Klinika Okulistyki",
+    addr: "ul. Smoluchowskiego 17, 80-214 Gdańsk",
+    url: "https://uck.pl",
+    ul: "uck.pl",
+    tr: { m: "Helikopter", t: "~50 min", r: "~2h", icon: "🚁" },
+    mapXY: { x: 36, y: 8 },
+    dist: 170,
+    maxDist: 170,
+    ph: [
+      { r: "Klinika Okulistyki (sekretariat)", n: "58 349 35 80", h: true, h24: false },
+      { r: "Rejestracja UCK", n: "58 727 05 05", h: false, h24: false }
+    ],
+    mo: [
+      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Klinika okulistyki", y: true },
+      { t: "Pełen zakres", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 3,
+    city: "Gdańsk",
+    s: "sa",
+    glow: "",
+    name: "Copernicus (Szp. św. Wojciecha) — Oddział Okulistyczny",
+    addr: "al. Jana Pawła II 50, 80-001 Gdańsk",
+    url: "https://copernicus.gda.pl",
+    ul: "copernicus.gda.pl",
+    tr: { m: "Helikopter", t: "~50 min", r: "~2h", icon: "🚁" },
+    mapXY: { x: 36, y: 8 },
+    dist: 170,
+    maxDist: 170,
+    ph: [
+      { r: "Centrala Szp. św. Wojciecha (prosić o okulistykę)", n: "58 768 40 00", h: true, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Oddział okulistyczny", y: true },
+      { t: "Oddział okulistyczny dla dzieci", y: true }
+    ],
+    tags: ["dzieci"],
+    sios: null
+  }
+];
+
+const CHOJ = { x: 27.1, y: 13.0 };
+const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+</script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

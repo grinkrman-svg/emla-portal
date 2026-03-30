@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hemodynamika / PCI — SOR Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <div class="tb-logo">SOR</div>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Hemodynamika / PCI
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="openCmd()" title="Szybkie wyszukiwanie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="tb-btn" onclick="printAll()" title="Drukuj wszystko">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<!-- Command palette -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCmd()">
+  <div class="cmd-box">
+    <input class="cmd-input" id="cmdInput" placeholder="Szukaj ośrodka, miasta, możliwości..." oninput="filterCmd()">
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> nawigacja</span>
+      <span><kbd>Enter</kbd> przejdź</span>
+      <span><kbd>Esc</kbd> zamknij</span>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+
+  <div class="sbar">
+    <input type="text" id="search" placeholder="Szukaj ośrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj ośrodka">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </div>
+
+  <div class="flt">
+    <span class="chip on" data-f="all" onclick="setChip(this)">Wszystkie</span>
+    <span class="chip" data-f="pci" onclick="setChip(this)">PCI 24h</span>
+    <span class="chip" data-f="tavi" onclick="setChip(this)">TAVI</span>
+    <span class="chip" data-f="impella" onclick="setChip(this)">Impella/IABP</span>
+    <span class="slbl">sortowanie: czas dostawy</span>
+  </div>
+
+  <div class="grid" id="grid">
+    <!-- Cards are rendered dynamically by app.js render() -->
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    Dane z web search 2026-03-30 · Dostępność wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-6: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
+    <br>
+    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
+  </div>
+
+</div>
+
+<!-- DATA — define BEFORE app.js -->
+<script>
+const D = [
+  {
+    id:1, city:"Bydgoszcz", s:"sg", glow:"glow-g",
+    name:"Szpital Jurasza — Pracownia Hemodynamiki",
+    addr:"ul. M. Skłodowskiej-Curie 9, 85-094 Bydgoszcz",
+    url:"https://jurasza.umk.pl", ul:"jurasza.umk.pl",
+    tr:{m:"LPR",t:"~30 min",r:"~1h 15min",icon:"🚁"},
+    mapXY:{x:32,y:18}, dist:100, maxDist:170,
+    ph:[
+      {r:"Pracownia hemodynamiki",n:"52 585 48 25",h:true,h24:true},
+      {r:"SOR",n:"52 585 42 22",h:false,h24:true},
+      {r:"Sekretariat kardiologii",n:"52 585 40 23",h:false,h24:false},
+      {r:"Sekretariat (alt.)",n:"52 585 45 30",h:false,h24:false}
+    ],
+    mo:[
+      {r:"Fax kardiologii",n:"52 585 40 24",h:false,h24:false},
+      {r:"Centrala (po 15:00)",n:"52 585 40 00",h:false,h24:true}
+    ],
+    caps:[
+      {t:"PCI",y:true},{t:"Koronarografia",y:true},{t:"FFR/IVUS/OCT",y:true},
+      {t:"TAVI",y:true},{t:"MitraClip",y:true},{t:"Impella/IABP",y:true},
+      {t:"Rotablacja",y:true},{t:"Zatorowość płucna",y:true}
+    ],
+    tags:["pci","tavi","impella"],
+    sios:null
+  },
+  {
+    id:2, city:"Bydgoszcz", s:"sg", glow:"glow-g",
+    name:"10 WSK — Klinika Kardiologii Inwazyjnej",
+    addr:"ul. Powstańców Warszawy 5, 85-681 Bydgoszcz",
+    url:"https://10wsk.mil.pl", ul:"10wsk.mil.pl",
+    tr:{m:"LPR",t:"~30 min",r:"~1h 15min",icon:"🚁"},
+    mapXY:{x:32,y:18}, dist:100, maxDist:170,
+    ph:[
+      {r:"Klinika Kardiologii i Kardiochirurgii",n:"261 417 031",h:true,h24:true},
+      {r:"Klinika (alt.)",n:"261 417 155",h:false,h24:true},
+      {r:"Klinika (alt.)",n:"261 417 158",h:false,h24:true}
+    ],
+    mo:[
+      {r:"Centrala",n:"261 417 300",h:false,h24:true}
+    ],
+    caps:[
+      {t:"PCI",y:true},{t:"Koronarografia",y:true},{t:"FFR/IVUS/OCT",y:true},
+      {t:"TAVI",y:true},{t:"Impella/IABP",y:true},{t:"Rotablacja",y:true},
+      {t:"Zatorowość płucna",y:true},{t:"OIOK 13 stanowisk",y:true}
+    ],
+    tags:["pci","tavi","impella"],
+    sios:null
+  },
+  {
+    id:3, city:"Grudziądz", s:"sa", glow:"glow-a",
+    name:"Szpital Biegańskiego — Pracownia Hemodynamiczna",
+    addr:"ul. Rydygiera 15/17, 86-300 Grudziądz",
+    url:"https://bieganski.org", ul:"bieganski.org",
+    tr:{m:"LPR",t:"~40 min",r:"~1h 30min",icon:"🚁"},
+    mapXY:{x:36,y:20}, dist:130, maxDist:170,
+    ph:[
+      {r:"Informacja szpitalna (pn-pt 7-14:35)",n:"56 641 44 44",h:true,h24:false},
+      {r:"SOR (po 14:35 i weekendy)",n:"56 641 40 00",h:false,h24:true}
+    ],
+    mo:[],
+    caps:[
+      {t:"Dyżur 24h PCI",y:true},{t:"Koronarografia",y:true},{t:"PCI",y:true},
+      {t:"FFR/IVUS",y:true},{t:"Rotablacja",y:true},{t:"Litotrypsja",y:true},
+      {t:"Teletransmisja EKG",y:true}
+    ],
+    tags:["pci"],
+    sios:null
+  },
+  {
+    id:4, city:"Słupsk", s:"sa", glow:"glow-a",
+    name:"Szpital Korczaka — Pracownia Hemodynamiki",
+    addr:"ul. Hubalczyków 1, 76-200 Słupsk",
+    url:"https://szpital.slupsk.pl", ul:"szpital.slupsk.pl",
+    tr:{m:"LPR",t:"~40 min",r:"~1h 30min",icon:"🚁"},
+    mapXY:{x:24,y:6}, dist:130, maxDist:170,
+    ph:[
+      {r:"Pracownia Hemodynamiki",n:"59 846 04 49",h:true,h24:true},
+      {r:"Oddział Kardiologiczny / INK",n:"59 846 04 40",h:false,h24:true},
+      {r:"Sekretariat",n:"59 846 07 33",h:false,h24:false}
+    ],
+    mo:[
+      {r:"Centrala szpitala",n:"59 846 07 00",h:false,h24:true}
+    ],
+    caps:[
+      {t:"Koronarografia",y:true},{t:"PCI",y:true},
+      {t:"Elektrofizjologia",y:true},{t:"Echo",y:true}
+    ],
+    tags:["pci"],
+    sios:null
+  },
+  {
+    id:5, city:"Toruń", s:"sr", glow:"glow-r",
+    name:"SSM Kopernika — Pracownia Hemodynamiczna",
+    addr:"ul. Batorego 17/19, 87-100 Toruń",
+    url:"https://med.torun.pl", ul:"med.torun.pl",
+    tr:{m:"LPR",t:"~45 min",r:"~1h 45min",icon:"🚁"},
+    mapXY:{x:36,y:20}, dist:150, maxDist:170,
+    ph:[
+      {r:"Oddział Kardiologii",n:"56 655 75 30",h:true,h24:true},
+      {r:"Oddział Kardiologii (alt.)",n:"56 610 02 45",h:false,h24:true}
+    ],
+    mo:[],
+    caps:[
+      {t:"Dyżur 24h PCI",y:true},{t:"Koronarografia",y:true},{t:"PCI",y:true},
+      {t:"Teletransmisja EKG",y:true}
+    ],
+    tags:["pci"],
+    sios:null
+  },
+  {
+    id:6, city:"Gdańsk", s:"sr", glow:"glow-r",
+    name:"UCK — I Klinika Kardiologii",
+    addr:"ul. Smoluchowskiego 17, 80-214 Gdańsk",
+    url:"https://uck.pl", ul:"uck.pl",
+    tr:{m:"LPR",t:"~50 min",r:"~2h",icon:"🚁"},
+    mapXY:{x:36,y:8}, dist:170, maxDist:170,
+    ph:[
+      {r:"Pracownia Kardioangiologii Inwazyjnej",n:"58 584 47 90",h:true,h24:true},
+      {r:"Rejestracja na koronarografię",n:"58 584 63 97",h:false,h24:false},
+      {r:"Sekretariat I Kliniki Kardiologii",n:"58 584 47 10",h:false,h24:false},
+      {r:"KOR (SOR)",n:"58 349 37 84",h:false,h24:true}
+    ],
+    mo:[
+      {r:"Sekretariat medyczny",n:"58 584 47 27",h:false,h24:false},
+      {r:"Centrala UCK",n:"58 349 20 00",h:false,h24:true}
+    ],
+    caps:[
+      {t:"PCI",y:true},{t:"Koronarografia",y:true},
+      {t:"Transplantacja serca",y:true},{t:"Badania kliniczne",y:true}
+    ],
+    tags:["pci"],
+    sios:null
+  }
+];
+
+const CHOJ = {x: 27.1, y: 13.0};
+const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+</script>
+
+<!-- Shared application logic -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

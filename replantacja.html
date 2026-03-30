@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Replantacja — SOR Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <div class="tb-logo">SOR</div>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Replantacja / Mikrochirurgia
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="openCmd()" title="Szybkie wyszukiwanie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="tb-btn" onclick="printAll()" title="Drukuj wszystko">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<!-- Command palette -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCmd()">
+  <div class="cmd-box">
+    <input class="cmd-input" id="cmdInput" placeholder="Szukaj ośrodka, miasta, możliwości..." oninput="filterCmd()">
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> nawigacja</span>
+      <span><kbd>Enter</kbd> przejdź</span>
+      <span><kbd>Esc</kbd> zamknij</span>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+
+  <div class="sbar">
+    <input type="text" id="search" placeholder="Szukaj ośrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj ośrodka">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </div>
+
+  <div class="flt">
+    <span class="chip on" data-f="all" onclick="setChip(this)">Wszystkie</span>
+    <span class="chip" data-f="fessh" onclick="setChip(this)">FESSH</span>
+    <span class="chip" data-f="dzieci" onclick="setChip(this)">Dzieci</span>
+    <span class="slbl">sortowanie: odległość od Chojnic</span>
+  </div>
+
+  <div class="grid" id="grid">
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl/pl/replantacje/" target="_blank" rel="noopener">Grafik dyżurów</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    Dane z ptchr.pl + web search 2026-03-30 · Codziennie dyżuruje JEDEN ośrodek — sprawdź grafik na lpr.com.pl/pl/replantacje/ · <span onclick="showToast('1-12: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
+    <br>
+    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
+  </div>
+
+</div>
+
+<!-- DATA -->
+<script>
+const D = [
+  {
+    id: 1,
+    city: "Gdańsk",
+    s: "sg",
+    glow: "",
+    name: "Copernicus — Klinika Ortopedii i Traumatologii GUMed",
+    addr: "ul. Nowe Ogrody 1-6, 80-803 Gdańsk",
+    url: "https://copernicus.gda.pl",
+    ul: "copernicus.gda.pl",
+    tr: { m: "Helikopter", t: "~50 min", r: "~2h", icon: "🚁" },
+    mapXY: { x: 36, y: 8 },
+    dist: 170,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie replantacji (prof. Mazurek)", n: "606 620 546", h: true, h24: true },
+      { r: "Sekretariat Kliniki Ortopedii", n: "58 764 02 10", h: false, h24: false },
+      { r: "Post pielęgniarski", n: "58 764 02 30", h: false, h24: true }
+    ],
+    mo: [
+      { r: "Centrala Copernicus (Kopernika)", n: "58 764 01 00", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Jedyny na Pomorzu", y: true },
+      { t: "Certyfikat FESSH HTC", y: true },
+      { t: "Replantacje 24h", y: true },
+      { t: "Mikrochirurgia", y: true },
+      { t: "Najbliższy", y: true }
+    ],
+    tags: ["fessh"],
+    sios: null
+  },
+  {
+    id: 2,
+    city: "Elbląg",
+    s: "sa",
+    glow: "",
+    name: "Elbląski Szpital Specjalistyczny — Chirurgia Ręki",
+    addr: "ul. Komeńskiego 35, Elbląg",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Helikopter", t: "~1h", r: "~2h 30min", icon: "🚁" },
+    mapXY: { x: 42, y: 10 },
+    dist: 200,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie replantacji (dr Kulmaczewski)", n: "604 420 790", h: true, h24: true },
+      { r: "Izba Przyjęć", n: "55 239 44 44", h: false, h24: true }
+    ],
+    mo: [
+      { r: "Blok operacyjny", n: "55 239 44 32", h: false, h24: true }
+    ],
+    caps: [
+      { t: "Chirurgia ręki", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 3,
+    city: "Poznań",
+    s: "sa",
+    glow: "",
+    name: "Klinika Traumatologii, Ortopedii i Chirurgii Ręki UM (Degi)",
+    addr: "Poznań",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Helikopter", t: "~1h 10min", r: "~2h 45min", icon: "🚁" },
+    mapXY: { x: 22, y: 26 },
+    dist: 230,
+    maxDist: 600,
+    ph: [
+      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "604 953 973", h: true, h24: true },
+      { r: "SOR / Izba Przyjęć", n: "61 831 03 69", h: false, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Chirurgia ręki", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 4,
+    city: "Szczecin",
+    s: "sr",
+    glow: "",
+    name: "Klinika Chirurgii Ogólnej i Ręki PUM",
+    addr: "Szczecin",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Helikopter", t: "~1h 20min", r: "~3h 30min", icon: "🚁" },
+    mapXY: { x: 8, y: 14 },
+    dist: 300,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie (dr Walaszek)", n: "501 557 455", h: true, h24: true },
+      { r: "Zgłoszenie (dr Giżewska)", n: "609 691 636", h: true, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Chirurgia ręki", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 5,
+    city: "Otwock",
+    s: "sr",
+    glow: "",
+    name: "SPSK im. Grucy — Ortopedia Dziecięca",
+    addr: "Otwock",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~1h 30min", r: "~4h", icon: "✈️" },
+    mapXY: { x: 46, y: 30 },
+    dist: 350,
+    maxDist: 600,
+    ph: [
+      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "882 164 732", h: true, h24: true },
+      { r: "Izba Przyjęć", n: "22 788 56 74", h: false, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Ortopedia dziecięca", y: true },
+      { t: "Replantacja u dzieci", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: ["dzieci"],
+    sios: null
+  },
+  {
+    id: 6,
+    city: "Trzebnica",
+    s: "sr",
+    glow: "",
+    name: "Szpital Św. Jadwigi Śl. — Chirurgia Plastyczna i Ręki",
+    addr: "Trzebnica",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~1h 40min", r: "~4h 30min", icon: "✈️" },
+    mapXY: { x: 22, y: 42 },
+    dist: 400,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie replantacji", n: "71 312 06 08", h: true, h24: true },
+      { r: "Linia 2", n: "71 312 09 20", h: false, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Chirurgia plastyczna i ręki", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 7,
+    city: "Wrocław",
+    s: "sr",
+    glow: "",
+    name: "WSS — Chirurgia Urazowo-Ortopedyczna",
+    addr: "Wrocław",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~1h 40min", r: "~4h 30min", icon: "✈️" },
+    mapXY: { x: 20, y: 40 },
+    dist: 400,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie replantacji (linia 1)", n: "601 708 931", h: true, h24: true },
+      { r: "Zgłoszenie replantacji (linia 2)", n: "609 705 854", h: true, h24: true },
+      { r: "Lekarz dyżurny", n: "71 327 05 98", h: false, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Chirurgia urazowo-ortopedyczna", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 8,
+    city: "Chorzów",
+    s: "sr",
+    glow: "",
+    name: "Zespół Szpitali Miejskich — Chirurgia Dziecięca",
+    addr: "Chorzów",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~2h", r: "~5h", icon: "✈️" },
+    mapXY: { x: 30, y: 48 },
+    dist: 500,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie replantacji", n: "784 659 676", h: true, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Chirurgia dziecięca", y: true },
+      { t: "Replantacja u dzieci", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: ["dzieci"],
+    sios: null
+  },
+  {
+    id: 9,
+    city: "Kraków",
+    s: "sr",
+    glow: "",
+    name: "Małopolskie Centrum Oparzeniowo-Plastyczne (Rydygier)",
+    addr: "Kraków",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~2h", r: "~6h", icon: "✈️" },
+    mapXY: { x: 38, y: 48 },
+    dist: 600,
+    maxDist: 600,
+    ph: [
+      { r: "Telefon alarmowy (replantacja)", n: "501 431 430", h: true, h24: true },
+      { r: "Ordynator", n: "12 646 88 37", h: false, h24: false }
+    ],
+    mo: [],
+    caps: [
+      { t: "Centrum oparzeniowo-plastyczne", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 10,
+    city: "Kraków",
+    s: "sr",
+    glow: "",
+    name: "5 WSK — Ortopedia",
+    addr: "Kraków",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~2h", r: "~6h", icon: "✈️" },
+    mapXY: { x: 38, y: 48 },
+    dist: 600,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie (płk Nowak / lek. Maleta)", n: "510 756 318", h: true, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Ortopedia", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 11,
+    city: "Piekary Śl.",
+    s: "sr",
+    glow: "",
+    name: "Szpital Urazowy Daaba (dr hab. Szyluk)",
+    addr: "Piekary Śląskie",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~2h", r: "~5h 30min", icon: "✈️" },
+    mapXY: { x: 30, y: 48 },
+    dist: 500,
+    maxDist: 600,
+    ph: [
+      { r: "Zgłoszenie replantacji (dr hab. Szyluk)", n: "692 433 623", h: true, h24: true },
+      { r: "Izba Przyjęć", n: "32 393 43 00", h: false, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Chirurgia urazowa", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  },
+  {
+    id: 12,
+    city: "Białystok",
+    s: "sr",
+    glow: "",
+    name: "USK — Klinika Ortopedii i Chirurgii Ręki",
+    addr: "Białystok",
+    url: "https://ptchr.pl",
+    ul: "ptchr.pl",
+    tr: { m: "Samolot LPR", t: "~2h", r: "~5h", icon: "✈️" },
+    mapXY: { x: 56, y: 18 },
+    dist: 400,
+    maxDist: 600,
+    ph: [
+      { r: "Lekarz dyżurny (zgłoszenie replantacji)", n: "794 352 000", h: true, h24: true },
+      { r: "SOR", n: "85 831 83 17", h: false, h24: true }
+    ],
+    mo: [],
+    caps: [
+      { t: "Chirurgia ręki", y: true },
+      { t: "Serwis replantacyjny", y: true }
+    ],
+    tags: [],
+    sios: null
+  }
+];
+
+const CHOJ = { x: 27.1, y: 13.0 };
+const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+</script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Centrum Urazowe — SOR Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <div class="tb-logo">SOR</div>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Centrum Urazowe
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="openCmd()" title="Szybkie wyszukiwanie">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="tb-btn" onclick="printAll()" title="Drukuj wszystko">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<!-- Command palette -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCmd()">
+  <div class="cmd-box">
+    <input class="cmd-input" id="cmdInput" placeholder="Szukaj ośrodka, miasta, możliwości..." oninput="filterCmd()">
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> nawigacja</span>
+      <span><kbd>Enter</kbd> przejdź</span>
+      <span><kbd>Esc</kbd> zamknij</span>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+
+  <div class="sbar">
+    <input type="text" id="search" placeholder="Szukaj ośrodka...  ( / )" oninput="doFilter()" aria-label="Szukaj ośrodka">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  </div>
+
+  <div class="flt">
+    <span class="chip on" data-f="all" onclick="setChip(this)">Wszystkie</span>
+    <span class="chip" data-f="trombektomia" onclick="setChip(this)">Trombektomia</span>
+    <span class="chip" data-f="ladowisko" onclick="setChip(this)">Lądowisko</span>
+    <span class="slbl">sortowanie: czas dostawy</span>
+  </div>
+
+  <div class="grid" id="grid">
+    <!-- Cards are rendered dynamically by app.js render() -->
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    Dane z web search 2026-03-30 · Dostępność miejsc wymaga potwierdzenia telefonicznego · <span onclick="showToast('1-5: przejdź do karty · /: szukaj · ⌘K: paleta · Esc: wyczyść')">Skróty klawiszowe</span>
+    <br>
+    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
+  </div>
+
+</div>
+
+<!-- DATA — define BEFORE app.js -->
+<script>
+const D = [
+  {
+    id: 1,
+    city: "Bydgoszcz",
+    s: "sg",
+    glow: "",
+    name: "Centrum Urazowe — Szpital Jurasza (jedyne CU w kuj.-pom.)",
+    addr: "ul. Marii Skłodowskiej-Curie 9, 85-094 Bydgoszcz, woj. kujawsko-pomorskie",
+    url: "https://jurasza.umk.pl",
+    ul: "jurasza.umk.pl",
+    tr: { m: "🚁 LPR", t: "~30 min", r: "~1h 15min", icon: "🚁" },
+    mapXY: { x: 38.0, y: 20.0 },
+    dist: 100,
+    maxDist: 340,
+    ph: [
+      { r: "SOR (Klinika Med. Ratunkowej)", n: "52 585 42 22", h: true, h24: true, lvl: 1, src: "jurasza.umk.pl" },
+      { r: "SOR (alt.)", n: "52 585 43 33", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" },
+      { r: "Pediatryczna Izba Przyjęć", n: "52 585 43 42", h: false, h24: true, lvl: 2, src: "jurasza.umk.pl" }
+    ],
+    mo: [
+      { r: "Centrala szpitala", n: "52 585 40 00", h: false, h24: true, lvl: 3, src: "jurasza.umk.pl" },
+      { r: "Poradnie specjalistyczne", n: "52 511 25 11", h: false, h24: false, lvl: 3, src: "jurasza.umk.pl" }
+    ],
+    caps: [
+      { t: "Centrum Urazowe", y: true },
+      { t: "OIT (min. 2 stan.)", y: true },
+      { t: "Blok op. 24h", y: true },
+      { t: "Endoskopia 24h", y: true },
+      { t: "Neurochirurgia", y: true },
+      { t: "Ortopedia", y: true },
+      { t: "Chir. naczyniowa", y: true },
+      { t: "Trombektomia", y: true },
+      { t: "Kardiochirurgia", y: true },
+      { t: "Chir. robotyczna", y: true },
+      { t: "Lądowisko", y: true }
+    ],
+    tags: ["trombektomia", "ladowisko"],
+    sios: null,
+    priority: 1
+  },
+  {
+    id: 2,
+    city: "Gdańsk",
+    s: "sg",
+    glow: "",
+    name: "Centrum Urazowe — UCK (jedyne CU w pomorskim)",
+    addr: "CMI, ul. Smoluchowskiego 17, 80-214 Gdańsk, woj. pomorskie",
+    url: "https://uck.pl",
+    ul: "uck.pl",
+    tr: { m: "🚁 LPR", t: "~50 min", r: "~2h", icon: "🚁" },
+    mapXY: { x: 38.5, y: 11.0 },
+    dist: 170,
+    maxDist: 340,
+    ph: [
+      { r: "KOR (SOR) — linia 1", n: "58 349 37 84", h: true, h24: true, lvl: 1, src: "uck.pl" },
+      { r: "KOR (SOR) — linia 2", n: "58 349 37 94", h: false, h24: true, lvl: 2, src: "uck.pl" }
+    ],
+    mo: [
+      { r: "Centrala UCK", n: "58 349 20 00", h: false, h24: true, lvl: 3, src: "uck.pl" },
+      { r: "Sekretariat UCK", n: "58 584 40 00", h: false, h24: false, lvl: 3, src: "uck.pl" },
+      { r: "Rejestracja ogólna", n: "58 727 05 05", h: false, h24: false, lvl: 3, src: "uck.pl" }
+    ],
+    caps: [
+      { t: "Centrum Urazowe", y: true },
+      { t: "TK, MR 24h", y: true },
+      { t: "Neurochirurgia (śródop. MRI)", y: true },
+      { t: "Ortopedia", y: true },
+      { t: "Chir. ogólna", y: true },
+      { t: "Chir. naczyniowa", y: true },
+      { t: "OIT", y: true },
+      { t: "Lądowisko", y: true }
+    ],
+    tags: ["ladowisko"],
+    sios: null,
+    priority: 2
+  },
+  {
+    id: 3,
+    city: "Olsztyn",
+    s: "sa",
+    glow: "",
+    name: "Centrum Urazowe — Woj. Szpital Specjalistyczny",
+    addr: "ul. Żołnierska 18, 10-561 Olsztyn, woj. warmińsko-mazurskie",
+    url: "https://wss.olsztyn.pl",
+    ul: "wss.olsztyn.pl",
+    tr: { m: "🚁 LPR", t: "~1h 10min", r: "~3h", icon: "🚁" },
+    mapXY: { x: 50.0, y: 14.0 },
+    dist: 250,
+    maxDist: 340,
+    ph: [
+      { r: "SOR — segregacja medyczna", n: "89 538 65 11", h: true, h24: true, lvl: 1, src: "wss.olsztyn.pl" },
+      { r: "SOR — segregacja (alt.)", n: "89 538 64 32", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "SOR — gabinet lekarski", n: "89 538 65 88", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" },
+      { r: "Koordynator SOR", n: "89 538 62 89", h: false, h24: true, lvl: 2, src: "wss.olsztyn.pl" }
+    ],
+    mo: [
+      { r: "Pielęgniarka oddziałowa SOR", n: "89 538 65 82", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Neurochirurgia (ordynator)", n: "89 538 62 46", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Neurochirurgia — sekretariat", n: "89 538 65 44", h: false, h24: false, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Neurochirurgia — gab. lekarski", n: "89 538 64 92", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Neurochirurgia — post piel.", n: "89 538 62 51", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Centrala szpitala", n: "89 538 63 56", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" },
+      { r: "Centrala (alt.)", n: "89 538 65 98", h: false, h24: true, lvl: 3, src: "wss.olsztyn.pl" }
+    ],
+    caps: [
+      { t: "Centrum Urazowe", y: true },
+      { t: "Neurochirurgia", y: true },
+      { t: "Centrum udarowe", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 3
+  },
+  {
+    id: 4,
+    city: "Poznań",
+    s: "sa",
+    glow: "",
+    name: "Centrum Urazowe — Szpital Strusia",
+    addr: "ul. Szwajcarska 3, 61-285 Poznań, woj. wielkopolskie",
+    url: "https://szpital-strusia.poznan.pl",
+    ul: "szpital-strusia.poznan.pl",
+    tr: { m: "🚁 LPR", t: "~1h 10min", r: "~3h", icon: "🚁" },
+    mapXY: { x: 35.5, y: 33.0 },
+    dist: 230,
+    maxDist: 340,
+    ph: [
+      { r: "SOR", n: "61 873 93 46", h: true, h24: true, lvl: 1, src: "placowki.mp.pl" },
+      { r: "SOR (alt.)", n: "61 873 94 32", h: false, h24: true, lvl: 2, src: "placowki.mp.pl" }
+    ],
+    mo: [
+      { r: "Centrala szpitala", n: "61 873 90 00", h: false, h24: true, lvl: 3, src: "szpital-strusia.poznan.pl" }
+    ],
+    caps: [
+      { t: "Centrum Urazowe", y: true },
+      { t: "Neurochirurgia", y: true },
+      { t: "Chir. ogólna MIS", y: true },
+      { t: "Neurologia + oddz. udarowy", y: true }
+    ],
+    tags: [],
+    sios: null,
+    priority: 4
+  },
+  {
+    id: 5,
+    city: "Szczecin",
+    s: "sa",
+    glow: "",
+    name: "Centrum Urazowe — USK1 im. Sokołowskiego PUM",
+    addr: "ul. Unii Lubelskiej 1, 71-252 Szczecin, woj. zachodniopomorskie",
+    url: "https://usk1.szczecin.pl",
+    ul: "usk1.szczecin.pl",
+    tr: { m: "🚁 LPR", t: "~1h 20min", r: "~4h", icon: "🚁" },
+    mapXY: { x: 16.5, y: 13.5 },
+    dist: 340,
+    maxDist: 340,
+    ph: [
+      { r: "SOR", n: "91 425 30 10", h: true, h24: true, lvl: 1, src: "usk1.szczecin.pl" },
+      { r: "Centrum Urazowe (Klinika AIT)", n: "91 425 33 78", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" },
+      { r: "CU — post pielęgniarski", n: "91 425 35 83", h: false, h24: true, lvl: 2, src: "usk1.szczecin.pl" }
+    ],
+    mo: [
+      { r: "CU — sekretariat", n: "91 425 35 81", h: false, h24: false, lvl: 3, src: "usk1.szczecin.pl" },
+      { r: "Centrala szpitala", n: "91 425 30 00", h: false, h24: true, lvl: 3, src: "usk1.szczecin.pl" }
+    ],
+    caps: [
+      { t: "Centrum Urazowe", y: true },
+      { t: "Dorośli i dzieci", y: true },
+      { t: "Neurochirurgia", y: true },
+      { t: "Chir. ogólna + naczyniowa", y: true },
+      { t: "Trombektomia", y: true },
+      { t: "Lądowisko", y: true }
+    ],
+    tags: ["trombektomia", "ladowisko"],
+    sios: null,
+    priority: 5
+  }
+];
+
+const CHOJ = { x: 27.1, y: 13.0 };
+const PL_PATH = "M2,12 C4,6 10,2 18,2 C24,1 32,2 38,3 C44,3 50,5 56,4 C62,3 68,5 72,8 C76,12 78,20 76,28 C75,34 76,40 76,46 C75,52 72,57 66,58 C60,58 54,56 48,58 C42,58 36,56 30,58 C24,58 18,54 14,50 C8,44 4,38 2,32 C1,26 1,18 2,12Z";
+</script>
+
+<!-- Shared application logic -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
