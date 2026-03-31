@@ -16,6 +16,7 @@
 let af = 'all', cs = {};
 const nt = () => { const h = new Date().getHours(); return h >= 22 || h < 6 };
 const nrm = s => s.replace(/[ąćęłńóśźż]/g, m => ({ą:'a',ć:'c',ę:'e',ł:'l',ń:'n',ó:'o',ś:'s',ź:'z',ż:'z'})[m] || m);
+const isMobile = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth <= 768);
 
 /* ═══════════════════════════════════════════════
    MINI MAP SVG GENERATOR
@@ -48,9 +49,12 @@ function render() {
       const hr = p.h ? ' hero' : '';
       const st = cs[p.n] ? `<span class="phst">dzwoniono ${cs[p.n]}</span>` : '';
       const h24dot = (p.h24 !== undefined ? p.h24 : true) ? '<span class="h24-dot" title="24h"></span>' : '';
+      const raw = p.n.replace(/\s+/g, '');
+      const telHref = 'tel:+48' + raw;
       return `<div class="ph${hr}${dim}" onclick="copyP('${p.n.replace(/'/g, "\\'")}',this,event)" title="Kliknij aby skopiować">
         <span class="phr">${h24dot}${p.r}</span>
-        <span class="phn">${p.n}</span>${st}
+        <a href="${telHref}" class="phn ph-tel" onclick="event.stopPropagation()">${p.n}</a>
+        <span class="phn ph-copy">${p.n}</span>${st}
       </div>`;
     }).join('');
 
@@ -130,6 +134,17 @@ function doFilter() {
   });
 }
 
+function markCalled(n, el) {
+  const now = new Date();
+  cs[n] = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+  let ex = el.querySelector('.phst');
+  if (ex) ex.remove();
+  const s = document.createElement('span');
+  s.className = 'phst';
+  s.textContent = 'dzwoniono ' + cs[n];
+  el.appendChild(s);
+}
+
 function copyP(n, el, evt) {
   /* Ripple effect */
   const rect = el.getBoundingClientRect();
@@ -142,14 +157,7 @@ function copyP(n, el, evt) {
 
   navigator.clipboard.writeText(n.replace(/\s+/g, '')).catch(() => {});
   showToast('Skopiowano: ' + n);
-  const now = new Date();
-  cs[n] = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-  let ex = el.querySelector('.phst');
-  if (ex) ex.remove();
-  const s = document.createElement('span');
-  s.className = 'phst';
-  s.textContent = 'dzwoniono ' + cs[n];
-  el.appendChild(s);
+  markCalled(n, el);
 }
 
 function copyN(raw, display) {
@@ -354,6 +362,18 @@ document.addEventListener('keydown', e => {
   else if (nt()) document.body.setAttribute('data-theme', 'dark');
   if (typeof D !== 'undefined' && document.getElementById('grid')) render();
   onScroll();
+
+  /* On mobile: mark "dzwoniono" when user taps tel: link */
+  document.addEventListener('click', e => {
+    const tel = e.target.closest('a.ph-tel');
+    if (!tel) return;
+    const ph = tel.closest('.ph');
+    if (ph) {
+      const display = tel.textContent.trim();
+      showToast('Dzwonię: ' + display);
+      markCalled(display, ph);
+    }
+  });
 })();
 
 if ('serviceWorker' in navigator) {

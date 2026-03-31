@@ -18,3 +18,6 @@ node_modules/
 
 # Environment
 .env
+
+# Local Netlify folder
+.netlify
