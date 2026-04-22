@@ -142,7 +142,7 @@ al. Jana Pawła II 50, 80-001 Gdańsk-Zaspa
 | 5 WSK Kraków | Kraków | **Dyżurka lek.: 12 63 08 266, Dyż. lekarz mob.: 729 317 568** ✅ | Regionalne centrum VV-ECMO, 3x Cardiohelp, email: KITIA@5wszk.com.pl |
 | ECMO dla Wielkopolski (Poznań) | Poznań | kontakt@ecmo.pl | Zespół wyjazdowy, ecmo.pl |
 | PIM MSWiA Warszawa | Warszawa | **47 722 18 41 (OIT 2 — ECMO)** ⚠️ | Mazowieckie Centrum Terapii Pozaustrojowych i Leczenia Hipotermii |
-| SPSK-1 Lublin | Lublin | ❓ DO UZUPEŁNIENIA | Ponadregionalny Ośrodek ECMO, 6 aparatów, największe doświadczenie w PL |
+| USK1 (SPSK-1) Lublin | Lublin | **Sekr: 81 532 27 13, Dyżurka piel.: 81 534 02 87, Lekarz dyżurny: 81 534 97 95** ✅ | Ponadregionalny Ośrodek ECMO, 6 aparatów, największe doświadczenie w PL. al. Solidarności 8 |
 
 **Uwaga:** Dla Chojnic realistycznie — **Jurasza Bydgoszcz** (mobilny zespół może przyjechać!) lub **UCK Gdańsk**.
 
@@ -168,7 +168,7 @@ al. Jana Pawła II 50, 80-001 Gdańsk-Zaspa
 | Copernicus Gdańsk (dzieci) | ✅ **KOMPLET** |
 | 5 WSK Kraków | ✅ **UZUPEŁNIONE 2026-03-30** — dyżurka + lekarz dyżurny mob. |
 | PIM MSWiA Warszawa | ✅ **UZUPEŁNIONE 2026-03-30** — tel ECMO OIT 2 |
-| SPSK-1 Lublin | ❓ Brak danych kontaktowych online |
+| USK1 (SPSK-1) Lublin | ✅ **UZUPEŁNIONE 2026-04-10** — Sekr: 81 532 27 13, Dyżurka piel.: 81 534 02 87, Lekarz dyżurny/alarmowy: 81 534 97 95 |
 
 ### Rekomendacja
 Zadzwonić na UCK Gdańsk (centrala 58 349 20 00) i poprosić o:
@@ -200,4 +200,4 @@ Zadzwonić na UCK Gdańsk (centrala 58 349 20 00) i poprosić o:
 
 ---
 
-*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali. Numery dyżurnych wymagają uzupełnienia przez kontakt telefoniczny.*
+*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali. Numery dyżurnych wymagają uzupełnienia przez kontakt telefoniczny. Ostatnia aktualizacja: 2026-04-10.*

@@ -26,7 +26,9 @@ woj. kujawsko-pomorskie
 | Sekretariat oddziału | 52 370 92 13 | szpital.bydgoszcz.pl ⚠️ |
 | Koordynator (dr Szułczyński) | 52 370 92 80 | szpital.bydgoszcz.pl ⚠️ |
 | Poradnia noworodkowa/wcześniaków | 52 370 92 85 | szpital.bydgoszcz.pl ⚠️ |
-| **Zespół Transportu Noworodków** | **DO UZUPEŁNIENIA** | nie publikowany online |
+| **Zespół Transportu Noworodków (karetka N)** | **DO UZUPEŁNIENIA ❓** | Szpital posiada ambulans N (najnowocześniejszy w PL) — nr nie publikowany. Dzwonić: 52 370 94 00 |
+
+**UWAGA (2026-04-10):** Szpital Warmińskiego funkcjonuje teraz jako **Szpital Kliniczny im. dr. E. Warmińskiego Politechniki Bydgoskiej — SPZOZ**. Tel. centrala: 52 370 94 00. Strona: szpital.pbs.edu.pl
 
 ### Transport z Chojnic
 - Helikopter: ~30 min
@@ -122,7 +124,7 @@ ul. Chodkiewicza 44, 85-667 Bydgoszcz
 | Warmińskiego Bydgoszcz | Zespół transportu noworodków | ❓ |
 | UCK Gdańsk | ~~Nr OITN~~ UZUPEŁNIONO | ✅ 58 584 41 52 |
 | UCK Gdańsk | Zespół transportu noworodków | ❓ |
-| Copernicus Gdańsk | Nr oddziału neonatologii (bezpośredni) | ❓ dzwonić na centralę 58 768 40 00 |
+| Copernicus Gdańsk | Nr oddziału neonatologii (bezpośredni) | ❓ dzwonić na centralę 58 768 40 00 (szpital Zaspa) lub email sekretariat.zaspa@copernicus.gda.pl |
 | Jurasza Bydgoszcz | Potwierdzić czy ma III st. neonatologii | ❓ IP Położnicza: 52 365 52 14 |
 
 ### Rekomendacja

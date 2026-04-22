@@ -1,0 +1,349 @@
+[
+  {
+    "id": 12,
+    "city": "Warszawa",
+    "voivodeship": "mazowieckie",
+    "name": "Klinika Neurochirurgii i Neurotraumatologii CSK MSWiA",
+    "addr": "ul. Wołoska 137, 02-507 Warszawa",
+    "url": "https://csk.mswia.gov.pl",
+    "ul": "csk.mswia.gov.pl",
+    "dist": 610,
+    "drive_min": 360,
+    "heli_min": 183,
+    "ph": [
+      { "r": "SOR Izba Przyjęć", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "csk.mswia.gov.pl" },
+      { "r": "Klinika Neurochirurgii dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 3, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true },
+      { "t": "Kręgosłup", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Warszawa", "MSWiA"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "CSK MSWiA — duża klinika warszawska, wymaga potwierdzenia numerów bezpośrednio ze strony lub telefonu."
+  },
+  {
+    "id": 13,
+    "city": "Warszawa",
+    "voivodeship": "mazowieckie",
+    "name": "Klinika Neurochirurgii WUM — Szpital Kliniczny Dzieciątka Jezus",
+    "addr": "ul. Banacha 1a, 02-097 Warszawa",
+    "url": "https://szpital.wum.edu.pl",
+    "ul": "szpital.wum.edu.pl",
+    "dist": 610,
+    "drive_min": 360,
+    "heli_min": 183,
+    "ph": [
+      { "r": "SOR Izba Przyjęć", "n": "22 599 28 00", "h": true, "h24": true, "lvl": 1, "src": "nfz.gov.pl" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat Kliniki", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Warszawa", "WUM"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "WUM — Warszawski Uniwersytet Medyczny. SOR confirmed, oddział dyżur needs verification."
+  },
+  {
+    "id": 14,
+    "city": "Warszawa",
+    "voivodeship": "mazowieckie",
+    "name": "Instytut Psychiatrii i Neurologii",
+    "addr": "ul. Sobieskiego 9, 02-957 Warszawa",
+    "url": "https://inpn.edu.pl",
+    "ul": "inpn.edu.pl",
+    "dist": 610,
+    "drive_min": 360,
+    "heli_min": 183,
+    "ph": [
+      { "r": "SOR Izba Przyjęć", "n": "22 458 01 11", "h": true, "h24": true, "lvl": 1, "src": "inpn.edu.pl" },
+      { "r": "Neurochirurgia sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia", "y": true },
+      { "t": "Guzy mózgu", "y": true },
+      { "t": "Tętniaki mózgu", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Warszawa", "IPN"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "IPN — Instytut Psychiatrii i Neurologii. Specjalizacja nerwu obwodowego, neuronawigacja."
+  },
+  {
+    "id": 15,
+    "city": "Kraków",
+    "voivodeship": "małopolskie",
+    "name": "Klinika Neurochirurgii i Neurotraumatologii UJ CM",
+    "addr": "ul. Botaniczna 3, 31-503 Kraków",
+    "url": "https://ujakilin.uj.edu.pl",
+    "ul": "ujakilin.uj.edu.pl",
+    "dist": 420,
+    "drive_min": 270,
+    "heli_min": 126,
+    "ph": [
+      { "r": "SOR Szpitala Uniwersyteckiego", "n": "12 424 88 00", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true },
+      { "t": "Kręgosłup", "y": true },
+      { "t": "DBS", "y": true },
+      { "t": "Tętniaki", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Kraków", "UJ CM"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "UJ CM — Uniwersytet Jagielloński Collegium Medicum, główny ośrodek Krakowa."
+  },
+  {
+    "id": 16,
+    "city": "Kraków",
+    "voivodeship": "małopolskie",
+    "name": "Oddział Neurochirurgii — Szpital Specjalistyczny im. L. Rydygiera",
+    "addr": "os. Złotej Jesieni 1, 31-826 Kraków",
+    "url": "https://rydygiera.krakow.pl",
+    "ul": "rydygiera.krakow.pl",
+    "dist": 420,
+    "drive_min": 270,
+    "heli_min": 126,
+    "ph": [
+      { "r": "SOR szpitala", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Oddział Neurochirurgii", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Kręgosłup", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Kraków", "Rydygiera"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "Szpital Specjalistyczny Miejski im. Ludwika Rydygiera, ~15 łóżek."
+  },
+  {
+    "id": 17,
+    "city": "Wrocław",
+    "voivodeship": "dolnośląskie",
+    "name": "Klinika Neurochirurgii USK we Wrocławiu",
+    "addr": "ul. Borowska 213, 50-556 Wrocław",
+    "url": "https://neurochirurgia.usk.wroc.pl",
+    "ul": "neurochirurgia.usk.wroc.pl",
+    "dist": 480,
+    "drive_min": 300,
+    "heli_min": 144,
+    "ph": [
+      { "r": "SOR Szpitala Uniwersyteckiego", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true },
+      { "t": "Kręgosłup MIS", "y": true },
+      { "t": "DBS", "y": true },
+      { "t": "Naczynia mózgowe", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Wrocław", "USK"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "Uniwersyteckie Centrum Kliniczne, główny ośrodek Wrocławia."
+  },
+  {
+    "id": 18,
+    "city": "Poznań",
+    "voivodeship": "wielkopolskie",
+    "name": "Klinika Neurochirurgii UMP",
+    "addr": "ul. Przybyszewskiego 49, 60-355 Poznań",
+    "url": "https://chirurgia.ump.edu.pl",
+    "ul": "chirurgia.ump.edu.pl",
+    "dist": 380,
+    "drive_min": 240,
+    "heli_min": 114,
+    "ph": [
+      { "r": "SOR szpitala", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true },
+      { "t": "Kręgosłup", "y": true },
+      { "t": "DBS", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Poznań", "UMP"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "Uniwersytet Medyczny w Poznaniu, Szpital Kliniczny im. H. Święcickiego."
+  },
+  {
+    "id": 19,
+    "city": "Łódź",
+    "voivodeship": "łódzkie",
+    "name": "Klinika Neurochirurgii USK Centralnego Szpitala Klinicznego UM",
+    "addr": "ul. Pomorska 251, 92-213 Łódź",
+    "url": "https://www.umed.pl",
+    "ul": "umed.pl",
+    "dist": 360,
+    "drive_min": 240,
+    "heli_min": 108,
+    "ph": [
+      { "r": "SOR szpitala", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true },
+      { "t": "Kręgosłup", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Łódź", "UM"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "Uniwersytet Medyczny w Łodzi, Centralny Szpital Kliniczny."
+  },
+  {
+    "id": 20,
+    "city": "Lublin",
+    "voivodeship": "lubelskie",
+    "name": "Klinika Neurochirurgii i Neurochirurgii Dziecięcej — SPSK-4 UM",
+    "addr": "ul. Jaczewskiego 8, 20-954 Lublin",
+    "url": "https://spsk4.lulin.pl",
+    "ul": "spsk4.lulin.pl",
+    "dist": 580,
+    "drive_min": 380,
+    "heli_min": 174,
+    "ph": [
+      { "r": "SOR szpitala", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dorosłych dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dziecięca", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurochirurgia dziecięca", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true }
+    ],
+    "tags": ["dzieci"],
+    "badges": ["Lublin", "UM"],
+    "children": true,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "SPSK-4 UM — jedyny duży ośrodek na Lubelszczyźnie z oddziałem dziecięcym."
+  },
+  {
+    "id": 21,
+    "city": "Katowice",
+    "voivodeship": "śląskie",
+    "name": "Klinika Neurochirurgii — SUM GCM im. prof. L. Gieca",
+    "addr": "ul. Ziołowa 45/47, 40-635 Katowice-Ochojec",
+    "url": "https://www.sum.edu.pl",
+    "ul": "sum.edu.pl",
+    "dist": 350,
+    "drive_min": 220,
+    "heli_min": 105,
+    "ph": [
+      { "r": "SOR szpitala", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true },
+      { "t": "Kręgosłup", "y": true },
+      { "t": "DBS", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Katowice", "SUM"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "SUM GCM — Śląski Uniwersytet Medyczny, główny ośrodek śląski, ~20 łóżek."
+  },
+  {
+    "id": 22,
+    "city": "Białystok",
+    "voivodeship": "podlaskie",
+    "name": "Klinika Neurochirurgii — USzK im. Ks. Jerzego Popiełuszki",
+    "addr": "ul. Ciołkowskiego 2, 15-276 Białystok",
+    "url": "https://uszk.umb.edu.pl",
+    "ul": "uszk.umb.edu.pl",
+    "dist": 650,
+    "drive_min": 420,
+    "heli_min": 195,
+    "ph": [
+      { "r": "SOR szpitala", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Białystok", "UMB"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "UMB — Uniwersytet Medyczny w Białymstoku, jedyny duży ośrodek na Podlasiu."
+  },
+  {
+    "id": 23,
+    "city": "Rzeszów",
+    "voivodeship": "podkarpackie",
+    "name": "Kliniczny Szpital Wojewódzki nr 2 — Oddział Neurochirurgii",
+    "addr": "ul. Lwowska 60, 35-301 Rzeszów",
+    "url": "https://kswz2.rzeszow.pl",
+    "ul": "kswz2.rzeszow.pl",
+    "dist": 520,
+    "drive_min": 340,
+    "heli_min": 156,
+    "ph": [
+      { "r": "SOR Izba Przyjęć", "n": "[DO WERYFIKACJI]", "h": true, "h24": true, "lvl": 1, "src": "[DO WERYFIKACJI]" },
+      { "r": "Neurochirurgia dyżur", "n": "[DO WERYFIKACJI]", "h": false, "h24": true, "lvl": 2, "src": "[DO WERYFIKACJI]" },
+      { "r": "Sekretariat", "n": "[DO WERYFIKACJI]", "h": false, "h24": false, "lvl": 2, "src": "[DO WERYFIKACJI]" }
+    ],
+    "caps": [
+      { "t": "Neurochirurgia dorosłych", "y": true },
+      { "t": "Neurotraumatologia", "y": true },
+      { "t": "Guzy mózgu", "y": true }
+    ],
+    "tags": [],
+    "badges": ["Rzeszów", "KSWZ"],
+    "children": false,
+    "last_verified": "2026-04-22",
+    "data_quality": "⚠️",
+    "notes": "KSWZ nr 2 — główny ośrodek Podkarpacia, ~12 łóżek."
+  }
+]

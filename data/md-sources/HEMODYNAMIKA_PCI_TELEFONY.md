@@ -158,7 +158,7 @@ ul. Rydygiera 15/17, 86-300 Grudziądz
 |---|---|---|
 | **Informacja szpitalna (pn-pt 7:00-14:35)** | **56 641 44 44** | bieganski.org ✅ |
 | **SOR (po 14:35 i weekendy)** | **56 641 40 00** | bieganski.org ✅ |
-| **Dyżurny hemodynamista** | **❓ DO UZUPEŁNIENIA** | nie publikowany online |
+| **Dyżurny hemodynamista** | **❓ DO UZUPEŁNIENIA** | nie publikowany — dzwonić na SOR 56 641 40 00 |
 
 **E-mail:** sekretariat.dyrekcja@szpital.grudziadz.net
 
@@ -178,6 +178,36 @@ ul. Rydygiera 15/17, 86-300 Grudziądz
 
 ---
 
+## 4a. TORUŃ — WSZ Rydygiera (~150 km)
+
+**Pracownia Kardiologii Inwazyjnej**
+Oddział Kliniczny Kardiologii i Intensywnej Terapii Kardiologicznej
+Regionalne Centrum Kardiologii — Wojewódzki Szpital Zespolony im. L. Rydygiera
+ul. Św. Józefa 53-59, 87-100 Toruń
+
+**Źródła:** wszz.torun.pl (strona pracowni kardiologii inwazyjnej — web_fetch) (znaleziono: 2026-04-10)
+
+| Funkcja | Numer | Źródło |
+|---|---|---|
+| **Gabinet lekarski / koordynator (dr G. Skonieczny)** | **56 679 36 11** | wszz.torun.pl ✅ (znaleziono: 2026-04-10) |
+| **Pracownia Kardiologii Inwazyjnej** | **56 679 36 15** | wszz.torun.pl ✅ (znaleziono: 2026-04-10) |
+| Sekretariat pracowni | 56 679 36 12 | wszz.torun.pl ✅ (znaleziono: 2026-04-10) |
+| Stanowisko pielęgniarek | 56 679 36 14 | wszz.torun.pl ✅ (znaleziono: 2026-04-10) |
+| SOR szpitala | 56 679 31 00 | wszz.torun.pl ✅ |
+
+### Możliwości (ze strony szpitala — potwierdzone)
+- **Dyżur hemodynamiczny 24h od 2005 roku** ✅ (potwierdzone na stronie pracowni)
+- Koronarografia, PCI (angioplastyka wieńcowa)
+- FFR, IVUS, OCT
+- Teletransmisja EKG z ZRM
+- Regionalne Centrum Kardiologii — obsługuje region
+
+### Transport z Chojnic
+- Helikopter: ~45 min
+- Droga: ~1h 45min
+
+---
+
 ## 5. TORUŃ — Specjalistyczny Szpital Miejski (~150 km)
 
 **Pracownia Hemodynamiczna**
@@ -191,7 +221,8 @@ ul. Batorego 17/19, 87-100 Toruń
 |---|---|---|
 | **Oddział Kardiologii** | **56 655 75 30** | med.torun.pl ⚠️ |
 | Oddział Kardiologii (alt.) | 56 610 02 45 | med.torun.pl ⚠️ |
-| **Dyżurny hemodynamista** | **❓ DO UZUPEŁNIENIA** | nie publikowany online |
+| **Dyżurny lekarz (pracownia hemodynamiki)** | **56 610 02 05** | aisn.pl ✅ (znaleziono: 2026-04-10) |
+| Sekretariat medyczny hemodynamiki | 56 610 02 75 lub 56 610 02 45 | aisn.pl ✅ (znaleziono: 2026-04-10) |
 
 **E-mail:** hemodynamika@med.torun.pl
 
@@ -247,8 +278,9 @@ ul. Hubalczyków 1, 76-200 Słupsk
 | Jurasza Bydgoszcz | ❓ Nr komórkowy dyżurnego hemodynamisty |
 | 10 WSK Bydgoszcz | ❓ Nr dyżurnego hemodynamisty |
 | UCK Gdańsk | ✅ **UZUPEŁNIONE 2026-03-30** — Pracownia Kardioangiologii Inwazyjnej: 58 584 47 90 |
-| Grudziądz | ❓ Nr bezpośredni pracowni hemodynamiki / dyżurnego |
-| Toruń | ❓ Nr bezpośredni pracowni hemodynamiki |
+| Toruń WSZ Rydygiera | ✅ **DODANE 2026-04-10** — Pracownia: 56 679 36 15, Gabinet lek.: 56 679 36 11, Dyżur 24h od 2005 |
+| Grudziądz | ❓ Nr bezpośredni pracowni hemodynamiki / dyżurnego — centrala: 56 641 44 44 |
+| Toruń SSM | ✅ **UZUPEŁNIONE 2026-04-10** — Dyżurny lekarz: 56 610 02 05, Sekretariat: 56 610 02 75 |
 | Słupsk | ⚠️ Potwierdzić dyżur 24h hemodynamiczny |
 
 ---
@@ -280,9 +312,10 @@ STEMI na EKG
 | 2 | **10 WSK Bydgoszcz** | ~100 km | ~30 min LPR | OIOK 13 stanowisk. Impella, IABP |
 | 3 | **Grudziądz Biegańskiego** | ~130 km | ~40 min LPR | **Dyżur 24h ✅**. Tel: 56 641 44 44 |
 | 4 | **Słupsk Korczaka** | ~130 km | ~40 min LPR | Hemodynamika: 59 846 04 49 |
-| 5 | **Toruń SSM Kopernika** | ~150 km | ~45 min LPR | **Dyżur 24h ✅**. Tel: 56 655 75 30 |
+| 4a | **Toruń WSZ Rydygiera** | ~150 km | ~45 min LPR | **Dyżur 24h od 2005 ✅**. Pracownia: **56 679 36 15**, Gabinet lek.: **56 679 36 11** |
+| 5 | **Toruń SSM Kopernika** | ~150 km | ~45 min LPR | **Dyżur 24h ✅**. Dyżurny lekarz: **56 610 02 05** |
 | 6 | **UCK Gdańsk** | ~170 km | ~50 min LPR | Pracownia: 58 584 47 90. Transplantacja serca |
 
 ---
 
-*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali. Weryfikacja telefoniczna wymagana.*
+*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali. Weryfikacja telefoniczna wymagana. Ostatnia aktualizacja: 2026-04-10.*

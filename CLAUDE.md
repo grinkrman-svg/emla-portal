@@ -647,3 +647,37 @@ Gdy EPS udostępni API → zastąpić ręczne pola automatycznym tickerem:
 </div>
 ```
 Aktualizacja co 15-30 min via `fetch()` do API EPS.
+
+---
+
+## §15 — FORMULARZE SZPITALNE (Hospital Forms — added 2026-04-13)
+
+Separate from the portal, standalone print-ready forms were built in D:/VS/emla/forms/:
+
+| File | Purpose | Status |
+|------|---------|--------|
+| zgoda-tk-dziecka.html | CT consent for children | DONE |
+| zgoda-swiadczenie.html | General consent/refusal/discharge | DONE |
+| karta-zlecen.html | Medical order card | DONE |
+| karta-zlecen-app.html | Digital order card | DONE |
+| karta-zlecen-v2.html | Order card v2 | DONE |
+
+**Next:** Link from index.html under new "Formularze" category card.
+
+---
+
+## §16 — INTEGRACJA Z CHIRURG-AI (added 2026-04-13)
+
+**Decision:** EMLA portal functionality will be integrated into Chirurg-AI dashboard.
+
+### Plan:
+1. Chirurg-AI dashboard gets a "Transfer" tab
+2. EMLA routing pages embedded/linked within that tab
+3. Doctor generates patient document -> one click opens EMLA to arrange transfer
+4. EMLA continues to work independently as standalone portal
+5. Data source: emla-portal/data/ + emla-portal/*.html
+
+### Why:
+- Workflow: generate zalecenia -> identify that patient needs transfer -> look up specialist center -> call
+- Currently these are two separate tools. Integration makes it one workflow.
+- EMLA phone hierarchy is exactly what a surgeon needs when transferring a patient.

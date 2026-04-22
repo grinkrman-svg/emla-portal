@@ -1,0 +1,137 @@
+{
+  "_meta": {
+    "description": "Katalog badań diagnostycznych dla SOR Chojnice — używany w dropdown na Karcie Zleceń Lekarskich (str. 2, sekcja 'Zlecone badania diagnostyczne i konsultacje lekarskie')",
+    "version": "1.0",
+    "last_updated": "2026-04-22",
+    "source": "typowy zakres SOR Chojnice + standardy PTMR 2021"
+  },
+  "categories": [
+    {
+      "id": "lab",
+      "name": "Laboratoryjne",
+      "icon": "🧪",
+      "items": [
+        {"code": "MORFO", "name": "Morfologia krwi z rozmazem", "pilność_default": "rutyna"},
+        {"code": "CRP", "name": "CRP (białko C-reaktywne)", "pilność_default": "cito"},
+        {"code": "PCT", "name": "Prokalcytonina (PCT)", "pilność_default": "cito"},
+        {"code": "IONY", "name": "Elektrolity (Na, K, Cl)", "pilność_default": "cito"},
+        {"code": "MOCZ-KREAT", "name": "Mocznik + kreatynina", "pilność_default": "cito"},
+        {"code": "GLU", "name": "Glukoza", "pilność_default": "cito"},
+        {"code": "AST-ALT", "name": "AST, ALT, bilirubina, GGTP, ALP", "pilność_default": "rutyna"},
+        {"code": "LIPAZA", "name": "Amylaza + lipaza", "pilność_default": "cito"},
+        {"code": "KOAGULO", "name": "APTT, INR (PT), fibrynogen", "pilność_default": "cito"},
+        {"code": "D-DIMER", "name": "D-dimer", "pilność_default": "cito"},
+        {"code": "TROPONINA", "name": "Troponina T (hs-TnT) lub I", "pilność_default": "cito"},
+        {"code": "NT-PROBNP", "name": "NT-proBNP", "pilność_default": "cito"},
+        {"code": "GAZO-TET", "name": "Gazometria tętnicza (ABG)", "pilność_default": "cito"},
+        {"code": "GAZO-ZYL", "name": "Gazometria żylna (VBG)", "pilność_default": "cito"},
+        {"code": "MLECZAN", "name": "Mleczan (lactate)", "pilność_default": "cito"},
+        {"code": "CK-CKMB", "name": "CK + CK-MB", "pilność_default": "cito"},
+        {"code": "TSH", "name": "TSH, fT3, fT4", "pilność_default": "rutyna"},
+        {"code": "HCG", "name": "β-hCG (test ciążowy)", "pilność_default": "cito"},
+        {"code": "BADANIE-MOCZU", "name": "Badanie ogólne moczu", "pilność_default": "rutyna"},
+        {"code": "TOKSYKO-MOCZ", "name": "Badanie toksykologiczne moczu (drug screen)", "pilność_default": "cito"},
+        {"code": "PARACETAMOL", "name": "Stężenie paracetamolu", "pilność_default": "cito"},
+        {"code": "SALICYLANY", "name": "Stężenie salicylanów", "pilność_default": "cito"},
+        {"code": "ETANOL", "name": "Etanol we krwi", "pilność_default": "cito"},
+        {"code": "DIGOKS", "name": "Stężenie digoksyny", "pilność_default": "cito"},
+        {"code": "CARBOXY", "name": "Karboksyhemoglobina (HbCO)", "pilność_default": "cito"},
+        {"code": "KRZYZOWKA", "name": "Próba krzyżowa + grupa krwi", "pilność_default": "cito"},
+        {"code": "GRUPA-KRWI", "name": "Grupa krwi + Rh (bez krzyżówki)", "pilność_default": "cito"}
+      ]
+    },
+    {
+      "id": "mikro",
+      "name": "Mikrobiologiczne",
+      "icon": "🦠",
+      "items": [
+        {"code": "POS-KREW-1", "name": "Posiew krwi tlenowy (butelka 1)", "pilność_default": "cito"},
+        {"code": "POS-KREW-2", "name": "Posiew krwi beztlenowy (butelka 2)", "pilność_default": "cito"},
+        {"code": "POS-MOCZ", "name": "Posiew moczu", "pilność_default": "cito"},
+        {"code": "POS-PLWOCINA", "name": "Posiew plwociny", "pilność_default": "rutyna"},
+        {"code": "POS-RANA", "name": "Posiew z rany (wymaz)", "pilność_default": "rutyna"},
+        {"code": "POS-GARDLO", "name": "Wymaz z gardła", "pilność_default": "rutyna"},
+        {"code": "POS-NOS", "name": "Wymaz z nosa (MRSA screen)", "pilność_default": "rutyna"},
+        {"code": "POS-KAL", "name": "Posiew kału (Salmonella, Shigella, Campylobacter)", "pilność_default": "rutyna"},
+        {"code": "CLOSTRIDIUM", "name": "C. difficile toksyna A/B + GDH", "pilność_default": "cito"},
+        {"code": "PCR-COVID", "name": "PCR SARS-CoV-2", "pilność_default": "cito"},
+        {"code": "PCR-INFLU", "name": "PCR influenza A/B + RSV", "pilność_default": "cito"},
+        {"code": "PLYN-MOZGO", "name": "Badanie płynu mózgowo-rdzeniowego (PMR)", "pilność_default": "cito"},
+        {"code": "POS-PMR", "name": "Posiew PMR", "pilność_default": "cito"},
+        {"code": "BAL", "name": "Posiew BAL", "pilność_default": "cito"}
+      ]
+    },
+    {
+      "id": "funk",
+      "name": "Funkcjonalne",
+      "icon": "📊",
+      "items": [
+        {"code": "EKG", "name": "EKG 12-odprowadzeniowe", "pilność_default": "cito"},
+        {"code": "EKG-POWT", "name": "EKG — powtórzenie po 15 min", "pilność_default": "cito"},
+        {"code": "HOLTER-EKG", "name": "Holter EKG 24h", "pilność_default": "rutyna"},
+        {"code": "HOLTER-RR", "name": "Holter RR 24h (ABPM)", "pilność_default": "rutyna"},
+        {"code": "ECHO", "name": "Echokardiografia przezklatkowa (TTE)", "pilność_default": "cito"},
+        {"code": "ECHO-TEE", "name": "Echokardiografia przezprzełykowa (TEE)", "pilność_default": "cito"},
+        {"code": "SPIROMETRIA", "name": "Spirometria", "pilność_default": "rutyna"},
+        {"code": "PEAK-FLOW", "name": "Peak flow (PEF)", "pilność_default": "cito"},
+        {"code": "EEG", "name": "EEG", "pilność_default": "cito"},
+        {"code": "EMG", "name": "EMG", "pilność_default": "rutyna"},
+        {"code": "PULS-OX", "name": "Pulsoksymetria ciągła (monitoring)", "pilność_default": "cito"},
+        {"code": "CAPNO", "name": "Kapnografia (ETCO2)", "pilność_default": "cito"},
+        {"code": "POCT-GLUKO", "name": "POCT — glukoza z palca", "pilność_default": "cito"},
+        {"code": "FAST", "name": "FAST / eFAST (USG urazowe)", "pilność_default": "cito"}
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "Radiologiczne",
+      "icon": "📡",
+      "items": [
+        {"code": "RTG-KLP", "name": "RTG klatki piersiowej PA + boczne", "pilność_default": "cito"},
+        {"code": "RTG-KLP-LOZ", "name": "RTG klatki piersiowej — przyłóżkowe (AP)", "pilność_default": "cito"},
+        {"code": "RTG-BRZUCH", "name": "RTG jamy brzusznej (stojące + leżące)", "pilność_default": "cito"},
+        {"code": "RTG-CZASZKA", "name": "RTG czaszki AP + boczne", "pilność_default": "rutyna"},
+        {"code": "RTG-KRZYZLS", "name": "RTG kręgosłupa L-S", "pilność_default": "rutyna"},
+        {"code": "RTG-KRZYZSZ", "name": "RTG kręgosłupa szyjnego 3 projekcje", "pilność_default": "cito"},
+        {"code": "RTG-MIEDNICA", "name": "RTG miednicy AP", "pilność_default": "cito"},
+        {"code": "RTG-STAW", "name": "RTG stawu (określ: kolano/biodro/bark/łokieć/nadgarstek/kostka)", "pilność_default": "rutyna"},
+        {"code": "USG-BRZUCH", "name": "USG jamy brzusznej", "pilność_default": "cito"},
+        {"code": "USG-DOPPLER", "name": "USG Doppler naczyń", "pilność_default": "cito"},
+        {"code": "USG-SERCA", "name": "USG serca (echokardiografia)", "pilność_default": "cito"},
+        {"code": "TK-GLOWA", "name": "TK głowy (bez kontrastu)", "pilność_default": "cito"},
+        {"code": "TK-GLOWA-KONTR", "name": "TK głowy + kontrast (angio-TK)", "pilność_default": "cito"},
+        {"code": "TK-KLP", "name": "TK klatki piersiowej", "pilność_default": "cito"},
+        {"code": "TK-KLP-PE", "name": "Angio-TK tętnic płucnych (w kierunku PE)", "pilność_default": "cito"},
+        {"code": "TK-BRZUCH", "name": "TK jamy brzusznej + miednicy", "pilność_default": "cito"},
+        {"code": "TK-KRZYZOSL", "name": "TK kręgosłupa (szyjny/Th/L)", "pilność_default": "cito"},
+        {"code": "TK-TRAUMA", "name": "Trauma scan — TK whole-body", "pilność_default": "cito"},
+        {"code": "MR-GLOWA", "name": "MR głowy", "pilność_default": "rutyna"},
+        {"code": "MR-KRZYZOSL", "name": "MR kręgosłupa", "pilność_default": "rutyna"},
+        {"code": "ANGIO-MR", "name": "Angio-MR", "pilność_default": "rutyna"}
+      ]
+    },
+    {
+      "id": "konsult",
+      "name": "Konsultacje",
+      "icon": "👥",
+      "items": [
+        {"code": "K-CHIR", "name": "Konsultacja chirurgiczna", "pilność_default": "cito"},
+        {"code": "K-INTERN", "name": "Konsultacja internistyczna", "pilność_default": "cito"},
+        {"code": "K-KARDIO", "name": "Konsultacja kardiologiczna", "pilność_default": "cito"},
+        {"code": "K-NEUROL", "name": "Konsultacja neurologiczna", "pilność_default": "cito"},
+        {"code": "K-NEUROCHIR", "name": "Konsultacja neurochirurgiczna", "pilność_default": "cito"},
+        {"code": "K-ORTOP", "name": "Konsultacja ortopedyczna", "pilność_default": "cito"},
+        {"code": "K-ANEST", "name": "Konsultacja anestezjologiczna", "pilność_default": "cito"},
+        {"code": "K-UROL", "name": "Konsultacja urologiczna", "pilność_default": "cito"},
+        {"code": "K-GIN", "name": "Konsultacja ginekologiczna", "pilność_default": "cito"},
+        {"code": "K-PED", "name": "Konsultacja pediatryczna", "pilność_default": "cito"},
+        {"code": "K-OKUL", "name": "Konsultacja okulistyczna", "pilność_default": "cito"},
+        {"code": "K-LARYN", "name": "Konsultacja laryngologiczna", "pilność_default": "cito"},
+        {"code": "K-PSYCH", "name": "Konsultacja psychiatryczna", "pilność_default": "cito"},
+        {"code": "K-CHIR-SZCZ", "name": "Konsultacja chirurgii szczękowo-twarzowej", "pilność_default": "cito"},
+        {"code": "K-NACZ", "name": "Konsultacja chirurgii naczyniowej", "pilność_default": "cito"},
+        {"code": "K-TOKSYK", "name": "Konsultacja toksykologiczna (telefonicznie)", "pilność_default": "cito"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kalkulatory Kliniczne — EMLA SOR</title>
+<link rel="icon" href="icons/icon-32x32.png">
+<meta name="theme-color" content="#1e40af">
+<meta name="description" content="Kalkulatory kliniczne dla lekarzy SOR: GCS, Wells PE, CURB-65, Parkland, Dawkowanie pediatryczne, Prędkość wlewu, HEART Score.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* ═══════════════════════════════════════════════
+   KALKULATORY — PAGE STYLES
+   ═══════════════════════════════════════════════ */
+
+.page-header {
+  text-align: center;
+  padding: 2rem 1rem 1.2rem;
+}
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--t0);
+}
+.page-header p {
+  color: var(--t2);
+  font-size: 0.88rem;
+  margin-top: 0.3rem;
+}
+
+/* ── Kalkulatory Grid ── */
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(480px, 100%), 1fr));
+  gap: 1.2rem;
+  padding: 0 0 2rem;
+}
+@media (max-width: 560px) { .calc-grid { grid-template-columns: 1fr } }
+
+/* ── Kalkulator Card ── */
+.ck {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  box-shadow: var(--sh);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.ck:hover { border-color: var(--bdh); box-shadow: var(--shh) }
+
+.ck-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  gap: 12px;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+.ck-head:hover { background: var(--bg2) }
+.ck-head:active { background: var(--bg1) }
+
+.ck-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.ck-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.ck-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--t0);
+  letter-spacing: -0.01em;
+}
+.ck-sub {
+  font-size: 0.78rem;
+  color: var(--t2);
+  margin-top: 1px;
+}
+.ck-chevron {
+  width: 20px;
+  height: 20px;
+  color: var(--t3);
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ck.open .ck-chevron { transform: rotate(180deg) }
+
+.ck-stripe {
+  height: 3px;
+  background: linear-gradient(90deg, var(--ac), var(--teal));
+}
+.ck-stripe.red { background: linear-gradient(90deg, var(--red), oklch(0.65 0.2 35)) }
+.ck-stripe.grn { background: linear-gradient(90deg, var(--grn), oklch(0.7 0.18 165)) }
+.ck-stripe.amb { background: linear-gradient(90deg, var(--amb), oklch(0.72 0.16 85)) }
+.ck-stripe.pur { background: linear-gradient(90deg, var(--pur), oklch(0.65 0.2 285)) }
+.ck-stripe.teal { background: linear-gradient(90deg, var(--teal), oklch(0.72 0.16 210)) }
+
+.ck-body {
+  display: none;
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--bd);
+}
+.ck.open .ck-body { display: block }
+
+/* ── Result Box ── */
+.calc-result {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: var(--rs);
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  text-align: center;
+  animation: fadeSlideDown 0.3s ease;
+}
+.calc-result.empty { opacity: 0.4 }
+.result-score {
+  font-family: var(--m);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.result-score.c-grn { color: var(--grn) }
+.result-score.c-amb { color: var(--amb) }
+.result-score.c-red { color: var(--red) }
+.result-score.c-blue { color: var(--ac) }
+.result-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--t1);
+  margin-bottom: 4px;
+}
+.result-detail {
+  font-size: 0.83rem;
+  color: var(--t2);
+  line-height: 1.45;
+}
+
+/* ── Critical Alert ── */
+.calc-alert {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: var(--rs);
+  background: oklch(0.55 0.22 25 / 0.08);
+  border: 1px solid oklch(0.55 0.22 25 / 0.3);
+  color: var(--red);
+  font-size: 0.84rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: pulseAlert 2s ease infinite;
+}
+@keyframes pulseAlert {
+  0%,100% { border-color: oklch(0.55 0.22 25 / 0.3) }
+  50% { border-color: oklch(0.55 0.22 25 / 0.7) }
+}
+
+/* ── Button Groups (GCS, Wells etc.) ── */
+.btn-group {
+  margin-bottom: 10px;
+}
+.btn-group-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--t2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-group-label .score-badge {
+  font-family: var(--m);
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--acs);
+  color: var(--ac);
+  border: 1px solid var(--ac);
+  border-radius: 6px;
+  padding: 1px 6px;
+  margin-left: auto;
+}
+.btn-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.btn-opt {
+  padding: 7px 12px;
+  border-radius: var(--rs);
+  border: 1px solid var(--bd);
+  background: var(--bgc);
+  color: var(--t1);
+  font-size: 0.82rem;
+  font-family: var(--f);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-opt:hover { border-color: var(--ac); color: var(--ac); background: var(--acs) }
+.btn-opt:active { transform: scale(0.95) }
+.btn-opt.sel {
+  background: var(--ac);
+  border-color: var(--ac);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--acs);
+}
+.btn-opt .val {
+  font-family: var(--m);
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* ── Checkbox Criteria (Wells, CURB, HEART) ── */
+.criteria-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.crit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--rs);
+  border: 1px solid var(--bd);
+  background: var(--bgc);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.crit-item:hover { border-color: var(--bdh); background: var(--bg2) }
+.crit-item.checked {
+  background: var(--acs);
+  border-color: var(--ac);
+}
+.crit-cb {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--bd);
+  background: var(--bg1);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.crit-item.checked .crit-cb {
+  background: var(--ac);
+  border-color: var(--ac);
+}
+.crit-cb svg { width: 11px; height: 11px; color: #fff; opacity: 0; transition: opacity 0.2s }
+.crit-item.checked .crit-cb svg { opacity: 1 }
+.crit-text {
+  flex: 1;
+  font-size: 0.86rem;
+  color: var(--t1);
+  line-height: 1.4;
+}
+.crit-pts {
+  font-family: var(--m);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ac);
+  background: var(--acs);
+  border-radius: 5px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+/* ── Inputs for calculators ── */
+.calc-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.inp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.inp-row label {
+  font-size: 0.84rem;
+  color: var(--t1);
+  min-width: 180px;
+  font-weight: 500;
+}
+.inp-row input[type="number"],
+.inp-row input[type="range"],
+.inp-row select {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  background: var(--bgc);
+  color: var(--t0);
+  font-size: 0.95rem;
+  font-family: var(--m);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.inp-row input[type="number"]:focus,
+.inp-row select:focus {
+  border-color: var(--ac);
+  box-shadow: 0 0 0 3px var(--acs);
+}
+.inp-unit {
+  font-size: 0.8rem;
+  color: var(--t3);
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .inp-row { flex-direction: column; align-items: stretch }
+  .inp-row label { min-width: 0 }
+}
+
+/* ── Reset button ── */
+.btn-reset {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  background: var(--bgc);
+  color: var(--t2);
+  font-size: 0.82rem;
+  font-family: var(--f);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-reset:hover { border-color: var(--red); color: var(--red); background: var(--reds) }
+
+/* ── Source note ── */
+.calc-source {
+  font-size: 0.74rem;
+  color: var(--t3);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── Pediatric drug table ── */
+.drug-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-top: 10px;
+}
+.drug-table th {
+  background: var(--bg2);
+  color: var(--t2);
+  font-weight: 600;
+  text-align: left;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--bd);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.drug-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--bd);
+  color: var(--t1);
+  vertical-align: top;
+}
+.drug-table tr:last-child td { border-bottom: none }
+.drug-table tr:nth-child(even) td { background: oklch(0.98 0.003 250 / 0.4) }
+[data-theme="dark"] .drug-table tr:nth-child(even) td { background: oklch(0.16 0.018 260 / 0.5) }
+.drug-name { font-weight: 600; color: var(--t0) }
+.drug-dose { font-family: var(--m); font-size: 0.78rem }
+.drug-calc { font-family: var(--m); font-weight: 700; color: var(--ac) }
+.drug-warn { color: var(--red); font-size: 0.75rem; font-weight: 600 }
+
+/* ── HEART Score buttons — 0/1/2 ── */
+.heart-row {
+  margin-bottom: 10px;
+}
+.heart-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--t1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+}
+.heart-opts {
+  display: flex;
+  gap: 6px;
+}
+.heart-btn {
+  flex: 1;
+  padding: 8px 6px;
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  background: var(--bgc);
+  color: var(--t2);
+  font-size: 0.8rem;
+  font-family: var(--f);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  line-height: 1.3;
+}
+.heart-btn:hover { border-color: var(--ac); color: var(--ac) }
+.heart-btn.sel {
+  background: var(--ac);
+  border-color: var(--ac);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--acs);
+}
+.heart-pts {
+  font-family: var(--m);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: block;
+}
+
+/* ── Infusion presets ── */
+.preset-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.preset-pill {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--bd);
+  background: var(--bgc);
+  color: var(--t2);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.preset-pill:hover { border-color: var(--pur); color: var(--pur); background: var(--purs) }
+.preset-pill.active { background: var(--pur); border-color: var(--pur); color: #fff }
+
+/* ── Infusion result extra ── */
+.inf-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.inf-box {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  padding: 10px 12px;
+  text-align: center;
+}
+.inf-box .lbl { font-size: 0.74rem; color: var(--t3); margin-bottom: 3px }
+.inf-box .val { font-family: var(--m); font-size: 1.1rem; font-weight: 700; color: var(--t0) }
+
+/* ── Parkland 24h breakdown ── */
+.park-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.park-box {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rs);
+  padding: 10px 10px;
+  text-align: center;
+}
+.park-box .lbl { font-size: 0.72rem; color: var(--t3); margin-bottom: 3px; line-height: 1.3 }
+.park-box .val { font-family: var(--m); font-size: 1.0rem; font-weight: 700; color: var(--t0) }
+
+/* ── breadcrumb ── */
+.breadcrumb {
+  font-size: 0.82rem;
+  color: var(--t3);
+  margin-bottom: 0.8rem;
+}
+.breadcrumb a {
+  color: var(--ac);
+  text-decoration: none;
+  font-weight: 500;
+}
+.breadcrumb a:hover { text-decoration: underline }
+
+/* ── Range slider ── */
+.inp-row input[type="range"] {
+  padding: 0;
+  height: 6px;
+  accent-color: var(--ac);
+  cursor: pointer;
+}
+.range-val {
+  font-family: var(--m);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ac);
+  min-width: 60px;
+  text-align: right;
+}
+</style>
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<!-- TOPBAR -->
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <a class="tb-logo" href="index.html" title="Powrót do dashboardu">SOR</a>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Kalkulatory Kliniczne
+    </div>
+  </div>
+  <div class="tba">
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<div class="app" id="app">
+
+  <div class="breadcrumb">
+    <a href="index.html">← Portal SOR</a> &nbsp;/&nbsp; Kalkulatory Kliniczne
+  </div>
+
+  <div class="page-header">
+    <h1>Kalkulatory Kliniczne</h1>
+    <p>7 narzędzi · Wyniki w czasie rzeczywistym · Dane nie są zapisywane</p>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- ════════════════════════════════════════
+         1. GCS — Glasgow Coma Scale
+    ════════════════════════════════════════ -->
+    <div class="ck open" id="ck-gcs">
+      <div class="ck-stripe"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-gcs')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🧠</span>
+          <div>
+            <div class="ck-name">GCS — Skala Glasgow</div>
+            <div class="ck-sub">Glasgow Coma Scale · 3–15 pkt</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+
+        <!-- Otwieranie oczu -->
+        <div class="btn-group" style="margin-top:10px">
+          <div class="btn-group-label">
+            Otwieranie oczu (E)
+            <span class="score-badge" id="gcs-e-badge">–</span>
+          </div>
+          <div class="btn-options">
+            <button class="btn-opt" data-group="gcs-e" data-val="4" onclick="gcsSet('e',4,this)">Spontaniczne <span class="val">4</span></button>
+            <button class="btn-opt" data-group="gcs-e" data-val="3" onclick="gcsSet('e',3,this)">Na głos <span class="val">3</span></button>
+            <button class="btn-opt" data-group="gcs-e" data-val="2" onclick="gcsSet('e',2,this)">Na ból <span class="val">2</span></button>
+            <button class="btn-opt" data-group="gcs-e" data-val="1" onclick="gcsSet('e',1,this)">Brak <span class="val">1</span></button>
+          </div>
+        </div>
+
+        <!-- Reakcja słowna -->
+        <div class="btn-group">
+          <div class="btn-group-label">
+            Reakcja słowna (V)
+            <span class="score-badge" id="gcs-v-badge">–</span>
+          </div>
+          <div class="btn-options">
+            <button class="btn-opt" data-group="gcs-v" data-val="5" onclick="gcsSet('v',5,this)">Orientowany <span class="val">5</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="4" onclick="gcsSet('v',4,this)">Splątany <span class="val">4</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="3" onclick="gcsSet('v',3,this)">Nieadekwatne słowa <span class="val">3</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="2" onclick="gcsSet('v',2,this)">Niezrozumiałe dźwięki <span class="val">2</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="1" onclick="gcsSet('v',1,this)">Brak <span class="val">1</span></button>
+          </div>
+        </div>
+
+        <!-- Reakcja ruchowa -->
+        <div class="btn-group">
+          <div class="btn-group-label">
+            Reakcja ruchowa (M)
+            <span class="score-badge" id="gcs-m-badge">–</span>
+          </div>
+          <div class="btn-options">
+            <button class="btn-opt" data-group="gcs-m" data-val="6" onclick="gcsSet('m',6,this)">Na polecenie <span class="val">6</span></button>
+            <button class="btn-opt" data-group="gcs-m" data-val="5" onclick="gcsSet('m',5,this)">Lokalizuje ból <span class="val">5</span></button>
+            <button class="btn-opt" data-group="gcs-m" data-val="4" onclick="gcsSet('m',4,this)">Zgięcie prawidłowe <span class="val">4</span></button>
+            <button class="btn-opt" data-group="gcs-m" data-val="3" onclick="gcsSet('m',3,this)">Zgięcie patologiczne <span class="val">3</span></button>
+            <button class="btn-opt" data-group="gcs-m" data-val="2" onclick="gcsSet('m',2,this)">Wyprost <span class="val">2</span></button>
+            <button class="btn-opt" data-group="gcs-m" data-val="1" onclick="gcsSet('m',1,this)">Brak <span class="val">1</span></button>
+          </div>
+        </div>
+
+        <div class="calc-result" id="gcs-result">
+          <div class="result-score c-blue" id="gcs-score">—</div>
+          <div class="result-label" id="gcs-label">Wybierz wszystkie parametry</div>
+          <div class="result-detail" id="gcs-detail">E + V + M = GCS</div>
+        </div>
+        <div class="calc-alert" id="gcs-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          GCS ≤ 8 — ROZWAŻ INTUBACJĘ
+        </div>
+        <div class="calc-source">Źródło: Teasdale G, Jennett B. Assessment of coma and impaired consciousness. Lancet 1974.</div>
+        <button class="btn-reset" onclick="resetGCS()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         2. WELLS — Zatorowość Płucna
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-wells">
+      <div class="ck-stripe red"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-wells')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🫀</span>
+          <div>
+            <div class="ck-name">Wells — Zatorowość Płucna</div>
+            <div class="ck-sub">Skala Wells PE · ryzyko zakrzepowo-zatorowe</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <ul class="criteria-list" style="margin-top:10px" id="wells-list">
+          <li class="crit-item" onclick="wellsToggle(this)" data-pts="3">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">Kliniczne objawy DVT (obrzęk, bolesność)</span>
+            <span class="crit-pts">+3</span>
+          </li>
+          <li class="crit-item" onclick="wellsToggle(this)" data-pts="3">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">Inne rozpoznanie mniej prawdopodobne niż PE</span>
+            <span class="crit-pts">+3</span>
+          </li>
+          <li class="crit-item" onclick="wellsToggle(this)" data-pts="1.5">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">HR &gt; 100 uderzeń/min</span>
+            <span class="crit-pts">+1.5</span>
+          </li>
+          <li class="crit-item" onclick="wellsToggle(this)" data-pts="1.5">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">Unieruchomienie ≥ 3 dni LUB operacja w ciągu ostatnich 4 tygodni</span>
+            <span class="crit-pts">+1.5</span>
+          </li>
+          <li class="crit-item" onclick="wellsToggle(this)" data-pts="1.5">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">Przebyta DVT lub PE w wywiadzie</span>
+            <span class="crit-pts">+1.5</span>
+          </li>
+          <li class="crit-item" onclick="wellsToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">Krwioplucie</span>
+            <span class="crit-pts">+1</span>
+          </li>
+          <li class="crit-item" onclick="wellsToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">Nowotwór złośliwy (aktywny lub leczony w ciągu 6 miesięcy)</span>
+            <span class="crit-pts">+1</span>
+          </li>
+        </ul>
+        <div class="calc-result" id="wells-result">
+          <div class="result-score c-blue" id="wells-score">0</div>
+          <div class="result-label" id="wells-label">Małe prawdopodobieństwo PE</div>
+          <div class="result-detail" id="wells-detail">Oznacz kryteria powyżej</div>
+        </div>
+        <div class="calc-alert" id="wells-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          DUŻE RYZYKO — natychmiast CTA lub LMWH empirycznie
+        </div>
+        <div class="calc-source">Źródło: Wells PS et al. Ann Intern Med 2000; ESC Guidelines PE 2019.</div>
+        <button class="btn-reset" onclick="resetWells()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         3. CURB-65 — Zapalenie Płuc
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-curb">
+      <div class="ck-stripe grn"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-curb')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🫁</span>
+          <div>
+            <div class="ck-name">CURB-65 — Zapalenie Płuc</div>
+            <div class="ck-sub">Ciężkość CAP · decyzja hospitalizacyjna</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <ul class="criteria-list" style="margin-top:10px" id="curb-list">
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>C — Confusion</strong> · Nowe splątanie (orientacja c/m/o)</span>
+            <span class="crit-pts">+1</span>
+          </li>
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>U — Urea</strong> · Mocznik &gt; 7 mmol/l (BUN &gt; 19 mg/dl)</span>
+            <span class="crit-pts">+1</span>
+          </li>
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>R — RR</strong> · Częstość oddechów ≥ 30/min</span>
+            <span class="crit-pts">+1</span>
+          </li>
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>B — BP</strong> · RR skurczowe &lt; 90 mmHg lub rozkurczowe ≤ 60 mmHg</span>
+            <span class="crit-pts">+1</span>
+          </li>
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>65</strong> · Wiek ≥ 65 lat</span>
+            <span class="crit-pts">+1</span>
+          </li>
+        </ul>
+        <div class="calc-result" id="curb-result">
+          <div class="result-score c-blue" id="curb-score">0</div>
+          <div class="result-label" id="curb-label">Niskie ryzyko</div>
+          <div class="result-detail" id="curb-detail">Oznacz kryteria powyżej</div>
+        </div>
+        <div class="calc-alert" id="curb-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          CURB ≥ 3 — Rozważ OIT / Ciężkie ZP
+        </div>
+        <div class="calc-source">Źródło: Lim WS et al. Thorax 2003; BTS Guidelines CAP 2009.</div>
+        <button class="btn-reset" onclick="resetCURB()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         4. PARKLAND — Oparzenia
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-park">
+      <div class="ck-stripe" style="background: linear-gradient(90deg, oklch(0.65 0.2 35), oklch(0.75 0.18 55))"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-park')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🔥</span>
+          <div>
+            <div class="ck-name">Parkland — Oparzenia</div>
+            <div class="ck-sub">Wzór Baxtera · objętość infuzji 24h</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="calc-inputs" style="margin-top:10px">
+          <div class="inp-row">
+            <label>Masa ciała</label>
+            <input type="number" id="park-wt" min="1" max="250" placeholder="np. 70" oninput="calcParkland()">
+            <span class="inp-unit">kg</span>
+          </div>
+          <div class="inp-row">
+            <label>Powierzchnia oparzeń (TBSA)</label>
+            <input type="number" id="park-tbsa" min="1" max="100" placeholder="np. 30" oninput="calcParkland()">
+            <span class="inp-unit">%</span>
+          </div>
+        </div>
+        <p style="font-size:0.8rem;color:var(--t3);margin-bottom:8px">
+          Wzór: <strong style="font-family:var(--m)">4 ml × kg × % TBSA</strong> = całkowita objętość 24h (Ringer mleczanowy)<br>
+          <em>Połowa w ciągu pierwszych 8 h od oparzenia, połowa w ciągu kolejnych 16 h</em>
+        </p>
+        <div class="calc-result" id="park-result">
+          <div class="result-score c-blue" id="park-score">—</div>
+          <div class="result-label" id="park-label">Podaj masę ciała i %TBSA</div>
+          <div class="result-detail" id="park-detail"></div>
+        </div>
+        <div class="park-breakdown" id="park-breakdown" style="display:none">
+          <div class="park-box">
+            <div class="lbl">Łącznie 24h</div>
+            <div class="val" id="park-total">—</div>
+          </div>
+          <div class="park-box">
+            <div class="lbl">Pierwsze 8h<br>(ml/h)</div>
+            <div class="val" id="park-8h">—</div>
+          </div>
+          <div class="park-box">
+            <div class="lbl">Kolejne 16h<br>(ml/h)</div>
+            <div class="val" id="park-16h">—</div>
+          </div>
+        </div>
+        <div class="calc-alert" id="park-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          TBSA &gt; 20% — rozważ konsultację centrum oparzelniczego
+        </div>
+        <div class="calc-source">Źródło: Baxter CR. Fluid resuscitation, burn percentage, and physiologic age. J Trauma 1979.</div>
+        <button class="btn-reset" onclick="resetParkland()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         5. DAWKOWANIE PEDIATRYCZNE
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-ped">
+      <div class="ck-stripe" style="background: linear-gradient(90deg, oklch(0.65 0.18 195), oklch(0.72 0.16 210))"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-ped')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🧒</span>
+          <div>
+            <div class="ck-name">Dawkowanie Pediatryczne</div>
+            <div class="ck-sub">Leki ratunkowe wg masy ciała · APLS</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="calc-inputs" style="margin-top:10px">
+          <div class="inp-row">
+            <label>Masa ciała dziecka</label>
+            <input type="number" id="ped-wt" min="1" max="100" placeholder="np. 20" oninput="calcPed()">
+            <span class="inp-unit">kg</span>
+          </div>
+          <div class="inp-row">
+            <label>Wiek</label>
+            <input type="range" id="ped-age" min="0" max="216" value="24" oninput="pedAgeUpdate()">
+            <span class="range-val" id="ped-age-val">2 lata</span>
+          </div>
+        </div>
+        <div id="ped-table-wrap" style="overflow-x:auto; margin-top:8px">
+          <table class="drug-table" id="ped-table">
+            <thead>
+              <tr>
+                <th>Lek</th>
+                <th>Dawka standardowa</th>
+                <th>Obliczona dawka</th>
+                <th>Uwagi</th>
+              </tr>
+            </thead>
+            <tbody id="ped-tbody">
+              <tr><td colspan="4" style="text-align:center;color:var(--t3);padding:16px">Podaj masę ciała dziecka</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="calc-source">Źródło: Advanced Paediatric Life Support (APLS) 6th Ed.; ChPL producentów.</div>
+        <button class="btn-reset" onclick="resetPed()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         6. PRĘDKOŚĆ WLEWU (KROPLÓWKI)
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-inf">
+      <div class="ck-stripe pur"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-inf')">
+        <div class="ck-title-row">
+          <span class="ck-icon">💉</span>
+          <div>
+            <div class="ck-name">Prędkość Wlewu</div>
+            <div class="ck-sub">Pompa / kroplówka · ml/h lub krople/min</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="preset-pills" style="margin-top:10px">
+          <span class="preset-pill" onclick="infPreset('adrenalina')">Adrenalina</span>
+          <span class="preset-pill" onclick="infPreset('noradrenalina')">Noradrenalina</span>
+          <span class="preset-pill" onclick="infPreset('morfina')">Morfina</span>
+          <span class="preset-pill" onclick="infPreset('dobutamina')">Dobutamina</span>
+        </div>
+        <div class="calc-inputs">
+          <div class="inp-row">
+            <label>Dawka docelowa</label>
+            <input type="number" id="inf-dose" min="0" step="0.001" placeholder="np. 0.1" oninput="calcInf()">
+            <select id="inf-dose-unit" onchange="calcInf()" style="max-width:90px">
+              <option value="mcg_kg_min">mcg/kg/min</option>
+              <option value="mcg_kg_h">mcg/kg/h</option>
+              <option value="mg_kg_h">mg/kg/h</option>
+              <option value="mg_h">mg/h</option>
+              <option value="mcg_h">mcg/h</option>
+            </select>
+          </div>
+          <div class="inp-row">
+            <label>Masa ciała pacjenta</label>
+            <input type="number" id="inf-wt" min="1" max="300" placeholder="np. 70" oninput="calcInf()">
+            <span class="inp-unit">kg</span>
+          </div>
+          <div class="inp-row">
+            <label>Stężenie leku w worku</label>
+            <input type="number" id="inf-conc" min="0" step="0.001" placeholder="np. 0.1" oninput="calcInf()">
+            <select id="inf-conc-unit" onchange="calcInf()" style="max-width:90px">
+              <option value="mg_ml">mg/ml</option>
+              <option value="mcg_ml">mcg/ml</option>
+            </select>
+          </div>
+          <div class="inp-row">
+            <label>Tryb podania</label>
+            <select id="inf-mode" onchange="calcInf()">
+              <option value="pump">Pompa infuzyjna (ml/h)</option>
+              <option value="drip">Kroplówka (20 kropli = 1 ml)</option>
+            </select>
+          </div>
+        </div>
+        <div class="inf-results" id="inf-results" style="display:none">
+          <div class="inf-box">
+            <div class="lbl">Prędkość wlewu</div>
+            <div class="val" id="inf-rate">—</div>
+          </div>
+          <div class="inf-box">
+            <div class="lbl">Krople/min</div>
+            <div class="val" id="inf-drops">—</div>
+          </div>
+        </div>
+        <div class="calc-result" id="inf-result" style="display:none">
+          <div class="result-score c-pur" id="inf-score" style="color:var(--pur)">—</div>
+          <div class="result-label" id="inf-label"></div>
+          <div class="result-detail" id="inf-detail"></div>
+        </div>
+        <div id="inf-msg" style="color:var(--t3);font-size:0.84rem;padding:12px 0">Uzupełnij pola, aby obliczyć prędkość wlewu.</div>
+        <div class="calc-source">Wzór: dawka [mcg/kg/min] × masa [kg] × 60 / stężenie [mcg/ml] = ml/h</div>
+        <button class="btn-reset" onclick="resetInf()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         7. HEART SCORE
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-heart">
+      <div class="ck-stripe red"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-heart')">
+        <div class="ck-title-row">
+          <span class="ck-icon">💓</span>
+          <div>
+            <div class="ck-name">HEART Score — Ból w klatce</div>
+            <div class="ck-sub">Ryzyko MACE · ACS w OIT/SOR</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+
+        <!-- H — History -->
+        <div class="heart-row" style="margin-top:10px">
+          <div class="heart-label">H — Wywiad <span style="font-family:var(--m);font-size:0.8rem;color:var(--t3);font-weight:400">(<span id="h-val">—</span> pkt)</span></div>
+          <div class="heart-opts">
+            <button class="heart-btn" data-grp="h" data-v="0" onclick="heartSet('h',0,this)">
+              <span class="heart-pts">0</span>
+              Niecharakt. dla OZW
+            </button>
+            <button class="heart-btn" data-grp="h" data-v="1" onclick="heartSet('h',1,this)">
+              <span class="heart-pts">1</span>
+              Podejrzany wywiad
+            </button>
+            <button class="heart-btn" data-grp="h" data-v="2" onclick="heartSet('h',2,this)">
+              <span class="heart-pts">2</span>
+              Typowy dla OZW
+            </button>
+          </div>
+        </div>
+
+        <!-- E — ECG -->
+        <div class="heart-row">
+          <div class="heart-label">E — EKG <span style="font-family:var(--m);font-size:0.8rem;color:var(--t3);font-weight:400">(<span id="e-val">—</span> pkt)</span></div>
+          <div class="heart-opts">
+            <button class="heart-btn" data-grp="e" data-v="0" onclick="heartSet('e',0,this)">
+              <span class="heart-pts">0</span>
+              Prawidłowe
+            </button>
+            <button class="heart-btn" data-grp="e" data-v="1" onclick="heartSet('e',1,this)">
+              <span class="heart-pts">1</span>
+              Nieswoiste zmiany
+            </button>
+            <button class="heart-btn" data-grp="e" data-v="2" onclick="heartSet('e',2,this)">
+              <span class="heart-pts">2</span>
+              LBBB / ST dep. / STEMI
+            </button>
+          </div>
+        </div>
+
+        <!-- A — Age -->
+        <div class="heart-row">
+          <div class="heart-label">A — Wiek <span style="font-family:var(--m);font-size:0.8rem;color:var(--t3);font-weight:400">(<span id="a-val">—</span> pkt)</span></div>
+          <div class="heart-opts">
+            <button class="heart-btn" data-grp="a" data-v="0" onclick="heartSet('a',0,this)">
+              <span class="heart-pts">0</span>
+              &lt; 45 lat
+            </button>
+            <button class="heart-btn" data-grp="a" data-v="1" onclick="heartSet('a',1,this)">
+              <span class="heart-pts">1</span>
+              45–64 lata
+            </button>
+            <button class="heart-btn" data-grp="a" data-v="2" onclick="heartSet('a',2,this)">
+              <span class="heart-pts">2</span>
+              ≥ 65 lat
+            </button>
+          </div>
+        </div>
+
+        <!-- R — Risk factors -->
+        <div class="heart-row">
+          <div class="heart-label">R — Czynniki ryzyka <span style="font-family:var(--m);font-size:0.8rem;color:var(--t3);font-weight:400">(<span id="r-val">—</span> pkt)</span></div>
+          <div class="heart-opts">
+            <button class="heart-btn" data-grp="r" data-v="0" onclick="heartSet('r',0,this)">
+              <span class="heart-pts">0</span>
+              Brak
+            </button>
+            <button class="heart-btn" data-grp="r" data-v="1" onclick="heartSet('r',1,this)">
+              <span class="heart-pts">1</span>
+              1–2 czynniki ryzyka
+            </button>
+            <button class="heart-btn" data-grp="r" data-v="2" onclick="heartSet('r',2,this)">
+              <span class="heart-pts">2</span>
+              ≥ 3 cz.r. lub choroba CV
+            </button>
+          </div>
+        </div>
+
+        <!-- T — Troponin -->
+        <div class="heart-row">
+          <div class="heart-label">T — Troponina <span style="font-family:var(--m);font-size:0.8rem;color:var(--t3);font-weight:400">(<span id="t-val">—</span> pkt)</span></div>
+          <div class="heart-opts">
+            <button class="heart-btn" data-grp="t" data-v="0" onclick="heartSet('t',0,this)">
+              <span class="heart-pts">0</span>
+              W normie
+            </button>
+            <button class="heart-btn" data-grp="t" data-v="1" onclick="heartSet('t',1,this)">
+              <span class="heart-pts">1</span>
+              1–3 × norma
+            </button>
+            <button class="heart-btn" data-grp="t" data-v="2" onclick="heartSet('t',2,this)">
+              <span class="heart-pts">2</span>
+              &gt; 3 × norma
+            </button>
+          </div>
+        </div>
+
+        <div class="calc-result" id="heart-result">
+          <div class="result-score c-blue" id="heart-score">—</div>
+          <div class="result-label" id="heart-label">Wybierz wszystkie parametry</div>
+          <div class="result-detail" id="heart-detail">H + E + A + R + T = 0–10 pkt</div>
+        </div>
+        <div class="calc-alert" id="heart-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          HEART ≥ 7 — WYSOKIE RYZYKO MACE — pilna kardiologia interwencyjna
+        </div>
+        <div class="calc-source">Źródło: Backus BE et al. Eur Heart J Acute Cardiovasc Care 2017; AHA 2016.</div>
+        <button class="btn-reset" onclick="resetHEART()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         8. TBSA — Reguła Dziewiątek (Wallace)
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-tbsa">
+      <div class="ck-stripe" style="background:#dc2626"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-tbsa')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🔥</span>
+          <div>
+            <div class="ck-name">TBSA — Reguła Dziewiątek</div>
+            <div class="ck-sub">% powierzchni oparzenia · dorośli / dzieci</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div style="display:flex;gap:8px;margin:10px 0">
+          <button class="btn-opt on" id="tbsa-adult" onclick="setTbsaGroup('adult',this)">Dorosły</button>
+          <button class="btn-opt" id="tbsa-child" onclick="setTbsaGroup('child',this)">Dziecko (&lt;5 lat)</button>
+        </div>
+        <div id="tbsa-parts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:10px"></div>
+        <div class="calc-result" style="margin-top:14px">
+          <div style="font-size:0.85rem;color:var(--t2);margin-bottom:6px">Wynik</div>
+          <div style="font-size:2rem;font-weight:700;color:var(--t0)">
+            <span id="tbsa-total">0</span>% TBSA
+          </div>
+          <div id="tbsa-interp" style="margin-top:8px;color:var(--t1);font-size:0.9rem"></div>
+        </div>
+        <div class="calc-source">Źródło: Wallace A.B. (1951) Rule of Nines · Lund-Browder chart for children.</div>
+        <button class="btn-reset" onclick="resetTBSA()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         9. COCKCROFT-GAULT — Klirens kreatyniny
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-cg">
+      <div class="ck-stripe" style="background:#16a34a"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-cg')">
+        <div class="ck-title-row">
+          <span class="ck-icon">💧</span>
+          <div>
+            <div class="ck-name">Klirens kreatyniny (Cockcroft-Gault)</div>
+            <div class="ck-sub">Dawkowanie antybiotyków, NOAC, chemioterapii</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px">
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem">
+            <span style="color:var(--t2)">Wiek (lat)</span>
+            <input type="number" id="cg-age" min="18" max="110" placeholder="np. 68" oninput="calcCG()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem">
+            <span style="color:var(--t2)">Masa (kg)</span>
+            <input type="number" id="cg-weight" min="30" max="250" step="0.1" placeholder="np. 75" oninput="calcCG()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem">
+            <span style="color:var(--t2)">Kreatynina (mg/dl)</span>
+            <input type="number" id="cg-creat" min="0.3" max="15" step="0.01" placeholder="np. 1.1" oninput="calcCG()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/>
+          </label>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn-opt on" id="cg-male" onclick="setCGSex('M',this)">Mężczyzna</button>
+          <button class="btn-opt" id="cg-female" onclick="setCGSex('K',this)">Kobieta (×0.85)</button>
+        </div>
+        <div class="calc-result" style="margin-top:14px">
+          <div style="font-size:0.85rem;color:var(--t2);margin-bottom:6px">Wynik</div>
+          <div style="font-size:2rem;font-weight:700;color:var(--t0)">
+            <span id="cg-result">—</span> <span style="font-size:1rem;color:var(--t2)">ml/min</span>
+          </div>
+          <div id="cg-interp" style="margin-top:8px;color:var(--t1);font-size:0.9rem"></div>
+        </div>
+        <div class="calc-source">Źródło: Cockcroft DW, Gault MH. Nephron 1976. Wzór: [(140−wiek)×masa / (72×sCr)] × (0.85 jeśli kobieta).</div>
+        <button class="btn-reset" onclick="resetCG()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+  </div><!-- /calc-grid -->
+
+  <!-- LPR BAR -->
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    EMLA — Emergency Medical Logistics Assistant · SOR Chojnice · Kalkulatory kliniczne
+    <br>
+    <span class="eps-note">Dane kalkulatorów nie są zapisywane — znikają po odświeżeniu strony.</span>
+  </div>
+
+</div><!-- /app -->
+
+<script src="js/app.js"></script>
+<script>
+/* ═══════════════════════════════════════════════
+   KALKULATORY — logika obliczeniowa
+   ═══════════════════════════════════════════════ */
+
+/* ── Pomocnicze ── */
+function toggleCalc(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function fmt1(n) { return Math.round(n * 10) / 10 }
+function fmt0(n) { return Math.round(n) }
+
+/* ══════════════════════════════════════════════
+   1. GCS
+══════════════════════════════════════════════ */
+const GCS = { e: null, v: null, m: null };
+
+function gcsSet(comp, val, btn) {
+  GCS[comp] = val;
+  // odznacz inne w grupie
+  document.querySelectorAll(`[data-group="gcs-${comp}"]`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById(`gcs-${comp}-badge`).textContent = val;
+  calcGCS();
+}
+
+function calcGCS() {
+  const res = document.getElementById('gcs-result');
+  const scoreEl = document.getElementById('gcs-score');
+  const labelEl = document.getElementById('gcs-label');
+  const detailEl = document.getElementById('gcs-detail');
+  const alertEl = document.getElementById('gcs-alert');
+
+  if (GCS.e === null || GCS.v === null || GCS.m === null) {
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = 'Wybierz wszystkie parametry';
+    detailEl.textContent = `E=${GCS.e ?? '?'} + V=${GCS.v ?? '?'} + M=${GCS.m ?? '?'}`;
+    alertEl.style.display = 'none';
+    return;
+  }
+
+  const total = GCS.e + GCS.v + GCS.m;
+  scoreEl.textContent = total;
+  detailEl.textContent = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}`;
+
+  if (total >= 13) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Łagodne zaburzenia świadomości (13–15)';
+    alertEl.style.display = 'none';
+  } else if (total >= 9) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Umiarkowane zaburzenia świadomości (9–12)';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'Ciężkie zaburzenia świadomości (≤ 8)';
+    alertEl.style.display = 'flex';
+  }
+}
+
+function resetGCS() {
+  GCS.e = null; GCS.v = null; GCS.m = null;
+  document.querySelectorAll('[data-group^="gcs-"]').forEach(b => b.classList.remove('sel'));
+  ['gcs-e-badge','gcs-v-badge','gcs-m-badge'].forEach(id => document.getElementById(id).textContent = '–');
+  calcGCS();
+}
+
+/* ══════════════════════════════════════════════
+   2. WELLS PE
+══════════════════════════════════════════════ */
+function wellsToggle(el) {
+  el.classList.toggle('checked');
+  calcWells();
+}
+
+function calcWells() {
+  let total = 0;
+  document.querySelectorAll('#wells-list .crit-item.checked').forEach(el => {
+    total += parseFloat(el.getAttribute('data-pts'));
+  });
+
+  const scoreEl = document.getElementById('wells-score');
+  const labelEl = document.getElementById('wells-label');
+  const detailEl = document.getElementById('wells-detail');
+  const alertEl = document.getElementById('wells-alert');
+
+  scoreEl.textContent = fmt1(total);
+
+  if (total <= 1) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Małe prawdopodobieństwo PE';
+    detailEl.textContent = 'Zalecenie: D-dimer (czułość 95–99%) — jeśli ujemny → wyklucza PE';
+    alertEl.style.display = 'none';
+  } else if (total <= 6) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Pośrednie prawdopodobieństwo PE';
+    detailEl.textContent = 'Zalecenie: CTA tętnic płucnych lub scyntygrafia V/Q';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'Duże prawdopodobieństwo PE (> 6)';
+    detailEl.textContent = 'Zalecenie: Natychmiastowe leczenie przeciwkrzepliwe — nie czekaj na CTA';
+    alertEl.style.display = 'flex';
+  }
+}
+
+function resetWells() {
+  document.querySelectorAll('#wells-list .crit-item').forEach(el => el.classList.remove('checked'));
+  calcWells();
+}
+
+/* ══════════════════════════════════════════════
+   3. CURB-65
+══════════════════════════════════════════════ */
+function curbToggle(el) {
+  el.classList.toggle('checked');
+  calcCURB();
+}
+
+function calcCURB() {
+  let total = 0;
+  document.querySelectorAll('#curb-list .crit-item.checked').forEach(el => {
+    total += parseInt(el.getAttribute('data-pts'));
+  });
+
+  const scoreEl = document.getElementById('curb-score');
+  const labelEl = document.getElementById('curb-label');
+  const detailEl = document.getElementById('curb-detail');
+  const alertEl = document.getElementById('curb-alert');
+
+  scoreEl.textContent = total;
+
+  if (total <= 1) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Niskie ryzyko — leczenie ambulatoryjne';
+    detailEl.textContent = 'Śmiertelność < 3% · Rozważ leczenie w domu przy CURB=0';
+    alertEl.style.display = 'none';
+  } else if (total === 2) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Umiarkowane ryzyko — hospitalizacja';
+    detailEl.textContent = 'Śmiertelność ~9% · Wskazana hospitalizacja na oddziale';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'Wysokie ryzyko — rozważ OIT';
+    detailEl.textContent = 'Śmiertelność > 17% · CURB ≥ 3 = kryteria ciężkiego ZP';
+    alertEl.style.display = 'flex';
+  }
+}
+
+function resetCURB() {
+  document.querySelectorAll('#curb-list .crit-item').forEach(el => el.classList.remove('checked'));
+  calcCURB();
+}
+
+/* ══════════════════════════════════════════════
+   4. PARKLAND
+══════════════════════════════════════════════ */
+function calcParkland() {
+  const wt = parseFloat(document.getElementById('park-wt').value);
+  const tbsa = parseFloat(document.getElementById('park-tbsa').value);
+
+  const scoreEl = document.getElementById('park-score');
+  const labelEl = document.getElementById('park-label');
+  const detailEl = document.getElementById('park-detail');
+  const alertEl = document.getElementById('park-alert');
+  const breakdown = document.getElementById('park-breakdown');
+
+  if (!wt || !tbsa || wt <= 0 || tbsa <= 0) {
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = 'Podaj masę ciała i % TBSA';
+    detailEl.textContent = '';
+    breakdown.style.display = 'none';
+    alertEl.style.display = 'none';
+    return;
+  }
+
+  const total = 4 * wt * tbsa;
+  const half = total / 2;
+  const rate8h = fmt0(half / 8);
+  const rate16h = fmt0(half / 16);
+
+  scoreEl.textContent = fmt0(total) + ' ml';
+  scoreEl.className = 'result-score c-blue';
+  labelEl.textContent = `Łącznie 24h: ${fmt0(total)} ml Ringera mleczanowego`;
+  detailEl.textContent = `4 ml × ${wt} kg × ${tbsa}% = ${fmt0(total)} ml`;
+
+  document.getElementById('park-total').textContent = fmt0(total) + ' ml';
+  document.getElementById('park-8h').textContent = rate8h + ' ml/h';
+  document.getElementById('park-16h').textContent = rate16h + ' ml/h';
+  breakdown.style.display = 'grid';
+
+  alertEl.style.display = tbsa > 20 ? 'flex' : 'none';
+}
+
+function resetParkland() {
+  document.getElementById('park-wt').value = '';
+  document.getElementById('park-tbsa').value = '';
+  calcParkland();
+}
+
+/* ══════════════════════════════════════════════
+   5. DAWKOWANIE PEDIATRYCZNE
+══════════════════════════════════════════════ */
+function pedAgeUpdate() {
+  const months = parseInt(document.getElementById('ped-age').value);
+  let txt;
+  if (months < 1) txt = 'Noworodek';
+  else if (months < 12) txt = months + (months === 1 ? ' miesiąc' : months < 5 ? ' miesiące' : ' miesięcy');
+  else {
+    const years = Math.floor(months / 12);
+    const rem = months % 12;
+    txt = years + (years === 1 ? ' rok' : years < 5 ? ' lata' : ' lat');
+    if (rem > 0) txt += ' ' + rem + ' mies.';
+  }
+  document.getElementById('ped-age-val').textContent = txt;
+  calcPed();
+}
+
+function calcPed() {
+  const wt = parseFloat(document.getElementById('ped-wt').value);
+  const months = parseInt(document.getElementById('ped-age').value);
+  const tbody = document.getElementById('ped-tbody');
+
+  if (!wt || wt <= 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:16px">Podaj masę ciała dziecka</td></tr>';
+    return;
+  }
+
+  const isNeonatal = months < 1;
+  const isAdolescent = months >= 144; // ≥ 12 lat
+
+  // Adrenalina NZK
+  const adrNzk = Math.min(0.01 * wt, 1);
+  const adrNzkStr = fmt1(adrNzk * 1000) + ' mcg (' + fmt1(adrNzk) + ' mg) IV/IO';
+
+  // Adrenalina anafilaksja IM
+  let adrAnaf, adrAnafNote;
+  if (wt < 15) { adrAnaf = '0.15 mg (0.15 ml adrenaliny 1:1000) IM'; adrAnafNote = 'EpiPen Junior 0.15'; }
+  else if (wt <= 30) { adrAnaf = '0.3 mg (0.3 ml adrenaliny 1:1000) IM'; adrAnafNote = 'EpiPen 0.3'; }
+  else { adrAnaf = '0.5 mg (0.5 ml adrenaliny 1:1000) IM'; adrAnafNote = 'EpiPen 0.5'; }
+
+  // Atropina
+  let atrop = Math.max(0.02 * wt, 0.1);
+  const atropMax = isAdolescent ? 1.0 : 0.5;
+  atrop = Math.min(atrop, atropMax);
+  const atropStr = fmt1(atrop) + ' mg IV';
+
+  // Midazolam
+  const midaz = Math.min(0.2 * wt, 10);
+  const midazStr = fmt1(midaz) + ' mg IM/IN';
+
+  // Diazepam PR
+  const diaz = Math.min(0.5 * wt, 10);
+  const diazStr = fmt1(diaz) + ' mg doodbytniczo';
+
+  // Płyny bolus
+  const fluid = 10 * wt;
+  const fluidStr = fmt0(fluid) + ' ml NaCl 0.9% IV/IO (wstrząs: do 3×)';
+
+  // Paracetamol IV
+  const pcm = Math.min(15 * wt, 1000);
+  const pcmStr = fmt0(pcm) + ' mg IV (15 mg/kg, max 1g)';
+
+  // Salbutamol
+  const salb = wt < 20 ? '2.5 mg' : '5 mg';
+  const salbStr = salb + ' nebulizacja (0.5 ml : 2 ml NaCl)';
+
+  const rows = [
+    ['Adrenalina NZK', '0.01 mg/kg IV/IO (max 1 mg)', adrNzkStr, 'Co 3–5 min w NZK'],
+    ['Adrenalina – anafilaksja', 'IM wg masy ciała', adrAnaf, adrAnafNote],
+    ['Atropina', '0.02 mg/kg IV (min 0.1 mg)', atropStr, isAdolescent ? 'max 1 mg' : 'max 0.5 mg'],
+    ['Midazolam – drgawki', '0.2 mg/kg IM/IN (max 10 mg)', midazStr, 'Buccal / IN: takie same dawki'],
+    ['Diazepam PR', '0.5 mg/kg PR (max 10 mg)', diazStr, 'Doodbytniczo'],
+    ['Płyny – bolus', '10 ml/kg NaCl 0.9%', fluidStr, 'W wstrząsie do 3 bolusów'],
+    ['Paracetamol IV', '15 mg/kg (max 1000 mg)', pcmStr, '>10 kg: wlew 15 min'],
+    ['Salbutamol – nebulizacja', '<20 kg: 2.5 mg / >20 kg: 5 mg', salbStr, 'Co 20 min (max 3×)'],
+  ];
+
+  tbody.innerHTML = rows.map(([name, dose, calc, note]) => `
+    <tr>
+      <td><span class="drug-name">${name}</span></td>
+      <td><span class="drug-dose">${dose}</span></td>
+      <td><span class="drug-calc">${calc}</span></td>
+      <td style="font-size:0.78rem;color:var(--t2)">${note}</td>
+    </tr>
+  `).join('');
+}
+
+function resetPed() {
+  document.getElementById('ped-wt').value = '';
+  document.getElementById('ped-age').value = '24';
+  pedAgeUpdate();
+}
+
+/* ══════════════════════════════════════════════
+   6. PRĘDKOŚĆ WLEWU
+══════════════════════════════════════════════ */
+const INF_PRESETS = {
+  adrenalina:    { dose: 0.05, dose_unit: 'mcg_kg_min', conc: 0.02, conc_unit: 'mg_ml', note: 'Adrenalina 1mg/50ml = 0.02 mg/ml' },
+  noradrenalina: { dose: 0.1,  dose_unit: 'mcg_kg_min', conc: 0.04, conc_unit: 'mg_ml', note: 'Noradrenalina 2mg/50ml = 0.04 mg/ml' },
+  morfina:       { dose: 2,    dose_unit: 'mg_h',        conc: 1,    conc_unit: 'mg_ml', note: 'Morfina 50mg/50ml = 1 mg/ml' },
+  dobutamina:    { dose: 5,    dose_unit: 'mcg_kg_min',  conc: 1,    conc_unit: 'mg_ml', note: 'Dobutamina 250mg/250ml = 1 mg/ml' },
+};
+
+function infPreset(name) {
+  const p = INF_PRESETS[name];
+  document.querySelectorAll('.preset-pill').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('inf-dose').value = p.dose;
+  document.getElementById('inf-dose-unit').value = p.dose_unit;
+  document.getElementById('inf-conc').value = p.conc;
+  document.getElementById('inf-conc-unit').value = p.conc_unit;
+  calcInf();
+}
+
+function calcInf() {
+  const dose = parseFloat(document.getElementById('inf-dose').value);
+  const dose_unit = document.getElementById('inf-dose-unit').value;
+  const wt = parseFloat(document.getElementById('inf-wt').value);
+  const conc = parseFloat(document.getElementById('inf-conc').value);
+  const conc_unit = document.getElementById('inf-conc-unit').value;
+  const mode = document.getElementById('inf-mode').value;
+
+  const msgEl = document.getElementById('inf-msg');
+  const resEl = document.getElementById('inf-result');
+  const infRes = document.getElementById('inf-results');
+
+  // Sprawdź czy wt potrzebne
+  const needsWt = ['mcg_kg_min','mcg_kg_h','mg_kg_h'].includes(dose_unit);
+
+  if (!dose || !conc || conc <= 0 || (needsWt && !wt)) {
+    msgEl.style.display = 'block';
+    resEl.style.display = 'none';
+    infRes.style.display = 'none';
+    return;
+  }
+
+  // Przelicz dawkę na mg/h
+  let dose_mg_h;
+  if (dose_unit === 'mcg_kg_min') dose_mg_h = dose * (wt || 70) * 60 / 1000;
+  else if (dose_unit === 'mcg_kg_h') dose_mg_h = dose * (wt || 70) / 1000;
+  else if (dose_unit === 'mg_kg_h') dose_mg_h = dose * (wt || 70);
+  else if (dose_unit === 'mg_h') dose_mg_h = dose;
+  else if (dose_unit === 'mcg_h') dose_mg_h = dose / 1000;
+
+  // Przelicz stężenie na mg/ml
+  let conc_mg_ml = conc_unit === 'mcg_ml' ? conc / 1000 : conc;
+
+  // ml/h
+  const rate_ml_h = dose_mg_h / conc_mg_ml;
+  const drops_min = rate_ml_h * 20 / 60;
+
+  const scoreEl = document.getElementById('inf-score');
+  const labelEl = document.getElementById('inf-label');
+  const detailEl = document.getElementById('inf-detail');
+  const rateEl = document.getElementById('inf-rate');
+  const dropsEl = document.getElementById('inf-drops');
+
+  msgEl.style.display = 'none';
+  resEl.style.display = 'block';
+  infRes.style.display = 'grid';
+
+  const rateStr = fmt1(rate_ml_h);
+  scoreEl.textContent = rateStr + ' ml/h';
+  labelEl.textContent = mode === 'pump' ? 'Nastawiaj pompę infuzyjną' : 'Ustaw kroplówkę';
+  detailEl.textContent = `${fmt1(dose_mg_h)} mg/h ÷ ${conc_mg_ml} mg/ml = ${rateStr} ml/h`;
+
+  rateEl.textContent = rateStr + ' ml/h';
+  dropsEl.textContent = mode === 'pump' ? '–' : fmt0(drops_min) + ' kr/min';
+}
+
+function resetInf() {
+  ['inf-dose','inf-wt','inf-conc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('inf-dose-unit').value = 'mcg_kg_min';
+  document.getElementById('inf-conc-unit').value = 'mg_ml';
+  document.getElementById('inf-mode').value = 'pump';
+  document.querySelectorAll('.preset-pill').forEach(el => el.classList.remove('active'));
+  document.getElementById('inf-msg').style.display = 'block';
+  document.getElementById('inf-result').style.display = 'none';
+  document.getElementById('inf-results').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════
+   7. HEART SCORE
+══════════════════════════════════════════════ */
+const HEART = { h: null, e: null, a: null, r: null, t: null };
+
+function heartSet(comp, val, btn) {
+  HEART[comp] = val;
+  document.querySelectorAll(`[data-grp="${comp}"]`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById(`${comp}-val`).textContent = val;
+  calcHEART();
+}
+
+function calcHEART() {
+  const scoreEl = document.getElementById('heart-score');
+  const labelEl = document.getElementById('heart-label');
+  const detailEl = document.getElementById('heart-detail');
+  const alertEl = document.getElementById('heart-alert');
+
+  const vals = Object.values(HEART);
+  if (vals.some(v => v === null)) {
+    const done = vals.filter(v => v !== null).length;
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = `Wybierz wszystkie parametry (${done}/5)`;
+    detailEl.textContent = 'H + E + A + R + T = 0–10 pkt';
+    alertEl.style.display = 'none';
+    return;
+  }
+
+  const total = HEART.h + HEART.e + HEART.a + HEART.r + HEART.t;
+  scoreEl.textContent = total;
+  detailEl.textContent = `H=${HEART.h} + E=${HEART.e} + A=${HEART.a} + R=${HEART.r} + T=${HEART.t} = ${total}`;
+
+  if (total <= 3) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Niskie ryzyko MACE (0–3 pkt)';
+    detailEl.textContent = detailEl.textContent + ' · Ryzyko MACE 0.9–1.7% · Rozważ wypisanie z SOR';
+    alertEl.style.display = 'none';
+  } else if (total <= 6) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Pośrednie ryzyko MACE (4–6 pkt)';
+    detailEl.textContent = detailEl.textContent + ' · Ryzyko MACE 12–16.6% · Obserwacja, serial troponin';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'Wysokie ryzyko MACE (7–10 pkt)';
+    detailEl.textContent = detailEl.textContent + ' · Ryzyko MACE > 50% · Pilna interwencja kardiologiczna';
+    alertEl.style.display = 'flex';
+  }
+}
+
+function resetHEART() {
+  Object.keys(HEART).forEach(k => HEART[k] = null);
+  document.querySelectorAll('.heart-btn').forEach(b => b.classList.remove('sel'));
+  ['h-val','e-val','a-val','r-val','t-val'].forEach(id => document.getElementById(id).textContent = '—');
+  calcHEART();
+}
+
+/* ══════════════════════════════════════════════
+   8. TBSA (rule of nines / Lund-Browder)
+══════════════════════════════════════════════ */
+const TBSA_PARTS_ADULT = [
+  { id: 'head',       label: 'Głowa + szyja',       v: 9 },
+  { id: 'chest',      label: 'Klatka przednia',     v: 9 },
+  { id: 'abdomen',    label: 'Brzuch (przód)',      v: 9 },
+  { id: 'upper-back', label: 'Plecy górne',         v: 9 },
+  { id: 'lower-back', label: 'Plecy dolne',         v: 9 },
+  { id: 'arm-l',      label: 'Ramię lewe',          v: 9 },
+  { id: 'arm-r',      label: 'Ramię prawe',         v: 9 },
+  { id: 'leg-l',      label: 'Noga lewa',           v: 18 },
+  { id: 'leg-r',      label: 'Noga prawa',          v: 18 },
+  { id: 'perineum',   label: 'Krocze',              v: 1 }
+];
+const TBSA_PARTS_CHILD = [
+  { id: 'head',       label: 'Głowa + szyja',       v: 18 },
+  { id: 'chest',      label: 'Klatka przednia',     v: 9 },
+  { id: 'abdomen',    label: 'Brzuch (przód)',      v: 9 },
+  { id: 'upper-back', label: 'Plecy górne',         v: 9 },
+  { id: 'lower-back', label: 'Plecy dolne',         v: 9 },
+  { id: 'arm-l',      label: 'Ramię lewe',          v: 9 },
+  { id: 'arm-r',      label: 'Ramię prawe',         v: 9 },
+  { id: 'leg-l',      label: 'Noga lewa',           v: 14 },
+  { id: 'leg-r',      label: 'Noga prawa',          v: 14 },
+  { id: 'perineum',   label: 'Krocze',              v: 0 }
+];
+let TBSA_GROUP = 'adult';
+let TBSA_STATE = {};
+
+function renderTbsa() {
+  const parts = TBSA_GROUP === 'adult' ? TBSA_PARTS_ADULT : TBSA_PARTS_CHILD;
+  document.getElementById('tbsa-parts').innerHTML = parts.map(p => {
+    const selected = TBSA_STATE[p.id] || 0;
+    return `<div style="padding:10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);cursor:pointer" onclick="toggleTbsa('${p.id}',${p.v})" data-sel="${selected>0}">
+      <div style="font-weight:600;font-size:0.85rem">${p.label}</div>
+      <div style="font-size:0.75rem;color:var(--t2);margin-top:3px">max ${p.v}%</div>
+      <div style="margin-top:6px;display:flex;gap:4px;align-items:center">
+        <input type="number" min="0" max="${p.v}" step="0.5" value="${selected}" onclick="event.stopPropagation()" oninput="setTbsaPart('${p.id}',this.value,${p.v})" style="width:60px;padding:4px 6px;border:1px solid var(--bd);border-radius:4px;background:var(--bg);color:var(--t0);font-family:var(--m);font-size:0.9rem"/>
+        <span style="font-size:0.85rem;color:var(--t2)">%</span>
+      </div>
+    </div>`;
+  }).join('');
+  recalcTbsa();
+}
+
+function setTbsaGroup(g, btn) {
+  TBSA_GROUP = g;
+  document.querySelectorAll('#ck-tbsa .btn-opt').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  TBSA_STATE = {};
+  renderTbsa();
+}
+
+function toggleTbsa(id, maxV) {
+  // Клик по карточке: если 0 — ставит maxV (полное поражение части тела), иначе — 0
+  TBSA_STATE[id] = (TBSA_STATE[id] && TBSA_STATE[id] > 0) ? 0 : maxV;
+  renderTbsa();
+}
+function setTbsaPart(id, val, maxV) {
+  const v = Math.max(0, Math.min(maxV, parseFloat(val) || 0));
+  TBSA_STATE[id] = v;
+  recalcTbsa();
+}
+function recalcTbsa() {
+  let sum = 0;
+  for (const k in TBSA_STATE) sum += TBSA_STATE[k] || 0;
+  sum = Math.round(sum * 10) / 10;
+  document.getElementById('tbsa-total').textContent = sum;
+  let interp = '';
+  const thr = TBSA_GROUP === 'adult' ? [10, 20, 40] : [5, 10, 20];
+  if (sum === 0) interp = '';
+  else if (sum < thr[0]) interp = `Lekkie oparzenie (< ${thr[0]}%). Leczenie ambulatoryjne możliwe.`;
+  else if (sum < thr[1]) interp = `Oparzenie średnie (${thr[0]}–${thr[1]}%). Hospitalizacja zalecana.`;
+  else if (sum < thr[2]) interp = `Ciężkie oparzenie (${thr[1]}–${thr[2]}%). Transfer do CLO — rozważ LPR.`;
+  else interp = `Krytyczne (≥ ${thr[2]}%). Transfer CLO obowiązkowy. Parkland, MTP, IV-y.`;
+  document.getElementById('tbsa-interp').textContent = interp;
+}
+function resetTBSA() {
+  TBSA_STATE = {};
+  renderTbsa();
+}
+
+/* ══════════════════════════════════════════════
+   9. COCKCROFT-GAULT
+══════════════════════════════════════════════ */
+let CG_SEX = 'M';
+function setCGSex(s, btn) {
+  CG_SEX = s;
+  document.querySelectorAll('#ck-cg .btn-opt').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  calcCG();
+}
+function calcCG() {
+  const age = parseFloat(document.getElementById('cg-age').value);
+  const wt  = parseFloat(document.getElementById('cg-weight').value);
+  const cr  = parseFloat(document.getElementById('cg-creat').value);
+  const out = document.getElementById('cg-result');
+  const interp = document.getElementById('cg-interp');
+  if (!(age > 0 && wt > 0 && cr > 0)) { out.textContent = '—'; interp.textContent = ''; return; }
+  let cl = ((140 - age) * wt) / (72 * cr);
+  if (CG_SEX === 'K') cl *= 0.85;
+  cl = Math.round(cl);
+  out.textContent = cl;
+  let stage = '';
+  if (cl >= 90) stage = 'Prawidłowy lub nieznacznie obniżony (G1). Standardowe dawki.';
+  else if (cl >= 60) stage = 'Łagodnie obniżony (G2). Zwykle standardowe dawki, ale monitoruj NOAC.';
+  else if (cl >= 45) stage = 'Umiarkowanie obniżony (G3a). Dawki aminoglikozydów ↓, NOAC przeciwwskazany w niektórych.';
+  else if (cl >= 30) stage = 'Znacznie obniżony (G3b). Większość antybiotyków — dostosuj dawkę (per CHPL).';
+  else if (cl >= 15) stage = 'Ciężko obniżony (G4). Konsultacja nefrologiczna. Unikaj NSAID i kontrastu.';
+  else stage = 'Schyłkowa niewydolność nerek (G5). Dializa lub przygotowanie do niej.';
+  interp.textContent = stage;
+}
+function resetCG() {
+  document.getElementById('cg-age').value = '';
+  document.getElementById('cg-weight').value = '';
+  document.getElementById('cg-creat').value = '';
+  calcCG();
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  pedAgeUpdate();
+  calcWells();
+  calcCURB();
+  renderTbsa();
+});
+</script>
+</body>
+</html>

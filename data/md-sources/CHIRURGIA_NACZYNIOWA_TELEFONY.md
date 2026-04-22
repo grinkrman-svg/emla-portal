@@ -179,4 +179,4 @@ Zadzwonić na SOR Jurasza (52 585 42 22) i zapytać o:
 
 ---
 
-*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali.*
+*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali. Ostatnia weryfikacja: 2026-04-10 — brak nowych numerów dyżurnych (nie publikowane online).*

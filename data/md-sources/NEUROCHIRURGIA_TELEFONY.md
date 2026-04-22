@@ -67,8 +67,10 @@ woj. kujawsko-pomorskie
 |---|---|---|
 | Klinika neurochirurgii (sekr./fax) | 52 585 45 10 | strona szpitala ✅ |
 | Klinika (alt. fax) | 52 585 40 31 | strona szpitala ✅ |
+| **Sekretariat medyczny kliniki** | **52 585 76 99** | jurasza.umk.pl ✅ (znaleziono: 2026-04-10) |
 | **Izba Przyjęć — Medycyna Ratunkowa** | **52 585 40 08** | jurasza.umk.pl ✅ (znaleziono: 2026-03-30) |
-| Centrala szpitala | 52 585 40 00 | jurasza.umk.pl ✅ (znaleziono: 2026-03-30) |
+| SOR — Klinika Medycyny Ratunkowej | 52 585 42 22 lub 585 43 33 | jurasza.umk.pl ✅ |
+| Centrala szpitala (24h infolinia) | 52 585 40 00 | jurasza.umk.pl ✅ (znaleziono: 2026-03-30) |
 | **Dyżurny neurochirurg** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
 | **Post pielęgniarski** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
 
@@ -191,7 +193,7 @@ woj. pomorskie
 |---|---|---|
 | **Oddział Neurochirurgii** | **58 302 30 31** | placowki.mp.pl ✅ |
 | Centrala Szpitala Kopernika | 58 764 01 00 | placowki.mp.pl ✅ |
-| SOR Kopernika | 58 764 01 00 (prosić o SOR) | j.w. ⚠️ |
+| **SOR Szpitala Kopernika** | **58 764 01 16** | dziennikbaltycki.pl ⚠️ (znaleziono: 2026-04-10) |
 | Rejestracja szpitala | 58 764 08 70 | copernicus.gda.pl ✅ (znaleziono: 2026-03-30) |
 | Rejestracja (alt.) | 58 764 07 53 | copernicus.gda.pl ✅ (znaleziono: 2026-03-30) |
 | **Dyżurny neurochirurg** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
@@ -225,14 +227,18 @@ woj. warmińsko-mazurskie
 
 | Funkcja | Numer | Źródło |
 |---|---|---|
-| Oddział neurochirurgii (ordynator) | 89 538 62 46 | wss.olsztyn.pl ✅ |
+| Ordynator (dr hab. Waldemar Och) | 89 538 62 46 | wss.olsztyn.pl ✅ |
+| **Sekretariat oddziału** | **89 538 65 44** | wss.olsztyn.pl ✅ (znaleziono: 2026-04-10) |
+| **Gabinet lekarski** | **89 538 64 92** | wss.olsztyn.pl ✅ (znaleziono: 2026-04-10) |
+| **Punkt pielęgniarski** | **89 538 62 51** | wss.olsztyn.pl ✅ (znaleziono: 2026-04-10) |
+| Telefon do pacjentów | 89 538 64 59 | wss.olsztyn.pl ✅ (znaleziono: 2026-04-10) |
+| Pielęgniarka oddziałowa (mgr Gabriela Rudzińska) | 89 538 63 55 | wss.olsztyn.pl ✅ (znaleziono: 2026-04-10) |
 | Blok Operacyjny | 89 538 62 71 | wss.olsztyn.pl ✅ |
 | **Izba Przyjęć — koordynator** | **89 538 62 89** | wss.olsztyn.pl ✅ (znaleziono: 2026-03-30) |
 | Izba Przyjęć — pielęgniarka oddziałowa | 89 538 65 82 | wss.olsztyn.pl ✅ (znaleziono: 2026-03-30) |
 | Izba Przyjęć — przyjęcia planowe | 89 538 63 02 | wss.olsztyn.pl ✅ (znaleziono: 2026-03-30) |
 | Centrala szpitala / Informacja | 89 538 63 56 | wss.olsztyn.pl ✅ (znaleziono: 2026-03-30) |
 | **Dyżurny neurochirurg** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
-| **Post pielęgniarski** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
 
 **Ordynator:** dr hab. n. med. Waldemar Och
 **Strona:** https://wss.olsztyn.pl
@@ -416,9 +422,10 @@ woj. zachodniopomorskie
 | Funkcja | Numer | Źródło |
 |---|---|---|
 | Sekretariat Kliniki | 91 425 35 61 | pum.edu.pl ✅ |
+| **Dyżurka Pielęgniarek** | **91 425 35 62** | placowki.mp.pl / szukaj online ⚠️ (znaleziono: 2026-04-10) |
+| **SOR szpitala** | **91 425 30 10** | usk1.szczecin.pl ✅ (znaleziono: 2026-04-10) |
+| Centrala szpitala | 91 425 30 00 | usk1.szczecin.pl ✅ (znaleziono: 2026-04-10) |
 | **Dyżurny neurochirurg** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
-| **Post pielęgniarski** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
-| **SOR / Izba Przyjęć** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
 | **Blok operacyjny** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
 
 **Kierownik:** prof. dr hab. n. med. Leszek Sagan
@@ -434,6 +441,56 @@ woj. zachodniopomorskie
 ### Transport z Chojnic
 - Helikopter: ~1h 30min
 - Droga: ~4h
+
+---
+
+---
+
+## 12. WŁOCŁAWEK — WSS (~175 km)
+
+**Oddział Neurochirurgii**
+Wojewódzki Szpital Specjalistyczny im. bł. ks. Jerzego Popiełuszki
+ul. Wieniecka 49, 87-800 Włocławek
+woj. kujawsko-pomorskie
+
+**Źródła:** szpital.wloclawek.pl, placowki.mp.pl (znaleziono: 2026-04-10)
+
+| Funkcja | Numer | Źródło |
+|---|---|---|
+| **Sekretariat oddziału** | **54 412 93 51** | szpital.wloclawek.pl ✅ (znaleziono: 2026-04-10) |
+| **Gabinet lekarski** | **54 412 93 35** | szpital.wloclawek.pl ✅ (znaleziono: 2026-04-10) |
+| Centrala szpitala | 54 412 90 00 | szpital.wloclawek.pl ✅ |
+| **Dyżurny neurochirurg** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
+| **Post pielęgniarski** | **DO UZUPEŁNIENIA ❓** | nie publikowany online |
+| **Izba Przyjęć** | **DO UZUPEŁNIENIA ❓** | nie publikowany online — dzwonić na centralę |
+
+**Lekarze:** dr Grzegorz Józwiak, dr Krzysztof Nowak
+**Strona:** https://www.szpital.wloclawek.pl
+
+### Możliwości
+- Oddział neurochirurgii dorosłych
+- Neurotraumatologia
+- Chirurgia kręgosłupa
+
+### Transport z Chojnic
+- Helikopter: ~50 min
+- Droga (A1/DK91): ~2h 15min
+
+---
+
+## NOWE ODDZIAŁY — WYNIKI WYSZUKIWANIA (2026-04-10)
+
+### Szpital Morski im. PCK Gdynia — BRAK NEUROCHIRURGII
+- **Wynik:** Szpital Morski w Gdyni (ul. Powstania Styczniowego 1, 81-519 Gdynia) NIE posiada oddziału neurochirurgii. Profil szpitala: onkologia, ginekologia, pulmonologia, neonatologia, chirurgia dziecięca, AiIT. ❓ (sprawdzono: 2026-04-10, szpitalepomorskie.eu + placowki.mp.pl)
+
+### Szpital Ceynowy Wejherowo — BRAK NEUROCHIRURGII
+- **Wynik:** Szpital Ceynowy w Wejherowie (ul. Jagalskiego 10, 84-200 Wejherowo) NIE posiada oddziału neurochirurgii. Posiada: neurologię, chirurgię, pediatrię, ORL. Tel. centrala: 58 572 73 00. ❓ (sprawdzono: 2026-04-10)
+
+### Szpital MSWiA Bydgoszcz — BRAK NEUROCHIRURGII
+- **Wynik:** Szpital MSWiA w Bydgoszczy (ul. Ks. Markwarta 4-6) NIE posiada oddziału neurochirurgii. Posiada: neurologię, chirurgię ogólną, ortopedię, ORL. Strona przeniesiona na gov.pl. ❓ (sprawdzono: 2026-04-10)
+
+### Szpital Wielospecjalistyczny Inowrocław — BRAK NEUROCHIRURGII
+- **Wynik:** Szpital im. dr Błażka w Inowrocławiu (ul. Poznańska 97) posiada oddział neurologii (tel. 52 354 52 76), ale NIE posiada neurochirurgii. ❓ (sprawdzono: 2026-04-10, szpitalino.pl)
 
 ---
 
@@ -460,7 +517,7 @@ Zadzwonić pon–pt 8:00–15:00 na każdy oddział i poprosić o:
 3. Numer bloku operacyjnego (neurochirurgicznego)
 4. Numer SOR/Izby Przyjęć danego szpitala (jeśli nie znaleziony)
 
-### Numery uzupełnione w tej sesji (2026-03-30):
+### Numery uzupełnione w sesji 2026-03-30:
 - Biziela: +1 numer (SOR 52 365 52 09)
 - Jurasza: +2 numery (Izba Przyjęć 52 585 40 08, Centrala 52 585 40 00)
 - UCK Gdańsk: +3 numery (SOR 58 349 37 83/84, Centrala alt. 58 584 40 00)
@@ -471,6 +528,14 @@ Zadzwonić pon–pt 8:00–15:00 na każdy oddział i poprosić o:
 - NOWE: Toruń SSM Batorego — 6 numerów (w tym SOR, gabinet lekarzy, dyżurka pielęgniarek)
 - NOWE: Szczecin SPWSZ — 11 numerów (w tym SOR, gabinet lekarza dyżurnego, dyżurka pielęgniarek)
 - NOWE: Szczecin PUM — 1 numer (sekretariat)
+
+### Numery uzupełnione w sesji 2026-04-10:
+- Jurasza Bydgoszcz: +1 numer (Sekretariat medyczny kliniki 52 585 76 99)
+- Olsztyn WSS: +5 numerów (Sekretariat 89 538 65 44, Gabinet lekarski 89 538 64 92, Punkt pielęgniarski 89 538 62 51, Telefon do pacjentów 89 538 64 59, Pielęgniarka oddziałowa 89 538 63 55)
+- Copernicus Gdańsk: +1 numer (SOR 58 764 01 16)
+- Szczecin USK1 (SPSK1 PUM): +3 numery (Dyżurka Pielęgniarek 91 425 35 62, SOR 91 425 30 10, Centrala 91 425 30 00)
+- NOWE: Włocławek WSS — 3 numery (Sekretariat 54 412 93 51, Gabinet lekarski 54 412 93 35, Centrala 54 412 90 00)
+- PRZESZUKANO i brak neurochirurgii: Szpital Morski Gdynia, Ceynowy Wejherowo, MSWiA Bydgoszcz, Inowrocław
 
 ---
 
@@ -487,8 +552,9 @@ Zadzwonić pon–pt 8:00–15:00 na każdy oddział i poprosić o:
 | 7 | UCK, Gdańsk | ~170 km | ~50 min | ~2h | Nie | ? |
 | 8 | Copernicus, Gdańsk | ~170 km | ~50 min | ~2h | Nie | ? |
 | 9 | WSS, Olsztyn | ~250 km | ~1h 10min | ~3h | Nie | ? |
-| 10 | SPWSZ Arkońska, Szczecin | ~350 km | ~1h 30min | ~4h | Nie | ? |
-| 11 | SPSK1 PUM, Szczecin | ~350 km | ~1h 30min | ~4h | **TAK (dzieci)** | ? |
+| 10 | WSS Włocławek | ~175 km | ~50 min | ~2h 15min | Nie | ? |
+| 11 | SPWSZ Arkońska, Szczecin | ~350 km | ~1h 30min | ~4h | Nie | ? |
+| 12 | SPSK1 PUM (USK1), Szczecin | ~350 km | ~1h 30min | ~4h | **TAK (dzieci)** | ? |
 
 **WAŻNE:** Biziela Bydgoszcz ma **Centrum Interwencyjnego Leczenia Udarów Mózgu** z mechaniczną trombektomią — to najbliższy ośrodek trombektomii od Chojnic (~30 min helikopterem). Ten fakt znaleziono na stronie głównej szpitala.
 
@@ -496,4 +562,4 @@ Zadzwonić pon–pt 8:00–15:00 na każdy oddział i poprosić o:
 
 ---
 
-*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali. Numery dyżurnych wymagają uzupełnienia przez kontakt telefoniczny. Ostatnia aktualizacja: 2026-03-30.*
+*Dokument wygenerowany przez EMLA. Dane ze stron internetowych szpitali. Numery dyżurnych wymagają uzupełnienia przez kontakt telefoniczny. Ostatnia aktualizacja: 2026-04-10.*

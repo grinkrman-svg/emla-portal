@@ -1,0 +1,3155 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Farmakologia SOR — Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* ═══════════════════════════════════════════════
+   FARMAKOLOGIA — Page-specific styles
+   ═══════════════════════════════════════════════ */
+
+/* Category badge colors */
+.badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border-radius:6px; flex-shrink:0 }
+.badge-waz  { background:oklch(0.55 0.22 25 / 0.12); color:oklch(0.45 0.22 25) }
+.badge-anal { background:oklch(0.55 0.18 250 / 0.12); color:oklch(0.45 0.18 250) }
+.badge-sed  { background:oklch(0.5 0.22 300 / 0.10); color:oklch(0.42 0.22 300) }
+.badge-rsi  { background:oklch(0.65 0.18 70 / 0.12); color:oklch(0.45 0.18 70) }
+.badge-abx  { background:oklch(0.6 0.18 155 / 0.10); color:oklch(0.40 0.18 155) }
+.badge-kar  { background:oklch(0.55 0.22 25 / 0.10); color:oklch(0.45 0.22 25) }
+.badge-neu  { background:oklch(0.5 0.22 300 / 0.10); color:oklch(0.42 0.22 300) }
+.badge-ant  { background:oklch(0.65 0.18 70 / 0.10); color:oklch(0.45 0.18 70) }
+.badge-ply  { background:oklch(0.65 0.14 195 / 0.12); color:oklch(0.40 0.14 195) }
+.badge-inn  { background:var(--bg2); color:var(--t2) }
+
+[data-theme="dark"] .badge-waz  { background:oklch(0.72 0.18 25 / 0.18); color:oklch(0.80 0.20 25) }
+[data-theme="dark"] .badge-anal { background:oklch(0.72 0.14 250 / 0.18); color:oklch(0.82 0.16 250) }
+[data-theme="dark"] .badge-sed  { background:oklch(0.6 0.18 300 / 0.15); color:oklch(0.72 0.18 300) }
+[data-theme="dark"] .badge-rsi  { background:oklch(0.65 0.18 70 / 0.18); color:oklch(0.80 0.20 70) }
+[data-theme="dark"] .badge-abx  { background:oklch(0.6 0.18 155 / 0.15); color:oklch(0.75 0.20 155) }
+[data-theme="dark"] .badge-kar  { background:oklch(0.72 0.18 25 / 0.15); color:oklch(0.80 0.20 25) }
+[data-theme="dark"] .badge-neu  { background:oklch(0.6 0.18 300 / 0.15); color:oklch(0.72 0.18 300) }
+[data-theme="dark"] .badge-ant  { background:oklch(0.65 0.18 70 / 0.15); color:oklch(0.80 0.20 70) }
+[data-theme="dark"] .badge-ply  { background:oklch(0.65 0.14 195 / 0.18); color:oklch(0.76 0.16 195) }
+[data-theme="dark"] .badge-inn  { background:var(--bg2); color:var(--t2) }
+
+/* Filter chips */
+.flt { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; animation:fadeSlideDown 0.4s ease 0.15s backwards }
+.chip {
+  padding:6px 13px; border-radius:30px; font-size:12px; font-weight:500; cursor:pointer;
+  border:1px solid var(--bd); background:var(--bgc); color:var(--t2);
+  transition:all 0.2s ease; user-select:none
+}
+.chip:hover { border-color:var(--bdh); color:var(--t0); background:var(--bg2) }
+.chip.on { background:var(--acs); border-color:var(--ac); color:var(--ac); font-weight:600 }
+
+/* Drug grid */
+.lek-grid { display:flex; flex-direction:column; gap:8px }
+
+/* Drug card — accordion */
+.lek-card {
+  background:var(--bgc);
+  border:1px solid var(--bd);
+  border-radius:var(--r);
+  box-shadow:var(--sh);
+  overflow:hidden;
+  transition:box-shadow 0.2s ease, border-color 0.2s ease;
+  animation:fadeSlideDown 0.35s ease backwards
+}
+.lek-card:hover { box-shadow:var(--shh) }
+.lek-card.open { border-color:var(--bdh) }
+
+.lek-head {
+  display:flex; align-items:center; gap:10px; padding:14px 16px;
+  cursor:pointer; user-select:none;
+  transition:background 0.15s ease
+}
+.lek-head:hover { background:var(--bg1) }
+.lek-head:active { background:var(--bg2) }
+
+.lek-name {
+  flex:1; font-size:15px; font-weight:600; color:var(--t0); line-height:1.3
+}
+.lek-name small { display:block; font-size:11px; font-weight:400; color:var(--t2); margin-top:2px }
+.lek-arrow {
+  font-size:13px; color:var(--t3); transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  flex-shrink:0; width:20px; text-align:center
+}
+.lek-card.open .lek-arrow { transform:rotate(180deg) }
+
+/* Accordion body */
+.lek-body {
+  max-height:0; overflow:hidden;
+  transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1)
+}
+.lek-card.open .lek-body { max-height:3000px }
+
+.lek-inner { padding:0 16px 16px; border-top:1px solid var(--bd) }
+
+/* Section headers */
+.lek-sec {
+  font-size:10.5px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase;
+  color:var(--t3); margin:14px 0 7px; padding-bottom:4px;
+  border-bottom:1px solid var(--bd)
+}
+.lek-sec:first-child { margin-top:12px }
+
+/* Tables */
+.lek-tbl { width:100%; border-collapse:collapse; font-size:12.5px; margin-bottom:4px }
+.lek-tbl th {
+  text-align:left; padding:6px 10px; font-weight:600; font-size:11px; color:var(--t2);
+  background:var(--bg1); border-bottom:1px solid var(--bd); letter-spacing:0.02em
+}
+.lek-tbl td {
+  padding:6px 10px; border-bottom:1px solid var(--bd); color:var(--t1); vertical-align:top;
+  line-height:1.45
+}
+.lek-tbl tr:last-child td { border-bottom:none }
+.lek-tbl tr:hover td { background:var(--bg1) }
+.lek-tbl strong { color:var(--t0); font-weight:600 }
+.lek-tbl em { font-style:normal; color:var(--t2); font-size:11px }
+
+/* Rozcienczanie block */
+.lek-dilute {
+  background:var(--bg1); border:1px solid var(--bd); border-radius:var(--rs);
+  padding:10px 14px; color:var(--t1); line-height:1.6;
+  font-family:var(--m); font-size:12px
+}
+.lek-dilute b { font-weight:600; color:var(--t0); font-family:var(--f) }
+
+/* Lists */
+.lek-list { list-style:none; padding:0; margin:0; font-size:12.5px; color:var(--t1); line-height:1.5 }
+.lek-list li { padding:3px 0 3px 18px; position:relative }
+.lek-list li::before { content:'•'; position:absolute; left:4px; color:var(--ac); font-weight:700 }
+.lek-list.contra li::before { content:'✕'; color:var(--red); font-size:10px; top:4px }
+
+/* Calculator */
+.lek-kalk {
+  display:flex; align-items:center; gap:10px; margin-top:10px;
+  padding:10px 14px; background:var(--acs); border:1px solid oklch(0.55 0.18 250 / 0.2);
+  border-radius:var(--rs)
+}
+.lek-kalk label { font-size:12px; font-weight:600; color:var(--act); white-space:nowrap }
+.lek-kalk input {
+  width:72px; padding:6px 10px; border:1px solid oklch(0.55 0.18 250 / 0.3);
+  border-radius:8px; background:var(--bgc); color:var(--t0); font-family:var(--m);
+  font-size:13px; outline:none; text-align:center
+}
+.lek-kalk input:focus { border-color:var(--ac); box-shadow:0 0 0 3px var(--acs) }
+.lek-kalk span.unit { font-size:12px; color:var(--t2) }
+.kalk-wynik {
+  font-family:var(--m); font-size:12px; font-weight:600; color:var(--act);
+  background:var(--bgc); border:1px solid oklch(0.55 0.18 250 / 0.2);
+  border-radius:8px; padding:5px 12px; min-width:120px; text-align:center;
+  transition:all 0.2s ease
+}
+.kalk-wynik:empty { display:none }
+
+/* Antidotum */
+.lek-antidotum {
+  display:inline-flex; align-items:center; gap:6px; margin-top:8px;
+  padding:5px 12px; background:oklch(0.65 0.18 70 / 0.08); border:1px solid oklch(0.65 0.18 70 / 0.2);
+  border-radius:20px; font-size:11.5px; color:oklch(0.45 0.18 70)
+}
+[data-theme="dark"] .lek-antidotum { background:oklch(0.65 0.18 70 / 0.12); color:oklch(0.80 0.20 70) }
+
+/* Source */
+.lek-src { font-size:11px; color:var(--t3); margin-top:10px; font-style:italic }
+
+/* No results */
+.no-results { text-align:center; padding:48px 24px; color:var(--t3); font-size:14px; display:none }
+.no-results.show { display:block }
+
+/* Stats */
+.stats-bar {
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;
+  margin-bottom:10px; font-size:12px; color:var(--t3);
+  animation:fadeSlideDown 0.4s ease 0.2s backwards
+}
+.stat-n { font-weight:600; color:var(--ac) }
+
+@media (max-width:600px) {
+  .lek-head { padding:12px 13px; gap:8px }
+  .lek-name { font-size:14px }
+  .lek-inner { padding:0 13px 14px }
+  .lek-tbl th, .lek-tbl td { padding:5px 7px; font-size:11.5px }
+  .lek-kalk { flex-wrap:wrap }
+}
+</style>
+</head>
+<body data-theme="light">
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <a href="index.html" class="tb-logo" title="&#x2190; Dashboard">SOR</a>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. &#x141;ukowicza</strong><br>
+      Chojnice &middot; Farmakologia SOR
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="openSearch()" title="Szukaj leku (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="kbd">Ctrl+K</span>
+    </button>
+    <button class="tb-btn" onclick="window.print()" title="Drukuj">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+    <button class="tb-btn" onclick="toggleFs()" title="Pe&#322;ny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Prze&#322;&#261;cz motyw"></div>
+  </div>
+</header>
+
+<div class="app" id="app">
+
+  <div class="sbar">
+    <input type="text" id="search"
+           placeholder="Szukaj leku, wskaza&#324;, kategorii...  (Ctrl+K)"
+           oninput="filterLeki()" aria-label="Szukaj leku">
+    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+    </svg>
+  </div>
+
+  <div class="flt" id="flt">
+    <span class="chip on" data-f="all"  onclick="setChip(this)">Wszystkie</span>
+    <span class="chip"    data-f="waz"  onclick="setChip(this)">Wazopresory</span>
+    <span class="chip"    data-f="anal" onclick="setChip(this)">Analgetyki</span>
+    <span class="chip"    data-f="sed"  onclick="setChip(this)">Sedacja</span>
+    <span class="chip"    data-f="rsi"  onclick="setChip(this)">RSI</span>
+    <span class="chip"    data-f="abx"  onclick="setChip(this)">Antybiotyki</span>
+    <span class="chip"    data-f="kar"  onclick="setChip(this)">Kardiologia</span>
+    <span class="chip"    data-f="neu"  onclick="setChip(this)">Neurologia</span>
+    <span class="chip"    data-f="ant"  onclick="setChip(this)">Antidota</span>
+    <span class="chip"    data-f="ply"  onclick="setChip(this)">P&#322;yny</span>
+    <span class="chip"    data-f="inn"  onclick="setChip(this)">Inne</span>
+  </div>
+
+  <div class="stats-bar">
+    <span>Wy&#347;wietlono: <span class="stat-n" id="statCount">28</span> lek&#243;w</span>
+    <span style="font-size:11px;color:var(--t3)">Cz&#281;&#347;&#263;ci 1\u20132/4 &middot; Wazopresory + Analgetyki/Sedacja + RSI + Antybiotyki</span>
+  </div>
+
+  <div class="lek-grid" id="leki-grid"></div>
+
+  <div class="no-results" id="noResults">
+    Brak lek&#243;w spe&#322;niaj&#261;cych kryteria wyszukiwania.
+  </div>
+
+  <div class="lpr">
+    <div class="lpr-l">
+      <span class="lpr-b">LPR</span>
+      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiowa&#263;">
+        <span class="pulse-dot"></span>
+        2222 99999
+      </span>
+      <span class="lpr-s">Centrum Operacyjne &middot; transport lotniczy</span>
+    </div>
+    <div class="lpr-r">
+      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
+      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    Farmakologia SOR &middot; Cz&#281;&#347;ci 1\u20132: Wazopresory + Analgetyki/Sedacja + RSI + Antybiotyki &middot; 28 lek&#243;w &middot;
+    &#344;r&#243;d&#322;a: ChPL (urpl.gov.pl), PTAiIT, ESICM, ERC 2021, UpToDate &middot;
+    Wersja 1.0 &middot; 2026-04-10 &middot;
+    <span onclick="showToast('Ctrl+K: szukaj / Esc: wyczy&#347;&#263; / kliknij kart&#281;: rozwi&#324;/zwi&#324;')">Skr&#243;ty klawiszowe</span>
+    <br>
+    <span class="eps-note">Dane wy&#322;&#261;cznie do u&#380;ytku wewn&#281;trznego SOR. Zawsze weryfikuj z aktualnym ChPL i stanem klinicznym pacjenta.</span>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   LEKI — PART 1: WAZOPRESORY + ANALGETYKI/SEDACJA
+   15 lekow z FARMAKOLOGIA_SOR_PART1_WAZOPRESORY_ANALGETYKI.md
+   ============================================================ */
+
+const LEKI = [
+
+  /* === 1.1 ADRENALINA === */
+  {
+    id: 1,
+    nazwa: 'Adrenalina',
+    nazwa_en: 'Epinephrine',
+    handlowe: 'Adrenalina WZF \u00b7 Fastjekt 0,3 mg \u00b7 Jext 0,3 mg \u00b7 EpiPen 0,3 mg',
+    forma: 'Amp. 1 mg/1 ml (1:1000); amp. 0,1 mg/ml (1:10 000); auto-injector 0,3 mg/0,3 ml',
+    kat: ['waz'],
+    badge: 'waz',
+    badge_label: 'Wazopresor',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var lo = (0.1 * kg * 60 / 20).toFixed(1);
+      var hi = (1.0 * kg * 60 / 20).toFixed(1);
+      return 'Wlew (20 mcg/ml): ' + lo + '\u2013' + hi + ' ml/h';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Zatrzymanie kr\u0105\u017cenia (NZK)', droga:'IV / IO', dawka:'1 mg', uwagi:'Co 3\u20135 min; przy VF/VT bez t\u0119tna \u2014 po 3. defibrylacji' },
+      { wsk:'Anafilaksja', droga:'IM (udo)', dawka:'0,3\u20130,5 mg', uwagi:'Powt. co 5\u201315 min; NIGDY IV bolus w anafilaksji' },
+      { wsk:'Anafilaksja \u2014 wlew IV', droga:'IV', dawka:'0,1\u20131 mcg/kg/min', uwagi:'Titrowa\u0107 do MAP > 65 mmHg' },
+      { wsk:'Wstrz\u0105s septyczny / oporny', droga:'IV wlew', dawka:'0,1\u20131 mcg/kg/min', uwagi:'Lek drugiego rzutu po noradrenalinie' },
+      { wsk:'Ci\u0119\u017cki skurcz oskrzeli', droga:'Nebulizacja', dawka:'0,5 mg / 3 ml NaCl', uwagi:'Rozwa\u017cy\u0107 salbutamol jako pierwsz\u0105 lini\u0119' },
+      { wsk:'Bradykardia oporna', droga:'IV', dawka:'2\u201310 mcg/min wlew', uwagi:'Gdy atropina nieskuteczna, przed stymulacj\u0105' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'NZK', dawka:'0,01 mg/kg (= 0,1 ml/kg roztworu 1:10 000)', droga:'IV / IO', uwagi:'Maks. 1 mg/dawk\u0119; co 3\u20135 min' },
+      { wsk:'Anafilaksja < 15 kg', dawka:'0,15 mg (auto-injector junior)', droga:'IM', uwagi:'Fastjekt Junior' },
+      { wsk:'Anafilaksja 15\u201330 kg', dawka:'0,15\u20130,3 mg', droga:'IM', uwagi:'' },
+      { wsk:'Anafilaksja > 30 kg', dawka:'0,3 mg', droga:'IM', uwagi:'' },
+      { wsk:'Wlew w wstrz\u0105sie', dawka:'0,1\u20131 mcg/kg/min', droga:'IV', uwagi:'Titrowa\u0107' }
+    ],
+    rozcienczanie: '<b>Bolus resuscytacyjny (NZK):</b> 1 mg/1 ml \u2014 nierozcienczony IV push, nast\u0119pnie 20 ml bolus NaCl 0,9%\n\n<b>Wlew ci\u0105g\u0142y (standardowe st\u0119\u017cenie):</b> 1 mg (1 amp) + 49 ml NaCl 0,9% = <b>20 mcg/ml</b>\nSzybko\u015b\u0107 dla 70 kg: 0,1 mcg/kg/min \u2192 21 ml/h\n\n<b>Wlew ci\u0105g\u0142y (wysokie st\u0119\u017cenie):</b> 5 mg + 45 ml NaCl 0,9% = <b>100 mcg/ml</b> \u2014 pompa strzykawkowa obowi\u0105zkowo\n\n<b>IM (anafilaksja):</b> z amp. 1 mg/ml nierozcienczony, 0,3\u20130,5 ml w mi\u0119sie\u0144 uda (vastus lateralis)',
+    wskazania: [
+      'Zatrzymanie kr\u0105\u017cenia \u2014 wszystkie rytmy',
+      'Anafilaksja / wstrz\u0105s anafilaktyczny',
+      'Wstrz\u0105s septyczny oporny na noradrenalin\u0119',
+      'Ci\u0119\u017cka bradykardia oporowa',
+      'Ci\u0119\u017cki skurcz oskrzeli (astma status)'
+    ],
+    przeciwwskazania: [
+      'Brak bezwzgl\u0119dnych p/wsk w stanach zagro\u017cenia \u017cycia',
+      'Ostro\u017cnie: nadczynno\u015b\u0107 tarczycy, nadci\u015bnienie p\u0142ucne, kardiomiopatia prze\u017cysta ze zwi\u0119\u017ceniem drogi odp\u0142ywu',
+      'Nie stosowa\u0107 SC w anafilaksji \u2014 wolniejsze wch\u0142anianie, ryzyko martwicy'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Adrenalina WZF \u00b7 ERC Guidelines 2021 \u00b7 EAACI Anafilaksja 2021'
+  },
+
+  /* === 1.2 NORADRENALINA === */
+  {
+    id: 2,
+    nazwa: 'Noradrenalina',
+    nazwa_en: 'Norepinephrine',
+    handlowe: 'Noradrenalina Accord 1 mg/ml \u00b7 Norepinephrine Fresenius 1 mg/ml',
+    forma: 'Amp. 4 mg/4 ml (1 mg/ml); amp. 8 mg/4 ml (2 mg/ml); amp. 1 mg/1 ml',
+    kat: ['waz'],
+    badge: 'waz',
+    badge_label: 'Wazopresor',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var ml = (0.1 * kg * 60 / 80).toFixed(1);
+      return 'Start 0,1 mcg/kg/min (80 mcg/ml): ~' + ml + ' ml/h';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Wstrz\u0105s septyczny', droga:'IV wlew', dawka:'0,1\u20130,2 mcg/kg/min start', uwagi:'Zakres: 0,01\u20133 mcg/kg/min; cel MAP \u2265 65 mmHg' },
+      { wsk:'Wstrz\u0105s kardiogenny', droga:'IV wlew', dawka:'0,1 mcg/kg/min', uwagi:'Zakres: 0,05\u20130,5 mcg/kg/min; cel MAP \u2265 65 mmHg' },
+      { wsk:'Wstrz\u0105s dystrybucyjny', droga:'IV wlew', dawka:'0,1\u20130,5 mcg/kg/min', uwagi:'Titrowa\u0107 do MAP \u2265 65 mmHg' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Wstrz\u0105s', dawka:'0,05\u20130,1 mcg/kg/min start', droga:'IV (centralny!)', uwagi:'Maks. 2 mcg/kg/min' }
+    ],
+    rozcienczanie: '<b>Standardowe st\u0119\u017cenie (4 mg/50 ml):</b> 4 mg (4 ml) + 46 ml G5% lub NaCl 0,9% = <b>80 mcg/ml</b>\nSzybko\u015b\u0107 dla 70 kg przy 0,1 mcg/kg/min: 0,1 \u00d7 70 \u00d7 60 / 80 = <b>5,25 ml/h</b>\n\n<b>Wy\u017csze st\u0119\u017cenie (8 mg/50 ml):</b> przy restrykcji p\u0142yn\u00f3w = <b>160 mcg/ml</b>\n\n<b>Uwaga:</b> Podawa\u0107 przez centralny dost\u0119p \u017cylny lub obwodow\u0105 du\u017c\u0105 \u017cy\u0142\u0119 (maks. 4\u20136h)\nNIE rozciencza\u0107 w roztworach alkalicznych (wodorow\u0119glan niszczy lek)',
+    wskazania: [
+      'Wstrz\u0105s septyczny \u2014 lek PIERWSZEGO RZUTU (SSC 2021)',
+      'Wstrz\u0105s dystrybucyjny (neurogenny, anafilaktyczny po adrenalinie)',
+      'Wstrz\u0105s kardiogenny wspomagaj\u0105co przy MAP < 65'
+    ],
+    przeciwwskazania: [
+      'Hipovolemi\u0119 zawsze korygowa\u0107 przed lub r\u00f3wnocze\u015bnie z noradrenalin\u0105',
+      'Ostro\u017cnie: ostre niedokrwienie ko\u0144czyn, martwica tkanek przy wynaczynieniu',
+      'Antidotum wynaczynienia: fentolomina 5\u201310 mg SC wok\u00f3\u0142 miejsca',
+      'Nie stosowa\u0107 jako monoterapii w NZK'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Noradrenalina Accord \u00b7 SSC Guidelines 2021 (ESICM/SCCM)'
+  },
+
+  /* === 1.3 DOPAMINA === */
+  {
+    id: 3,
+    nazwa: 'Dopamina',
+    nazwa_en: 'Dopamine',
+    handlowe: 'Dopaminum Hydrochloricum WZF 200 mg/5 ml \u00b7 Dopamina Fresenius',
+    forma: 'Amp. 200 mg/5 ml (40 mg/ml); amp. 50 mg/5 ml',
+    kat: ['waz'],
+    badge: 'waz',
+    badge_label: 'Wazopresor / Inotropowy',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var m5  = (5  * kg * 60 / 4000).toFixed(1);
+      var m10 = (10 * kg * 60 / 4000).toFixed(1);
+      return '5 mcg/kg/min: ' + m5 + ' ml/h | 10 mcg/kg/min: ' + m10 + ' ml/h (4 mg/ml)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Dawki 1\u20133 mcg/kg/min', droga:'IV', dawka:'1\u20133 mcg/kg/min', uwagi:'"Nerkowy" \u2014 efekt D1; historyczny, nie zalecany do ochrony nerek' },
+      { wsk:'Dawki 3\u201310 mcg/kg/min', droga:'IV', dawka:'3\u201310 mcg/kg/min', uwagi:'Inotropowy (\u2191 kurczliwo\u015b\u0107, \u2191 HR) \u2014 receptor \u03b21' },
+      { wsk:'Dawki > 10 mcg/kg/min', droga:'IV', dawka:'> 10 mcg/kg/min', uwagi:'Wazokonstrykcja \u2014 receptor \u03b11' },
+      { wsk:'Dawki > 20 mcg/kg/min', droga:'IV', dawka:'> 20 mcg/kg/min', uwagi:'Silna wazokonstrykcja, tachyarytmie \u2014 rozwa\u017cy\u0107 zmian\u0119 na NA + dobutamin\u0119' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Wstrz\u0105s kardiogenny / septyczny', dawka:'2\u201320 mcg/kg/min', droga:'IV / IO', uwagi:'Titrowa\u0107 do MAP odpowiedniego dla wieku' }
+    ],
+    rozcienczanie: '<b>Standardowe st\u0119\u017cenie (200 mg/50 ml):</b> 1 amp 200 mg/5 ml + 45 ml NaCl 0,9% lub G5% = <b>4 mg/ml = 4000 mcg/ml</b>\nSzybko\u015b\u0107 dla 70 kg przy 5 mcg/kg/min: 5 \u00d7 70 \u00d7 60 / 4000 = <b>5,25 ml/h</b>\n\n<b>Formu\u0142a pomocnicza (regu\u0142a 3 mg/kg):</b>\nmasa cia\u0142a [kg] \u00d7 3 mg dopaminy \u2192 uzupe\u0142nij do 50 ml \u2192 1 ml/h = 1 mcg/kg/min',
+    wskazania: [
+      'Wstrz\u0105s kardiogenny z bradykardi\u0105 (dawki 5\u201310 mcg/kg/min)',
+      'Bradykardia objawowa oporowa jako alternatywa (dawki 2\u20135 mcg/kg/min)',
+      'Wstrz\u0105s septyczny gdy noradrenalina niedost\u0119pna (historycznie, gorszy profil)'
+    ],
+    przeciwwskazania: [
+      'Tachyarytmie (migotanie przedsionk\u00f3w, cz\u0119stoskurcz) \u2014 dopamina nasila!',
+      'Guz chromoch\u0142onny (phaeochromocytoma) \u2014 bezwzgl\u0119dne',
+      'SSC 2021: NIE jest lekiem pierwszego rzutu; zwi\u0119ksza ryzyko arytmii vs NA'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Dopaminum WZF \u00b7 SSC Guidelines 2021'
+  },
+
+  /* === 1.4 DOBUTAMINA === */
+  {
+    id: 4,
+    nazwa: 'Dobutamina',
+    nazwa_en: 'Dobutamine',
+    handlowe: 'Dobutaminum WZF 250 mg/20 ml \u00b7 Dobutamine Fresenius',
+    forma: 'Amp. 250 mg/20 ml (12,5 mg/ml)',
+    kat: ['waz'],
+    badge: 'waz',
+    badge_label: 'Inotropowy',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var ml = (5 * kg * 60 / 5000).toFixed(1);
+      return 'Start 5 mcg/kg/min (5 mg/ml): ~' + ml + ' ml/h';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Wstrz\u0105s kardiogenny / AHF', droga:'IV wlew', dawka:'Start: 2,5\u20135 mcg/kg/min', uwagi:'Zakres: 2,5\u201320 mcg/kg/min; cel CI > 2,2 L/min/m\u00b2, SvO\u2082 > 65%' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Wstrz\u0105s kardiogenny / sepsa z NS', dawka:'2\u201320 mcg/kg/min', droga:'IV ci\u0105g\u0142y wlew', uwagi:'' }
+    ],
+    rozcienczanie: '<b>250 mg (20 ml) + 30 ml NaCl 0,9% = 50 ml, st\u0119\u017cenie 5 mg/ml = 5000 mcg/ml</b>\nSzybko\u015b\u0107 dla 70 kg przy 5 mcg/kg/min: 5 \u00d7 70 \u00d7 60 / 5000 = <b>4,2 ml/h</b>\n\nLub: 250 mg + 230 ml NaCl 0,9% = <b>1 mg/ml</b> (250 ml woreczek)',
+    wskazania: [
+      'Wstrz\u0105s kardiogenny z niskim rzutem (w kombinacji z noradrenalin\u0105)',
+      'Ostra dekompensacja niewydolno\u015bci serca z hipotonj\u0105'
+    ],
+    przeciwwskazania: [
+      'Kardiomiopatia prze\u017cysta ze zwi\u0119\u017ceniem drogi odp\u0142ywu LK \u2014 bezwzgl\u0119dne',
+      'Zw\u0119\u017cenie aorty bez protezy \u2014 ostro\u017cnie',
+      'Tachykardia wyj\u015bciowa > 120/min \u2014 rozwa\u017cy\u0107',
+      'Nie stosowa\u0107 samodzielnie przy hipotonii \u2014 zawsze z noradrenalin\u0105'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Dobutaminum WZF \u00b7 ESC Acute HF Guidelines 2021'
+  },
+
+  /* === 1.5 WAZOPRESYNA === */
+  {
+    id: 5,
+    nazwa: 'Wazopresyna',
+    nazwa_en: 'Vasopressin / ADH',
+    handlowe: 'Vasopressin Pfizer (import szpitalny) \u00b7 Terlipressin / Glypressin (analog dost\u0119pny w PL)',
+    forma: 'Amp. 20 IU/ml (1 ml); Terlipressin: Glypressin 1 mg/8,5 ml',
+    kat: ['waz'],
+    badge: 'waz',
+    badge_label: 'Wazopresor',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'Wstrz\u0105s septyczny (wspomagaj\u0105co)', droga:'IV wlew', dawka:'0,03\u20130,04 IU/min', uwagi:'Jako dodatek do noradrenaliny \u2014 NIE TITROWA\u0106' },
+      { wsk:'Oporny wstrz\u0105s wazoplegiczny', droga:'IV wlew', dawka:'do 0,06 IU/min', uwagi:'Wy\u017csze dawki: ryzyko niedokrwienia' },
+      { wsk:'NZK (alternatywa adrenaliny)', droga:'IV', dawka:'40 IU bolus', uwagi:'Nie stosowa\u0107 zamiast adrenaliny wg ERC 2021' },
+      { wsk:'Terlipressin \u2014 wstrz\u0105s w\u0105trobowy', droga:'IV bolus', dawka:'0,5\u20132 mg co 4\u20136h', uwagi:'' },
+      { wsk:'Terlipressin \u2014 \u017cy\u0142aki prze\u0142yku', droga:'IV', dawka:'2 mg bolus \u2192 1 mg co 4\u20136h', uwagi:'Przez 5 dni' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>Wazopresyna:</b> 20 IU (1 ml) + 19 ml NaCl 0,9% = <b>1 IU/ml</b>\nPrzy dawce 0,03 IU/min: <b>1,8 ml/h</b>\n\nSTALA DAWKA \u2014 NIE TITROWA\u0106 wg efektu (inaczej ni\u017c katecholaminy)',
+    wskazania: [
+      'Wstrz\u0105s septyczny oporny \u2014 lek trzeciego rzutu po NA + adrenalinie',
+      'Zmniejszenie zapotrzebowania na noradrenalin\u0119 (efekt "oszcz\u0119dzaj\u0105cy katecholaminy")',
+      'Wstrz\u0105s wazoplegiczny po operacjach serca'
+    ],
+    przeciwwskazania: [
+      'Choroba wie\u0144cowa \u2014 ryzyko skurczu naczy\u0144 wie\u0144cowych',
+      'Astma oskrzelowa (skurcz oskrzeli)',
+      'Przewlek\u0142a hiponatremia (korekta zbyt szybka)'
+    ],
+    antidotum: null,
+    zrodlo: 'SSC Guidelines 2021 \u00b7 ChPL Glypressin (Ferring)'
+  },
+
+  /* === 2.1 MORFINA === */
+  {
+    id: 6,
+    nazwa: 'Morfina',
+    nazwa_en: 'Morphine',
+    handlowe: 'Morphinum Sulfuricum WZF 10 mg/ml (amp. 1 ml, 2 ml)',
+    forma: 'Amp. 10 mg/1 ml; amp. 20 mg/2 ml',
+    kat: ['anal'],
+    badge: 'anal',
+    badge_label: 'Opioid',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var b = (0.1 * kg).toFixed(1);
+      return 'Bolus (0,1 mg/kg): ' + b + ' mg IV';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'B\u00f3l ostry (miareczkowanie)', droga:'IV powoli', dawka:'2\u20135 mg co 5\u201310 min', uwagi:'Titrowa\u0107 do NRS < 4' },
+      { wsk:'B\u00f3l ostry', droga:'IM / SC', dawka:'5\u201310 mg', uwagi:'Efekt po 15\u201330 min' },
+      { wsk:'Ostry OZW (AMI)', droga:'IV', dawka:'2\u20134 mg, mo\u017cna powtarza\u0107', uwagi:'Ostro\u017cnie: mo\u017ce nasila\u0107 dzia\u0142anie klopidogrelu' },
+      { wsk:'OAP (obrz\u0119k p\u0142uc)', droga:'IV', dawka:'2\u20134 mg', uwagi:'Kontrowersyjne \u2014 ESICM odradza rutynowo' },
+      { wsk:'Wlew ci\u0105g\u0142y (sedoanalgezja)', droga:'IV', dawka:'0,5\u20135 mg/h', uwagi:'Na OIT/SOR intensywny' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'1\u20136 mies.', dawka:'0,05\u20130,1 mg/kg co 4\u20136h', droga:'IV', uwagi:'Ostro\u017cnie \u2014 depresja oddechowa' },
+      { wsk:'6 mies. \u2013 12 lat', dawka:'0,1\u20130,2 mg/kg IV/IM', droga:'IV / IM', uwagi:'Maks. 15 mg/dawk\u0119' },
+      { wsk:'> 12 lat / > 50 kg', dawka:'Jak doros\u0142y', droga:'', uwagi:'' }
+    ],
+    rozcienczanie: '<b>Bolus IV:</b> 10 mg rozciencza\u0107 w 9 ml NaCl 0,9% = 1 mg/ml; podawa\u0107 1\u20132 mg/min\n\n<b>Wlew ci\u0105g\u0142y:</b> 50 mg w 50 ml NaCl 0,9% = <b>1 mg/ml</b>; szybko\u015b\u0107 0,5\u20135 ml/h\n\nPodawa\u0107 powoli IV \u2014 zbyt szybkie podanie \u2192 histaminoliberacja, hipotonia',
+    wskazania: [
+      'B\u00f3l ostry silny (uraz, oparzenia, niedokrwienie ko\u0144czyny)',
+      'B\u00f3l w ostrym zespole wie\u0144cowym',
+      'Kolka nerkowa oporna',
+      'B\u00f3l nowotworowy'
+    ],
+    przeciwwskazania: [
+      'Ci\u0119\u017cka depresja oddechowa bez zabezpieczenia dr\u00f3g oddechowych',
+      'Ostre zatrucie alkoholem / benzodiazepinami bez monitorowania',
+      'Ci\u015bnienie wewn\u0105trzczaszkowe \u2191 \u2014 ostro\u017cnie (mit; nie op\u00f3\u017ania\u0107 analgezji)'
+    ],
+    antidotum: 'NALOKSON 0,4\u20132 mg IV co 2\u20133 min',
+    zrodlo: 'ChPL Morphinum WZF \u00b7 ESICM PAD Guidelines 2018 \u00b7 ESC NSTEMI 2020'
+  },
+
+  /* === 2.2 FENTANYL === */
+  {
+    id: 7,
+    nazwa: 'Fentanyl',
+    nazwa_en: 'Fentanyl',
+    handlowe: 'Fentanyl WZF 0,05 mg/ml (50 mcg/ml) \u00b7 Fentanyl Accord',
+    forma: 'Amp. 0,1 mg/2 ml (50 mcg/ml); amp. 0,5 mg/10 ml; amp. 2,5 mg/50 ml',
+    kat: ['anal', 'rsi', 'sed'],
+    badge: 'anal',
+    badge_label: 'Opioid szybki',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var proc = (1.5 * kg).toFixed(0);
+      var rsi  = (2   * kg).toFixed(0);
+      return 'Analgezja (1,5 mcg/kg): ' + proc + ' mcg | RSI (2 mcg/kg): ' + rsi + ' mcg';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Analgezja proceduralna', droga:'IV powoli 2\u20133 min', dawka:'1\u20132 mcg/kg', uwagi:'Czas dzia\u0142ania 30\u201360 min' },
+      { wsk:'Indukcja RSI', droga:'IV', dawka:'1\u20133 mcg/kg', uwagi:'\u0141\u0105cznie z induktorem' },
+      { wsk:'B\u00f3l ostry (miareczkowanie)', droga:'IV', dawka:'25\u201350 mcg co 5 min', uwagi:'' },
+      { wsk:'Wlew sedoanalgezja OIT', droga:'IV ci\u0105g\u0142y', dawka:'25\u2013200 mcg/h', uwagi:'' },
+      { wsk:'Donosowo (bez dost\u0119pu IV)', droga:'IN (atomizer MAD)', dawka:'1,5\u20132 mcg/kg', uwagi:'Onset 5\u201310 min' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Noworodek', dawka:'1\u20132 mcg/kg', droga:'IV', uwagi:'' },
+      { wsk:'Niemowl\u0119 / dziecko', dawka:'1\u20132 mcg/kg co 1\u20132h lub wlew 1\u20133 mcg/kg/h', droga:'IV / IN', uwagi:'IN: 1,5\u20132 mcg/kg (atomizer)' }
+    ],
+    rozcienczanie: '<b>Bolus IV:</b> amp. 0,1 mg/2 ml \u2014 mo\u017cna poda\u0107 nierozcienczony lub 0,1 mg + 8 ml NaCl = 10 mcg/ml; powoli > 2 min\n\n<b>Wlew ci\u0105g\u0142y:</b> 2,5 mg (50 ml amp.) w 50 ml NaCl 0,9% = <b>50 mcg/ml</b>; szybko\u015b\u0107 0,5\u20134 ml/h\n\n<b>UWAGA:</b> Szybki bolus IV \u2192 rigidity chest syndrome, bradykardia, bezdech\n\nPrzelicznik: fentanyl 100 mcg \u2248 morfina 10 mg (stosunek 1:100)',
+    wskazania: [
+      'Sedoanalgezja do procedur (kardiowersja, nastawianie z\u0142ama\u0144)',
+      'Sk\u0142adowa RSI (rapid sequence intubation)',
+      'B\u00f3l ostry silny \u2014 mniejszy efekt histaminoliberacji ni\u017c morfina',
+      'B\u00f3l u dzieci donosowo (IN) gdy brak dost\u0119pu IV',
+      'Wlew ci\u0105g\u0142y w sedacji mechanicznie wentylowanych'
+    ],
+    przeciwwskazania: [
+      'Brak zabezpieczenia dr\u00f3g oddechowych przy du\u017cych dawkach',
+      'Inhibitory MAO \u2014 ryzyko zespo\u0142u serotoninowego'
+    ],
+    antidotum: 'NALOKSON (patrz kat. Antidota)',
+    zrodlo: 'ChPL Fentanyl WZF \u00b7 ESICM PAD Guidelines 2018'
+  },
+
+  /* === 2.3 KETAMINA === */
+  {
+    id: 8,
+    nazwa: 'Ketamina',
+    nazwa_en: 'Ketamine',
+    handlowe: 'Calypsol 500 mg/10 ml (50 mg/ml) \u00b7 Ketamine-Hameln \u00b7 Ketanest',
+    forma: 'Fiolka 500 mg/10 ml (50 mg/ml); fiolka 250 mg/5 ml; amp. 200 mg/2 ml (100 mg/ml)',
+    kat: ['sed', 'rsi', 'anal'],
+    badge: 'sed',
+    badge_label: 'Dysocjacyjny',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var sub  = (0.2 * kg).toFixed(0);
+      var psa  = (1.0 * kg).toFixed(0);
+      var rsi  = (1.5 * kg).toFixed(0);
+      return 'Sub (0,2 mg/kg): ' + sub + ' mg | PSA (1 mg/kg): ' + psa + ' mg | RSI (1,5 mg/kg): ' + rsi + ' mg';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Sedacja proceduralna (PSA)', droga:'IV powoli > 1 min', dawka:'0,5\u20131,5 mg/kg', uwagi:'5\u201315 min; PREMEDYKACJA midazolamem 0,03\u20130,05 mg/kg!' },
+      { wsk:'Indukcja RSI', droga:'IV', dawka:'1\u20132 mg/kg', uwagi:'' },
+      { wsk:'RSI \u2014 niestabilny hemodynamicznie', droga:'IV', dawka:'1\u20131,5 mg/kg', uwagi:'Preferowana \u2014 utrzymuje ci\u015bnienie' },
+      { wsk:'Analgezja subanestezjologiczna', droga:'IV powoli', dawka:'0,1\u20130,3 mg/kg', uwagi:'' },
+      { wsk:'Status asthmaticus', droga:'IV', dawka:'1\u20132 mg/kg \u2192 wlew 0,5 mg/kg/h', uwagi:'Bronchodilatacja' },
+      { wsk:'IM (brak dost\u0119pu IV)', droga:'IM', dawka:'4\u20136 mg/kg', uwagi:'Onset 12\u201325 min' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Sedacja proceduralna', dawka:'1\u20132 mg/kg IV / 4\u20135 mg/kg IM', droga:'IV / IM', uwagi:'Powoli > 1 min IV' },
+      { wsk:'Analgezja', dawka:'0,5\u20131 mg/kg IV / 2\u20134 mg/kg IM', droga:'IV / IM', uwagi:'' },
+      { wsk:'Indukcja RSI', dawka:'1,5\u20132 mg/kg IV', droga:'IV', uwagi:'' }
+    ],
+    rozcienczanie: '<b>Analgezja subanest.:</b> 200 mg/2 ml (100 mg/ml) rozciencza\u0107 do 10 mg/ml: 2 ml + 18 ml NaCl = 200 mg/20 ml\n\n<b>PSA / RSI IV:</b> Calypsol 50 mg/ml \u2014 do IV rozciencza\u0107 do 10 mg/ml\n\n<b>Wlew ci\u0105g\u0142y (status asthmaticus):</b> 500 mg + 45 ml NaCl = ~10 mg/ml; szybko\u015b\u0107 0,5\u20131 ml/h/10 kg\n\n<b>ZAWSZE premedykacja midazolamem 0,03\u20130,05 mg/kg IV</b> \u2014 zapobieganie emergence reactions',
+    wskazania: [
+      'PSA \u2014 jedyna sedacja zachowuj\u0105ca napi\u0119cie dr\u00f3g oddechowych i odruchy obronne',
+      'RSI u chorych niestabilnych hemodynamicznie (wstrz\u0105s, politrauma)',
+      'Status asthmaticus oporny na leczenie wziewne',
+      'Analgezja w urazach (ma\u0142e dawki IV + opioid = multimodal)',
+      'Sedacja u dzieci do procedur bolesnych'
+    ],
+    przeciwwskazania: [
+      'Schizofrenia / psychoza aktywna \u2014 emergence reactions',
+      'Nadci\u015bnienie t\u0119tnicze ci\u0119\u017ckie niekontrolowane (\u2191 ci\u015bnienia przy indukcji)',
+      'Udar krwotoczny / podejrzenie krwawienia \u015br\u00f3dczaszkowego \u2014 \u2191 ICP (kontrowersyjne)',
+      'Zatrucie amfetamin\u0105 / kokain\u0105 \u2014 tachykardia, nadci\u015bnienie addytywne'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Calypsol \u00b7 ESICM \u00b7 ACEP PSA Guidelines 2023'
+  },
+
+  /* === 2.4 PROPOFOL === */
+  {
+    id: 9,
+    nazwa: 'Propofol',
+    nazwa_en: 'Propofol',
+    handlowe: 'Propofol Fresenius 10 mg/ml (1%) \u00b7 Propofol MCT Fresenius \u00b7 Diprivan 10 mg/ml',
+    forma: 'Fiolka/amp. 10 mg/ml (1%): 20 ml, 50 ml, 100 ml; emulsja t\u0142uszczowa',
+    kat: ['sed', 'rsi'],
+    badge: 'sed',
+    badge_label: 'Anestetyk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var ind = (1.5 * kg).toFixed(0);
+      var wlew = (2 * kg / 10).toFixed(1);
+      return 'Indukcja (1,5 mg/kg): ' + ind + ' mg | Sedacja 2 mg/kg/h: ' + wlew + ' ml/h';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Indukcja / RSI', droga:'IV', dawka:'1\u20132,5 mg/kg', uwagi:'Titrowa\u0107 40 mg co 10 sek' },
+      { wsk:'Indukcja \u2014 > 55 lat lub niestabilny', droga:'IV', dawka:'0,5\u20131 mg/kg', uwagi:'Zmniejszona dawka!' },
+      { wsk:'Sedacja proceduralna (PSA)', droga:'IV', dawka:'0,5\u20131 mg/kg', uwagi:'Podtrzymanie: 1\u20134 mg/kg/h lub bolus 10\u201320 mg prn' },
+      { wsk:'Sedacja mechanicznie wentylowanych', droga:'IV', dawka:'Bolus 0,3 mg/kg', uwagi:'Podtrzymanie: 0,3\u20134 mg/kg/h; cel RASS -2 do -3' },
+      { wsk:'Status epilepticus oporny', droga:'IV', dawka:'1\u20132 mg/kg bolus', uwagi:'Wlew: 1\u201315 mg/kg/h; monitorowanie EEG' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'> 1 mies. \u2014 indukcja', dawka:'2,5\u20134 mg/kg (1 mies.\u20138 lat); 2\u20133 mg/kg (> 8 lat)', droga:'IV', uwagi:'Wy\u017csze dawki ni\u017c u doros\u0142ych (wy\u017cszy Vd)' },
+      { wsk:'UWAGA PRIS', dawka:'NIE > 4 mg/kg/h d\u0142ugotrwale', droga:'IV', uwagi:'Propofol Infusion Syndrome \u2014 kwasica, rabdomioliza' }
+    ],
+    rozcienczanie: '<b>Gotowy do u\u017cytku jako 10 mg/ml (1%) \u2014 NIE ROZCIENCZA\u0106!</b>\nJe\u015bli konieczne: tylko G5% (nie NaCl!)\n\n<b>Wlew ci\u0105g\u0142y:</b> pompa strzykawkowa; 50 ml fiolki (500 mg) bezpo\u015brednio do pompy\nSzybko\u015b\u0107: przy sedacji 1 mg/kg/h dla 70 kg = 70 mg/h = <b>7 ml/h</b>\n\nEmulsja t\u0142uszczowa \u2014 aseptyczna technika! Zmiana linii co 12h!',
+    wskazania: [
+      'Indukcja do intubacji (RSI) \u2014 hemodynamicznie stabilny',
+      'Sedacja proceduralna (kardiowersja, nastawianie z\u0142ama\u0144)',
+      'Sedacja ci\u0105g\u0142a mechanicznie wentylowanych',
+      'Przerywanie napad\u00f3w padaczkowych (status epilepticus)'
+    ],
+    przeciwwskazania: [
+      'Alergia na soj\u0119 / orzeszki ziemne (emulsja sojowa) \u2014 wzgl\u0119dne',
+      'Hipertriglicerydemia > 400 mg/dl \u2014 ostro\u017cnie',
+      'Propofol Infusion Syndrome (PRIS): > 4 mg/kg/h > 48h \u2014 kwasica, rabdomioliza, bradykardia',
+      'Wstrz\u0105s / g\u0142\u0119boka hipowolemia \u2014 drastyczny spadek ci\u015bnienia'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Propofol Fresenius \u00b7 ESICM PAD Guidelines 2018'
+  },
+
+  /* === 2.5 MIDAZOLAM === */
+  {
+    id: 10,
+    nazwa: 'Midazolam',
+    nazwa_en: 'Midazolam',
+    handlowe: 'Midazolam Accord 1 mg/ml \u00b7 Midazolam Hameln 5 mg/ml \u00b7 Dormicum 5 mg/5 ml',
+    forma: 'Amp. 5 mg/1 ml (5 mg/ml); fiolka 15 mg/3 ml; fiolka 50 mg/10 ml',
+    kat: ['sed', 'rsi'],
+    badge: 'sed',
+    badge_label: 'Benzo / Przeciwpadaczkowy',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var rsi = (0.04 * kg).toFixed(2);
+      var se  = (0.15 * kg).toFixed(1);
+      return 'RSI koindukcja (0,04 mg/kg): ' + rsi + ' mg | Status ep. IM (0,15 mg/kg): ' + se + ' mg';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Premedykacja / anksjoliza', droga:'IV powoli', dawka:'1\u20132,5 mg', uwagi:'Titrowa\u0107 co 2 min' },
+      { wsk:'Sk\u0142adowa RSI (koindukcja)', droga:'IV', dawka:'0,03\u20130,05 mg/kg', uwagi:'Przed ketamin\u0105 / propofolem' },
+      { wsk:'Status epilepticus (brak IV)', droga:'IM', dawka:'10 mg', uwagi:'RAMPART trial: IM = IV lorazepam' },
+      { wsk:'Status epilepticus IV', droga:'IV', dawka:'0,1\u20130,2 mg/kg (max 10 mg)', uwagi:'Powtarza\u0107 co 5 min max 3\u00d7' },
+      { wsk:'Sedacja ci\u0105g\u0142a OIT', droga:'IV', dawka:'0,02\u20130,1 mg/kg/h wlew', uwagi:'Cel RASS -2 do -3' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Noworodek', dawka:'0,05\u20130,15 mg/kg IV powoli', droga:'IV', uwagi:'' },
+      { wsk:'Niemowl\u0119 / dziecko', dawka:'0,1\u20130,2 mg/kg IV', droga:'IV', uwagi:'' },
+      { wsk:'Status epilepticus IM', dawka:'0,1\u20130,15 mg/kg IM (max 5 mg)', droga:'IM', uwagi:'' },
+      { wsk:'Status epilepticus IN', dawka:'0,2\u20130,3 mg/kg', droga:'IN', uwagi:'' },
+      { wsk:'Per rectum', dawka:'0,5 mg/kg PR', droga:'PR', uwagi:'Gdy brak dost\u0119pu IV/IM' }
+    ],
+    rozcienczanie: '<b>Bolus IV:</b> 5 mg/ml rozciencza\u0107 do 1 mg/ml: 1 ml (5 mg) + 4 ml NaCl = 5 ml (1 mg/ml); podawa\u0107 1 mg/min\n\n<b>Wlew ci\u0105g\u0142y:</b> 50 mg + 45 ml NaCl = 1 mg/ml (50 ml); szybko\u015b\u0107 1\u20137 ml/h dla 70 kg',
+    wskazania: [
+      'Status epilepticus \u2014 lek pierwszego rzutu (IM, IN lub IV)',
+      'Premedykacja i anksjoliza do procedur',
+      'Sk\u0142adowa RSI (koindukcja)',
+      'Sedacja ci\u0105g\u0142a u wentylowanych mechanicznie',
+      'Przerywanie drgawek u dzieci (IN / PR)'
+    ],
+    przeciwwskazania: [
+      'Miastenia gravis \u2014 bezwzgl\u0119dne',
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 oddechowa bez zabezpieczenia dr\u00f3g oddechowych',
+      'Ostre zatrucie alkoholem \u2014 addytywna depresja O\u015aN',
+      'Kumulacja przy d\u0142ugotrwa\u0142ym stosowaniu (d\u0142ugi aktywny metabolit 1-OH-midazolam)'
+    ],
+    antidotum: 'FLUMAZENIL 0,2 mg IV co 1 min (maks. 1 mg)',
+    zrodlo: 'ChPL Midazolam Accord \u00b7 ESICM PAD 2018 \u00b7 RAMPART Trial NEJM 2012'
+  },
+
+  /* === 2.6 TRAMADOL === */
+  {
+    id: 11,
+    nazwa: 'Tramadol',
+    nazwa_en: 'Tramadol',
+    handlowe: 'Tramal 100 mg/2 ml \u00b7 Tramadol WZF 100 mg/2 ml \u00b7 Poltram Combo',
+    forma: 'Amp. 100 mg/2 ml (50 mg/ml)',
+    kat: ['anal'],
+    badge: 'anal',
+    badge_label: 'Opioid s\u0142aby',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d = (1 * kg).toFixed(0);
+      return 'Dawka (1 mg/kg): ' + d + ' mg IV / IM';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'B\u00f3l umiarkowany do silnego', droga:'IV / IM', dawka:'50\u2013100 mg', uwagi:'IV przez 15 min; powt. co 4\u20136h; maks. 400\u2013600 mg/dob\u0119' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'> 1 roku \u017cycia', dawka:'1 mg/kg IV / IM co 6h', droga:'IV / IM', uwagi:'Maks. 8 mg/kg/dob\u0119; NIE < 1 roku \u017cycia (ChPL)' }
+    ],
+    rozcienczanie: '<b>IV:</b> 100 mg (2 ml) rozciencza\u0107 w 100 ml NaCl 0,9% \u2192 podawa\u0107 przez <b>15\u201320 min</b>\n\nSzybki bolus IV \u2192 nudno\u015bci, wymioty, drgawki!',
+    wskazania: [
+      'B\u00f3l umiarkowany do silnego (krok II drabiny analgetycznej)',
+      'Kolka nerkowa (efekt spazmolityczny)',
+      'Gdy morfina niedost\u0119pna lub przeciwwskazana'
+    ],
+    przeciwwskazania: [
+      'Padaczka w wywiadzie \u2014 obni\u017ca pr\u00f3g drgawkowy',
+      'Inhibitory MAO \u2014 bezwzgl\u0119dne (ryzyko zespo\u0142u serotoninowego)',
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 nerek / w\u0105troby \u2014 redukcja dawki / wyd\u0142u\u017cenie odst\u0119p\u00f3w',
+      'Jednoczesne SSRI / SNRI \u2014 ryzyko serotoninergiczne'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Tramal \u00b7 PTBiOL wytyczne b\u00f3lu 2021'
+  },
+
+  /* === 2.7 METAMIZOL === */
+  {
+    id: 12,
+    nazwa: 'Metamizol',
+    nazwa_en: 'Dipyron / Metamizole',
+    handlowe: 'Pyralgin 2,5 g/5 ml \u00b7 Pyralginum WZF 500 mg/ml \u00b7 Novalgin',
+    forma: 'Amp. 2,5 g/5 ml (500 mg/ml); tabletki 500 mg',
+    kat: ['anal'],
+    badge: 'anal',
+    badge_label: 'NLPZ / Spazmolityczny',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'B\u00f3l / gor\u0105czka', droga:'IV przez min. 15 min / IM', dawka:'1\u20132,5 g', uwagi:'Maks. 5 g/dob\u0119. NIGDY bolus IV \u2014 ci\u0119\u017cka hipotonia!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'5\u20138 kg',   dawka:'0,1\u20130,25 g IV/IM', droga:'IV / IM', uwagi:'' },
+      { wsk:'9\u201315 kg',  dawka:'0,2\u20130,5 g IV/IM',  droga:'IV / IM', uwagi:'' },
+      { wsk:'16\u201323 kg', dawka:'0,3\u20130,75 g IV/IM', droga:'IV / IM', uwagi:'' },
+      { wsk:'24\u201330 kg', dawka:'0,4\u20131 g IV/IM',    droga:'IV / IM', uwagi:'' },
+      { wsk:'31\u201345 kg', dawka:'0,5\u20131,5 g IV/IM',  droga:'IV / IM', uwagi:'' },
+      { wsk:'> 50 kg',  dawka:'Jak doros\u0142y',       droga:'IV / IM', uwagi:'' }
+    ],
+    rozcienczanie: '<b>2,5 g/5 ml rozciencza\u0107 w 100 ml NaCl 0,9% \u2192 podawa\u0107 przez co najmniej 15\u201330 min</b>\n\nSzybkie podanie IV \u2192 ci\u0119\u017cka hipotonia!\nNie miesza\u0107 z innymi lekami w tej samej strzykawce',
+    wskazania: [
+      'Kolka nerkowa / \u017c\u00f3\u0142ciowa (efekt spazmolityczny + analgetyczny)',
+      'Gor\u0105czka oporna na paracetamol / NLPZ',
+      'B\u00f3l pooperacyjny',
+      'B\u00f3l g\u0142owy (napi\u0119ciowy, migrena)'
+    ],
+    przeciwwskazania: [
+      'Agranulocytoza w wywiadzie po metamizolu \u2014 bezwzgl\u0119dne',
+      'Wstrz\u0105s / hipotonia \u2014 wzgl\u0119dne (powolne podanie zmniejsza ryzyko)',
+      'Niedobr G6PD \u2014 hemoliza',
+      'Ci\u0105\u017ca (I i III trymestr)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Pyralgin WZF \u00b7 PTAiIT stanowisko 2020'
+  },
+
+  /* === 2.8 PARACETAMOL IV === */
+  {
+    id: 13,
+    nazwa: 'Paracetamol IV',
+    nazwa_en: 'Paracetamol / Acetaminophen IV',
+    handlowe: 'Perfalgan 10 mg/ml (100 ml / 1 g) \u00b7 Paracetamol Fresenius Kabi 10 mg/ml',
+    forma: 'Woreczek infuzyjny 1 g/100 ml (10 mg/ml); gotowy do wlewu',
+    kat: ['anal'],
+    badge: 'anal',
+    badge_label: 'Analgetyk / Przeciwgor\u0105czkowy',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d    = kg < 50 ? (15 * kg).toFixed(0) : '1000';
+      var dmax = kg < 50 ? (60 * kg).toFixed(0) : '4000';
+      return 'Dawka (15 mg/kg): ' + d + ' mg | Maks./dob\u0119: ' + dmax + ' mg';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Gor\u0105czka / analgezja', droga:'IV wlew 15 min', dawka:'1 g co 4\u20136h', uwagi:'Maks. 4 g/dob\u0119. Przy masie < 50 kg: 15 mg/kg co 4\u20136h (maks. 60 mg/kg/dob\u0119)' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'3,5\u201310 kg',  dawka:'7,5 mg/kg co 4\u20136h', droga:'IV wlew', uwagi:'Maks. 30 mg/kg/dob\u0119' },
+      { wsk:'10\u201350 kg',   dawka:'15 mg/kg co 4\u20136h',  droga:'IV wlew', uwagi:'Maks. 60 mg/kg/dob\u0119' },
+      { wsk:'> 50 kg',    dawka:'1 g co 4\u20136h',       droga:'IV wlew', uwagi:'Maks. 4 g/dob\u0119' }
+    ],
+    rozcienczanie: '<b>Gotowy do wlewu \u2014 bez rozcienczania (10 mg/ml w woreczku 100 ml)</b>\n\nPodawa\u0107 przez 15\u201330 minut\nNie stosowa\u0107 u wcze\u015bniak\u00f3w < 32 tyg.',
+    wskazania: [
+      'Gor\u0105czka > 38,5\u00b0C (gdy droga doustna niedost\u0119pna)',
+      'Analgezja podstawowa (multimodal) \u2014 sk\u0142adowa przy urazach',
+      'Gdy NLPZ / metamizol przeciwwskazane (NN, skaza krwotoczna)'
+    ],
+    przeciwwskazania: [
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 w\u0105troby \u2014 hepatocellular insufficiency',
+      'Dawka maks. bezwzgl\u0119dnie przestrzega\u0107 \u2014 hepatotoksyczno\u015b\u0107 przy przedawkowaniu',
+      'Alkoholizm przewlek\u0142y \u2014 redukcja dawki / ostro\u017cno\u015b\u0107'
+    ],
+    antidotum: 'N-acetylocysteina (NAC) przy przedawkowaniu',
+    zrodlo: 'ChPL Perfalgan (Bristol-Myers Squibb)'
+  },
+
+  /* === 2.9 KETOROLAK === */
+  {
+    id: 14,
+    nazwa: 'Ketorolak',
+    nazwa_en: 'Ketorolac',
+    handlowe: 'Ketonal 30 mg/1 ml \u00b7 Ketorolac WZF 30 mg/1 ml',
+    forma: 'Amp. 30 mg/1 ml',
+    kat: ['anal'],
+    badge: 'anal',
+    badge_label: 'NLPZ silny',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'B\u00f3l ostry', droga:'IV / IM', dawka:'15\u201330 mg jednorazowo', uwagi:'Maks. 90 mg/dob\u0119 (60 mg u > 65 lat lub < 50 kg); maks. 5 dni leczenia' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'> 2 lat', dawka:'0,5 mg/kg IV/IM jednorazowo', droga:'IV / IM', uwagi:'Maks. 15 mg; ograniczone dane' }
+    ],
+    rozcienczanie: '<b>IV:</b> rozciencza\u0107 w 50\u2013100 ml NaCl; kr\u00f3tki bolus IV akceptowalny (min. 15 sek)\n\nLub podawa\u0107 nierozcienczony IM (30 mg/1 ml)',
+    wskazania: [
+      'Kolka nerkowa \u2014 r\u00f3wnowa\u017cny morfinie w badaniach RCT',
+      'B\u00f3l pooperacyjny / podurazowy (analgezja multimodalna)',
+      'Migrena',
+      'Zapalenie kaletki, urazowy b\u00f3l stawu'
+    ],
+    przeciwwskazania: [
+      'Skaza krwotoczna / ryzyko krwawienia (hamuje COX-1 \u2192 antyagregacja)',
+      'Choroba wrzodowa aktywna',
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 nerek (GFR < 30)',
+      'Ci\u0105\u017ca (szczeg\u00f3lnie III trymestr \u2014 przedwczesne zamkni\u0119cie przewodu Botalla)',
+      'Astma aspirynowa'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Ketonal \u00b7 PTAiIT \u00b7 ACEP'
+  },
+
+  /* === 2.10 DEKSMEDETOMIDYNA === */
+  {
+    id: 15,
+    nazwa: 'Deksmedetomidyna',
+    nazwa_en: 'Dexmedetomidine',
+    handlowe: 'Dexdor 200 mcg/2 ml \u00b7 Precedex (import)',
+    forma: 'Koncentrat do infuzji 200 mcg/2 ml (100 mcg/ml)',
+    kat: ['sed'],
+    badge: 'sed',
+    badge_label: '\u03b12-agonista / Sedatyw',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var load = (1 * kg).toFixed(0);
+      var lo   = (0.2 * kg / 4).toFixed(1);
+      var hi   = (1.4 * kg / 4).toFixed(1);
+      return 'Nasycenie (1 mcg/kg/10 min): ' + load + ' mcg | Wlew (4 mcg/ml): ' + lo + '\u2013' + hi + ' ml/h';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Dawka nasycaj\u0105ca (opcjonalna)', droga:'IV przez 10\u201320 min', dawka:'1 mcg/kg', uwagi:'Cz\u0119sto pomija\u0107 u niestabilnych' },
+      { wsk:'Wlew podtrzymuj\u0105cy', droga:'IV ci\u0105g\u0142y', dawka:'0,2\u20131,4 mcg/kg/h', uwagi:'Titrowa\u0107 co 30 min; cel RASS -2 do 0' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>200 mcg/2 ml + 48 ml NaCl 0,9% = 50 ml, st\u0119\u017cenie 4 mcg/ml</b>\nSzybko\u015b\u0107 przy 0,7 mcg/kg/h dla 70 kg: 0,7 \u00d7 70 / 4 = <b>12,25 ml/h</b>',
+    wskazania: [
+      'Sedacja bez depresji oddechowej (kooperatywna sedacja, mo\u017cliwo\u015b\u0107 ekstubacji)',
+      'Odstawienie alkoholu / delirium w OIT',
+      'Alternatywa midazolamu przy agitacji u wentylowanych'
+    ],
+    przeciwwskazania: [
+      'Bradykardia < 50/min i blok AV II/III stopnia (bez rozrusznika)',
+      'Ci\u0119\u017cka hipotonia wyj\u015bciowa'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Dexdor (Orion) \u00b7 ESICM PAD Guidelines 2018'
+  }
+
+  ,
+
+  /* ============================================================
+     PART 2: RSI + ANTYBIOTYKI
+     13 lekow z FARMAKOLOGIA_SOR_PART2_RSI_ANTYBIOTYKI.md
+     ============================================================ */
+
+  /* === 3.1 SUKCYNYLOCHOLINA === */
+  {
+    id: 16,
+    nazwa: 'Sukcynylocholina',
+    nazwa_en: 'Suxamethonium',
+    handlowe: 'Suxamethonium Chloride 100 mg/2 ml (Fresenius) \u00b7 Listenon 2% 500 mg/25 ml',
+    forma: 'Amp. 100 mg/2 ml (50 mg/ml); fiolka 500 mg/25 ml (20 mg/ml)',
+    kat: ['rsi'],
+    badge: 'rsi',
+    badge_label: 'RSI',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d = (1.5 * kg).toFixed(0);
+      var ml50 = (1.5 * kg / 50).toFixed(1);
+      return 'RSI 1,5 mg/kg: ' + d + ' mg = ' + ml50 + ' ml (50 mg/ml)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'RSI (standard)', droga: 'IV bolus', dawka: '1\u20131,5 mg/kg', uwagi: 'Zwiotczenie w 45\u201360 sek, czas dzia\u0142ania 8\u201312 min; 70 kg: 105 mg = 2,1 ml (50 mg/ml)' },
+      { wsk: 'RSI u oty\u0142ych', droga: 'IV', dawka: '1,5 mg/kg IBW + 20% dawki ekstra', uwagi: 'Przelicza\u0107 na idealn\u0105 mas\u0119 cia\u0142a + korekta' },
+      { wsk: 'Brak dost\u0119pu IV', droga: 'IM', dawka: '4\u20136 mg/kg', uwagi: 'Onset 2\u20134 min (dzieci); opcja ostateczna' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: '< 10 kg', dawka: '2 mg/kg IV / 4\u20135 mg/kg IM', droga: 'IV / IM' },
+      { wsk: '10\u201350 kg', dawka: '1,5 mg/kg IV / 4 mg/kg IM', droga: 'IV / IM' },
+      { wsk: '> 50 kg', dawka: '1\u20131,5 mg/kg IV', droga: 'IV' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony\u0105 IV bolus</b> (50 mg/ml = akceptowalne)\nPodawa\u0107 po czynniku indukcyjnym (propofol lub ketamina) \u2014 gdy pacjent traci przytomno\u015b\u0107\n\n<b>Przelicznik 70 kg:</b> 105 mg = 2,1 ml (amp. 50 mg/ml) lub 5,25 ml (fiolka 20 mg/ml)\n\n<b>UWAGA:</b> Zawsze gotowe: intubacja 45\u201360 sek od podania, odsysanie, ko\u0142nierz, laryngoskop',
+    wskazania: [
+      'Standardowa RSI gdy brak przeciwwskaza\u0144',
+      'Pe\u0142ny \u017co\u0142\u0105dek / ryzyko aspiracji (szybki onset, kr\u00f3tki czas dzia\u0142ania)',
+      'Dzieci do RSI (wy\u017csza dawka ni\u017c u doros\u0142ych)'
+    ],
+    przeciwwskazania: [
+      'Hiperkaliemia > 5,5 mEq/L lub podejrzenie (oparzenia, rabdomioliza, unieruchomienie > 24h, SCI, miopatia) \u2014 sukcynylocholina \u2191K+ o 0,5\u20131 mEq/L \u2192 ryzyko NZK',
+      'Hipertermia z\u0142o\u015bliwa (lub wywiad rodzinny) \u2014 triggeruje MH',
+      'Miopatie (dystrofia mi\u0119\u015bniowa, miotonia) \u2014 ryzyko MH i hiperkaliemii',
+      'Deficyt pseudocholinesterazy \u2014 przed\u0142u\u017cone zwiotczenie do godzin',
+      'Brak specyficznego antidotum! Sugammadeks NIE odwraca sukcynylocholiny!'
+    ],
+    antidotum: 'Brak specyficznego antidotum. Wentylacja mechaniczna do powrotu czynno\u015bci nerwowo-mi\u0119\u015bniowej.',
+    zrodlo: 'ChPL Suxamethonium Fresenius \u00b7 ESICM/RSI Protocol 2022 \u00b7 PTAiIT'
+  },
+
+  /* === 3.2 ROKURONIUM === */
+  {
+    id: 17,
+    nazwa: 'Rokuronium',
+    nazwa_en: 'Rocuronium',
+    handlowe: 'Esmeron 50 mg/5 ml (10 mg/ml) \u00b7 Rocuronium Bromide Fresenius 10 mg/ml',
+    forma: 'Fiolka 50 mg/5 ml (10 mg/ml); fiolka 100 mg/10 ml (10 mg/ml)',
+    kat: ['rsi'],
+    badge: 'rsi',
+    badge_label: 'RSI',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var rsi = (1.2 * kg).toFixed(0);
+      var ml = (1.2 * kg / 10).toFixed(1);
+      return 'RSI 1,2 mg/kg: ' + rsi + ' mg = ' + ml + ' ml (10 mg/ml)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'RSI (wysoka dawka)', droga: 'IV bolus', dawka: '1,2 mg/kg', uwagi: 'Zwiotczenie 60 sek, czas dzia\u0142ania 60\u201370 min; 70 kg: 84 mg = 8,4 ml' },
+      { wsk: 'RSI standardowa', droga: 'IV bolus', dawka: '0,6 mg/kg', uwagi: 'Zwiotczenie 90 sek, czas dzia\u0142ania 30\u201340 min' },
+      { wsk: 'Podtrzymanie zwiotczenia', droga: 'IV', dawka: '0,15 mg/kg', uwagi: 'Co 15\u201320 min prn' },
+      { wsk: 'Wlew ci\u0105g\u0142y', droga: 'IV', dawka: '0,3\u20130,6 mg/kg/h', uwagi: 'Titrowa\u0107 do TOF (train of four)' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Niemowl\u0119 (< 1 rok)', dawka: '0,6 mg/kg IV', droga: 'IV' },
+      { wsk: '1\u201312 lat', dawka: '0,6\u20131,2 mg/kg IV', droga: 'IV' },
+      { wsk: '> 12 lat', dawka: 'Jak doros\u0142y', droga: 'IV' }
+    ],
+    rozcienczanie: '<b>Bolus RSI:</b> Podawa\u0107 nierozcienczony (10 mg/ml) IV bolus szybko\n\n<b>Wlew ci\u0105g\u0142y:</b> 200 mg + 40 ml NaCl = 4 mg/ml (50 ml); titrowa\u0107 do TOF\n\n<b>UWAGA:</b> Obowi\u0105zkowy dost\u0119p do sugammadeksu gdy stosuje si\u0119 rokuronium!',
+    wskazania: [
+      'RSI gdy sukcynylocholina przeciwwskazana (hiperkaliemia, oparzenia, miopatie)',
+      'Planowana d\u0142u\u017csza intubacja (wentylacja mechaniczna)',
+      'Standard w wielu protoko\u0142ach RSI jako lek pierwszego rzutu'
+    ],
+    przeciwwskazania: [
+      'Uczulenie na rokuronium (anafilaksja \u2014 rzadka ale ci\u0119\u017cka; sugammadeks odwraca)',
+      'Miastenia gravis \u2014 ekstremalnie wra\u017cliwi, wyd\u0142u\u017cone dzia\u0142anie',
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 w\u0105troby \u2014 wyd\u0142u\u017cenie dzia\u0142ania (metabolizm w\u0105trobowy)'
+    ],
+    antidotum: 'Sugammadeks \u2014 obowi\u0105zkowy dost\u0119p! CICO: 16 mg/kg IV natychmiast.',
+    zrodlo: 'ChPL Esmeron (MSD) \u00b7 RSI Protocol PTAiIT 2022'
+  },
+
+  /* === 3.3 SUGAMMADEKS === */
+  {
+    id: 18,
+    nazwa: 'Sugammadeks',
+    nazwa_en: 'Sugammadex',
+    handlowe: 'Bridion 200 mg/2 ml (100 mg/ml) \u00b7 Sugammadex Fresenius 200 mg/2 ml',
+    forma: 'Fiolka 200 mg/2 ml (100 mg/ml); fiolka 500 mg/5 ml',
+    kat: ['rsi'],
+    badge: 'rsi',
+    badge_label: 'RSI / Odwrócenie',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var cico = (16 * kg).toFixed(0);
+      var mlCico = (16 * kg / 100).toFixed(1);
+      return 'CICO (g\u0142\u0119boka blokada): ' + cico + ' mg = ' + mlCico + ' ml (100 mg/ml)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Odwr\u00f3cenie g\u0142\u0119bokiej blokady (PTC 1\u20132) \u2014 CICO', droga: 'IV bolus', dawka: '16 mg/kg', uwagi: 'PILNE! "Cannot intubate, cannot oxygenate"; 70 kg: 1120 mg = 11,2 ml; dzia\u0142anie w 3 min' },
+      { wsk: 'Odwr\u00f3cenie umiarkowanej blokady (TOF 1\u20132)', droga: 'IV bolus', dawka: '4 mg/kg', uwagi: '' },
+      { wsk: 'Odwr\u00f3cenie powierzchownej blokady (TOF \u2265 3)', droga: 'IV bolus', dawka: '2 mg/kg', uwagi: '' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: '2\u201317 lat', dawka: 'Jak doros\u0142y wg masy cia\u0142a i g\u0142\u0119boko\u015bci blokady', droga: 'IV' },
+      { wsk: '< 2 lat', dawka: 'Brak danych z ChPL \u2014 ostro\u017cnie gdy konieczne', droga: 'IV' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony IV bolus w ci\u0105gu 10 sekund</b>\n\n<b>CICO \u2014 protok\u00f3\u0142 ratunkowy (70 kg):</b> 16 \u00d7 70 = 1120 mg = 11,2 ml (fiolka 100 mg/ml)\nEfekt: powr\u00f3t TOF > 0,9 w ci\u0105gu 3 minut (g\u0142\u0119boka blokada) lub 1,5 min (umiarkowana)\n\n<b>UWAGA:</b> Wi\u0105\u017ce rokuronium i wekuronium; NIE odwraca sukcynylocholiny, cisatrakurium, atrakurium\n<b>UWAGA:</b> Mo\u017ce obni\u017cy\u0107 skuteczno\u015b\u0107 hormonalnych \u015brodk\u00f3w antykoncepcyjnych (wi\u0105\u017ce gestagen!)',
+    wskazania: [
+      'CANNOT INTUBATE, CANNOT OXYGENATE (CICO) \u2014 pilne odwr\u00f3cenie blokady rokuronium',
+      'Odwr\u00f3cenie blokady rokuronium i wekuronium po zabiegu',
+      'Odwr\u00f3cenie przy g\u0142\u0119bokiej blokadzie nerwowo-mi\u0119\u015bniowej'
+    ],
+    przeciwwskazania: [
+      'NIE odwraca sukcynylocholiny, cisatrakurium, atrakurium',
+      'Bradykardia i hipotonia \u2014 rzadkie dzia\u0142ania niepo\u017c\u0105dane',
+      'Uwaga: zmniejsza skuteczno\u015b\u0107 doust. \u015brodk\u00f3w antykoncepcyjnych (jeden cykl)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Bridion (MSD) \u00b7 ERC Airway Guidelines 2021 \u00b7 PTAiIT'
+  },
+
+  /* === 3.4 WEKURONIUM === */
+  {
+    id: 19,
+    nazwa: 'Wekuronium',
+    nazwa_en: 'Vecuronium',
+    handlowe: 'Norcuron 10 mg (proszek do sporz\u0105dzania)',
+    forma: 'Fiolka 10 mg proszek (do rozpuszczenia w 5 ml NaCl = 2 mg/ml)',
+    kat: ['rsi'],
+    badge: 'rsi',
+    badge_label: 'RSI / Podtrzymanie',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d = (0.1 * kg).toFixed(1);
+      return 'RSI 0,1 mg/kg: ' + d + ' mg (onset 3\u20135 min \u2014 zbyt wolny na RSI)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'RSI (nie zalecany \u2014 wolny onset)', droga: 'IV', dawka: '0,1 mg/kg', uwagi: 'Onset 3\u20135 min \u2014 ZBYT WOLNY na standardowe RSI; preferuj rokuronium lub sukcynylocholinę' },
+      { wsk: 'Podtrzymanie zwiotczenia', droga: 'IV', dawka: '0,025\u20130,05 mg/kg', uwagi: 'Co 20\u201340 min prn' },
+      { wsk: 'Wlew ci\u0105g\u0142y (OIT)', droga: 'IV', dawka: '0,05\u20130,1 mg/kg/h', uwagi: 'Titrowa\u0107 do TOF' }
+    ],
+    dawkowanie_dziecko: null,
+    rozcienczanie: '<b>Rekonstitucja:</b> 10 mg proszku + 5 ml wody do wstrzykiwa\u0144 = 2 mg/ml\n\n<b>Wlew ci\u0105g\u0142y:</b> 10 mg + 40 ml NaCl = 0,2 mg/ml; szybko\u015b\u0107 5\u201325 ml/h dla 70 kg\n\n<b>Odwr\u00f3cenie:</b> Sugammadeks 4 mg/kg (umiarkowana blokada)',
+    wskazania: [
+      'Podtrzymanie zwiotczenia mi\u0119\u015bniowego na OIT',
+      'Gdy sukcynylocholina i rokuronium niedost\u0119pne (opcja awaryjna)'
+    ],
+    przeciwwskazania: [
+      'Miastenia gravis \u2014 ekstremalnie wra\u017cliwi',
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 w\u0105troby \u2014 wyd\u0142u\u017cenie dzia\u0142ania',
+      'Zbyt wolny onset (3\u20135 min) \u2014 NIE stosowa\u0107 do standardowej RSI'
+    ],
+    antidotum: 'Sugammadeks 4 mg/kg IV (umiarkowana blokada).',
+    zrodlo: 'ChPL Norcuron (MSD)'
+  },
+
+  /* === 4.1 CEFTRIAKSON === */
+  {
+    id: 20,
+    nazwa: 'Ceftriakson',
+    nazwa_en: 'Ceftriaxone',
+    handlowe: 'Ceftriaxone Kabi 1 g / 2 g (proszek) \u00b7 Biotrakson \u00b7 Rocephin',
+    forma: 'Fiolka 1 g proszek; fiolka 2 g proszek',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d = (100 * kg / 1000).toFixed(1);
+      return 'Dzieci ZOM 100 mg/kg/d: ' + d + ' g/dob\u0119 (w 2 dawkach)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Zapalenie p\u0142uc CAP (umiarkowane)', droga: 'IV / IM', dawka: '1\u20132 g', uwagi: 'Co 24h' },
+      { wsk: 'Zapalenie p\u0142uc ci\u0119\u017ckie / sepsa', droga: 'IV', dawka: '2 g', uwagi: 'Co 24h' },
+      { wsk: 'Zapalenie opon m\u00f3zgowych', droga: 'IV', dawka: '2 g', uwagi: 'Co 12h = 4 g/dob\u0119' },
+      { wsk: 'Zaka\u017cenie dr\u00f3g moczowych (powi\u0142ane)', droga: 'IV', dawka: '1\u20132 g', uwagi: 'Co 24h' },
+      { wsk: 'Posocznica', droga: 'IV', dawka: '2 g', uwagi: 'Co 12\u201324h' },
+      { wsk: 'Zapalenie otrzewnej', droga: 'IV', dawka: '2 g', uwagi: 'Co 24h' },
+      { wsk: 'Profilaktyka pooperacyjna', droga: 'IV', dawka: '1\u20132 g', uwagi: 'Jednorazowo' },
+      { wsk: 'Rze\u017c\u0105czka (SOR)', droga: 'IM', dawka: '500 mg', uwagi: 'Jednorazowo' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Noworodek (< 4 tydz.)', dawka: '20\u201350 mg/kg/dob\u0119 IV', droga: 'IV', uwagi: 'Maks. 50 mg/kg/dob\u0119; NIE w hiperbi\u0142irubinemii!' },
+      { wsk: 'Niemowl\u0119 / dziecko', dawka: '50\u2013100 mg/kg/dob\u0119 IV w 1\u20132 dawkach', droga: 'IV', uwagi: 'Maks. 4 g/dob\u0119' },
+      { wsk: 'ZOM (dziecko)', dawka: '100 mg/kg/dob\u0119 IV w 2 dawkach', droga: 'IV', uwagi: 'Maks. 4 g/dob\u0119' }
+    ],
+    rozcienczanie: '<b>IV:</b> 1 g + 10 ml wody do wstrzykiwa\u0144 = 100 mg/ml \u2192 rozcienczy\u0107 w 100 ml NaCl 0,9% lub G5%\n2 g \u2192 20 ml wody \u2192 rozcienczy\u0107 w 100 ml NaCl / G5%\nWlew przez <b>30\u201360 minut</b>\n\n<b>IM:</b> 1 g + 3,5 ml 1% lidokainy lub woda do wstrzykiwa\u0144; g\u0142\u0119boko w mi\u0119sie\u0144 po\u015bladkowy\n\n<b>KRYTYCZNE:</b> NIE miesza\u0107 z roztworami wapnia (Ringer, Hartmann) \u2192 osad! Ryzyko \u015bmiertelna u noworodk\u00f3w!',
+    wskazania: [
+      'Posocznica (empirycznie + tazocin lub meropenem zale\u017cnie od \u017ar\u00f3d\u0142a)',
+      'CAP (zapalenie p\u0142uc pozaszpitalne) z hospitalizacj\u0105',
+      'Zapalenie opon m\u00f3zgowych (z deksametazonem)',
+      'Zaka\u017cenia dr\u00f3g moczowych powi\u0142ane / urosepsa',
+      'Zaka\u017cenia tkanek mi\u0119kkich \u2014 cellulitis',
+      'Rze\u017c\u0105czkowe zaka\u017cenia SOR'
+    ],
+    przeciwwskazania: [
+      'Uczulenie na cefalosporyny (alergia krzy\u017cowa z penicylinami ~1%)',
+      'Noworodki z hiperbi\u0142irubinemii / niedo\u017cywienie ci\u0119\u017ckie (wi\u0105\u017ce albumin\u0119)',
+      'NIE stosowa\u0107 z roztworami wapnia (IV) w tej samej linii!'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Ceftriaxone Kabi \u00b7 EUCAST breakpoints \u00b7 UpToDate'
+  },
+
+  /* === 4.2 PIPERACYLINA / TAZOBAKTAM === */
+  {
+    id: 21,
+    nazwa: 'Piperacylina / Tazobaktam',
+    nazwa_en: 'Piperacillin / Tazobactam',
+    handlowe: 'Tazocin 4,5 g (4 g pip + 0,5 g taz) \u00b7 Piperacillin/Tazobactam Fresenius 4,5 g',
+    forma: 'Fiolka 4,5 g proszek (4 g piperacyliny + 0,5 g tazobaktamu)',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Posocznica / zaka\u017cenia umiarkowane', droga: 'IV', dawka: '4,5 g', uwagi: 'Co 8h; wlew 30 min' },
+      { wsk: 'Posocznica ci\u0119\u017cka / P. aeruginosa', droga: 'IV', dawka: '4,5 g', uwagi: 'Co 6h; <b>wlew przed\u0142u\u017cony 3\u20134h</b> (PK/PD optymalizacja)' },
+      { wsk: 'Zaka\u017cenia szpitalne, VAP', droga: 'IV', dawka: '4,5 g', uwagi: 'Co 6\u20138h; wlew przed\u0142u\u017cony' },
+      { wsk: 'Gor\u0105czka neutropeniczna', droga: 'IV', dawka: '4,5 g', uwagi: 'Co 6h' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: '2\u201312 lat', dawka: '80 mg/kg piperacyliny (= 100 mg/kg pip/taz) IV co 8h', droga: 'IV', uwagi: 'Maks. 4,5 g/dawk\u0119' },
+      { wsk: '> 12 lat', dawka: 'Jak doros\u0142y', droga: 'IV' }
+    ],
+    rozcienczanie: '<b>Rekonstitucja:</b> 4,5 g + 20 ml NaCl \u2192 rozcienczy\u0107 w 100 ml NaCl 0,9%\n\n<b>Wlew standardowy:</b> 30 min\n<b>Wlew przed\u0142u\u017cony (P. aeruginosa):</b> ka\u017cda dawka 4,5 g w 250 ml przez <b>4 godziny</b> (cel: czas T>MIC)\n\n<b>Wlew przed\u0142u\u017cony rekomendowany:</b> w zaka\u017ceniach P. aeruginosa i wieloopornych pa\u0142eczkach',
+    wskazania: [
+      'Posocznica \u2014 \u017ar\u00f3d\u0142o brzuszne, dr\u00f3g moczowych, dr\u00f3g oddechowych',
+      'Gor\u0105czka neutropeniczna empirycznie',
+      'Zaka\u017cenia jamy brzusznej (+ metronidazol w tlenowej/beztlenowej)',
+      'Ci\u0119\u017ckie zaka\u017cenia tkanek mi\u0119kkich (necrotizing fasciitis)',
+      'Zaka\u017cenia P. aeruginosa (szpitalne zapalenie p\u0142uc, posocznica u chorych z mukowiscydoz\u0105)'
+    ],
+    przeciwwskazania: [
+      'Alergia na penicyliny (bezwzgl\u0119dne) / cefalosporyny (krzy\u017cowa ~1\u20132%)',
+      'Hipokaliemia \u2014 piperacylina powoduje utrat\u0119 K+',
+      'Hepatotoksyczno\u015b\u0107 przy d\u0142ugotrwa\u0142ym stosowaniu'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Tazocin (Pfizer) \u00b7 EUCAST \u00b7 UpToDate PK/PD antybiotykoterapii'
+  },
+
+  /* === 4.3 MEROPENEM === */
+  {
+    id: 22,
+    nazwa: 'Meropenem',
+    nazwa_en: 'Meropenem',
+    handlowe: 'Meropenem Kabi 0,5 g / 1 g (proszek) \u00b7 Meronem 1 g',
+    forma: 'Fiolka 500 mg proszek; fiolka 1 g proszek',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Sepsa, zaka\u017cenia umiarkowane', droga: 'IV', dawka: '1 g', uwagi: 'Co 8h; wlew 15\u201330 min' },
+      { wsk: 'Sepsa ci\u0119\u017cka / zapalenie opon m\u00f3zgowych', droga: 'IV', dawka: '2 g', uwagi: 'Co 8h; wlew 30\u201360 min' },
+      { wsk: 'Infekcja P. aeruginosa / wielooporne', droga: 'IV', dawka: '2 g', uwagi: 'Co 8h; <b>wlew przed\u0142u\u017cony 3\u20134h</b>' },
+      { wsk: 'Gor\u0105czka neutropeniczna ci\u0119\u017cka', droga: 'IV', dawka: '1\u20132 g', uwagi: 'Co 8h' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: '3 mies.\u201312 lat', dawka: '10\u201320 mg/kg IV co 8h', droga: 'IV', uwagi: 'ZOM: 40 mg/kg co 8h; maks. 2 g/dawk\u0119' },
+      { wsk: '> 12 lat / > 50 kg', dawka: 'Jak doros\u0142y', droga: 'IV' }
+    ],
+    rozcienczanie: '<b>1 g + 20 ml wody lub NaCl = 50 mg/ml \u2192 rozcienczy\u0107 w 100 ml NaCl 0,9%</b>\nWlew standardowy: 15\u201330 min\n\n<b>Wlew przed\u0142u\u017cony (P. aeruginosa):</b> 2 g w 100 ml NaCl przez <b>3 godziny</b> (ka\u017cda dawka osobno)\n\n<b>KRYTYCZNE: Stabilno\u015b\u0107 meropenemu w roztworze: tylko 4\u20138 godzin w temp. pokojowej \u2014 ka\u017cda dawka przygotowywana \u015bwie\u017co!</b>\n\n<b>KRYTYCZNE: Meropenem + walproinian \u2192 drastyczne \u2193 st\u0119\u017cenia walproinianu \u2192 napady drgawkowe!</b>',
+    wskazania: [
+      'Sepsa ci\u0119\u017cka / wstrz\u0105s septyczny (+ wankomycyna je\u015bli podejrzenie MRSA)',
+      'Gor\u0105czka neutropeniczna z niestabilno\u015bci\u0105 hemodynamiczn\u0105',
+      'Zaka\u017cenia wieloopornymi pa\u0142eczkami (ESBL, KPC)',
+      'Ropa\u0144 m\u00f3zgu, zapalenie opon m\u00f3zgowych',
+      'Zaka\u017cenia po kolonoskopii / perforacja jelit'
+    ],
+    przeciwwskazania: [
+      'Alergia na karbapenemy (rzadka; krzy\u017cowa z penicylinami ~1%)',
+      'Epilepsja \u2014 meropenem obni\u017ca pr\u00f3g drgawkowy',
+      'KRYTYCZNE: Meropenem + walproinian \u2192 drastyczne \u2193 st\u0119\u017cenia walproinianu \u2192 napady!'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Meropenem Kabi \u00b7 EUCAST \u00b7 UpToDate'
+  },
+
+  /* === 4.4 AMOKSYCYLINA / KLAWULANIAN === */
+  {
+    id: 23,
+    nazwa: 'Amoksycylina / Klawulanian',
+    nazwa_en: 'Amoxicillin / Clavulanate',
+    handlowe: 'Augmentin 1,2 g IV (1 g amox + 0,2 g clav) \u00b7 Amoksiklav 1,2 g \u00b7 Co-Amoxiclav',
+    forma: 'Fiolka 1,2 g proszek (1 g + 0,2 g); fiolka 2,2 g (2 g + 0,2 g)',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d = (30 * kg).toFixed(0);
+      return 'Dzieci 30 mg/kg/dawk\u0119: ' + d + ' mg (maks. 1200 mg)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Standardowe zaka\u017cenia', droga: 'IV', dawka: '1,2 g', uwagi: 'Co 8h' },
+      { wsk: 'Ci\u0119\u017ckie zaka\u017cenia', droga: 'IV', dawka: '1,2 g', uwagi: 'Co 6h; maks. 6 g/dob\u0119 (= 1,2 g co 4h)' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Dzieci', dawka: '30 mg/kg/dawk\u0119 IV co 8h (w przeliczeniu na amoksycylin\u0119)', droga: 'IV', uwagi: 'Noworodki: co 12h; maks. 1,2 g/dawk\u0119' }
+    ],
+    rozcienczanie: '<b>1,2 g + 20 ml wody do wstrzykiwa\u0144 \u2192 powoli rozcienczy\u0107 w 50\u2013100 ml NaCl 0,9%</b>\nPodawa\u0107 przez <b>30 minut</b>\n\n<b>NIE miesza\u0107 z roztworami glukozy</b> (niestabilno\u015b\u0107)',
+    wskazania: [
+      'Zapalenie p\u0142uc CAP (lekkie do umiarkowanego)',
+      'Zaka\u017cenia dr\u00f3g moczowych powi\u0142ane',
+      'Ropa\u0144 oko\u0142omigda\u0142kowy',
+      'Zaka\u017cenia tkanek mi\u0119kkich \u2014 uk\u0105szenia zwierz\u0105t',
+      'Zaostrzenie POChP (bakteryjne)'
+    ],
+    przeciwwskazania: [
+      'Alergia na penicyliny',
+      'Mononukleoza zaka\u017ana (EBV) \u2014 amoksycylina wywo\u0142uje uog\u00f3lnion\u0105 wysypk\u0119',
+      '\u017b\u00f3\u0142taczka cholestatyczna po uprzednim stosowaniu amox/clav'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Augmentin (GSK)'
+  },
+
+  /* === 4.5 METRONIDAZOL === */
+  {
+    id: 24,
+    nazwa: 'Metronidazol',
+    nazwa_en: 'Metronidazole',
+    handlowe: 'Metronidazol Kabi 5 mg/ml (100 ml / 500 mg) \u00b7 Metronidazol Fresenius',
+    forma: 'Worek infuzyjny 500 mg/100 ml (5 mg/ml); gotowy do wlewu',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d = (7.5 * kg).toFixed(0);
+      return 'Dzieci 7,5 mg/kg/dawk\u0119: ' + d + ' mg';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Zaka\u017cenia umiarkowane (beztlenowe)', droga: 'IV', dawka: '500 mg', uwagi: 'Co 8h; wlew 20\u201330 min' },
+      { wsk: 'Zaka\u017cenia ci\u0119\u017ckie / beztlenowe', droga: 'IV', dawka: '500 mg co 6h lub 1 g', uwagi: 'Co 12h; maks. 4 g/dob\u0119; NIE szybciej \u2014 hipotonia!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Dzieci', dawka: '7,5 mg/kg IV co 8h', droga: 'IV', uwagi: 'Maks. 500 mg/dawk\u0119' },
+      { wsk: 'Noworodki', dawka: '7,5 mg/kg IV co 12h', droga: 'IV' }
+    ],
+    rozcienczanie: '<b>Gotowy do wlewu (5 mg/ml w workach 100 ml)</b>\nWlew przez <b>20\u201330 minut</b> (NIE szybciej \u2014 hipotonia przy szybkim podaniu)\n\n<b>Uwaga: reakcja disulfiramopodobna</b> z alkoholem (wymioty, tachykardia, zaczerwienienie)',
+    wskazania: [
+      'Zaka\u017cenia beztlenowe (po\u0142\u0105czenie z ceftriaksonem lub pip/taz)',
+      'Ropnie jamy brzusznej (peritonitis)',
+      'Clostridioides difficile (doustnie preferowane; IV gdy niedost\u0119pne)',
+      'Ropa\u0144 m\u00f3zgu (z ceftriaksonem)',
+      'Zapalenie przydatk\u00f3w / PID (z ceftriaksonem lub doksycyklin\u0105)'
+    ],
+    przeciwwskazania: [
+      'I trymestr ci\u0105\u017cy (wzgl\u0119dne; II/III \u2014 ostro\u017cnie)',
+      'Spo\u017cywanie alkoholu (disulfiramopodobna reakcja: wymioty, tachykardia, zaczerwienienie)',
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 w\u0105troby \u2014 redukcja dawki',
+      'Interakcje: warfaryna (\u2191 INR), lit (toksyczno\u015b\u0107)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Metronidazol Kabi \u00b7 EUCAST'
+  },
+
+  /* === 4.6 WANKOMYCYNA === */
+  {
+    id: 25,
+    nazwa: 'Wankomycyna',
+    nazwa_en: 'Vancomycin',
+    handlowe: 'Vancomycin Fresenius 500 mg / 1 g (proszek) \u00b7 Edicin 500 mg',
+    forma: 'Fiolka 500 mg proszek; fiolka 1 g proszek',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var lo = (15 * kg).toFixed(0);
+      var hi = (20 * kg).toFixed(0);
+      var ld = (25 * kg).toFixed(0);
+      return 'Dawka \u0142aduj\u0105ca 25 mg/kg: ' + ld + ' mg | Podtrzym.: ' + lo + '\u2013' + hi + ' mg/dawk\u0119';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Posocznica MRSA \u2014 dawka \u0142aduj\u0105ca', droga: 'IV', dawka: '25\u201330 mg/kg (maks. 3 g)', uwagi: 'Wlew min. 60 min; cel AUC/MIC 400\u2013600' },
+      { wsk: 'Posocznica MRSA \u2014 podtrzymanie', droga: 'IV', dawka: '15\u201320 mg/kg', uwagi: 'Co 8\u201312h; TDM obowi\u0105zkowy' },
+      { wsk: 'ZOM MRSA', droga: 'IV', dawka: '25\u201330 mg/kg (dawka \u0142aduj\u0105ca) + 15 mg/kg', uwagi: 'Co 6h; TDM' },
+      { wsk: 'Gor\u0105czka neutropeniczna', droga: 'IV', dawka: '15 mg/kg', uwagi: 'Co 12h' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Dzieci', dawka: '10\u201315 mg/kg IV co 6h', droga: 'IV', uwagi: 'Dawka \u0142aduj\u0105ca: 25 mg/kg jednorazowo' },
+      { wsk: 'Noworodki', dawka: '10\u201315 mg/kg IV', droga: 'IV', uwagi: 'Co 8\u201312h' }
+    ],
+    rozcienczanie: '<b>ZAWSZE POWOLNY WLEW \u2014 minimalizacja "Red Man Syndrome"</b>\n1 g: rozpuci\u0107 w 10 ml wody \u2192 rozcienczy\u0107 w <b>200 ml NaCl lub G5%</b> \u2192 podawa\u0107 przez <b>co najmniej 60 minut</b> (preferowane 90\u2013120 min)\n15 mg/kg przez minimum 60 min\n\n<b>Red Man Syndrome</b> (flush, hipotonia, \u015bwi\u0105d) \u2014 NIE jest alergią; spowalniać wlew + difenhydramina\n\n<b>TDM:</b> Przed 4. dawką: stężenie minimalne (trough) > 15 mg/l lub AUC/MIC 400\u2013600 mg\u00b7h/L (ASHP/IDSA 2020)',
+    wskazania: [
+      'Podejrzenie/potwierdzenie MRSA (posocznica, zapalenie p\u0142uc szpitalne, ZOM)',
+      'Ci\u0119\u017ckie zaka\u017cenia u chorych po wcze\u015bniejszej antybiotykoterapii',
+      'Gor\u0105czka neutropeniczna z niestabilno\u015bci\u0105',
+      'Zaka\u017cenie protezy / implantu (gronkowce)'
+    ],
+    przeciwwskazania: [
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 nerek \u2014 redukcja dawki (GFR < 30: wyd\u0142u\u017cy\u0107 odst\u0119py, TDM obowi\u0105zkowy)',
+      '\u0141\u0105czenie z aminoglikozydami \u2192 addytywna nefrotoksyczno\u015b\u0107'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Vancomycin Fresenius \u00b7 ASHP/IDSA/SIDP Guidelines 2020'
+  },
+
+  /* === 4.7 GENTAMYCYNA === */
+  {
+    id: 26,
+    nazwa: 'Gentamycyna',
+    nazwa_en: 'Gentamicin',
+    handlowe: 'Gentamicin WZF 40 mg/1 ml \u00b7 Gentamicin Kabi 80 mg/2 ml',
+    forma: 'Amp. 40 mg/1 ml; amp. 80 mg/2 ml',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var lo = (5 * kg).toFixed(0);
+      var hi = (7 * kg).toFixed(0);
+      return 'ODD 5\u20137 mg/kg/dob\u0119: ' + lo + '\u2013' + hi + ' mg IV raz na dob\u0119';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Monoterapia / posocznica Gram(-) \u2014 ODD', droga: 'IV', dawka: '5\u20137 mg/kg', uwagi: 'Raz na dob\u0119 (once daily dosing) \u2014 preferowane; cel Cmax > 10\u00d7 MIC; Cmin < 1 mg/l' },
+      { wsk: 'Stary schemat (rzadziej)', droga: 'IV', dawka: '1,5\u20132 mg/kg', uwagi: 'Co 8h' },
+      { wsk: 'Endocarditis (synergizm z beta-laktamem)', droga: 'IV', dawka: '1 mg/kg', uwagi: 'Co 8h (niskie dawki synergetyczne)' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Dzieci', dawka: '2,5 mg/kg IV co 8h', droga: 'IV', uwagi: 'ODD: 5\u20137,5 mg/kg co 24h' },
+      { wsk: 'Noworodki', dawka: '2,5 mg/kg IV co 12h', droga: 'IV', uwagi: 'Wg nomogram\u00f3w neonatologicznych' }
+    ],
+    rozcienczanie: '<b>Rozcienczy\u0107 w 50\u2013100 ml NaCl 0,9%</b>\nPodawa\u0107 przez <b>30\u201360 minut</b>\n\n<b>TDM:</b> Cmin przed nast\u0119pn\u0105 dawk\u0105 < 1 mg/L (ODD); > 1 mg/L \u2192 wyd\u0142u\u017cy\u0107 odst\u0119p',
+    wskazania: [
+      'Urosepsa (jako monoterapia lub z beta-laktamem)',
+      'Synergizm w endocarditis enterokokowym',
+      'Zaka\u017cenia Gram-ujemnymi (empirycznie gdy podejrzenie Pseudomonas)',
+      'Zapalenie opon (noworodkowe, z ampicylin\u0105)'
+    ],
+    przeciwwskazania: [
+      'Miastenia gravis (nasilenie blokady nerwowo-mi\u0119\u015bniowej)',
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 nerek (kumulacja \u2014 obligatoryjny TDM)',
+      '\u0141\u0105czenie z wankomycyn\u0105 / furosemidem \u2192 nefro/ototoksyczno\u015b\u0107',
+      'Ci\u0105\u017ca (toksyczno\u015b\u0107 ototoksyczna dla p\u0142odu \u2014 tylko przy braku alternatywy)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Gentamicin WZF \u00b7 UpToDate'
+  },
+
+  /* === 4.8 CIPROFLOKSACYNA IV === */
+  {
+    id: 27,
+    nazwa: 'Ciprofloksacyna IV',
+    nazwa_en: 'Ciprofloxacin IV',
+    handlowe: 'Ciprofloxacin Kabi 2 mg/ml (100 ml / 200 mg; 200 ml / 400 mg)',
+    forma: 'Worek infuzyjny 200 mg/100 ml (2 mg/ml); 400 mg/200 ml; gotowy do wlewu',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Zaka\u017cenia dr\u00f3g moczowych ci\u0119\u017ckie', droga: 'IV', dawka: '400 mg', uwagi: 'Co 12h; wlew 60 min' },
+      { wsk: 'Zapalenie p\u0142uc szpitalne / Gram(-)', droga: 'IV', dawka: '400 mg', uwagi: 'Co 8\u201312h' },
+      { wsk: 'Posocznica Gram(-)', droga: 'IV', dawka: '400 mg', uwagi: 'Co 8h' },
+      { wsk: 'W\u0105glik (postekspozycja / leczenie)', droga: 'IV', dawka: '400 mg', uwagi: 'Co 12h' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Szczeg\u00f3lne wskazania (w\u0105glik, Pseudomonas u CF)', dawka: '10 mg/kg IV co 8h', droga: 'IV', uwagi: 'Maks. 400 mg/dawk\u0119; ograniczone wskazania u dzieci!' }
+    ],
+    rozcienczanie: '<b>Gotowy do wlewu</b> (2 mg/ml w workach)\nPodawa\u0107 przez <b>60 minut</b> (200 mg przez 30 min, 400 mg przez 60 min)\n\n<b>NIE podawa\u0107 IV bolus!</b>',
+    wskazania: [
+      'Urosepsa (Gram ujemne, w tym Pseudomonas)',
+      'Zapalenie p\u0142uc szpitalne z podejrzeniem Gram(-)',
+      'Biegunka podr\u00f3\u017cnych z objawami posocznicy (Salmonella)',
+      'Profilaktyka po ekspozycji na w\u0105glik'
+    ],
+    przeciwwskazania: [
+      'Ci\u0105\u017ca / laktacja (wzgl\u0119dne \u2014 uszkodzenia chrz\u0119stno-stawowe w modelach zwierz\u0119cych)',
+      'Padaczka \u2014 obni\u017ca pr\u00f3g drgawkowy',
+      'QT przed\u0142u\u017cenie (interakcja z innymi lekami QT-prolonguj\u0105cymi)',
+      'Miastenia gravis',
+      'Interakcja z warfaryn\u0105 (\u2191 INR)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Ciprofloxacin Kabi \u00b7 EUCAST'
+  },
+
+  /* === 4.9 CEFAZOLINA === */
+  {
+    id: 28,
+    nazwa: 'Cefazolina',
+    nazwa_en: 'Cefazolin',
+    handlowe: 'Cefazolin Kabi 1 g / 2 g (proszek) \u00b7 Biofazolin',
+    forma: 'Fiolka 1 g proszek; fiolka 2 g proszek',
+    kat: ['abx'],
+    badge: 'abx',
+    badge_label: 'Antybiotyk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var lo = (25 * kg).toFixed(0);
+      var hi = (50 * kg).toFixed(0);
+      return 'Dzieci 25\u201350 mg/kg/dawk\u0119: ' + lo + '\u2013' + hi + ' mg';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Zaka\u017cenia (zakres)', droga: 'IV', dawka: '1\u20132 g', uwagi: 'Co 8h' },
+      { wsk: 'Profilaktyka chirurgiczna', droga: 'IV', dawka: '2 g', uwagi: 'Jednorazowo 30\u201360 min przed ci\u0119ciem; masa > 120 kg: 3 g' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Dzieci', dawka: '25\u201350 mg/kg IV co 8h', droga: 'IV', uwagi: 'Noworodki: co 12h; maks. 6 g/dob\u0119' }
+    ],
+    rozcienczanie: '<b>1 g + 10 ml NaCl \u2192 rozcienczy\u0107 w 50\u2013100 ml NaCl 0,9%</b>\nWlew 30 min\n\n<b>Nie obejmuje:</b> MRSA, enterokoki, Pseudomonas, Gram(-) beztlenowce',
+    wskazania: [
+      'Profilaktyka zaka\u017ce\u0144 w ranach (urazy, ci\u0119cia chirurgiczne)',
+      'Cellulitis (zaka\u017cenia sk\u00f3ry i tkanek mi\u0119kkich \u2014 wra\u017cliwy S. aureus MSSA)',
+      'Zaka\u017cenia ko\u015bci i staw\u00f3w (MSSA)',
+      'Zaka\u017cenia dr\u00f3g moczowych niepowi\u0142ane'
+    ],
+    przeciwwskazania: [
+      'Uczulenie na cefalosporyny (alergia krzy\u017cowa z penicylinami ~1%)',
+      'Nie obejmuje MRSA, Pseudomonas, enterkok\u00f3w \u2014 rozwa\u017cy\u0107 szersze spektrum'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Cefazolin Kabi \u00b7 UpToDate'
+  }
+  /* ============================================================
+     PART 3: KARDIOLOGIA + NEUROLOGIA + ANTIDOTA
+     20 lekow — id: 29–48
+     ============================================================ */
+
+  /* === 5.1 ADENOZYNA === */
+  ,{
+    id: 29,
+    nazwa: 'Adenozyna',
+    nazwa_en: 'Adenosine',
+    handlowe: 'Adenocor 6 mg/2 ml \u00b7 Adenosine Accord 6 mg/2 ml',
+    forma: 'Amp. 6 mg/2 ml (3 mg/ml)',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'SVT \u2014 kardiowersja farmakologiczna (dawka 1.)', droga: 'IV BOLUS', dawka: '6 mg', uwagi: 'Dost\u0119p IV powy\u017cej \u0142okcia lub CVC; bolus < 2 sek + natychmiast 20 ml NaCl 0,9% flush!' },
+      { wsk: 'SVT \u2014 brak efektu po 1\u20132 min (dawka 2.)', droga: 'IV BOLUS', dawka: '12 mg', uwagi: 'Ponowi\u0107 tak samo: szybki bolus + 20 ml flush' },
+      { wsk: 'SVT \u2014 brak efektu po kolejnych 1\u20132 min (dawka 3.)', droga: 'IV BOLUS', dawka: '12 mg', uwagi: 'Trzecia i ostatnia dawka; je\u015bli nieskuteczna \u2014 amiodaron lub kardiowersja el.' },
+      { wsk: 'Diagnostyka SVT / r\u00f3\u017cnicowanie bloku AV', droga: 'IV BOLUS', dawka: '6\u201312 mg', uwagi: 'Chwilowe zwolnienie \u2014 ocena zapisu EKG' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'SVT', dawka: '0,1 mg/kg IV (maks. 6 mg)', droga: 'IV BOLUS', uwagi: 'Brak efektu: 0,2 mg/kg \u2192 maks. 0,3 mg/kg lub 12 mg' }
+    ],
+    rozcienczanie: '<b>NIE rozciencza\u0107 \u2014 podawa\u0107 nierozcienczony (3 mg/ml)</b>\n\n<b>Technika szybkiego podania IV (KLUCZOWA):</b>\n1. Dost\u0119p IV POWY\u017bEJ \u0142okcia lub linia centralna\n2. Strzykawka A: 2 ml (6 mg) adenozyny\n3. Strzykawka B: 20 ml NaCl 0,9% flush\n4. Bolus A: jak najszybciej (< 2 sek!) jednym ruchem\n5. NATYCHMIAST: bolus B \u2014 20 ml NaCl szybko\n6. Monitor EKG ci\u0105g\u0142y podczas podawania\n7. Poinformowa\u0107 pacjenta: ucisk w klatce, duszno\u015b\u0107, zaczerwienienie \u2014 mijaj\u0105 w 15\u201330 sek\n\n<b>Asystolia / pauza po podaniu \u2014 OCZEKIWANA i chwilowa (15\u201330 sek)</b>',
+    wskazania: [
+      'SVT (AVNRT, AVRT) \u2014 kardiowersja farmakologiczna',
+      'Diagnostyczne \u2014 uwidocznienie fali P przy tachykardii z w\u0105skim QRS',
+      'SVT z aberracj\u0105 (gdy niepewne czy SVT czy VT)'
+    ],
+    przeciwwskazania: [
+      'Blok AV II/III stopnia (bez rozrusznika)',
+      'Sick sinus syndrome (bez rozrusznika)',
+      'Migotanie / trzepotanie przedsionk\u00f3w \u2014 adenozyna nie przerywa, mo\u017ce przyspieszy\u0107 komory!',
+      'WPW z migotaniem przedsionk\u00f3w \u2014 BEZWZGL\u0118DNIE NIE! (ryzyko VF)',
+      'Astma oskrzelowa / ci\u0119\u017cki POChP (skurcz oskrzeli \u2014 wzgl\u0119dne)',
+      'Dipirydamol i karbamazepina \u2014 nasila dzia\u0142anie (zmniejszy\u0107 dawk\u0119 do 3 mg)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Adenocor \u00b7 ESC SVT Guidelines 2019'
+  }
+
+  /* === 5.2 AMIODARON IV === */
+  ,{
+    id: 30,
+    nazwa: 'Amiodaron IV',
+    nazwa_en: 'Amiodarone IV',
+    handlowe: 'Amiodarone Sanofi 150 mg/3 ml \u00b7 Cordarone 150 mg/3 ml \u00b7 Amiodaronum WZF',
+    forma: 'Amp. 150 mg/3 ml (50 mg/ml)',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'NZK \u2014 VF/VT bez t\u0119tna (po 3. defibrylacji)', droga: 'IV BOLUS', dawka: '300 mg', uwagi: 'W 20 ml G5%; po 5 min mo\u017cna 150 mg je\u015bli VF nawraca' },
+      { wsk: 'VT / SVT z niestabilno\u015bci\u0105 hemodynamiczn\u0105', droga: 'IV wlew 10\u201320 min', dawka: '150\u2013300 mg', uwagi: 'W 100 ml G5%' },
+      { wsk: 'Wlew podtrzymuj\u0105cy (prewencja arytmii)', droga: 'IV wlew 24h', dawka: '900 mg/24h', uwagi: 'Nast\u0119pne 24h: 540 mg' },
+      { wsk: 'AF \u2014 kontrola rytmu / cz\u0119sto\u015bci', droga: 'IV wlew 1h', dawka: '150\u2013300 mg', uwagi: 'Nast\u0119pnie 900 mg/24h' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'NZK', dawka: '5 mg/kg IV bolus (do 300 mg)', droga: 'IV', uwagi: 'W 20 ml G5%' },
+      { wsk: 'Inne arytmie', dawka: '5 mg/kg', droga: 'IV', uwagi: 'Przez 20\u201360 min' }
+    ],
+    rozcienczanie: '<b>TYLKO w G5% (glukozie) \u2014 NaCl powoduje precypitacj\u0119 amiodiaronu!</b>\n\n<b>Bolus NZK:</b> 300 mg (6 ml) + 14 ml G5% = 20 ml \u2192 szybki bolus IV\n\n<b>Wlew 10\u201320 min:</b> 150 mg (3 ml) + 97 ml G5% = 100 ml \u2192 przez 10\u201320 min\n\n<b>Wlew 24h:</b> 900 mg + 500 ml G5% \u2192 20\u201321 ml/h\n\n<b>Uwaga:</b> Korozja PVC \u2014 stosowa\u0107 strzykawki polipropylenowe (standardowe szpitalne OK)',
+    wskazania: [
+      'VF/VT bez t\u0119tna oporny na defibrylacje \u2014 po 3. defibrylacji (NZK)',
+      'Hemodynamicznie niestabilny VT',
+      'SVT z hemodynamiczn\u0105 niestabilno\u015bci\u0105 (gdy adenozyna nieskuteczna)',
+      'Migotanie przedsionk\u00f3w z szybk\u0105 czynno\u015bci\u0105 komor (kontrola cz\u0119sto\u015bci)',
+      'WPW z migotaniem przedsionk\u00f3w (zamiast adenozyny/werapamilu!)'
+    ],
+    przeciwwskazania: [
+      'Bradykardia / blok AV II/III st. (bez rozrusznika)',
+      'Nadczynno\u015b\u0107 tarczycy (wzgl\u0119dne w nag\u0142ym)',
+      'QTc > 500 ms',
+      'Alergia na jod'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Amiodarone Sanofi \u00b7 ERC 2021 \u00b7 ESC AF 2020'
+  }
+
+  /* === 5.3 ATROPINA === */
+  ,{
+    id: 31,
+    nazwa: 'Atropina',
+    nazwa_en: 'Atropine',
+    handlowe: 'Atropinum Sulfuricum WZF 1 mg/1 ml \u00b7 Atropina Polfa',
+    forma: 'Amp. 1 mg/1 ml; amp. 0,5 mg/1 ml; amp. 0,25 mg/1 ml',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Bradykardia objawowa', droga: 'IV bolus', dawka: '0,5 mg', uwagi: 'Powt. co 3\u20135 min; maks. 3 mg \u0142\u0105cznie' },
+      { wsk: 'NZK \u2014 asystolia / PEA z bradykardi\u0105', droga: 'IV', dawka: '1 mg IV bolus', uwagi: 'ERC 2021: nie zaleca rutynowo w NZK' },
+      { wsk: 'Premedykacja / hamowanie wydzielania', droga: 'IM / IV', dawka: '0,5\u20131 mg', uwagi: '' },
+      { wsk: 'Zatrucie OP / nerwy bojowe', droga: 'IV / IM / IO', dawka: '2\u20134 mg, powt. co 5\u201310 min', uwagi: 'Titrowa\u0107 do sucho\u015bci wydzieliny oskrzelowej! Nawet 50\u2013100+ mg \u0142\u0105cznie' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Bradykardia', dawka: '0,02 mg/kg IV', droga: 'IV', uwagi: 'Min. 0,1 mg (< 0,1 mg \u2192 paradoksalna bradykardia!)' },
+      { wsk: 'Zatrucia OP', dawka: '0,02\u20130,05 mg/kg IV co 5\u201310 min', droga: 'IV', uwagi: 'Titrowa\u0107 do sucho\u015bci oskrzeli' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony</b> (1 mg/ml) \u2014 szybki bolus IV\n\nMo\u017cna rozciencza\u0107 w 10 ml NaCl 0,9% je\u015bli potrzeba precyzji dawki',
+    wskazania: [
+      'Bradykardia objawowa (hipotonia, utrata przytomno\u015bci, b\u00f3l w klatce)',
+      'Blok AV II st. typ Mobitz I (Wenckebach) objawowy',
+      'Bradykardia w RSI (szczeg\u00f3lnie u dzieci przy sukcynylocholinie)',
+      'Zatrucia fosforoorganicznymi (OP) \u2014 DU\u017bE dawki (patrz: Antidota)'
+    ],
+    przeciwwskazania: [
+      'Jaskra z w\u0105skim k\u0105tem (wzgl\u0119dne)',
+      'Tachyarytmia',
+      'Przerost gruczo\u0142u krokowego z zatrzymaniem moczu (wzgl\u0119dne)',
+      'Dawka < 0,1 mg IV u dzieci \u2192 paradoksalna bradykardia!'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Atropinum WZF \u00b7 ERC 2021 \u00b7 ESC Bradycardia 2021'
+  }
+
+  /* === 5.4 METOPROLOL IV === */
+  ,{
+    id: 32,
+    nazwa: 'Metoprolol IV',
+    nazwa_en: 'Metoprolol IV',
+    handlowe: 'Betaloc 5 mg/5 ml \u00b7 Metoprolol WZF 1 mg/ml',
+    forma: 'Amp. 5 mg/5 ml (1 mg/ml)',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'AF / SVT \u2014 kontrola cz\u0119sto\u015bci', droga: 'IV powoli', dawka: '5 mg przez 5 min', uwagi: 'Powt. co 5 min maks. 3\u00d7 (= 15 mg \u0142\u0105cznie); monitoring HR, BP, EKG' },
+      { wsk: 'Nadci\u015bnienie prze\u0142omowe z tachykardi\u0105', droga: 'IV', dawka: '5 mg przez 5 min', uwagi: 'Do \u0142\u0105cznej dawki 15 mg' },
+      { wsk: 'Tyreotoksykoza \u2014 kontrola tachykardii', droga: 'IV', dawka: '5 mg przez 5 min', uwagi: 'Titrowa\u0107 do HR < 100/min' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony</b> (1 mg/ml) lub rozciencza\u0107 w 10\u201320 ml NaCl\n\nSzybko\u015b\u0107: NIE szybciej ni\u017c 1 mg/min (= 5 mg przez 5 min)',
+    wskazania: [
+      'Migotanie przedsionk\u00f3w z szybk\u0105 czynno\u015bci\u0105 komor (kontrola cz\u0119sto\u015bci)',
+      'SVT \u2014 alternatywa adenozyny przy nawrocie',
+      'Nadci\u015bnienie prze\u0142omowe z tachykardi\u0105',
+      'Tyreotoksykoza \u2014 kontrola tachykardii'
+    ],
+    przeciwwskazania: [
+      'Blok AV II/III st.',
+      'Astma oskrzelowa / ci\u0119\u017cki skurcz oskrzeli (wzgl\u0119dne \u2014 kardioselektywny)',
+      'Wstrz\u0105s kardiogenny / ci\u0119\u017cka dekompensacja NS (wzgl\u0119dne)',
+      'HR < 60/min'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Betaloc (AstraZeneca)'
+  }
+
+  /* === 5.5 LABETALOL IV === */
+  ,{
+    id: 33,
+    nazwa: 'Labetalol IV',
+    nazwa_en: 'Labetalol IV',
+    handlowe: 'Trandate 100 mg/20 ml (5 mg/ml)',
+    forma: 'Amp. 100 mg/20 ml (5 mg/ml)',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Nadci\u015bnienie prze\u0142omowe', droga: 'IV bolus', dawka: '20 mg przez 2 min', uwagi: 'Co 10 min maks. 80 mg/bolus; lub wlew 1\u20132 mg/min' },
+      { wsk: 'Prze\u0142om z UAP / OZW', droga: 'IV bolus + wlew', dawka: '20\u201380 mg IV', uwagi: 'Wlew: 2 mg/min' },
+      { wsk: 'Eklampsja / preeklampsja ci\u0119\u017cka', droga: 'IV stopniowo', dawka: '20 mg \u2192 40 mg \u2192 80 mg co 10 min', uwagi: 'Bezpieczny w ci\u0105\u017cy; cel SBP < 160 mmHg' },
+      { wsk: 'Nadci\u015bnienie w udarze niedokrwiennym', droga: 'IV', dawka: '20\u201380 mg IV', uwagi: 'BP > 220/120 bez trombolizy lub > 180/105 z tromboliz\u0105' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>Wlew ci\u0105g\u0142y:</b> 200 mg (40 ml amp.) + 160 ml NaCl 0,9% = 1 mg/ml\nSzybko\u015b\u0107: 60\u2013120 ml/h (= 1\u20132 mg/min)\n\n<b>Bolus:</b> 20 mg (4 ml) \u2014 podawa\u0107 przez minimum 2 min',
+    wskazania: [
+      'Nadci\u015bnienie prze\u0142omowe (kryzys nadci\u015bnieniowy)',
+      'Eklampsja / preeklampsja ci\u0119\u017cka',
+      'Nadci\u015bnienie w udarze niedokrwiennym (BP > 220/120)',
+      'Nadci\u015bnienie w t\u0119tniaku aorty (z nitroprussydem)',
+      'Prze\u0142om adrenergiczny / phaeochromocytoma (TYLKO po alfa-blokadzie!)'
+    ],
+    przeciwwskazania: [
+      'Astma oskrzelowa (beta-blokada)',
+      'Blok AV / bradykardia',
+      'Wstrz\u0105s kardiogenny',
+      'Phaeochromocytoma BEZ uprzedniej alfa-blokady'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Trandate (NRIM) \u00b7 ESC Nadci\u015bnienie 2018'
+  }
+
+  /* === 5.6 FUROSEMID IV === */
+  ,{
+    id: 34,
+    nazwa: 'Furosemid IV',
+    nazwa_en: 'Furosemide IV',
+    handlowe: 'Furosemid WZF 20 mg/2 ml \u00b7 Lasix 10 mg/ml',
+    forma: 'Amp. 20 mg/2 ml (10 mg/ml); amp. 250 mg/25 ml',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Obrz\u0119k p\u0142uc kardiogenny (OAP)', droga: 'IV bolus', dawka: '40\u201380 mg', uwagi: 'Powoli < 4 mg/min; efekt diuretyczny + wazodylatacja \u017cylna' },
+      { wsk: 'Przew\u00f3dnienie / NS zdekompensowana', droga: 'IV', dawka: '40 mg \u2192 titrowa\u0107', uwagi: 'Do diurezy 1\u20132 ml/kg/h' },
+      { wsk: 'Hiperkalemia \u2014 wymuszanie diurezy', droga: 'IV', dawka: '40\u201380 mg', uwagi: '+ agresywne nawodnienie' },
+      { wsk: 'Wlew ci\u0105g\u0142y (NS oporna)', droga: 'IV wlew', dawka: '5\u201310 mg/h', uwagi: 'Po dawce \u0142aduj\u0105cej 40\u201380 mg' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Obrz\u0119k / przew\u00f3dnienie', dawka: '0,5\u20132 mg/kg IV', droga: 'IV', uwagi: 'Maks. 40 mg/dawk\u0119; mo\u017cna powt. co 6h' }
+    ],
+    rozcienczanie: '<b>Bolus IV:</b> nierozcienczony (10 mg/ml) \u2014 podawa\u0107 < 4 mg/min\n(20 mg przez min. 5 min; 80 mg przez min. 20 min)\n\n<b>Wlew ci\u0105g\u0142y:</b> 250 mg/25 ml + 225 ml NaCl 0,9% = 1 mg/ml\nSzybko\u015b\u0107: 5\u201310 ml/h (= 5\u201310 mg/h)',
+    wskazania: [
+      'Obrz\u0119k p\u0142uc kardiogenny (OAP)',
+      'Ci\u0119\u017ckie przew\u00f3dnienie / anasarka',
+      'Hiperkalemia (wspomagaj\u0105co)',
+      'Nadci\u015bnienie prze\u0142omowe z obrz\u0119kiem p\u0142uc'
+    ],
+    przeciwwskazania: [
+      'Hiponatremia ci\u0119\u017cka (< 125 mEq/L)',
+      'Hipowolemia / odwodnienie',
+      'Bezmocz / ostra retencja moczu',
+      'Uczulenie na sulfonamidy (krzy\u017cowe \u2014 rzadkie)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Furosemid WZF \u00b7 ESC Acute HF 2021'
+  }
+
+  /* === 5.7 NITROGLICERYNA IV === */
+  ,{
+    id: 35,
+    nazwa: 'Nitrogliceryna IV',
+    nazwa_en: 'Nitroglycerin IV',
+    handlowe: 'Nitrogliceryna WZF 5 mg/10 ml \u00b7 Nitrocine 5 mg/10 ml \u00b7 Perlinganit 10 mg/10 ml',
+    forma: 'Amp. 5 mg/10 ml (0,5 mg/ml); amp. 10 mg/10 ml (1 mg/ml)',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'OAP \u2014 obrz\u0119k p\u0142uc', droga: 'IV wlew', dawka: '10\u201325 mcg/min \u2192 do 200 mcg/min', uwagi: 'Titrowa\u0107 co 3\u20135 min; cel SBP > 90 mmHg; ulga duszno\u015bci' },
+      { wsk: 'Niestabilna choroba wie\u0144cowa / UAP', droga: 'IV wlew', dawka: '5\u201310 mcg/min \u2192 10\u2013200 mcg/min', uwagi: 'Ust\u0105pienie b\u00f3lu wie\u0144cowego' },
+      { wsk: 'Prze\u0142om nadci\u015bnieniowy', droga: 'IV wlew', dawka: '5\u2013100 mcg/min', uwagi: 'Titrowa\u0107 do cel MAP' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>ADSORPCJA NA PVC!</b> \u2014 stosowa\u0107 strzykawki i dreny polietylenowe / szklane (specjalne dreny do azotanow)\n\n<b>Standardowe rozciencz.:</b> 5 mg + 45 ml G5% = <b>0,1 mg/ml = 100 mcg/ml</b>\n\nSzybko\u015b\u0107:\n\u2022 25 mcg/min = <b>15 ml/h</b>\n\u2022 100 mcg/min = <b>60 ml/h</b>\n\u2022 200 mcg/min = <b>120 ml/h</b>',
+    wskazania: [
+      'Ostry obrz\u0119k p\u0142uc (OAP) \u2014 wazodylatacja \u017cylna \u2192 \u2193 preload',
+      'Niestabilna choroba wie\u0144cowa (UAP) \u2014 analgezja wie\u0144cowa',
+      'Nadci\u015bnienie prze\u0142omowe z OAP',
+      'T\u0119tniak aorty piersiowej (z beta-blokerem)'
+    ],
+    przeciwwskazania: [
+      'Inhibitory PDE-5 (sildenafil, tadalafil) \u2014 ci\u0119\u017cka hipotonia, bezwzgl\u0119dne! (okienko 48h)',
+      'SBP < 90 mmHg (hipotonia)',
+      'Kardiomiopatia prze\u017cysta ze zw\u0119\u017ceniem drogi odp\u0142ywu',
+      'Tamponada serca / zaciskaj\u0105ce zapalenie osierdzia',
+      'Prawokomorowa NS z zawa\u0142em prawej komory'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Nitrogliceryna WZF \u00b7 ESC ACS 2020 \u00b7 ESC Acute HF 2021'
+  }
+
+  /* === 5.8 ALTEPLAZA (rt-PA) \u2014 TROMBOLIZA === */
+  ,{
+    id: 36,
+    nazwa: 'Alteplaza (rt-PA)',
+    nazwa_en: 'Alteplase (rt-PA)',
+    handlowe: 'Actilyse 10 mg + 40 mg/40 ml \u00b7 Actilyse 50 mg (proszek + rozp.)',
+    forma: 'Fiolka proszek 10 mg + 10 ml rozp.; fiolka 50 mg + 50 ml',
+    kat: ['kar'],
+    badge: 'kar',
+    badge_label: 'Kardiologia / Tromboliza',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var total = Math.min(+(0.9 * kg).toFixed(1), 90);
+      var bolus = (total * 0.1).toFixed(1);
+      var wlew = (total * 0.9).toFixed(1);
+      return 'Udar (0,9 mg/kg): ' + total + ' mg | bolus ' + bolus + ' mg (1 min) + wlew ' + wlew + ' mg (60 min)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Udar niedokrwienny (< 4,5h od objaw\u00f3w)', droga: 'IV', dawka: '0,9 mg/kg (maks. 90 mg)', uwagi: '10% dawki bolus w 1 min \u2192 90% wlew przez 60 min; cel BP < 185/110 przed podaniem' },
+      { wsk: 'Masywna PE (wstrz\u0105s / hipotonia)', droga: 'IV wlew 2h', dawka: '100 mg przez 2h (lub 0,6 mg/kg maks. 50 mg przez 15 min)', uwagi: 'ESC 2019; schemat 15 min w NZK / skrajnej niestabilno\u015bci' },
+      { wsk: 'STEMI (gdy PCI niedost\u0119pne w < 120 min)', droga: 'IV schemat 3-etapowy', dawka: '15 mg bolus \u2192 0,75 mg/kg/30 min (maks. 50 mg) \u2192 0,5 mg/kg/60 min (maks. 35 mg)', uwagi: 'Farmakoinwazyjna: PCI w 3\u201324h po trombolizie' },
+      { wsk: 'NZK z podejrzeniem masywnej PE (w trakcie RKO)', droga: 'IV bolus', dawka: '50 mg IV bolus', uwagi: 'Kontynuacja RKO przez 60\u201390 min po podaniu; ERC 2021' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>Rozporz\u0105dzenie proszku:</b>\nActilyse 50 mg: proszek + 50 ml do\u0142\u0105czonego rozp. = 1 mg/ml\n\n<b>UDAR (70 kg \u2192 dawka 63 mg):</b>\n\u2022 Bolus: 6,3 ml przez 1 min\n\u2022 Wlew: 56,7 ml przez 60 min = 56,7 ml/h\n\n<b>PE 100 mg:</b> 100 ml (1 mg/ml) przez 2h = <b>50 ml/h</b>\n\n<b>STEMI (70 kg):</b>\n\u2022 Bolus: 15 mg (15 ml) w 1\u20132 min\n\u2022 Wlew 1: 0,75\u00d770 = 52,5 mg (52,5 ml) przez 30 min = 105 ml/h\n\u2022 Wlew 2: 0,5\u00d770 = 35 mg (35 ml) przez 60 min = 35 ml/h',
+    wskazania: [
+      'Udar niedokrwienny \u2014 spe\u0142nione kryteria (czas, TK bez krwi, BP < 185/110)',
+      'Masywna PE ze wstrz\u0105sem / hipotonii',
+      'NZK z podejrzeniem masywnej PE (podczas RKO)',
+      'STEMI gdy brak PCI w < 120 min (farmakoinwazyjna)'
+    ],
+    przeciwwskazania: [
+      'Krwawienie wewn\u0105trzczaszkowe w wywiadzie \u2014 bezwzgl\u0119dne',
+      'TK: udar krwotoczny lub objawy krwotoku \u2014 bezwzgl\u0119dne',
+      'Ci\u0119\u017ckie nadci\u015bnienie niekontrolowane (> 185/110 dla udaru) \u2014 bezwzgl\u0119dne',
+      'Krwawienie czynne (z wyj\u0105tkiem miesi\u0105czki) \u2014 bezwzgl\u0119dne',
+      'Operacja < 3 mies. (wzgl\u0119dne)',
+      'Nak\u0142ucie t\u0119tnicy nieuciskalnej < 7 dni (wzgl\u0119dne)',
+      'Antykoagulacja (INR > 1,7 / heparyna z aPTT > 2\u00d7 norma) (wzgl\u0119dne)',
+      'Ci\u0105\u017ca (wzgl\u0119dne)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Actilyse (Boehringer Ingelheim) \u00b7 ESC PE 2019 \u00b7 ESO Udar 2021 \u00b7 ERC 2021'
+  }
+
+  /* === 6.1 DIAZEPAM IV === */
+  ,{
+    id: 37,
+    nazwa: 'Diazepam IV',
+    nazwa_en: 'Diazepam IV',
+    handlowe: 'Relanium 10 mg/2 ml \u00b7 Diazepam WZF 10 mg/2 ml (5 mg/ml)',
+    forma: 'Amp. 10 mg/2 ml (5 mg/ml)',
+    kat: ['neu'],
+    badge: 'neu',
+    badge_label: 'Neurologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Stan padaczkowy / napad drgawkowy', droga: 'IV powoli', dawka: '10 mg (4 ml)', uwagi: '2 mg/min = przez 2 minuty; mo\u017cna powt. po 5\u201310 min; maks. 30 mg \u0142\u0105cznie' },
+      { wsk: 'Per rectum (brak dost\u0119pu IV)', droga: 'PR', dawka: '10\u201320 mg', uwagi: 'Stesolid czopki/roztwor' },
+      { wsk: 'Odstawienie alkoholu (delirium tremens)', droga: 'IV', dawka: '5\u201310 mg co 5\u201310 min', uwagi: 'Titrowa\u0107 do sedacji' },
+      { wsk: 'Anksjoliza przed procedur\u0105', droga: 'IV', dawka: '2\u20135 mg', uwagi: 'Monitorowa\u0107 oddech' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Napad drgawkowy', dawka: '0,2\u20130,5 mg/kg IV (maks. 10 mg)', droga: 'IV', uwagi: '' },
+      { wsk: 'Per rectum', dawka: '0,5 mg/kg (maks. 10 mg)', droga: 'PR', uwagi: '' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony</b> (5 mg/ml) powoli IV\n\n<b>NIE rozciencza\u0107 z NaCl ani wod\u0105</b> \u2014 diazepam jest nierozpuszczalny w wodzie (precypitacja!)\n\n<b>Adsorpcja na PVC</b> \u2014 nie wlew przez d\u0142ugie dreny PVC\n\n<b>Preferowany w status epilepticus: midazolam IM/IN</b> (szybszy onset, mniej kumulacji \u2014 RAMPART trial)',
+    wskazania: [
+      'Stan padaczkowy \u2014 gdy midazolam niedost\u0119pny',
+      'Napady drgawkowe pourazowe',
+      'Odstawienie alkoholu \u2014 delirium tremens',
+      'Anksjoliza przed procedur\u0105'
+    ],
+    przeciwwskazania: [
+      'Ci\u0119\u017cka depresja oddechowa (bez wsparcia oddechu)',
+      'Miastenia gravis',
+      'Uczulenie na benzodiazepiny'
+    ],
+    antidotum: 'Flumazenil (Anexate)',
+    zrodlo: 'ChPL Relanium \u00b7 ERC/PTN Wytyczne Status Epilepticus 2021'
+  }
+
+  /* === 6.2 KWAS WALPROINOWY IV === */
+  ,{
+    id: 38,
+    nazwa: 'Kwas walproinowy IV',
+    nazwa_en: 'Valproic acid IV',
+    handlowe: 'Depakine 400 mg/4 ml (100 mg/ml) do infuzji',
+    forma: 'Fiolka 400 mg/4 ml (100 mg/ml)',
+    kat: ['neu'],
+    badge: 'neu',
+    badge_label: 'Neurologia',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var lo = Math.round(25 * kg);
+      var hi = Math.round(45 * kg);
+      var mlLo = (lo / 100).toFixed(1);
+      var mlHi = (hi / 100).toFixed(1);
+      return '\u0141adunek (' + lo + '\u2013' + hi + ' mg): ' + mlLo + '\u2013' + mlHi + ' ml Depakine IV + 50 ml NaCl przez 5\u201310 min';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Status epilepticus \u2014 2. linia', droga: 'IV wlew 5\u201310 min', dawka: '25\u201345 mg/kg', uwagi: 'Nast\u0119pnie podtrzymanie 1\u20132 mg/kg/h wlew' },
+      { wsk: 'Zmiana z doustnego na IV', droga: 'IV', dawka: 'Dawka r\u00f3wnowa\u017cna doustna', uwagi: 'Co 6h lub wlew ci\u0105g\u0142y' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Status epilepticus', dawka: '25\u201340 mg/kg IV przez 5\u201310 min', droga: 'IV', uwagi: 'Podtrzymanie: 1\u20132 mg/kg/h' }
+    ],
+    rozcienczanie: '<b>Rozciencza\u0107 w min. 50 ml NaCl 0,9% lub G5%</b>\n\nPrzelicznik 70 kg (30 mg/kg = 2100 mg):\n\u2022 21 ml Depakine IV + 50 ml NaCl \u2192 przez 10 min\n\n<b>UWAGA INTERAKCJA KRYTYCZNA:</b>\nMeropenem / karbapenemy \u2192 \u2193 st\u0119\u017cenie walproinianu o 60\u2013100% \u2014 unika\u0107 \u0142\u0105czenia!\nAlternatywa ABX: piperacylina/tazobaktam, ceftriakson',
+    wskazania: [
+      'Status epilepticus \u2014 2. linia (po benzodiazepinach)',
+      'Drgawki oporne na midazolam (benzodiazepin-oporny status)',
+      'Utrzymanie terapii u chorych niezdolnych do po\u0142ykania'
+    ],
+    przeciwwskazania: [
+      'Ci\u0119\u017cka niewydolno\u015b\u0107 w\u0105troby',
+      'Ci\u0105\u017ca (teratogenny \u2014 tylko gdy bezwzgl\u0119dnie konieczny)',
+      'Deficyt cyklu mocznikowego (hiperamonemia)',
+      'Pancreatitis w wywiadzie',
+      '\u0141\u0105czenie z karbapengemami \u2014 utrata skuteczno\u015bci!'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Depakine (Sanofi) \u00b7 PTN Wytyczne Padaczka 2019'
+  }
+
+  /* === 6.3 LEWETYRACETAM IV === */
+  ,{
+    id: 39,
+    nazwa: 'Lewetyracetam IV',
+    nazwa_en: 'Levetiracetam IV',
+    handlowe: 'Keppra 500 mg/5 ml \u00b7 Levetiracetam Accord 500 mg/5 ml (100 mg/ml)',
+    forma: 'Fiolka 500 mg/5 ml (100 mg/ml); fiolka 1000 mg/10 ml',
+    kat: ['neu'],
+    badge: 'neu',
+    badge_label: 'Neurologia',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var dose = Math.min(Math.round(60 * kg), 4500);
+      var ml = (dose / 100).toFixed(1);
+      return '\u0141adunek 60 mg/kg: ' + dose + ' mg = ' + ml + ' ml; + 100 ml NaCl \u2192 wlew 15 min';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Status epilepticus \u2014 2. linia', droga: 'IV wlew 15 min', dawka: '60 mg/kg (maks. 4500 mg)', uwagi: 'Bezpieczniejszy od walproinianu w ci\u0105\u017cy i niew. w\u0105troby' },
+      { wsk: 'Profilaktyka napad\u00f3w po urazie g\u0142owy', droga: 'IV', dawka: '2500\u20133000 mg \u0142aduj\u0105co', uwagi: 'Potem 500\u20131500 mg IV/PO co 12h' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Status epilepticus', dawka: '40\u201360 mg/kg IV przez 15 min (maks. 3000 mg)', droga: 'IV', uwagi: 'Podtrzymanie: 20\u201330 mg/kg/dob\u0119 w 2 dawkach' }
+    ],
+    rozcienczanie: '<b>1000 mg/10 ml + 90 ml NaCl 0,9% = 100 ml</b> \u2192 wlew przez 15 min\n\n\u0141adunek 60 mg/kg dla 70 kg = 4200 mg:\n\u2022 42 ml + 58 ml NaCl = 100 ml przez 15 min (szybkie \u2014 bezpieczne)\n\nMo\u017cna te\u017c: 1000 mg + 100 ml NaCl',
+    wskazania: [
+      'Status epilepticus \u2014 2. linia (r\u00f3wnowa\u017cny walproinianowi)',
+      'Bezpieczniejszy w ci\u0105\u017cy i niew. w\u0105troby ni\u017c walproinian',
+      'Profilaktyka napad\u00f3w po urazie g\u0142owy (zamiast fenytoiny)',
+      'Zmiana na IV u chorych niezdolnych do po\u0142ykania'
+    ],
+    przeciwwskazania: [
+      'Ci\u0119\u017cka niew. nerek \u2014 redukcja dawki (GFR < 30)',
+      'Depresja / zaburzenia zachowania w wywiadzie (behawioralne dzia\u0142ania uboczne)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Keppra (UCB) \u00b7 PTN Wytyczne Status Epilepticus 2021'
+  }
+
+  /* === 6.4 MANNITOL === */
+  ,{
+    id: 40,
+    nazwa: 'Mannitol',
+    nazwa_en: 'Mannitol',
+    handlowe: 'Mannitol 15% (150 mg/ml) \u00b7 Mannitol 20% (200 mg/ml)',
+    forma: 'Woreczek infuzyjny 15% 250 ml / 500 ml; woreczek 20% 250 ml',
+    kat: ['neu'],
+    badge: 'neu',
+    badge_label: 'Neurologia',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var g1 = (1.0 * kg).toFixed(0);
+      var ml20 = Math.round(1.0 * kg / 0.2);
+      var ml15 = Math.round(1.0 * kg / 0.15);
+      return '1 g/kg = ' + g1 + ' g: ' + ml20 + ' ml (20%) lub ' + ml15 + ' ml (15%)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Obrz\u0119k m\u00f3zgu / \u2191 ICP', droga: 'IV wlew', dawka: '0,25\u20131 g/kg', uwagi: 'Szybki wlew 20\u201330 min' },
+      { wsk: '\u2191 ICP z wg\u0142obieniem (herniacja)', droga: 'IV bolus', dawka: '1\u20131,5 g/kg (maks. 200 g)', uwagi: 'Bolus przez 20 min \u2014 most do neurochirurgii' },
+      { wsk: 'Ostra jaskra (okulistyka)', droga: 'IV wlew', dawka: '1\u20132 g/kg', uwagi: 'Przez 45\u201360 min' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Obrz\u0119k m\u00f3zgu / \u2191 ICP', dawka: '0,5\u20131 g/kg IV', droga: 'IV', uwagi: 'Przez 20\u201330 min' }
+    ],
+    rozcienczanie: '<b>Gotowy roztwor do podania \u2014 nie rozciencza\u0107</b>\n\nPrzelicznik 1 g/kg dla 70 kg = 70 g:\n\u2022 Mannitol 20%: 350 ml\n\u2022 Mannitol 15%: 467 ml\n\n<b>Monitorowanie:</b> Osmolalno\u015b\u0107 surowicy (cel < 320 mOsm/kg); elektrolity; diureza\n<b>Uwaga:</b> Krystalizacja przy niskich temp. \u2014 podgrza\u0107 do 37\u00b0C przed podaniem',
+    wskazania: [
+      'Wg\u0142obienie m\u00f3zgu (herniacja) \u2014 most do neurochirurgii',
+      'Obrz\u0119k m\u00f3zgu po urazie g\u0142owy (\u2191 ICP)',
+      'Udar z masywnym obrz\u0119kiem (z\u0142o\u015bliwy udar niedokrwienny)',
+      'Ostra jaskra z b\u00f3lem (do oftalm)'
+    ],
+    przeciwwskazania: [
+      'Ci\u0119\u017cka niew. nerek (bezmocz) \u2014 kumulacja',
+      'Hiperosmolarno\u015b\u0107 (osmolalno\u015b\u0107 > 320 mOsm/kg)',
+      'Odwodnienie ci\u0119\u017ckie / hipowolemia',
+      'Niew. serca ci\u0119\u017cka (\u2191 obj. kr\u0105\u017cenia \u2192 OAP)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Mannitol \u00b7 ESICM/NCS Wytyczne neurokrytyczne 2020'
+  }
+
+  /* === 6.5 DEKSAMETAZON IV === */
+  ,{
+    id: 41,
+    nazwa: 'Deksametazon IV',
+    nazwa_en: 'Dexamethasone IV',
+    handlowe: 'Dexaven 8 mg/2 ml \u00b7 Dexamethasone WZF 8 mg/2 ml (4 mg/ml)',
+    forma: 'Amp. 8 mg/2 ml (4 mg/ml); amp. 4 mg/1 ml',
+    kat: ['neu'],
+    badge: 'neu',
+    badge_label: 'Neurologia',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Zapalenie opon m\u00f3zgowych (bakteryjne)', droga: 'IV', dawka: '10 mg co 6h \u00d7 4 dni', uwagi: 'PODA\u0106 PRZED lub razem z 1. dawk\u0105 antybiotyku!' },
+      { wsk: 'Obrz\u0119k m\u00f3zgu \u2014 guz / przerzuty', droga: 'IV', dawka: '8\u201316 mg IV \u2192 4 mg co 6h', uwagi: 'Podtrzymanie' },
+      { wsk: 'Antyemetyczny', droga: 'IV', dawka: '4\u20138 mg jednorazowo', uwagi: '' },
+      { wsk: 'COVID-19 ci\u0119\u017cki (zapalenie p\u0142uc)', droga: 'IV / PO', dawka: '6 mg \u00d7 10 dni', uwagi: 'RECOVERY trial' },
+      { wsk: 'Astma \u2014 IV', droga: 'IV', dawka: '8 mg jednorazowo (lub 0,15 mg/kg)', uwagi: '' },
+      { wsk: 'Anafilaksja (wspomagaj\u0105co)', droga: 'IV', dawka: '8\u201310 mg', uwagi: 'Po adrenalinie' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'ZOM bakteryjne', dawka: '0,15 mg/kg IV co 6h \u00d7 4 dni', droga: 'IV', uwagi: 'PRZED/razem z 1. dawk\u0105 antybiotyku' },
+      { wsk: 'Astma / zad (croup)', dawka: '0,15\u20130,6 mg/kg PO/IV/IM (maks. 10 mg)', droga: 'PO/IV/IM', uwagi: 'Jednorazowo' },
+      { wsk: 'Antyemetyczny', dawka: '0,15 mg/kg IV (maks. 8 mg)', droga: 'IV', uwagi: '' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony</b> (4 mg/ml) lub rozciencza\u0107 w 10\u201350 ml NaCl 0,9% / G5%\nMo\u017cna poda\u0107 IV powoli (1\u20132 min) lub IM',
+    wskazania: [
+      'Bakteryjne zapalenie opon m\u00f3zgowo-rdzeniowych \u2014 zmniejszenie powik\u0142a\u0144 (g\u0142uchota)',
+      'Obrz\u0119k m\u00f3zgu (guz, przerzuty)',
+      'Ci\u0119\u017cka astma / POChP zaostrzenie',
+      'Zad u dzieci (croup)',
+      'Nudno\u015bci/wymioty oporne (antyemetyczne)',
+      'Anafilaksja (wspomagaj\u0105co po adrenalinie)'
+    ],
+    przeciwwskazania: [
+      'Czynne zaka\u017cenie grzybicze \u2014 bezwzgl. przy d\u0142ugotrwa\u0142ym stosowaniu',
+      'Aktywne wrzody / krwawienie z GI (kr\u00f3tko w SOR \u2014 akceptowalne)',
+      'Psychoza sterydowa przy du\u017cych dawkach'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Dexaven \u00b7 IDSA/ESCMID ZOM 2016 \u00b7 RECOVERY Trial 2020'
+  }
+
+  /* === 7.1 NALOKSON === */
+  ,{
+    id: 42,
+    nazwa: 'Nalokson',
+    nazwa_en: 'Naloxone',
+    handlowe: 'Naloxone WZF 0,4 mg/1 ml \u00b7 Naloxone Hikma 0,4 mg/1 ml',
+    forma: 'Amp. 0,4 mg/1 ml; amp. 2 mg/2 ml',
+    kat: ['ant'],
+    badge: 'ant',
+    badge_label: 'Antidotum',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Przedawkowanie opioid\u00f3w \u2014 titrowane', droga: 'IV', dawka: '0,04\u20130,4 mg co 2\u20133 min', uwagi: 'Cel: RR > 10/min; NIE odwraca\u0107 pe\u0142nego efektu opioidowego' },
+      { wsk: 'Zatrucie opioidami \u2014 nag\u0142e', droga: 'IV bolus', dawka: '0,4\u20132 mg IV', uwagi: 'Powt. co 2 min; maks. 10 mg \u0142\u0105cznie' },
+      { wsk: 'Brak dost\u0119pu IV', droga: 'IM / SC lub IN', dawka: '0,4\u20130,8 mg IM/SC lub 2 mg IN atomizer', uwagi: 'Donosowo (40 mcg/kg) przy braku \u017cy\u0142y' },
+      { wsk: 'Wlew ci\u0105g\u0142y (metadon / d\u0142ugodzia\u0142aj\u0105ce opioidy)', droga: 'IV wlew', dawka: '2/3 skutecznej dawki/h', uwagi: 'Gdy czas dzia\u0142ania opioidu > naloksonu' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Depresja oddechowa', dawka: '0,01 mg/kg IV', droga: 'IV', uwagi: 'Je\u015bli nieskuteczne po 2 min: 0,1 mg/kg' },
+      { wsk: 'Brak dost\u0119pu IV', dawka: '0,1 mg/kg IN (maks. 2 mg)', droga: 'IN', uwagi: '' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony</b> (0,4 mg/ml) lub w 10 ml NaCl dla precyzji titracji\n\n<b>ZASADY TITRACJI:</b>\n\u2022 Cel: przywrocenie oddechu (RR > 10/min, SpO\u2082 > 93%)\n\u2022 NIE odwraca\u0107 pe\u0142nego efektu \u2014 b\u00f3l + ostrze\u017cenie u uzale\u017cnionych (syndrom odstawienia)\n\u2022 Czas dzia\u0142ania naloksonu: <b>30\u201390 min</b> \u2014 kr\u00f3tszy ni\u017c wi\u0119kszo\u015bci opioid\u00f3w \u2192 RYZYKO RE-NARKOZY!\n\u2022 Metadon, buprenorfina \u2014 wlew ci\u0105g\u0142y konieczny',
+    wskazania: [
+      'Przedawkowanie opioid\u00f3w (morfina, heroina, fentanyl, oksykodon, metadon)',
+      'Depresja oddechowa po procedurach z opioidami',
+      'Diagnostyczne \u2014 podejrzenie zatrucia opioidami (test naloksonu)'
+    ],
+    przeciwwskazania: [
+      'Brak bezwzgl\u0119dnych p/wsk w stanach zagro\u017cenia \u017cycia',
+      'Ostro\u017cnie: uzale\u017cnienie od opioid\u00f3w (ostre odstawienie, drgawki)',
+      'Ostro\u017cnie: d\u0142ugodzia\u0142aj\u0105ce opioidy (kr\u00f3tki czas dzia\u0142ania naloksonu \u2014 re-narkoza!)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Naloxone WZF \u00b7 ESICM Toksykologia \u00b7 WHO'
+  }
+
+  /* === 7.2 FLUMAZENIL === */
+  ,{
+    id: 43,
+    nazwa: 'Flumazenil',
+    nazwa_en: 'Flumazenil',
+    handlowe: 'Flumazenil Actavis 0,1 mg/ml (5 ml = 0,5 mg) \u00b7 Anexate 0,1 mg/ml',
+    forma: 'Amp. 0,5 mg/5 ml (0,1 mg/ml)',
+    kat: ['ant'],
+    badge: 'ant',
+    badge_label: 'Antidotum',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Odwrocenie sedacji benzodiazepinowej', droga: 'IV', dawka: '0,2 mg przez 15 sek', uwagi: 'Co 1 min +0,1 mg; maks. 1 mg \u0142\u0105cznie; czas dzia\u0142ania 45\u201390 min \u2192 re-sedacja!' },
+      { wsk: 'Zatrucie benzodiazepinami z depresj\u0105 oddechow\u0105', droga: 'IV', dawka: '0,2 mg \u2192 do 1 mg titrowa\u0107', uwagi: 'Wlew ci\u0105g\u0142y 0,1\u20130,4 mg/h je\u015bli re-sedacja' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Odwrocenie sedacji BDZ', dawka: '0,01 mg/kg IV (maks. 0,2 mg)', droga: 'IV', uwagi: 'Do maks. 1 mg \u0142\u0105cznie' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony</b> (0,1 mg/ml) powoli IV (przez 15 sek)\n\n<b>OSTRZE\u017bENIA KLUCZOWE:</b>\n\u2022 NIE stosowa\u0107 u chorych d\u0142ugotrwale przyjmuj\u0105cych BDZ \u2192 ostry napad padaczkowy!\n\u2022 NIE stosowa\u0107 przy podejrzeniu mieszanego zatrucia (+ TCA, cyklopeptyd) \u2192 drgawki\n\u2022 Re-sedacja po 45\u201390 min \u2014 monitorowa\u0107; wlew 0,1\u20130,4 mg/h w wybranych przypadkach\n\u2022 Diagnostyczne: poprawa po flumazenilu = BDZ w patofizjologii',
+    wskazania: [
+      'Odwrocenie sedacji benzodiazepinowej po procedurach',
+      'Zatrucie benzodiazepinami z depresj\u0105 oddechow\u0105',
+      'Diagnostyczne (gdy niepewna przyczyna \u015bpi\u0105czki)'
+    ],
+    przeciwwskazania: [
+      'D\u0142ugotrwa\u0142e stosowanie BDZ w wywiadzie \u2014 ryzyko napadu padaczkowego!',
+      'Mieszane zatrucie z TCA lub prokonwulsyjnymi',
+      'Epilepsja leczona BDZ',
+      'Uczulenie na flumazenil'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Flumazenil Actavis \u00b7 ESICM Toksykologia'
+  }
+
+  /* === 7.3 N-ACETYLOCYSTEINA (NAC) === */
+  ,{
+    id: 44,
+    nazwa: 'N-acetylocysteina (NAC)',
+    nazwa_en: 'N-acetylcysteine (NAC)',
+    handlowe: 'Acetylocysteina Takeda 20% 100 mg/ml \u00b7 Fluimucil IV',
+    forma: 'Amp. 2 g/10 ml (200 mg/ml); amp. 5 g/25 ml',
+    kat: ['ant'],
+    badge: 'ant',
+    badge_label: 'Antidotum',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var e1 = (150 * kg / 1000).toFixed(2);
+      var e2 = (50 * kg / 1000).toFixed(2);
+      var e3 = (100 * kg / 1000).toFixed(2);
+      var ml1 = (150 * kg / 200).toFixed(1);
+      var ml2 = (50 * kg / 200).toFixed(1);
+      var ml3 = (100 * kg / 200).toFixed(1);
+      return 'Et.1 (1h): ' + e1 + ' g (' + ml1 + ' ml) | Et.2 (4h): ' + e2 + ' g (' + ml2 + ' ml) | Et.3 (16h): ' + e3 + ' g (' + ml3 + ' ml)';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'ETAP 1 \u2014 dawka \u0142aduj\u0105ca (1h)', droga: 'IV wlew 1h', dawka: '150 mg/kg w 200 ml G5%', uwagi: 'Dla 70 kg: 10,5 g = 52,5 ml amp. (200 mg/ml) + 200 ml G5%' },
+      { wsk: 'ETAP 2 (4h)', droga: 'IV wlew 4h', dawka: '50 mg/kg w 500 ml G5%', uwagi: 'Dla 70 kg: 3,5 g = 17,5 ml + 500 ml G5%' },
+      { wsk: 'ETAP 3 (16h)', droga: 'IV wlew 16h', dawka: '100 mg/kg w 1000 ml G5%', uwagi: 'Dla 70 kg: 7 g = 35 ml + 1000 ml G5%; \u0141\u0105cznie 300 mg/kg przez 21h' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Identyczny schemat 3-etapowy wg masy', dawka: 'Jak doros\u0142y przeliczony na kg', droga: 'IV', uwagi: 'Mniejsze obj. G5% u ma\u0142ych dzieci (ryzyko obrz\u0119ku p\u0142uc!)' }
+    ],
+    rozcienczanie: '<b>Rozciencza\u0107 WY\u0141\u0104CZNIE w G5% (glukozie)</b> \u2014 nie NaCl\n\n<b>PROTOK\u00d3\u0141 21h (3-etapowy europejski):</b>\n\u2022 Etap 1 (1h): 150 mg/kg + 200 ml G5%\n\u2022 Etap 2 (4h): 50 mg/kg + 500 ml G5%\n\u2022 Etap 3 (16h): 100 mg/kg + 1000 ml G5%\n\u0141\u0105cznie: 300 mg/kg przez 21h\n\n<b>KIEDY PODA\u0106:</b> Jak najwcze\u015bniej; optymalne < 8h; do 24h skuteczne\nNomogram Rumacka-Matthewa \u2192 decyzja o leczeniu\n\n<b>Uwaga:</b> Reakcja anafilaktoidalna (1\u20132%): pokrzywka, skurcz oskrzeli \u2192 zwolni\u0107 wlew / antyhistaminowy; zwykle mo\u017cna kontynuowa\u0107',
+    wskazania: [
+      'Zatrucie paracetamolem (> 150 mg/kg lub > 7,5 g; nomogram Rumacka-Matthewa)',
+      'Ostra niew. w\u0105troby dowolnej etiologii (hepatoprotekcja)'
+    ],
+    przeciwwskazania: [
+      'Nadwra\u017cliwo\u015b\u0107 na NAC (rzadka) \u2014 zwolni\u0107 wlew; zwykle mo\u017cna kontynuowa\u0107',
+      'Brak bezwzgl\u0119dnych p/wsk w zatruciu paracetamolem'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Acetylocysteina Takeda \u00b7 ESICM/EAPCCT protok\u00f3\u0142 NAC 2020 \u00b7 Toxbase.org'
+  }
+
+  /* === 7.4 WĘGIEL AKTYWNY === */
+  ,{
+    id: 45,
+    nazwa: 'W\u0119giel aktywny',
+    nazwa_en: 'Activated charcoal',
+    handlowe: 'Carbo medicinalis WZF (tabl. 0,3 g) \u00b7 W\u0119giel aktywny Polpharma (proszek 20 g/100 ml)',
+    forma: 'Proszek do zawiesiny; tabletki; gotowa zawiesina szpitalna',
+    kat: ['ant'],
+    badge: 'ant',
+    badge_label: 'Antidotum',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var d = Math.min(Math.round(kg), 100);
+      return '1 g/kg: ' + d + ' g doustnie lub przez sond\u0119 \u017co\u0142\u0105dkow\u0105';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Zatrucie doustne \u2014 jednorazowe', droga: 'PO / sonda \u017co\u0142.', dawka: '50\u2013100 g (1 g/kg)', uwagi: 'W ci\u0105gu 1h od zatrucia; woda / sok pomaranczowy' },
+      { wsk: 'Wielodawkowy (EHC trucizn)', droga: 'PO / sonda', dawka: '25\u201350 g co 4\u20136h', uwagi: 'Karbamazepina, digoksyna, fenobarbital, teofilina, dapson' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Zatrucie doustne', dawka: '1 g/kg (maks. 50 g) doustnie', droga: 'PO', uwagi: '' }
+    ],
+    rozcienczanie: '<b>Nie dotyczy IV \u2014 wy\u0142\u0105cznie doustnie lub przez sond\u0119 \u017co\u0142\u0105dkow\u0105</b>\n\nZawieszenie proszku w 250 ml wody lub soku pomaranczowego\n\n<b>OKNO CZASOWE:</b>\n\u2022 < 1h od zatrucia: optymalne\n\u2022 1\u20134h: nadal korzystne dla wielu trucizn\n\u2022 > 4h: ograniczona skuteczno\u015b\u0107 (nie rutynowo)\n\nWielodawkowy: stosowa\u0107 gdy trucizna ma obieg jelitowo-w\u0105trobowy (EHC)',
+    wskazania: [
+      'Zatrucia doustne wieloma substancjami (NLPZ, leki OTC, BDZ, leki psychotropowe)',
+      'Paracetamol (\u0142\u0105czy\u0107 z NAC)',
+      'Digoksyna, karbamazepina, fenobarbital (wielodawkowy)',
+      'Teofilina, dapson (wielodawkowy)'
+    ],
+    przeciwwskazania: [
+      'Zaburzenia po\u0142ykania / ryzyko aspiracji \u2014 bez zabezpieczenia dr\u00f3g oddechowych',
+      'Dro\u017cno\u015b\u0107 p.pokarmowego w\u0105tpliwa (perforacja, niedr\u017cno\u015b\u0107)',
+      'Zatrucia kwasami/zasadami \u2014 nie adsorbuje, ryzyko wymiot\u00f3w + aspiracja',
+      'Zatrucia metalami (\u017celazo, lit, o\u0142\u00f3w) \u2014 brak skuteczno\u015bci',
+      'Utrata odruch\u00f3w obronnych bez intubacji'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Carbo Medicinalis \u00b7 EAPCCT W\u0119giel 2005 \u00b7 UpToDate'
+  }
+
+  /* === 7.5 GLUKONIAN WAPNIA / CHLOREK WAPNIA === */
+  ,{
+    id: 46,
+    nazwa: 'Glukonian wapnia / Chlorek wapnia',
+    nazwa_en: 'Calcium gluconate / Calcium chloride',
+    handlowe: 'Calcium Gluconicum WZF 10% 1 g/10 ml \u00b7 Calcium Chloratum 10% 1 g/10 ml',
+    forma: 'Amp. 10 ml (10%): glukonian 1 g = 93 mg Ca\u00b2\u207a; chlorek 1 g = 272 mg Ca\u00b2\u207a',
+    kat: ['ant'],
+    badge: 'ant',
+    badge_label: 'Antidotum / Elektrolity',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Hiperkalemia z obj. EKG (QRS > 120 ms, VF)', droga: 'IV przez 3\u20135 min', dawka: 'Glukonian: 3 g (30 ml 10%) lub Chlorek: 1 g (10 ml 10%)', uwagi: 'PIERWSZA interwencja w hiperkalemii z niestabilno\u015bci\u0105; monitorowa\u0107 EKG' },
+      { wsk: 'Hipokalcemia objawowa (te\u017cy\u017cka, NZK)', droga: 'IV powoli', dawka: 'Glukonian 1\u20133 g lub Chlorek 0,5\u20131 g', uwagi: '' },
+      { wsk: 'Przedawkowanie CCB (werapamil, diltiazem)', droga: 'IV', dawka: 'Chlorek 1 g IV (preferowany), powt.', uwagi: 'Chlorek 3\u00d7 wi\u0119cej Ca\u00b2\u207a ni\u017c glukonian' },
+      { wsk: 'Zatrucie fluorkami / kwasem fluorowodorowym (HF)', droga: 'IV', dawka: 'Glukonian 3 g IV', uwagi: 'Neutralizacja fluorow fluorkami' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Hiperkalemia / hipokalcemia', dawka: 'Glukonian 0,5\u20131 ml/kg 10% IV (maks. 10 ml)', droga: 'IV powoli', uwagi: 'Chlorek 0,1\u20130,2 ml/kg 10% IV (3\u00d7 silniejszy)' }
+    ],
+    rozcienczanie: '<b>Glukonian 10%:</b> 30 ml (3 g) nierozcienczony lub w 50 ml NaCl przez 3\u20135 min\n\u2022 Mo\u017cna szybciej w NZK\n\n<b>Chlorek 10%:</b> dra\u017cni\u0105cy \u2014 przez centralny dost\u0119p lub rozciencza\u0107; przez \u017cy\u0142\u0119 obwodow\u0105 ostro\u017cnie\n\n<b>UWAGA:</b> Bradykardia przy szybkim podaniu \u2014 monitorowa\u0107 EKG!\n\nChlorek wapnia zawiera <b>3\u00d7 wi\u0119cej Ca\u00b2\u207a</b> ni\u017c glukonian \u2014 preferowany do NZK / hiperkalemii z niestabilno\u015bci\u0105',
+    wskazania: [
+      'Hiperkalemia z niestabilno\u015bci\u0105 hemodynamiczn\u0105 / zmianami EKG \u2014 PIERWSZA interwencja!',
+      'Przedawkowanie CCB (werapamil, diltiazem, nifedypina) \u2014 antidotum',
+      'Hipokalcemia objawowa (te\u017cy\u017cka, drgawki, NZK z hipokalcemi\u0105)',
+      'Zatrucie fluorowodorem (HF) \u2014 kwas fluorowodorowy'
+    ],
+    przeciwwskazania: [
+      'Hiperkalcemia',
+      'Zatrucie glikozydami nasercowymi (digoksyna) \u2014 nasilenie toksyczno\u015bci (wzgl\u0119dne)',
+      'Chlorek przez \u017cy\u0142\u0119 obwodow\u0105 bez rozciencz. \u2014 ryzyko martwicy tkanek!'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Calcium Gluconicum WZF \u00b7 EAPCCT \u00b7 UpToDate'
+  }
+
+  /* === 7.6 ATROPINA W ZATRUCIACH OP (organofosforany) === */
+  ,{
+    id: 47,
+    nazwa: 'Atropina \u2014 zatrucia OP',
+    nazwa_en: 'Atropine \u2014 organophosphate poisoning',
+    handlowe: 'Atropinum Sulfuricum WZF 1 mg/1 ml (du\u017ce dawki \u2014 wiele ampulek)',
+    forma: 'Amp. 1 mg/1 ml; protok\u00f3\u0142 wymaga wielokrotnych dawek \u2014 zapewni\u0107 zap\u00f3\u0142!',
+    kat: ['ant'],
+    badge: 'ant',
+    badge_label: 'Antidotum / OP',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk: 'Zatrucie OP \u2014 \u0142agodne (dawka inicjalna)', droga: 'IV bolus', dawka: '2 mg IV', uwagi: 'Titrowa\u0107 do sucho\u015bci wydzieliny oskrzelowej + HR > 80/min' },
+      { wsk: 'Zatrucie OP \u2014 ci\u0119\u017ckie (dawka inicjalna)', droga: 'IV lub IM / IO', dawka: '4\u20136 mg IV', uwagi: 'Powtarza\u0107 co 5\u201310 min do efektu' },
+      { wsk: 'Dawka \u0142\u0105czna podtrzymuj\u0105ca', droga: 'IV co 5\u201310 min', dawka: 'Nawet 50\u2013100+ mg \u0142\u0105cznie', uwagi: 'BEZ g\u00f3rnego limitu w ci\u0119\u017ckich zatruciach! Cel: suche oskrzela, nie \u017arenica!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk: 'Zatrucie OP', dawka: '0,02\u20130,05 mg/kg IV co 5\u201310 min', droga: 'IV', uwagi: 'Titrowa\u0107 do sucho\u015bci oskrzeli' }
+    ],
+    rozcienczanie: '<b>Podawa\u0107 nierozcienczony</b> (1 mg/ml) IV lub IM\n\n<b>CEL TITRACJI \u2014 KLUCZ:</b>\n\u2022 Sucho\u015b\u0107 wydzieliny oskrzelowej\n\u2022 HR > 80/min\n\u2022 <b>NIE</b> rozszerzenie \u017arenic (myl\u0105ce kryterium!)\n\u2022 <b>NIE</b> normalizacja miozy (mo\u017ce nie wyst\u0105pi\u0107 mimo skutecznej atropinizacji)\n\n<b>Dawka BEZ g\u00f3rnego limitu</b> w ci\u0119\u017ckich zatruciach!\n\n<b>Pralidoksym (PAM / Contrathion)</b> \u2014 reaktywator ChE:\n\u2022 25\u201350 mg/kg IV przez 15\u201330 min, nast. wlew 10\u201320 mg/kg/h\n\u2022 Stosowa\u0107 razem z atropin\u0105 je\u015bli dost\u0119pny\n\u2022 W Polsce: dost\u0119pno\u015b\u0107 ograniczona (szpitale toksykologiczne)',
+    wskazania: [
+      'Zatrucie insektycydami fosforoorganicznymi (OP)',
+      'Zatrucie nerwowymi agentami bojowymi (sarin, soman, tabun)',
+      'Ci\u0119\u017cki zesp\u00f3\u0142 cholinergiczny (SLUDGE: \u015blinotok, \u0142zy, moczenie, GI, miosis, bradykardia)'
+    ],
+    przeciwwskazania: [
+      'Brak bezwzgl\u0119dnych p/wsk w zatruciach OP \u2014 atropina ratuje \u017cycie',
+      'Ostro\u017cnie: tachyarytmia (g\u0142\u00f3wny cel to suche oskrzela, nie HR)'
+    ],
+    antidotum: 'Pralidoksym (PAM / Contrathion) \u2014 reaktywator cholinesterazy',
+    zrodlo: 'ESICM/EAPCCT \u00b7 WHO Pesticide Poisoning Management \u00b7 PTAiIT'
+  }
+
+  /* === 7.7 DIGIFAB (anty-digoksyna Fab) === */
+  ,{
+    id: 48,
+    nazwa: 'DigiFab (anty-digoksyna Fab)',
+    nazwa_en: 'Digoxin immune Fab (DigiFab)',
+    handlowe: 'DigiFab (import / szpitalny) \u00b7 Digibind (dost\u0119pno\u015b\u0107 ograniczona)',
+    forma: 'Fiolka 40 mg (1 fiolka neutralizuje ~0,6 mg digoksyny)',
+    kat: ['ant'],
+    badge: 'ant',
+    badge_label: 'Antidotum',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      return 'Empiryczne (ostre): 10 fiolek | Przelicz: st\u0119\u017c. (nmol/L) \u00d7 0,256 \u00d7 ' + kg + ' kg = mg dig. \u00f7 0,6 = fiolki';
+    },
+    dawkowanie_dorosly: [
+      { wsk: 'Znane spo\u017cycie \u2014 obliczone', droga: 'IV wlew 30 min', dawka: 'Dawka (mg) \u00d7 1000 / 600 = fiolki', uwagi: 'Lub: st\u0119\u017cenie (nmol/L) \u00d7 0,256 \u00d7 mc (kg) \u00f7 0,6 = fiolki' },
+      { wsk: 'Empiryczne \u2014 ostre zatrucie (nieznana dawka)', droga: 'IV wlew 30 min', dawka: '10 fiolek (400 mg)', uwagi: 'W NZK: 20 fiolek IV bolus przez 30 min' },
+      { wsk: 'Empiryczne \u2014 przewlek\u0142e zatrucie', droga: 'IV wlew 30 min', dawka: '6 fiolek (240 mg)', uwagi: '' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>1 fiolka (40 mg) + 4 ml wody do iniekcji = 10 mg/ml</b>\nNast\u0119pnie rozciencza\u0107 w 100\u2013150 ml NaCl 0,9% \u2192 wlew przez 30 min (w NZK: bolus)\n\n<b>UWAGA po podaniu:</b>\nSt\u0119\u017cenie digoksyny (immunoassay) <b>fa\u0142szywie wzro\u015bnie</b> \u2014 wynik niediagnostyczny przez 24\u201348h!\n\n<b>Dost\u0119pno\u015b\u0107 ograniczona \u2014 sprawdzi\u0107 zapas:</b>\nCentrum Toksykologiczne: <b>801 201 990</b>',
+    wskazania: [
+      'Ci\u0119\u017ckie zatrucie digoksyn\u0105: K\u207a > 5 mEq/L, arytmie zagra\u017caj\u0105ce \u017cyciu, NZK',
+      'Zatrucie ro\u015blinami naparstnicowatymi / konwalii (podobna toksyczno\u015b\u0107)',
+      'St\u0119\u017cenie digoksyny > 10 ng/ml (6\u20138h po ostatniej dawce)'
+    ],
+    przeciwwskazania: [
+      'Uczulenie na owce (biologiczne \u017ar\u00f3d\u0142o Fab) \u2014 rzadkie',
+      'Wzgl\u0119dne: ci\u0119\u017cka niew. nerek (zaleganie kompleks\u00f3w Fab-digoksyna)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL DigiFab \u00b7 EAPCCT \u00b7 UpToDate \u00b7 Centrum Toks.: 801 201 990'
+  }
+
+  /* ============================================================
+     PART 4: PŁYNY + INNE PILNE + WZIEWNE
+     18 lekow z FARMAKOLOGIA_SOR_PART4_PLYNY_INNE_WZIEWNE.md
+     ============================================================ */
+
+  /* === 8.1 NaCl 0.9% === */
+  ,{
+    id: 49,
+    nazwa: 'NaCl 0,9%',
+    nazwa_en: 'Sodium Chloride 0.9% / Normal Saline',
+    handlowe: 'NaCl 0,9% Fresenius \u00b7 NaCl 0,9% Baxter \u00b7 NaCl 0,9% B.Braun',
+    forma: 'Worek 100 ml, 250 ml, 500 ml, 1000 ml; sk\u0142ad: Na\u207a 154 mEq/L, Cl\u207b 154 mEq/L; osmolalno\u015b\u0107 308 mOsm/kg',
+    kat: ['ply'],
+    badge: 'ply',
+    badge_label: 'P\u0142yn',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'Resuscytacja p\u0142ynowa', droga:'IV', dawka:'250\u2013500 ml bolus', uwagi:'Przez 10\u201320 min; powt. wg odpowiedzi hemodynamicznej' },
+      { wsk:'Hipowolemii korekcja', droga:'IV', dawka:'20\u201330 ml/kg', uwagi:'W ci\u0105gu 1h; sepsa \u2014 SSC 2021: ostro\u017cnie, monitorowa\u0107 nap\u0142yw p\u0142yn\u00f3w' },
+      { wsk:'No\u015bnik lek\u00f3w IV', droga:'IV', dawka:'Wg leku', uwagi:'Rozcieniczanie antybiotyk\u00f3w, lek\u00f3w do wlewu' },
+      { wsk:'Hiperkaliemia', droga:'IV', dawka:'Agresywne nawodnienie', uwagi:'+ forsowanie diurezy furosemidem' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Resuscytacja', dawka:'10\u201320 ml/kg', droga:'IV', uwagi:'Przez 15\u201330 min; powt. do efektu; oceniac HR, CRT, BP, diureza' }
+    ],
+    rozcienczanie: '<b>Gotowy roztwór \u2014 nie wymaga rozcieniczania</b>\n\n\u26a0\ufe0f <b>OSTRZE\u017bENIE \u2014 kwasica hiperchloremiczna:</b>\nDu\u017ce obj\u0119to\u015bci NaCl 0,9% (> 3\u20134 L) \u2192 kwasica metaboliczna hiperchloremiczna!\nU chorych wymagaj\u0105cych du\u017cych p\u0142yn\u00f3w \u2192 preferowa\u0107 PLR (P\u0142yn Ringera mleczanowego / Hartmanna) lub Sterofundin',
+    wskazania: [
+      'Resuscytacja p\u0142ynowa (pierwsze bolus\u00f3w)',
+      'No\u015bnik lek\u00f3w IV (antybiotyki, NTG, itp.)',
+      'Hipowolemii korekcja',
+      'Hiperkaliemia \u2014 nawodnienie + diureza'
+    ],
+    przeciwwskazania: [
+      'Du\u017ce obj\u0119to\u015bci (> 3\u20134 L): ryzyko kwasicy hiperchloremicznej i hipernatremii',
+      'Nie stosowa\u0107 jako g\u0142\u00f3wny p\u0142yn przy du\u017cych potrzebach \u2014 preferowa\u0107 PLR'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL NaCl Fresenius \u00b7 SSC Guidelines 2021 \u00b7 ESICM Fluid Therapy'
+  }
+
+  /* === 8.2 Glukoza 5% === */
+  ,{
+    id: 50,
+    nazwa: 'Glukoza 5%',
+    nazwa_en: 'Glucose 5% / Dextrose 5%',
+    handlowe: 'Glucose 5% Fresenius \u00b7 Glucose 5% Baxter',
+    forma: 'Worek 100 ml, 250 ml, 500 ml; glukoza 50 g/L; osmolalno\u015b\u0107 278 mOsm/kg; BEZ elektrolit\u00f3w',
+    kat: ['ply'],
+    badge: 'ply',
+    badge_label: 'P\u0142yn',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'No\u015bnik lek\u00f3w IV', droga:'IV', dawka:'Wg leku', uwagi:'Amiodaron, NTG, NAC, propofol \u2014 obowi\u0105zkowy no\u015bnik' },
+      { wsk:'Hipoglikemia \u2014 podtrzymanie', droga:'IV', dawka:'50\u2013100 ml/h wlew', uwagi:'Po korekcji glukozy (bolus G40%) lub po glukagonie' },
+      { wsk:'Korekcja hipernatremii', droga:'IV', dawka:'Wg deficytu wolnej wody', uwagi:'Ostro\u017cnie \u2014 powoli, ryzyko obrz\u0119ku m\u00f3zgu!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Podtrzymanie nawodnienia', dawka:'Wg masy i schematu', droga:'IV', uwagi:'NIE jako p\u0142yn resuscytacyjny!' }
+    ],
+    rozcienczanie: '<b>Gotowy roztwór \u2014 no\u015bnik lek\u00f3w</b>\n\n\u26a0\ufe0f <b>KRYTYCZNE:</b> NIE stosowa\u0107 jako p\u0142yn resuscytacyjny!\nHipoosmotyczna (278 mOsm/kg) \u2192 woda przechodzi do kom\u00f3rek \u2192 obrz\u0119k m\u00f3zgu!\n\n<b>Obowi\u0105zkowy no\u015bnik dla:</b> amiodaronu, nitrogliceryny, NAC (N-acetylocysteiny), propofolu',
+    wskazania: [
+      'No\u015bnik lek\u00f3w IV (amiodaron, NTG, NAC \u2014 obowi\u0105zkowo!)',
+      'Podtrzymanie po korekcji hipoglikemii',
+      'Korekcja hipernatremii (ostro\u017cnie, powoli)'
+    ],
+    przeciwwskazania: [
+      'NIE jako p\u0142yn resuscytacyjny \u2014 hipoosmotyczna, ryzyko obrz\u0119ku m\u00f3zgu',
+      'Hiperglikemia \u2014 nie podawa\u0107 bez kontroli glikemii',
+      'Uraz m\u00f3zgu / udar / nadci\u015bnienie \u015br\u00f3dczaszkowe \u2014 bezwzgl\u0119dnie unika\u0107'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Glucose 5% Fresenius'
+  }
+
+  /* === 8.3 Glukoza 10% === */
+  ,{
+    id: 51,
+    nazwa: 'Glukoza 10%',
+    nazwa_en: 'Glucose 10% / Dextrose 10%',
+    handlowe: 'Glucose 10% Fresenius \u00b7 Glucose 10% Baxter',
+    forma: 'Worek 100 ml, 250 ml, 500 ml; glukoza 100 g/L; osmolalno\u015b\u0107 556 mOsm/kg',
+    kat: ['ply'],
+    badge: 'ply',
+    badge_label: 'P\u0142yn',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var ml = (2 * kg).toFixed(0);
+      return 'Bolus hipoglikemia (2 ml/kg): ' + ml + ' ml IV';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Hipoglikemia ci\u0119\u017cka (glukoza < 2,8 mmol/L z obj.)', droga:'IV', dawka:'200 ml G10%', uwagi:'Przez 15\u201320 min; nast. monitorowa\u0107 glikemi\u0119 co 15\u201330 min' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Hipoglikemia / noworodek', dawka:'2 ml/kg G10% IV bolus', droga:'IV', uwagi:'Monitorowa\u0107 glikemi\u0119 po 15 min' }
+    ],
+    rozcienczanie: '<b>Gotowy roztwór \u2014 do bezpo\u015bredniego podania IV</b>\n\nG20% i G40% \u2014 wy\u017csze st\u0119\u017cenia do korekcji przy restrykcji p\u0142yn\u00f3w lub szybkiej korekcji',
+    wskazania: [
+      'Hipoglikemia ci\u0119\u017cka z zaburzeniami \u015bwiadomo\u015bci',
+      'Hipoglikemia u noworodk\u00f3w i niemowl\u0105t (bolus 2 ml/kg)'
+    ],
+    przeciwwskazania: [
+      'Hiperglikemia (> 10 mmol/L) \u2014 monitorowa\u0107 przed podaniem',
+      'Osmolalno\u015b\u0107 556 mOsm/kg \u2014 nie podawa\u0107 d\u0142ugotrwale bez elektrolit\u00f3w'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Glucose 10% Fresenius'
+  }
+
+  /* === 8.4 Płyn Ringera mleczanowego / Hartmann === */
+  ,{
+    id: 52,
+    nazwa: 'P\u0142yn Ringera mleczanowego (PLR)',
+    nazwa_en: "Lactated Ringer's / Hartmann's Solution",
+    handlowe: "Ringer Lactate Fresenius \u00b7 Hartmann's Solution B.Braun \u00b7 Sterofundin ISO",
+    forma: 'Worek 250 ml, 500 ml, 1000 ml; Na\u207a 131, K\u207a 5, Ca\u00b2\u207a 2, Cl\u207b 111, mleczan 29 mEq/L; osmolalno\u015b\u0107 ~278\u2013294 mOsm/kg',
+    kat: ['ply'],
+    badge: 'ply',
+    badge_label: 'P\u0142yn',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'Resuscytacja p\u0142ynowa (PREFEROWANY)', droga:'IV', dawka:'250\u2013500 ml bolus', uwagi:'Ocena hemodynamiczna po ka\u017cdym bolusie; powt. wg odpowiedzi' },
+      { wsk:'Oparzenia (formu\u0142a Parklanda)', droga:'IV', dawka:'4 ml/kg/% TBSA', uwagi:'Przez 24h; pierwsze 8h = po\u0142owa dawki; nast\u0119pne 16h = po\u0142owa' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Resuscytacja p\u0142ynowa', dawka:'10\u201320 ml/kg bolus', droga:'IV', uwagi:'Monitorowa\u0107 HR, CRT, BP, diureza po ka\u017cdym bolusie' }
+    ],
+    rozcienczanie: '<b>Gotowy roztwór \u2014 preferowany krystaloid do resuscytacji</b>\n\nMniejsze ryzyko kwasicy hiperchloremicznej ni\u017c NaCl 0,9%\nMleczan metabolizowany do wodorow\u0119glanu \u2014 nie zakwasza!\n\n\u26a0\ufe0f <b>KRYTYCZNE OSTRZE\u017bENIA:</b>\n\u2022 NIE stosowa\u0107 z ceftriaksonem w tej samej linii \u2014 wap\u0144 tworzy osad!\n\u2022 NIE stosowa\u0107 przy hiperkaliemii (zawiera K\u207a 5 mEq/L)',
+    wskazania: [
+      'Resuscytacja p\u0142ynowa \u2014 PREFEROWANY krystaloid (zamiast NaCl 0,9% przy du\u017cych obj\u0119to\u015bciach)',
+      'Oparzenia \u2014 formu\u0142a Parklanda (4 ml/kg/% TBSA)',
+      'Hipowolemii korekcja w urazach'
+    ],
+    przeciwwskazania: [
+      'NIE \u0142\u0105czy\u0107 z ceftriaksonem (osad wapniowy!) \u2014 osobna linia lub przep\u0142uka\u0107',
+      'Hiperkaliemia (K\u207a 5 mEq/L \u2014 stosowa\u0107 NaCl 0,9%)',
+      'Ci\u0119\u017ckie uszkodzenie w\u0105troby (metabolizm mleczanu upo\u015bledzony)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Ringer Lactate Fresenius \u00b7 ABA Burn Care \u00b7 ATLS'
+  }
+
+  /* === 8.5 HES — OGRANICZONE STOSOWANIE EMA 2023 === */
+  ,{
+    id: 53,
+    nazwa: 'HES (Hydroksyetyloskrobia)',
+    nazwa_en: 'Hydroxyethyl Starch / HES',
+    handlowe: 'Voluven 6% HES 130/0,4 (500 ml) \u00b7 Tetraspan',
+    forma: 'Worek 500 ml; koloid syntetyczny \u2014 OGRANICZONE STOSOWANIE (EMA/PRAC 2023)',
+    kat: ['ply'],
+    badge: 'ply',
+    badge_label: 'Koloid \u2014 OGRANICZONE',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'Mostowanie do transfuzji (wyj\u0105tkowo)', droga:'IV', dawka:'Maks. 30\u201333 ml/kg/dob\u0119', uwagi:'Nie d\u0142u\u017cej ni\u017c 24h; wy\u0142\u0105cznie gdy NaCl/PLR niewystarczaj\u0105ce i brak sepsy/AKI!' }
+    ],
+    dawkowanie_dziecko: [],
+    rozcienczanie: '<b>Gotowy roztwór w worku 500 ml</b>\n\n\u26a0\ufe0f <b>DECYZJA EMA/PRAC (2023): ZAWIESZENIE dost\u0119pno\u015bci HES w UE</b>\nSprawdza\u0107 aktualn\u0105 dost\u0119pno\u015b\u0107 w aptece szpitalnej!\n\n<b>HES ZAKAZANY u:</b>\n\u2022 Chorych z posocznic\u0105 / sepsie (CHEST 2012, VISEP, 6S: \u2191 \u015bmiertelno\u015b\u0107!)\n\u2022 AKI (ostra niewydolno\u015b\u0107 nerek)\n\u2022 Pacjent\u00f3w OIT\n\nBadania CHEST, VISEP, 6S (NEJM): HES zwi\u0119ksza \u015bmiertelno\u015b\u0107 i konieczno\u015b\u0107 dializoterapii w sepsie!',
+    wskazania: [
+      'TYLKO mostowanie do krwi u stabilnych chorych bez sepsy i bez AKI',
+      'Maks. 30\u201333 ml/kg/dob\u0119, nie d\u0142u\u017cej ni\u017c 24h'
+    ],
+    przeciwwskazania: [
+      'SEPSA / posocznica \u2014 BEZWZGL\u0118DNE (\u2191 \u015bmiertelno\u015b\u0107!)',
+      'AKI / CKD \u2014 BEZWZGL\u0118DNE (nefrotoksyczno\u015b\u0107)',
+      'OIT \u2014 BEZWZGL\u0118DNE',
+      'Koagulopatie / trombocytopenia < 50 000 \u2014 ostrze\u017cenie',
+      'EMA/PRAC 2023: zawieszona dost\u0119pno\u015b\u0107 w UE \u2014 sprawdza\u0107 status!'
+    ],
+    antidotum: null,
+    zrodlo: 'EMA/PRAC 2023 \u00b7 ChPL Voluven \u00b7 CHEST Trial NEJM 2012 \u00b7 6S Trial NEJM 2012'
+  }
+
+  /* === 8.6 Albuminy === */
+  ,{
+    id: 54,
+    nazwa: 'Albuminy ludzkie 20% / 4%',
+    nazwa_en: 'Human Albumin 20% / 4%',
+    handlowe: 'Albumin Human 20% Octapharma (100 ml) \u00b7 Albuflex 4% 250 ml',
+    forma: 'Butelka 100 ml (20%); butelka 250 ml (4%)',
+    kat: ['ply'],
+    badge: 'ply',
+    badge_label: 'Koloid ludzki',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var g15 = (1.5 * kg).toFixed(1);
+      return 'SBP daw\u0142aduj\u0105ca (1,5 g/kg): ' + g15 + ' g albumin (dzie\u0144 1)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Hipoalbuminemia z wstrz\u0105sem / obrzeki', droga:'IV', dawka:'Albumina 20%: 100 ml', uwagi:'Przez 1h; powt. wg kliniki' },
+      { wsk:'Albumina 4% (obj\u0119to\u015bciowo)', droga:'IV', dawka:'250\u2013500 ml', uwagi:'Przez 30\u201360 min' },
+      { wsk:'Paracenteza > 5L (marsko\u015b\u0107 w\u0105troby)', droga:'IV', dawka:'8 g albuminy / litr usuni\u0119tego p\u0142ynu', uwagi:'Prewencja pozacentezowej dysfunkcji kr\u0105\u017cenia' },
+      { wsk:'SBP (bacterial peritonitis)', droga:'IV', dawka:'1,5 g/kg (dzie\u0144 1) + 1 g/kg (dzie\u0144 3)', uwagi:'Albumina + cefalosporyna III gen. \u2014 \u2193 AKI i \u015bmiertelno\u015b\u0107' },
+      { wsk:'Zesp\u00f3\u0142 hepatorenal typ 1', droga:'IV', dawka:'1 g/kg + terlipresyna', uwagi:'\u2191 ci\u015bnienie onkotyczne + wazokonstrykcja trzewna' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Wstrz\u0105s z hipoalbuminemi\u0105', dawka:'0,5\u20131 g/kg 5% albuminy', droga:'IV', uwagi:'Przez 30\u201360 min; monitorowa\u0107' }
+    ],
+    rozcienczanie: '<b>Albumina 20%:</b> gotowa do podania; 100 ml IV przez 1h\n<b>Albumina 4%:</b> gotowa do podania; 250\u2013500 ml IV przez 30\u201360 min\n\nPrzed otwarciem: sprawdzi\u0107 przejrzysto\u015b\u0107 i dat\u0119 wa\u017cno\u015bci!\nNie podawa\u0107 w tej samej linii co krew lub KKCz',
+    wskazania: [
+      'Marsko\u015b\u0107 w\u0105troby \u2014 paracenteza > 5L (8 g/L usuni\u0119tego p\u0142ynu)',
+      'SBP (samoistne bakteryjne zapalenie otrzewnej) \u2014 z antybiotykiem',
+      'Zesp\u00f3\u0142 hepatorenal typ 1 (z terlipresiyn\u0105)',
+      'Wstrz\u0105s oparze\u0144 \u2014 po 24h od urazu (nie inicjalna resuscytacja)'
+    ],
+    przeciwwskazania: [
+      'Przeci\u0105\u017cenie obj\u0119to\u015bciowe (obrz\u0119k p\u0142uc, NS NYHA IV)',
+      'Alergia na albuminy ludzkie (rzadka)',
+      'Nie stosowa\u0107 jako rutynowy p\u0142yn resuscytacyjny (brak przewagi nad krystaloidami!)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Albumin Human Octapharma \u00b7 EASL Guideline Marsko\u015b\u0107 W\u0105troby 2018'
+  }
+
+  /* === 9.1 Insulina — DKA (doros\u0142y + dziecko) === */
+  ,{
+    id: 55,
+    nazwa: 'Insulina (DKA)',
+    nazwa_en: 'Insulin \u2014 DKA Protocol',
+    handlowe: 'Actrapid 100 IU/ml (fiolka 10 ml) \u00b7 Humulin R 100 IU/ml',
+    forma: 'Fiolka 10 ml (100 IU/ml); insulina kr\u00f3tkodziałaj\u0105ca ludzka',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'DKA / Insulina',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var wlew = (0.1 * kg).toFixed(1);
+      return 'DKA doros\u0142y: wlew 0,1 IU/kg/h = ' + wlew + ' IU/h = ' + wlew + ' ml/h (1 IU/ml)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'DKA \u2014 wlew insuliny (po wyrównaniu K\u207a!)', droga:'IV wlew ci\u0105g\u0142y', dawka:'0,1 IU/kg/h', uwagi:'CEL: \u2193 glukoza 50\u201375 mg/dl/h (2,8\u20134,2 mmol/L/h)' },
+      { wsk:'DKA \u2014 gdy glukoza < 250 mg/dl', droga:'IV wlew', dawka:'Zmiana no\u015bnika na G5% + insulina 0,02\u20130,05 IU/kg/h', uwagi:'Do zamkni\u0119cia luki anionowej \u2014 NIE odstawia\u0107 insuliny!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'DKA dziecko (PTD/ISPAD 2024) \u2014 wlew', dawka:'0,05\u20130,1 IU/kg/h ci\u0105g\u0142y wlew', droga:'IV', uwagi:'NIE stosowa\u0107 bolusa insulinowego! Ryzyko obrz\u0119ku m\u00f3zgu!' },
+      { wsk:'DKA dziecko \u2014 resuscytacja p\u0142ynowa', dawka:'10\u201320 ml/kg NaCl 0,9% bolus', droga:'IV', uwagi:'Powolne uzupe\u0142nianie deficytu przez 24\u201348h \u2014 unika\u0107 szybkiej korekcji!' }
+    ],
+    rozcienczanie: '<b>Rozcieniczenie standardowe:</b> 50 IU insuliny (0,5 ml Actrapid) + 49,5 ml NaCl 0,9% = <b>1 IU/ml</b>\nSzybko\u015b\u0107 dla 70 kg: 0,1 IU/kg/h = 7 IU/h = <b>7 ml/h</b>\n\n<b>OBLIGATORYJNIE PRZED INSULIN\u0104:</b>\n1. NaCl 0,9% 1000 ml przez 1h\n2. K\u207a > 3,5 mEq/L \u2014 potwierdzone!\n\n<b>KOREKCJA POTASU WG WYNIKU:</b>\n\u2022 K\u207a < 3,5 mEq/L \u2192 NIE DAWA\u0106 insuliny! Uzupe\u0142ni\u0107 K\u207a do 3,5!\n\u2022 K\u207a 3,5\u20135,0 mEq/L \u2192 20\u201340 mEq K\u207a/h r\u00f3wnocze\u015bnie\n\u2022 K\u207a > 5,0 mEq/L \u2192 insulina BEZ K\u207a; monitorowa\u0107 co 1\u20132h',
+    wskazania: [
+      'DKA (cukrzycowa kwasica ketonowa) \u2014 doros\u0142y i dziecko',
+      'HHS (hiperglikemiczne stany hiperosmolarne) \u2014 po nawodnieniu'
+    ],
+    przeciwwskazania: [
+      'Hipokaliemia (K\u207a < 3,5) \u2014 NIE podawa\u0107 insuliny \u2014 najpierw K\u207a!',
+      'Hipoglikemia',
+      'DKA dziecko: NIE bolus insulinowy \u2014 ryzyko obrz\u0119ku m\u00f3zgu!'
+    ],
+    antidotum: 'Glukoza IV (bolus G40% lub G10% wlew) + Glukagon IM',
+    zrodlo: 'ChPL Actrapid (Novo Nordisk) \u00b7 PTD Standardy 2024 \u00b7 ISPAD DKA Guidelines 2022'
+  }
+
+  /* === 9.2 Glukagon === */
+  ,{
+    id: 56,
+    nazwa: 'Glukagon',
+    nazwa_en: 'Glucagon',
+    handlowe: 'GlucaGen HypoKit 1 mg (fiolka + rozpuszczalnik) \u00b7 Baqsimi 3 mg (dono\u015bnie)',
+    forma: 'Fiolka 1 mg proszek + 1 ml wody do wstrzykni\u0119\u0107; Baqsimi: proszek donosowy 3 mg',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'Hormon / Antidotum',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      if (kg < 25) return 'Dziecko < 25 kg: 0,5 mg IM';
+      return 'Dziecko \u2265 25 kg / doros\u0142y: 1 mg IM';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Hipoglikemia ci\u0119\u017cka (brak dost\u0119pu IV)', droga:'IM / SC / IN', dawka:'1 mg IM lub SC', uwagi:'Efekt 5\u201315 min; po wyrównaniu \u2014 w\u0119glowodany doustnie!' },
+      { wsk:'Hipoglikemia dono\u015bnie (Baqsimi)', droga:'IN', dawka:'3 mg (1 porcja)', uwagi:'Jedno nadmuchanie \u2014 nie wdycha\u0107; dzia\u0142a nawet przy utracie przytomno\u015bci' },
+      { wsk:'Przedawkowanie beta-bloker\u00f3w', droga:'IV', dawka:'2\u201310 mg IV bolus \u2192 wlew 5\u201310 mg/h', uwagi:'Mechanizm niezale\u017cny od rec. beta \u2014 przez cAMP' },
+      { wsk:'Przedawkowanie CCB (blokery Ca)', droga:'IV', dawka:'2\u20135 mg IV bolus \u2192 wlew', uwagi:'Cz\u0119\u015b\u0107 protoko\u0142u terapii hiperinsulinem\u00f3w-euglukemicznej' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Hipoglikemia < 25 kg', dawka:'0,5 mg IM', droga:'IM', uwagi:'' },
+      { wsk:'Hipoglikemia \u2265 25 kg', dawka:'1 mg IM', droga:'IM', uwagi:'' },
+      { wsk:'Noworodek', dawka:'0,02\u20130,03 mg/kg IM (maks. 1 mg)', droga:'IM', uwagi:'' }
+    ],
+    rozcienczanie: '<b>GlucaGen HypoKit:</b> Rozpuszcz proszek 1 mg w do\u0142\u0105czonym 1 ml wody do wstrzykni\u0119\u0107 = <b>1 mg/ml</b>\nPodawa\u0107 niezw\u0142ocznie po rozpuszczeniu!\n\n<b>Wlew IV (beta-blokery/CCB):</b> 10 mg + 90 ml G5% = 0,1 mg/ml; szybko\u015b\u0107 5\u201310 mg/h = 50\u2013100 ml/h\n\n<b>UWAGA:</b> Skuteczno\u015b\u0107 zmniejszona przy wyczerpanych zapasach glikogenu (alkoholizm, niedoflywienie, g\u0142\u00f3d)\nPo wyrównaniu \u2192 ZAWSZE poda\u0107 w\u0119glowodany doustne!',
+    wskazania: [
+      'Hipoglikemia ci\u0119\u017cka bez dost\u0119pu IV (standard prehospitalny)',
+      'Przedawkowanie beta-bloker\u00f3w (antidotum)',
+      'Przedawkowanie bloker\u00f3w kana\u0142\u00f3w wapniowych'
+    ],
+    przeciwwskazania: [
+      'Guz chromoch\u0142onny (phaeochromocytoma) \u2014 stymuluje wydzielanie katecholamin!',
+      'Insulinoma \u2014 mo\u017ce wywo\u0142a\u0107 nast\u0119pn\u0105 hipoglikemi\u0119',
+      'Zmniejszona skuteczno\u015b\u0107 przy wyczerpanych glikogenach (alkohol, pos\u0107, anoreksja)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL GlucaGen HypoKit (Novo Nordisk) \u00b7 Baqsimi (Eli Lilly)'
+  }
+
+  /* === 9.3 Hydrokortyzon IV === */
+  ,{
+    id: 57,
+    nazwa: 'Hydrokortyzon IV',
+    nazwa_en: 'Hydrocortisone IV',
+    handlowe: 'Hydrocortisone Fresenius 100 mg / 250 mg \u00b7 Solu-Cortef 250 mg',
+    forma: 'Fiolka 100 mg proszek; fiolka 250 mg proszek do sporzadzania roztworu',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'GKS',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var ast = Math.min(Math.round(4 * kg), 100);
+      return 'Astma dziecko (4 mg/kg): ' + ast + ' mg IV (maks. 100 mg)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Wstrz\u0105s septyczny oporny (NA > 0,25 mcg/kg/min przez 1h)', droga:'IV ci\u0105g\u0142y wlew lub bolus', dawka:'200 mg/dob\u0119 wlew ci\u0105g\u0142y lub 50 mg co 6h', uwagi:'+ fludrokortyzon 50 mcg PO (APROCCHSS trial)' },
+      { wsk:'Prze\u0142om nadnerczowy / choroba Addisona', droga:'IV bolus \u2192 wlew', dawka:'100 mg IV bolus \u2192 200\u2013300 mg/dob\u0119', uwagi:'Wlew ci\u0105g\u0142y lub co 6h' },
+      { wsk:'Ci\u0119\u017cka astma IV', droga:'IV', dawka:'200 mg IV \u2192 100 mg co 4\u20136h', uwagi:'Efekt po 4\u20136h od podania' },
+      { wsk:'Anafilaksja (wspomagaj\u0105co)', droga:'IV', dawka:'200 mg jednorazowo', uwagi:'Po adrenalinie \u2014 NIE zastepuje adrenaliny!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Prze\u0142om nadnerczowy', dawka:'50\u2013100 mg/m\u00b2 IV bolus \u2192 podtrzymanie', droga:'IV', uwagi:'' },
+      { wsk:'Astma ci\u0119\u017cka', dawka:'4 mg/kg IV (maks. 100 mg) \u2192 co 6h', droga:'IV', uwagi:'' },
+      { wsk:'Anafilaksja', dawka:'2\u20134 mg/kg IV', droga:'IV', uwagi:'' }
+    ],
+    rozcienczanie: '<b>100 mg:</b> + 10 ml wody do wstrzykni\u0119\u0107 = 10 mg/ml \u2192 rozcie\u0144czy\u0107 w 100 ml NaCl lub G5%\n\n<b>Wlew ci\u0105g\u0142y 200 mg/dob\u0119:</b> 200 mg + 500 ml NaCl 0,9% \u2192 8,3 ml/h przez pomp\u0119\n\n<b>Bolus pilny (NZK / prze\u0142om):</b> 100 mg nierozcienczony IV wolno przez 2\u20135 min',
+    wskazania: [
+      'Wstrz\u0105s septyczny oporny (SSC 2021: NA > 0,25 mcg/kg/min przez 1h)',
+      'Prze\u0142om nadnerczowy / choroba Addisona',
+      'Ci\u0119\u017cka astma oporna na wziewne leki',
+      'Anafilaksja (wspomagaj\u0105co po adrenalinie)'
+    ],
+    przeciwwskazania: [
+      'Czynne infekcje grzybicze (niezabezpieczone lekiem p/grzybi\u0107ym)',
+      'Hiperglikemia \u2014 monitorowa\u0107 glikemi\u0119 (GKS zwi\u0119kszaj\u0105 glikemi\u0119!)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Hydrocortisone Fresenius \u00b7 SSC Guidelines 2021 \u00b7 APROCCHSS Trial NEJM 2018'
+  }
+
+  /* === 9.4 Heparyna UFH === */
+  ,{
+    id: 58,
+    nazwa: 'Heparyna niefrakcjonowana (UFH)',
+    nazwa_en: 'Unfractionated Heparin / UFH',
+    handlowe: 'Heparinum WZF 5000 IU/ml (5 ml = 25000 IU) \u00b7 Heparin Polfa',
+    forma: 'Ampułka 5000 IU/1 ml; fiolka 25000 IU/5 ml',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'Antykoagulant UFH',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var bolus = Math.min(Math.round(80 * kg), 5000);
+      var wlew  = Math.min(Math.round(18 * kg), 1250);
+      return 'PE/DVT: bolus ' + bolus + ' IU IV \u2192 wlew ' + wlew + ' IU/h';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'PE hemodynamicznie niestabilna', droga:'IV bolus \u2192 wlew', dawka:'80 IU/kg IV bolus (maks. 5000 IU) \u2192 18 IU/kg/h (maks. 1250 IU/h)', uwagi:'Cel aPTT 60\u2013100 sek; korekta co 6h wg nomogramu' },
+      { wsk:'STEMI (leczenie)', droga:'IV bolus \u2192 wlew', dawka:'60\u201370 IU/kg IV bolus (maks. 5000 IU) \u2192 12\u201315 IU/kg/h', uwagi:'Cel aPTT 50\u201375 sek' },
+      { wsk:'DVT/PE stabilna hemodynamicznie', droga:'IV bolus \u2192 wlew', dawka:'80 IU/kg IV bolus \u2192 18 IU/kg/h', uwagi:'Cel aPTT 60\u2013100 sek; wg nomogramu' },
+      { wsk:'Profilaktyka DVT w SOR', droga:'SC', dawka:'5000 IU SC', uwagi:'Co 8\u201312h' },
+      { wsk:'ECMO / CPB', droga:'IV wg perfuzjonisty', dawka:'Protokoły specjalne', uwagi:'Cel ACT 180\u2013220 sek' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Antykoagulacja terapeutyczna', dawka:'75 IU/kg IV bolus \u2192 28 IU/kg/h (< 1 r\u017c) / 20 IU/kg/h (> 1 r\u017c)', droga:'IV', uwagi:'Cel aPTT 60\u201385 sek; kontrola co 4h do celu' }
+    ],
+    rozcienczanie: '<b>Wlew standardowy:</b> 25000 IU (5 ml) + 245 ml NaCl 0,9% = <b>100 IU/ml</b>\n50 ml/h = 5000 IU/h\n\n<b>Bolus:</b> 5000 IU/ml \u2014 rozcie\u0144czy\u0107 w 10 ml NaCl, poda\u0107 przez 5 min\n\nNomogram dawkowania wg aPTT \u2014 korekta co 6h do 1. terapeutycznego aPTT',
+    wskazania: [
+      'PE masywna (przed / po alteplazy)',
+      'STEMI / UA/NSTEMI',
+      'Migotanie przedsionek\u00f3w (pilna kardiowersja, brak NOAC)',
+      'Zak\u0142rzepica t\u0119tnic obwodowych',
+      'ECMO \u2014 antykoagulacja obwodu'
+    ],
+    przeciwwskazania: [
+      'HIT (heparin-induced thrombocytopenia) \u2014 BEZWZGL\u0118DNE (anamneza lub aktywna!)',
+      'Aktywne krwawienie (wzgl\u0119dne \u2014 ocena ryzyko/korzy\u015b\u0107)',
+      'Liczba p\u0142ytek < 50 000/\u00b5L \u2014 ostro\u017cno\u015b\u0107',
+      'Ci\u0119\u017ckie nadci\u015bnienie t\u0119tnicze niekontrolowane \u2014 wzgl\u0119dne'
+    ],
+    antidotum: 'Siarczan protaminy 1 mg / 100 IU heparyny IV powoli (maks. 50 mg; efekt w 5 min)',
+    zrodlo: 'ChPL Heparinum WZF \u00b7 ESC PE Guidelines 2019 \u00b7 ESC ACS Guidelines 2020'
+  }
+
+  /* === 9.5 Enoksaparyna (LMWH) === */
+  ,{
+    id: 59,
+    nazwa: 'Enoksaparyna (LMWH)',
+    nazwa_en: 'Enoxaparin / Low Molecular Weight Heparin',
+    handlowe: 'Clexane 20 mg, 40 mg, 60 mg, 80 mg, 100 mg, 120 mg, 150 mg (prefilstrzykawki SC)',
+    forma: 'Prefillstrzykawki SC; przelicznik: 1 mg = 100 anty-Xa IU',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'LMWH',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var leczn = kg.toFixed(0);
+      return 'Lecznicze (1 mg/kg): ' + leczn + ' mg SC co 12h | Profilaktyka: 40 mg SC/24h';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'DVT / PE (leczenie)', droga:'SC', dawka:'1 mg/kg', uwagi:'Co 12h lub 1,5 mg/kg co 24h' },
+      { wsk:'ACS (UA/NSTEMI)', droga:'SC', dawka:'1 mg/kg', uwagi:'Co 12h; pierwsze 2 dawki maks. 100 mg' },
+      { wsk:'STEMI', droga:'IV bolus + SC', dawka:'30 mg IV bolus \u2192 1 mg/kg SC', uwagi:'Co 12h; pierwsze 2 dawki SC maks. 100 mg' },
+      { wsk:'Profilaktyka DVT', droga:'SC', dawka:'40 mg', uwagi:'Co 24h; GFR 15\u201330: 20 mg/24h' },
+      { wsk:'Oty\u0142o\u015b\u0107 (BMI > 40)', droga:'SC', dawka:'0,5 mg/kg', uwagi:'Co 12h (lecznicze); monitorowa\u0107 anty-Xa 4h po dawce' },
+      { wsk:'Ci\u0105\u017ca \u2014 PE/DVT leczenie', droga:'SC', dawka:'1 mg/kg', uwagi:'Co 12h; LMWH preferowane zamiast UFH' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'< 2 mies. (lecznicze)', dawka:'0,75 mg/kg SC', droga:'SC', uwagi:'Co 12h; monitorowa\u0107 anty-Xa 4h po dawce' },
+      { wsk:'> 2 mies. (lecznicze)', dawka:'1 mg/kg SC', droga:'SC', uwagi:'Co 12h' },
+      { wsk:'Profilaktyka (< 2 mies.)', dawka:'0,75 mg/kg SC', droga:'SC', uwagi:'Co 24h' },
+      { wsk:'Profilaktyka (> 2 mies.)', dawka:'0,5 mg/kg SC', droga:'SC', uwagi:'Co 24h' }
+    ],
+    rozcienczanie: '<b>Prefillstrzykawki \u2014 gotowe do podania SC</b>\n\n<b>Bolus IV (STEMI):</b> 30 mg z prefillstrzykawki bezpo\u015brednio IV\n\n<b>UWAGA przy niewydolno\u015bci nerek:</b>\nGFR 15\u201330: profilaktyka 20 mg/24h\nGFR < 15: stosowa\u0107 UFH (enoksaparyna akumuluje!)',
+    wskazania: [
+      'DVT / PE (leczenie u stabilnych hemodynamicznie)',
+      'ACS (UA/NSTEMI)',
+      'Profilaktyka \u017cy\u0142nej choroby zakrzepowo-zatorowej',
+      'Ci\u0105\u017ca \u2014 PE/DVT leczenie (zamiast UFH)'
+    ],
+    przeciwwskazania: [
+      'GFR < 15 ml/min \u2014 stosowa\u0107 UFH (ryzyko akumulacji!)',
+      'HIT (heparin-induced thrombocytopenia)',
+      'Aktywne krwawienie',
+      'PE hemodynamicznie niestabilna \u2014 stosowa\u0107 UFH lub alteplaz\u0119'
+    ],
+    antidotum: 'Siarczan protaminy 1 mg / 100 anty-Xa IU IV powoli (maks. odwrócenie ~60\u201380%)',
+    zrodlo: 'ChPL Clexane (Sanofi) \u00b7 ESC PE Guidelines 2019 \u00b7 ESC ACS Guidelines 2020'
+  }
+
+  /* === 9.6 Kwas traneksamowy (TXA) === */
+  ,{
+    id: 60,
+    nazwa: 'Kwas traneksamowy (TXA)',
+    nazwa_en: 'Tranexamic Acid / TXA',
+    handlowe: 'Tranexamic Acid Takeda 500 mg/5 ml \u00b7 Exacyl \u00b7 Cyklokapron',
+    forma: 'Amp. 500 mg/5 ml (100 mg/ml); amp. 1 g/10 ml',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'Antyfibrynolityk',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var mg = Math.min(Math.round(15 * kg), 1000);
+      return 'Dziecko uraz (15 mg/kg): ' + mg + ' mg IV (maks. 1g)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Masywny uraz z krwotokiem (CRASH-2)', droga:'IV wlew', dawka:'1 g IV przez 10 min \u2192 1 g IV przez 8h', uwagi:'KLUCZOWE: < 3h od urazu! (CRASH-2 Lancet 2010: \u2193 \u015bmiertelno\u015b\u0107 1,5%)' },
+      { wsk:'Krwotok poporodowy PPH (WOMAN)', droga:'IV wlew', dawka:'1 g IV przez 10 min; mo\u017cna powt. 1 g po 30 min', uwagi:'< 3h od porodu (WOMAN Trial Lancet 2017: \u2193 \u015bmiertelno\u015b\u0107 z krwawienia)' },
+      { wsk:'Epistaksja oporna', droga:'IV', dawka:'500 mg IV jednorazowo', uwagi:'Mo\u017cna r\u00f3wnie\u017c miejscowo (gazik nasycony)' },
+      { wsk:'Preoperacyjnie (profilaktyka)', droga:'IV', dawka:'10\u201315 mg/kg IV jednorazowo', uwagi:'' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Uraz / krwotok', dawka:'15 mg/kg IV przez 15 min (maks. 1g) \u2192 15 mg/kg przez 8h (maks. 1g)', droga:'IV', uwagi:'< 3h od urazu' },
+      { wsk:'Og\u00f3lne wskazania chirurgiczne', dawka:'10\u201315 mg/kg IV przez 15 min (maks. 1g)', droga:'IV', uwagi:'' }
+    ],
+    rozcienczanie: '<b>1 g / 10 ml \u2014 rozcie\u0144czy\u0107 w 100 ml NaCl 0,9%</b> \u2192 wlew przez 10 minut\n\n<b>Wlew 8-godzinny:</b> 1 g + 250 ml NaCl 0,9% \u2192 ~31 ml/h przez pomp\u0119\n\n\u26a0\ufe0f <b>TIMING KRYTYCZNY:</b>\n\u2022 < 3h od urazu: CRASH-2 \u2193 \u015bmiertelno\u015b\u0107 o 1,5% (NNT 67)\n\u2022 < 3h od porodu: WOMAN \u2193 \u015bmiertelno\u015b\u0107 z krwawienia\n\u2022 > 3h od urazu/porodu: mo\u017ce zwi\u0119ksza\u0107 ryzyko zakrzepicy!',
+    wskazania: [
+      'Masywny uraz z krwotokiem \u2014 < 3h od urazu (CRASH-2: \u2193 \u015bmiertelno\u015b\u0107)',
+      'Krwotok poporodowy \u2014 < 3h od porodu (WOMAN: \u2193 \u015bmiertelno\u015b\u0107)',
+      'Profilaktycznie przed du\u017cymi zabiegami',
+      'Epistaksja / krwawienie z b\u0142on \u015bluzowych'
+    ],
+    przeciwwskazania: [
+      'Krwotok podpaj\u0119czynówkowy (SAH) \u2014 ryzyko skurczu naczy\u0144 m\u00f3zgowych (wzgl\u0119dne)',
+      'Aktywna zakrzepica (DVT, PE, zawa\u0142) \u2014 wzgl\u0119dne',
+      'DIC z dominuj\u0105c\u0105 zakrzepic\u0105 (nie fibrynolizy)',
+      'Krwioplucie masywne \u2014 ryzyko skrzepu w oskrzelu',
+      '> 3h od urazu/porodu \u2014 brak korzy\u015bci, mo\u017cliwe ryzyko'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Tranexamic Acid Takeda \u00b7 CRASH-2 Trial Lancet 2010 \u00b7 WOMAN Trial Lancet 2017'
+  }
+
+  /* === 9.7 NaHCO3 === */
+  ,{
+    id: 61,
+    nazwa: 'Wodorow\u0119glan sodu (NaHCO\u2083)',
+    nazwa_en: 'Sodium Bicarbonate / NaHCO3',
+    handlowe: 'Natrium Bicarbonicum WZF 8,4% (1 mEq/ml) \u00b7 Soda oczyszczona inf.',
+    forma: 'Fiolka 50 ml 8,4% (= 50 mEq); worek 100 ml 8,4%; worek 250 ml 4,2%',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'Elektrolity',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var lo = Math.round(1 * kg);
+      var hi = Math.round(2 * kg);
+      return 'Kwasica metaboliczna (1\u20132 mEq/kg): ' + lo + '\u2013' + hi + ' mEq IV';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Kwasica metaboliczna ci\u0119\u017cka (pH < 7,1)', droga:'IV powoli', dawka:'1\u20132 mEq/kg IV', uwagi:'Cel: pH > 7,2 (NIE normalizacja!); gazometria przed i po' },
+      { wsk:'Hiperkaliemia z toksyczn\u0105 arytmi\u0105', droga:'IV', dawka:'50\u2013100 mEq IV (50\u2013100 ml 8,4%)', uwagi:'Tymczasowe \u2014 oczekuj\u0105c na dializ\u0119 / Kayexalate' },
+      { wsk:'Zatrucie TCA (tr\u00f3jcykliczne antydepresanty)', droga:'IV', dawka:'50 mEq IV \u2192 titrowa\u0107 do pH 7,45\u20137,55', uwagi:'Alkalinizacja \u2193 blokad\u0119 kana\u0142\u00f3w Na (kardiotoksyczno\u015b\u0107!)' },
+      { wsk:'NZK z ci\u0119\u017ck\u0105 kwasic\u0105 (pH < 7,0)', droga:'IV podczas RKO', dawka:'50\u2013100 mEq IV', uwagi:'ERC 2021: nie rutynowo; stosowa\u0107 przy hiperkaliemii lub TCA' },
+      { wsk:'Zatrucie salicylanami (aspiryna)', droga:'IV wlew', dawka:'NaHCO\u2083 150 mEq/L G5% 1,5 ml/kg/h', uwagi:'Cel pH moczu > 7,5 \u2014 alkalinizacja moczu' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Kwasica / NZK / hiperkaliemia', dawka:'1\u20132 mEq/kg IV', droga:'IV', uwagi:'Noworodki: rozcie\u0144czy\u0107 1:1 z G5% \u2014 hiperosmolalno\u015b\u0107!' }
+    ],
+    rozcienczanie: '<b>8,4% \u2014 podawa\u0107 nierozcienczony IV w nag\u0142ych (NZK, hiperkaliemia)</b>\n\n<b>Wlew ci\u0105g\u0142y:</b> 8,4% + G5% (NIE NaCl \u2014 podwy\u017csza Na\u207a) \u2192 rozcie\u0144czy\u0107 do 1\u20131,5%\n\n<b>NIE MIESZA\u0106 z:</b>\n\u2022 Wapniem \u2014 osad!\n\u2022 Katecholaminami (degradacja leku)\n\u2022 Ceftriaksonem / antybiotykami w tej samej linii',
+    wskazania: [
+      'Hiperkaliemia z toksycznymi zmianami EKG (mostek do dializy)',
+      'Kwasica metaboliczna ci\u0119\u017cka (pH < 7,1 z objawami hemodynamicznymi)',
+      'Zatrucie TCA \u2014 alkalinizacja osocza',
+      'Zatrucie salicylanami \u2014 alkalinizacja moczu',
+      'NZK z hiperkaliemi\u0105 lub ci\u0119\u017ck\u0105 kwasic\u0105'
+    ],
+    przeciwwskazania: [
+      'Kwasica oddechowa bez wentylacji mechanicznej (NaHCO\u2083 \u2192 CO\u2082 \u2192 nasilenie kwasicy!)',
+      'Hipernatremia / hiperosmolalno\u015b\u0107',
+      'Alkaloza (pH > 7,45)',
+      'Hipowentylacja \u2014 nie podawa\u0107 bez zabezpieczenia drogi oddechowej'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Natrium Bicarbonicum WZF \u00b7 ERC Guidelines 2021 \u00b7 UpToDate'
+  }
+
+  /* === 9.8 Siarczan magnezu (MgSO4) + protokol eklampsji === */
+  ,{
+    id: 62,
+    nazwa: 'Siarczan magnezu (MgSO\u2084)',
+    nazwa_en: 'Magnesium Sulfate / MgSO4',
+    handlowe: 'Magnesium Sulfuricum WZF 20% (2 g/10 ml) \u00b7 MgSO4 50% 1 g/2 ml',
+    forma: 'Amp. 20% 10 ml (2 g = 8,1 mEq Mg\u00b2\u207a); amp. 50% 2 ml (1 g)',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'Mg / Tokoliza / Eklampsja',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var dziecko = Math.min(Math.round(37.5 * kg), 2000);
+      return 'Dziecko (\u015brednio 37,5 mg/kg): ~' + dziecko + ' mg IV (maks. 2g)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Status asthmaticus (ci\u0119\u017cka astma)', droga:'IV wolny wlew', dawka:'2 g IV', uwagi:'Przez 20 minut; wspomagaj\u0105co \u2014 nie zamienia salbutamolu/ipratropium!' },
+      { wsk:'Torsades de pointes (TdP)', droga:'IV bolus', dawka:'2 g IV bolus', uwagi:'Przez 2\u20135 min (PILNIE); w NZK: bolus podczas RKO' },
+      { wsk:'Eklampsja \u2014 dawka \u0142aduj\u0105ca', droga:'IV wolny wlew', dawka:'4 g IV', uwagi:'\u0141adunek przez 15\u201320 min; NAST\u0118PNIE wlew 1\u20132 g/h' },
+      { wsk:'Eklampsja \u2014 wlew podtrzymuj\u0105cy', droga:'IV ci\u0105g\u0142y wlew', dawka:'1\u20132 g/h', uwagi:'Do 24h po porodzie; MONITOROWA\u0106 odruchy kolanowe co 1h!' },
+      { wsk:'Hipomagnezemia objawowa (arytmie, drgawki)', droga:'IV wlew', dawka:'2\u20134 g IV', uwagi:'Przez 15\u201330 min' },
+      { wsk:'NZK \u2014 TdP lub hipomagnezemia', droga:'IV bolus', dawka:'2 g IV bolus szybko', uwagi:'' },
+      { wsk:'Przedwczesny por\u00f3d (tokolityk)', droga:'IV \u0142adunek + wlew', dawka:'4 g IV \u2192 1\u20132 g/h', uwagi:'Przy wsp\u00f3\u0142pracy z po\u0142o\u017cnictwem' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Astma ci\u0119\u017cka / drgawki / hipomagnezemia', dawka:'25\u201350 mg/kg IV (maks. 2g)', droga:'IV', uwagi:'Przez 15\u201330 min; monitorowa\u0107 BP i oddech' }
+    ],
+    rozcienczanie: '<b>Standardowe:</b> 2 g (10 ml amp 20%) + 90 ml NaCl lub G5% = 100 ml \u2192 wlew przez 20 min\n\n<b>Bolus TdP / NZK:</b> 2 g (10 ml amp 20%) + 10 ml NaCl \u2192 przez 2\u20135 min\n\n<b>Eklampsja \u2014 wlew ci\u0105g\u0142y:</b> 10 g (5 amp 20%) + 500 ml NaCl = 20 mg/ml \u2192 2 g/h = 100 ml/h\n\n\u26a0\ufe0f <b>MONITORING PRZY EKLAMPSJI (OBOWI\u0104ZKOWE!):</b>\n\u2022 Terapeutyczne: 2\u20133,5 mmol/L (4\u20137 mEq/L)\n\u2022 Utrata odruch\u00f3w kolanowych: > 5 mmol/L \u2192 ZMNIEJSZY\u0106 DAWK\u0118!\n\u2022 Depresja oddechowa: > 6,5 mmol/L \u2192 ANTIDOTUM: glukonian Ca 1g IV!\n\u2022 Zatrzymanie serca: > 15 mmol/L \u2192 RKO + glukonian Ca!\n\nSprawdza\u0107 odruchy kolanowe co 1h! Brak odruchu = toksyczno\u015b\u0107!',
+    wskazania: [
+      'Torsades de pointes (TdP) \u2014 lek z WYBORU',
+      'Eklampsja / preeklampsja ci\u0119\u017cka (prewencja i leczenie drgawek)',
+      'Ci\u0119\u017cka astma (wspomagaj\u0105co)',
+      'Hipomagnezemia z arytmiami lub drgawkami',
+      'NZK \u2014 TdP lub hipomagnezemia'
+    ],
+    przeciwwskazania: [
+      'Blok AV II/III stopnia (bez stymulacji) \u2014 ostrze\u017cenie',
+      'Miastenia gravis (nasilenie os\u0142abienia mi\u0119\u015bni)',
+      'Toksyczno\u015b\u0107: brak odruch\u00f3w kolanowych / depresja oddechowa \u2192 ANTIDOTUM!'
+    ],
+    antidotum: 'Glukonian wapnia 1 g (10 ml 10%) IV przez 3 min \u2014 odwraca toksyczno\u015b\u0107 Mg\u00b2\u207a!',
+    zrodlo: 'ChPL Magnesium Sulfuricum WZF \u00b7 Magpie Trial Lancet 2002 \u00b7 ERC Guidelines 2021'
+  }
+
+  /* === 9.9 Ondansetron === */
+  ,{
+    id: 63,
+    nazwa: 'Ondansetron',
+    nazwa_en: 'Ondansetron',
+    handlowe: 'Ondansetron Kabi 8 mg/4 ml (2 mg/ml) \u00b7 Zofran 8 mg/4 ml',
+    forma: 'Amp. 4 mg/2 ml (2 mg/ml); amp. 8 mg/4 ml; tabletki ODT 4 mg, 8 mg',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'Antiemetyczny 5-HT3',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var mg = Math.min((0.15 * kg).toFixed(1), 4);
+      return 'Dziecko (0,1\u20130,15 mg/kg): ' + mg + ' mg IV (maks. 4 mg/dawk\u0119)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Nudno\u015bci i wymioty', droga:'IV powoli (2\u20135 min) / PO', dawka:'4\u20138 mg IV lub PO', uwagi:'Maks. 16 mg/dob\u0119 IV (ryzyko wyd\u0142u\u017cenia QT przy wy\u017cszych dawkach!)' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Nudno\u015bci i wymioty', dawka:'0,1\u20130,15 mg/kg IV (maks. 4 mg/dawk\u0119)', droga:'IV', uwagi:'Co 4\u20136h; maks. 3 dawki/dob\u0119' }
+    ],
+    rozcienczanie: '<b>4\u20138 mg \u2014 podawa\u0107 nierozcienczony IV przez 2\u20135 min lub rozcie\u0144czy\u0107 w 50 ml NaCl</b>\n\nMaks. 16 mg/dob\u0119 IV (nowe ChPL \u2014 ryzyko wyd\u0142u\u017cenia QT!)',
+    wskazania: [
+      'Nudno\u015bci i wymioty \u2014 postproceduralne, chemioterapia, migrena',
+      'Nudno\u015bci przy silnym b\u00f3lu (np. kolka nerkowa)',
+      'Wymioty przy gastroenteritis'
+    ],
+    przeciwwskazania: [
+      'QTc > 500 ms (wyd\u0142u\u017ca QT \u2014 addytywne z innymi lekami!)',
+      'Wrodzony zesp\u00f3\u0142 d\u0142ugiego QT',
+      'Hipokaliemia / hipomagnezemia \u2014 koryglowa\u0107 przed podaniem',
+      'Unika\u0107 \u0142\u0105czenia z amiodaronem, haloperidolem, citalopramem (kumulatywne QT)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Ondansetron Kabi \u00b7 UpToDate'
+  }
+
+  /* === 9.10 Metoklopramid === */
+  ,{
+    id: 64,
+    nazwa: 'Metoklopramid',
+    nazwa_en: 'Metoclopramide',
+    handlowe: 'Metoclopramidum WZF 10 mg/2 ml \u00b7 Paspertin 10 mg/2 ml',
+    forma: 'Amp. 10 mg/2 ml (5 mg/ml)',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'Prokinetyk / Antiemetyczny',
+    wagozalezna: true,
+    kalk_wzor: function(kg) {
+      var mg = (0.1 * kg).toFixed(1);
+      return 'Dziecko (0,1 mg/kg): ' + mg + ' mg IV/IM (maks. 0,5 mg/kg/dob\u0119)';
+    },
+    dawkowanie_dorosly: [
+      { wsk:'Nudno\u015bci i wymioty', droga:'IV (min 3 min) / IM', dawka:'10 mg IV lub IM', uwagi:'Maks. 30 mg/dob\u0119; maks. 5 dni ci\u0105g\u0142ego leczenia!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'Nudno\u015bci i wymioty (> 1 roku)', dawka:'0,1\u20130,15 mg/kg IV/IM', droga:'IV / IM', uwagi:'Maks. 0,5 mg/kg/dob\u0119; NIE stosowa\u0107 < 1 roku!' }
+    ],
+    rozcienczanie: '<b>10 mg/2 ml \u2014 rozcie\u0144czy\u0107 w 50 ml NaCl lub G5%</b> \u2192 wlew przez minimum 3 min\n\nPodanie zbyt szybkie \u2192 dyskomfort, dyskineza!\n\nMaks. 5 dni ci\u0105g\u0142ego stosowania (ryzyko tardive dyskinesia)',
+    wskazania: [
+      'Nudno\u015bci i wymioty (poproceduralny, b\u00f3l, chemioterapia)',
+      'Migrena (metoklopramid + paracetamol = skuteczna kombinacja)',
+      'Opr\u00f3\u017cnianie \u017co\u0142\u0105dka przed procedur\u0105 (prokinetyk)'
+    ],
+    przeciwwskazania: [
+      'Parkinson / leki dopaminergiczne \u2014 antagonizm!',
+      'Niedr\u0119\u017cno\u015b\u0107 mechaniczna jelit \u2014 niebezpieczny (prokinetyk)!',
+      'Padaczka (obni\u017ca pr\u00f3g drgawkowy)',
+      'Dzieci < 1 roku \u2014 bezwzgl\u0119dne',
+      'Dzia\u0142ania pozapiramidowe (dystoniczne) \u2014 antidotum: biperiden 2,5\u20135 mg IV/IM'
+    ],
+    antidotum: 'Biperiden 2,5\u20135 mg IV/IM (Akineton) \u2014 dyskineza pozapiramidowa',
+    zrodlo: 'ChPL Metoclopramidum WZF \u00b7 EAN Migrena 2018'
+  }
+
+  /* === 10.1 Salbutamol wziewny (SABA) === */
+  ,{
+    id: 65,
+    nazwa: 'Salbutamol (wziewny)',
+    nazwa_en: 'Salbutamol / Albuterol \u2014 inhaled',
+    handlowe: 'Ventolin 2,5 mg/2,5 ml (nebulizacja) \u00b7 Salbutamol WZF nebulizacja \u00b7 Ventolin MDI 100 mcg/dawk\u0119',
+    forma: 'Roztwór do nebulizacji 2,5 mg/2,5 ml; MDI 100 mcg/dawk\u0119',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'SABA / Bronchodilatator',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'Napad astmy umiarkowany', droga:'Nebulizacja', dawka:'2,5 mg (1 nebulizacja) co 20 min \u00d7 3', uwagi:'MDI z komor\u0105: 4\u20138 puf\u00f3w co 20 min' },
+      { wsk:'Ci\u0119\u017cka astma / status asthmaticus', droga:'Nebulizacja', dawka:'5 mg \u2192 ci\u0105g\u0142a nebulizacja 10 mg/h', uwagi:'4 amp. 2,5 mg w 50 ml NaCl \u2192 50 ml/h przez nebulizator pompowany' },
+      { wsk:'Zaostrzenie POChP', droga:'Nebulizacja', dawka:'2,5 mg co 4\u20136h', uwagi:'MDI: 2\u20134 pufy co 4h; \u0142\u0105czy\u0107 z ipratropium' },
+      { wsk:'Hiperkaliemia (wspomagaj\u0105co)', droga:'Nebulizacja', dawka:'10\u201320 mg (WYSOKA DAWKA!)', uwagi:'Przej\u015bciowe przesuni\u0119cie K\u207a do kom\u00f3rek; monitorowa\u0107 K\u207a!' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'< 2 lat', dawka:'1,25 mg (0,5 ml 0,5%) + 2 ml NaCl nebulizacja', droga:'Nebulizacja', uwagi:'Co 20 min \u00d7 3 w ci\u0119\u017ckim napadzie' },
+      { wsk:'2\u201312 lat', dawka:'2,5 mg (1 amp. 2,5 mg/2,5 ml) nebulizacja', droga:'Nebulizacja', uwagi:'Co 20 min \u00d7 3 w ci\u0119\u017ckim napadzie' },
+      { wsk:'> 12 lat', dawka:'Jak doros\u0142y', droga:'Nebulizacja', uwagi:'' },
+      { wsk:'MDI z komor\u0105 (< 5 lat)', dawka:'2\u20134 pufy co 20 min', droga:'MDI + komora', uwagi:'Preferowane u ma\u0142ych dzieci' },
+      { wsk:'MDI z komor\u0105 (5\u201312 lat)', dawka:'4\u20138 puf\u00f3w co 20 min', droga:'MDI + komora', uwagi:'' }
+    ],
+    rozcienczanie: '<b>Technika nebulizacji:</b>\n\u2022 Przep\u0142yw O\u2082/powietrza: 6\u20138 L/min\n\u2022 Czas: 10\u201315 minut\n\u2022 Ci\u0105g\u0142a nebulizacja (status asthmaticus): 10 mg/h = 4 amp. (4 \u00d7 2,5 mg) w 50 ml NaCl \u2192 50 ml/h przez nebulizator pompowany\n\n<b>MDI z komor\u0105 (pediatria):</b> 4\u20138 puf\u00f3w z komor\u0105 inhalacyjn\u0105 \u2014 r\u00f3wnoznaczne z nebulizacj\u0105',
+    wskazania: [
+      'Napad astmy \u2014 lek pierwszoliniowy (GINA 2024)',
+      'Zaostrzenie POChP z bronchospazmem',
+      'Hiperkaliemia (10\u201320 mg \u2014 przej\u015bciowe przesuni\u0119cie K\u207a do kom\u00f3rek)',
+      'Anafilaksja z bronchospazmem (wspomagaj\u0105co po adrenalinie)'
+    ],
+    przeciwwskazania: [
+      'Tachykardia > 160/min \u2014 monitorowa\u0107 (salbutamol nasila!)',
+      'Beta-blokery (metoprolol, bisoprolol) \u2014 zmniejszaj\u0105 skuteczno\u015b\u0107!',
+      'Hipokaliemia \u2014 du\u017ce dawki (10\u201320 mg) nasilaj\u0105 hipokaliemi\u0119 (monitorowa\u0107 K\u207a!)',
+      'Paradoksalny bronchospazm (rzadki \u2014 natychmiast odst\u0105pi\u0107)'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Ventolin (GSK) \u00b7 GINA 2024 \u00b7 BTS/SIGN Astma 2023'
+  }
+
+  /* === 10.2 Ipratropium bromid (wziewny) === */
+  ,{
+    id: 66,
+    nazwa: 'Ipratropium bromid (wziewny)',
+    nazwa_en: 'Ipratropium Bromide \u2014 inhaled',
+    handlowe: 'Atrovent 0,25 mg/1 ml (do nebulizacji) \u00b7 Ipratropium Bromide 500 mcg/2 ml',
+    forma: 'Amp. 0,25 mg/1 ml do nebulizacji; MDI 20 mcg/dawk\u0119',
+    kat: ['inn'],
+    badge: 'inn',
+    badge_label: 'SAMA / Bronchodilatator',
+    wagozalezna: false,
+    kalk_wzor: null,
+    dawkowanie_dorosly: [
+      { wsk:'Ci\u0119\u017cka astma (skojarzone z salbutamolem)', droga:'Nebulizacja', dawka:'0,5 mg (2 ml) co 20 min \u00d7 3 \u2192 co 4\u20136h', uwagi:'Synergia z salbutamolem \u2014 \u2193 hospitalizacje (GINA 2024)' },
+      { wsk:'Zaostrzenie POChP (lek pierwszego rzutu)', droga:'Nebulizacja / MDI', dawka:'0,5 mg nebulizacja lub 2\u20134 pufy MDI', uwagi:'Silniejszy efekt w POChP ni\u017c w astmie (GOLD 2024)' }
+    ],
+    dawkowanie_dziecko: [
+      { wsk:'< 2 lat', dawka:'0,125\u20130,25 mg nebulizacja co 20 min \u00d7 3', droga:'Nebulizacja', uwagi:'' },
+      { wsk:'2\u201312 lat', dawka:'0,25 mg nebulizacja co 20 min \u00d7 3', droga:'Nebulizacja', uwagi:'Nast. co 4\u20136h' },
+      { wsk:'> 12 lat', dawka:'Jak doros\u0142y', droga:'Nebulizacja', uwagi:'' }
+    ],
+    rozcienczanie: '<b>Kombinacja z salbutamolem (standard SOR):</b>\nSalbutamol 2,5 mg + ipratropium 0,5 mg + 1 ml NaCl \u2192 jeden nebulizator\nLub: gotowy Combivent / Ipramol do nebulizacji\n\n<b>Technika:</b> przep\u0142yw O\u2082/powietrza 6\u20138 L/min; czas 10\u201315 min\n\n\u26a0\ufe0f <b>JASKRA z w\u0105skim k\u0105tem:</b> stosowa\u0107 USTNIK (nie mask\u0119 twarzow\u0105!) \u2014 nebulizat mo\u017ce dosta\u0107 si\u0119 do oczu!',
+    wskazania: [
+      'Ci\u0119\u017cki napad astmy (skojarzone z salbutamolem \u2014 synergia)',
+      'Zaostrzenie POChP \u2014 lek pierwszego rzutu',
+      'Przewlek\u0142a obturacja z zaostrzeniem'
+    ],
+    przeciwwskazania: [
+      'Jaskra z w\u0105skim k\u0105tem \u2014 stosowa\u0107 ustnik (nie mask\u0119)!',
+      'Retencja moczu / przerost prostaty (wzgl\u0119dne)',
+      'Nadwra\u017cliwo\u015b\u0107 na atropin\u0119 lub jej pochodne'
+    ],
+    antidotum: null,
+    zrodlo: 'ChPL Atrovent (Boehringer Ingelheim) \u00b7 GOLD 2024 \u00b7 GINA 2024'
+  }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var currentFilter = 'all';
+var currentSearch = '';
+
+function nrmLocal(s) {
+  return s.replace(/[\u0105\u0107\u0119\u0142\u0144\u00f3\u015b\u017a\u017c]/g, function(m) {
+    var map = {'\u0105':'a','\u0107':'c','\u0119':'e','\u0142':'l','\u0144':'n','\u00f3':'o','\u015b':'s','\u017a':'z','\u017c':'z'};
+    return map[m] || m;
+  }).toLowerCase();
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderLeki() {
+  var grid    = document.getElementById('leki-grid');
+  var noRes   = document.getElementById('noResults');
+  var statEl  = document.getElementById('statCount');
+  var q       = nrmLocal(currentSearch.trim());
+
+  var filtered = LEKI.filter(function(lek) {
+    if (currentFilter !== 'all' && lek.kat.indexOf(currentFilter) === -1) return false;
+    if (q) {
+      var hay = nrmLocal([
+        lek.nazwa, lek.nazwa_en, lek.handlowe, lek.badge_label,
+        lek.wskazania ? lek.wskazania.join(' ') : '',
+        lek.kat.join(' ')
+      ].join(' '));
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  });
+
+  statEl.textContent = filtered.length;
+  noRes.classList.toggle('show', filtered.length === 0);
+
+  grid.innerHTML = filtered.map(function(lek, idx) {
+    var delay = Math.min(idx * 0.03, 0.3).toFixed(2);
+
+    /* --- Dawkowanie dorosly --- */
+    var ddRows = '';
+    if (lek.dawkowanie_dorosly.length > 0) {
+      ddRows = '<table class="lek-tbl"><thead><tr><th>Wskazanie</th><th>Dawka</th><th>Droga</th><th>Uwagi</th></tr></thead><tbody>' +
+        lek.dawkowanie_dorosly.map(function(r) {
+          return '<tr><td>' + r.wsk + '</td><td><strong>' + r.dawka + '</strong></td><td>' + r.droga + '</td><td><em>' + r.uwagi + '</em></td></tr>';
+        }).join('') +
+        '</tbody></table>';
+    } else {
+      ddRows = '<p style="font-size:12.5px;color:var(--t3);padding:4px 0">Brak danych \u2014 patrz wytyczne specjalistyczne</p>';
+    }
+
+    /* --- Dawkowanie dziecko --- */
+    var ddzSection = '';
+    if (lek.dawkowanie_dziecko && lek.dawkowanie_dziecko.length > 0) {
+      ddzSection = '<div class="lek-sec">Dawkowanie Dziecko</div>' +
+        '<table class="lek-tbl"><thead><tr><th>Wiek / Masa / Wskazanie</th><th>Dawka</th><th>Droga</th><th>Uwagi</th></tr></thead><tbody>' +
+        lek.dawkowanie_dziecko.map(function(r) {
+          return '<tr><td>' + r.wsk + '</td><td><strong>' + r.dawka + '</strong></td><td>' + r.droga + '</td><td><em>' + r.uwagi + '</em></td></tr>';
+        }).join('') +
+        '</tbody></table>';
+    }
+
+    /* --- Kalkulator wagowy --- */
+    var kalkSection = '';
+    if (lek.wagozalezna && lek.kalk_wzor) {
+      kalkSection = '<div class="lek-sec">Kalkulator wagowy</div>' +
+        '<div class="lek-kalk">' +
+        '<label>Masa cia\u0142a:</label>' +
+        '<input type="number" min="1" max="250" placeholder="kg" oninput="calcDose(this,' + lek.id + ')" id="kalk-input-' + lek.id + '">' +
+        '<span class="unit">kg</span>' +
+        '<span class="kalk-wynik" id="kalk-' + lek.id + '"></span>' +
+        '</div>';
+    }
+
+    /* --- Antidotum --- */
+    var antSection = lek.antidotum
+      ? '<span class="lek-antidotum">\u2697 Antidotum: ' + lek.antidotum + '</span>'
+      : '';
+
+    /* --- Listy --- */
+    var wskHtml = lek.wskazania && lek.wskazania.length > 0
+      ? '<ul class="lek-list">' + lek.wskazania.map(function(w) { return '<li>' + w + '</li>'; }).join('') + '</ul>'
+      : '';
+
+    var pwskHtml = lek.przeciwwskazania && lek.przeciwwskazania.length > 0
+      ? '<ul class="lek-list contra">' + lek.przeciwwskazania.map(function(p) { return '<li>' + p + '</li>'; }).join('') + '</ul>'
+      : '';
+
+    return '<div class="lek-card" id="lek-' + lek.id + '" style="animation-delay:' + delay + 's" data-kat="' + lek.kat.join(',') + '">' +
+      '<div class="lek-head" onclick="toggleLek(' + lek.id + ')">' +
+      '<span class="badge badge-' + lek.badge + '">' + lek.badge_label + '</span>' +
+      '<div class="lek-name">' + lek.nazwa + '<small>' + lek.nazwa_en + ' \u00b7 ' + lek.handlowe + '</small></div>' +
+      '<span class="lek-arrow">\u25bc</span>' +
+      '</div>' +
+      '<div class="lek-body" id="body-' + lek.id + '">' +
+      '<div class="lek-inner">' +
+      '<div class="lek-sec">Dawkowanie Doros\u0142y</div>' + ddRows +
+      ddzSection +
+      '<div class="lek-sec">Rozciencz. i podawanie IV</div>' +
+      '<div class="lek-dilute">' + lek.rozcienczanie.replace(/\n/g, '<br>') + '</div>' +
+      '<div class="lek-sec">Wskazania SOR</div>' + wskHtml +
+      '<div class="lek-sec">Kluczowe przeciwwskazania</div>' + pwskHtml +
+      kalkSection +
+      antSection +
+      '<div class="lek-src">&#x17a;r\u00f3d\u0142o: ' + lek.zrodlo + '</div>' +
+      '</div></div></div>';
+  }).join('');
+}
+
+/* ============================================================
+   ACCORDION
+   ============================================================ */
+function toggleLek(id) {
+  var card   = document.getElementById('lek-' + id);
+  var isOpen = card.classList.contains('open');
+  document.querySelectorAll('.lek-card.open').forEach(function(c) { c.classList.remove('open'); });
+  if (!isOpen) {
+    card.classList.add('open');
+    if (window.innerWidth < 768) {
+      setTimeout(function() { card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+    }
+  }
+}
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+function setChip(el) {
+  document.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('on'); });
+  el.classList.add('on');
+  currentFilter = el.dataset.f;
+  renderLeki();
+}
+
+function filterLeki() {
+  currentSearch = document.getElementById('search').value;
+  renderLeki();
+}
+
+function openSearch() {
+  var s = document.getElementById('search');
+  s.focus();
+  s.select();
+}
+
+/* ============================================================
+   DOSE CALCULATOR
+   ============================================================ */
+function calcDose(input, lekId) {
+  var kg    = parseFloat(input.value);
+  var wynik = document.getElementById('kalk-' + lekId);
+  if (!wynik) return;
+  if (!kg || kg <= 0 || kg > 300) { wynik.textContent = ''; return; }
+  var lek = LEKI.find(function(l) { return l.id === lekId; });
+  if (!lek || !lek.kalk_wzor) return;
+  try { wynik.textContent = lek.kalk_wzor(kg); } catch(e) { wynik.textContent = ''; }
+}
+
+/* ============================================================
+   LPR copyN (fallback jeśli app.js nie załadowany)
+   ============================================================ */
+function copyN(raw, display) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(display).then(function() {
+      if (typeof showToast === 'function') showToast('Skopiowano: ' + display);
+    });
+  }
+}
+
+/* ============================================================
+   KEYBOARD
+   ============================================================ */
+document.addEventListener('keydown', function(e) {
+  var tag = document.activeElement.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') {
+    if (e.key === 'Escape') {
+      document.getElementById('search').value = '';
+      currentSearch = '';
+      renderLeki();
+      document.activeElement.blur();
+    }
+    return;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    openSearch();
+    return;
+  }
+  if (e.key === '/') {
+    e.preventDefault();
+    openSearch();
+    return;
+  }
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.lek-card.open').forEach(function(c) { c.classList.remove('open'); });
+  }
+});
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+function initScrollProgress() {
+  var bar = document.getElementById('scrollProg');
+  if (!bar) return;
+  window.addEventListener('scroll', function() {
+    var max = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = max > 0 ? (window.scrollY / max * 100) + '%' : '0%';
+  }, { passive: true });
+}
+
+function initTopbarScroll() {
+  var tb = document.getElementById('topbar');
+  if (!tb) return;
+  window.addEventListener('scroll', function() {
+    tb.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+  renderLeki();
+  initScrollProgress();
+  initTopbarScroll();
+});
+</script>
+
+<script src="js/app.js"></script>
+
+<!-- PART2_PLACEHOLDER -->
+<!-- Tu beda dodane: RSI + Antybiotyki (13 lekow) -->
+
+<!-- PART3_PLACEHOLDER -->
+<!-- Tu beda dodane: Kardiologia + Neurologia + Antidota (20 lekow) -->
+
+<!-- PART4_PLACEHOLDER -->
+<!-- Tu beda dodane: Plyny + Inne + Wziewne (18 lekow) -->
+
+</body>
+</html>

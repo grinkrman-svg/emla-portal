@@ -1,10 +1,15 @@
 /* EMLA Portal — Service Worker — Cache-First for offline-first medical tool */
 
-const CACHE_NAME = 'emla-v3';
+const CACHE_NAME = 'emla-v6-20260422';
 
 const PRECACHE_URLS = [
   './',
   'index.html',
+  'kalkulatory.html',
+  'protokoly.html',
+  'farmakologia.html',
+  'karta-zlecen-v3.html',
+  'transport-sanitarny.html',
   'centrum-urazowe.html',
   'chirurgia-dziecieca.html',
   'chirurgia-naczyniowa.html',
@@ -37,6 +42,10 @@ const PRECACHE_URLS = [
   'js/app.js',
   'manifest.json',
   'logo.png',
+  'img/herb-szpitala.png',
+  'data/leki_sor.json',
+  'data/badania.json',
+  'data/all-categories.json',
   'icons/icon.png',
   'icons/icon-32x32.png',
   'icons/icon-64x64.png',

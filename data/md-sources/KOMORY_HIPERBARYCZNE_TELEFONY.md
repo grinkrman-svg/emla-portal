@@ -87,7 +87,7 @@ ul. Powstańców Warszawy 5, bud. 12, 85-681 Bydgoszcz
 ### Status
 - Centrum Hiperbarii Tlenowej i Leczenia Ran (szpital wojskowy)
 - Leczenie ran przewlekłych, wspomaganie HBO
-- **UWAGA:** Wymaga weryfikacji telefonicznej — czy przyjmują pacjentów 24h w trybie pilnym (zatrucie CO, choroba dekompresyjna), czy tylko planowo
+- **⚠ UWAGA (znaleziono 2026-04-10):** Według mediów regionalnych (metropoliabydgoska.pl), HBO dostępne TYLKO do ~13:00 (nie 24h). Zgłoszenia pilne po godz. 13:00 i w nocy → **KOMH Gdynia** (58 622 51 63). Wymagana weryfikacja telefoniczna pod 791 777 871.
 
 ### Transport z Chojnic
 - Helikopter: **~30 min**
@@ -125,7 +125,7 @@ ul. Jana Pawła II 2, 41-100 Siemianowice Śląskie
 
 | Centrum | Czego brakuje |
 |---|---|
-| 10 WSK Bydgoszcz | Potwierdzić dyżur 24h HBO dla stanów nagłych (zatrucie CO, dekompresja) |
+| 10 WSK Bydgoszcz | ⚠️ **Prawdopodobnie BRAK dyżuru 24h** (dane medialne: czynne do ~13:00). Wymagana weryfikacja tel. 791 777 871. W nagłych przypadkach nocnych → KOMH Gdynia. |
 
 ### Uwaga
 - KOMH Gdynia = **referencyjny** ośrodek HBO → zawsze pierwsza opcja dla stanów nagłych
@@ -143,7 +143,7 @@ ul. Jana Pawła II 2, 41-100 Siemianowice Śląskie
 | 3 | **CLO Siemianowice Śl.** | ~420 km | ~1h 50min LPR / ~4h 30min droga | **32 735 74 56** (pracownia HBO) |
 
 **DOMYŚLNIE:** Zatrucie CO / choroba dekompresyjna / zgorzel gazowa → **58 622 51 63** (KOMH Gdynia, alarmowy 24h).
-**ALTERNATYWA bliższa:** 10 WSK Bydgoszcz (791 777 871) — potwierdzić dostępność dyżuru pilnego.
+**⚠ 10 WSK Bydgoszcz:** Prawdopodobnie BRAK dostępności 24h — dzwonić NAJPIERW na KOMH Gdynia, potem weryfikować czy 10 WSK jest czynny (791 777 871). Jeśli noc/weekend → wyłącznie KOMH Gdynia.
 
 ---
 

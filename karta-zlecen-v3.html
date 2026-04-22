@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Karta Zleceń Lekarskich — SOR Chojnice</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   RESET + BASE
+   ═══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 9pt;
+  background: #e8e8e8;
+  color: #000;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LEFT SIDE PANEL (каталог) — only on screen
+   ═══════════════════════════════════════════════════════════════ */
+.side-panel {
+  width: 280px;
+  min-width: 280px;
+  background: #1a1a1a;
+  color: #eee;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+}
+.side-panel h3 {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #a9a9a9;
+  border-bottom: 1px solid #3a3a3a; padding-bottom: 6px; margin-top: 2px;
+}
+.side-tabs { display: flex; gap: 4px; }
+.side-tab {
+  flex: 1; padding: 6px 8px; font-size: 11px;
+  background: #2a2a2a; color: #ddd; border: 1px solid #3a3a3a;
+  border-radius: 4px; cursor: pointer; text-align: center;
+  transition: background .15s;
+}
+.side-tab.on { background: #1e40af; border-color: #1e40af; color: #fff; }
+.side-tab:hover:not(.on) { background: #333; }
+
+.side-search {
+  width: 100%; padding: 7px 10px; font-size: 12px;
+  background: #0f0f0f; color: #eee; border: 1px solid #3a3a3a;
+  border-radius: 4px; outline: none;
+}
+.side-search:focus { border-color: #1e40af; }
+
+.side-filter { display: flex; flex-wrap: wrap; gap: 4px; }
+.side-filter .chip {
+  padding: 3px 8px; font-size: 10px; background: #2a2a2a;
+  color: #c9c9c9; border-radius: 10px; cursor: pointer; user-select: none;
+}
+.side-filter .chip.on { background: #1e40af; color: #fff; }
+
+.side-list {
+  flex: 1; overflow-y: auto; border-top: 1px solid #2a2a2a;
+  padding-top: 6px; margin-top: 2px;
+}
+.side-list::-webkit-scrollbar { width: 6px; }
+.side-list::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 3px; }
+.side-item {
+  padding: 6px 8px; border-bottom: 1px solid #2a2a2a;
+  cursor: pointer; transition: background .1s;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.side-item:hover { background: #2a2a2a; }
+.side-item-name { font-weight: 600; color: #eee; font-size: 12px; }
+.side-item-sub { font-size: 10px; color: #8a8a8a; }
+.side-item-inn { font-size: 10px; color: #6a92d4; font-style: italic; }
+.side-item-cat { font-size: 9px; color: #d89a4a; text-transform: uppercase; letter-spacing: .05em; }
+
+.side-help {
+  font-size: 10.5px; color: #8a8a8a; line-height: 1.4;
+  padding: 8px 10px; background: #222; border-radius: 4px;
+  border-left: 3px solid #1e40af;
+}
+.side-help b { color: #ccc; }
+.side-help kbd {
+  font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+  padding: 1px 5px; background: #0f0f0f; border: 1px solid #3a3a3a;
+  border-radius: 3px; color: #e9c46a;
+}
+
+.side-actions {
+  display: flex; flex-direction: column; gap: 6px;
+  border-top: 1px solid #2a2a2a; padding-top: 8px;
+}
+.side-actions button {
+  padding: 8px; font-size: 12px; font-weight: 600;
+  background: #1e40af; color: #fff; border: none;
+  border-radius: 4px; cursor: pointer; letter-spacing: .02em;
+}
+.side-actions button:hover { background: #2651c4; }
+.side-actions .btn-clear { background: #4a4a4a; }
+.side-actions .btn-clear:hover { background: #5a5a5a; }
+.side-actions a {
+  padding: 8px; font-size: 11px; color: #888; text-align: center;
+  text-decoration: none; border-top: 1px solid #2a2a2a;
+}
+.side-actions a:hover { color: #ccc; }
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGES AREA (A4 pages)
+   ═══════════════════════════════════════════════════════════════ */
+.pages-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  gap: 16px;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #fff;
+  padding: 8mm 10mm;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER (top of page 1)
+   ═══════════════════════════════════════════════════════════════ */
+.hdr {
+  display: grid;
+  grid-template-columns: 52px 1fr 52px;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid #000;
+}
+.hdr .herb {
+  width: 52px; height: 60px;
+  background: url('img/herb-szpitala.png') center/contain no-repeat;
+}
+.hdr .hdr-text { text-align: center; font-family: 'Times New Roman', Times, serif; }
+.hdr .hdr-name {
+  font-size: 11pt; font-weight: 700;
+  letter-spacing: .01em; text-transform: uppercase;
+}
+.hdr .hdr-addr { font-size: 9pt; margin-top: 1px; }
+.hdr .hdr-title {
+  font-size: 13pt; font-weight: 700; margin-top: 3px;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PATIENT BLOCK
+   ═══════════════════════════════════════════════════════════════ */
+.patient-row {
+  display: grid;
+  grid-template-columns: 32mm 1fr 46mm 38mm;
+  align-items: stretch;
+  margin-top: 3mm;
+  border: 1.2px solid #000;
+}
+.patient-cell {
+  padding: 2mm 3mm;
+  border-right: 1.2px solid #000;
+  display: flex; flex-direction: column; justify-content: center;
+  min-height: 13mm;
+}
+.patient-cell:last-child { border-right: none; }
+.patient-cell .label {
+  font-size: 7.5pt; color: #333;
+  text-transform: uppercase; letter-spacing: .04em; margin-bottom: 1px;
+}
+.patient-cell .value {
+  font-size: 11pt; font-weight: 700; min-height: 6mm;
+  border: none; outline: none; font-family: inherit;
+  background: transparent; width: 100%;
+}
+.patient-cell.oddzial .value {
+  font-size: 14pt; font-weight: 800; letter-spacing: .08em;
+}
+
+.date-row {
+  display: grid;
+  grid-template-columns: 60mm 1fr 56mm;
+  border: 1.2px solid #000;
+  border-top: none;
+}
+.date-row .dc {
+  padding: 1.5mm 3mm;
+  border-right: 1.2px solid #000;
+  display: flex; align-items: center; gap: 6px; min-height: 8mm;
+}
+.date-row .dc:last-child { border-right: none; }
+.date-row label { font-size: 8pt; font-weight: 700; letter-spacing: .04em; }
+.date-row input {
+  font-family: inherit; font-size: 10pt; border: none; outline: none;
+  background: transparent; flex: 1; min-width: 0;
+}
+.date-row .stamp-note { font-size: 7pt; color: #555; line-height: 1.15; }
+
+/* ═══════════════════════════════════════════════════════════════
+   DRUGS TABLE
+   ═══════════════════════════════════════════════════════════════ */
+.drugs-table {
+  width: 100%; border-collapse: collapse; margin-top: 2.5mm;
+  font-size: 8.5pt; table-layout: fixed;
+}
+.drugs-table th, .drugs-table td {
+  border: 0.8px solid #000;
+  padding: 1mm 1.5mm;
+  vertical-align: top;
+}
+.drugs-table thead th {
+  background: #f0f0f0; font-size: 7pt; font-weight: 700;
+  text-align: center; line-height: 1.1; padding: 1.5mm 1mm;
+}
+.drugs-table col.col-name { width: 62mm; }
+.drugs-table col.col-sig { width: 14mm; }
+.drugs-table col.col-hour { width: 10mm; }
+.drugs-table col.col-exe { width: 14mm; }
+
+.drug-cell { position: relative; padding: 1mm 1.5mm; min-height: 11mm; }
+.drug-cell.empty { cursor: pointer; background: #fafafa; }
+.drug-cell.empty::before {
+  content: "+ wybierz lek";
+  position: absolute; left: 2mm; top: 2mm;
+  font-family: system-ui; font-size: 7.5pt; color: #8a8a8a; font-style: italic;
+}
+.drug-cell.empty:hover { background: #eef3ff; }
+.drug-cell.empty:hover::before { color: #1e40af; }
+
+.drug-line {
+  display: flex; align-items: baseline; gap: 4px;
+  font-size: 8.3pt; line-height: 1.2; margin-bottom: 0.8mm;
+  flex-wrap: wrap;
+}
+.drug-line.mix { padding-left: 7px; border-left: 2px solid #c0c0c0; margin-left: 2px; }
+.drug-line .dl-marker {
+  font-family: 'JetBrains Mono', monospace;
+  color: #1e40af; font-weight: 700; flex-shrink: 0;
+}
+.drug-line .dl-name { font-weight: 700; }
+.drug-line .dl-inn { font-style: italic; color: #444; font-size: 7.5pt; font-weight: 400; }
+.drug-line .dl-dose { color: #000; font-weight: 400; font-size: 7.8pt; }
+.drug-line .dl-freq {
+  font-family: inherit; font-size: 7.8pt; border: none;
+  border-bottom: 1px dashed #aaa; outline: none; width: 18mm;
+  background: transparent;
+}
+.drug-line .dl-freq:focus { border-bottom-color: #1e40af; }
+.drug-line .dl-route {
+  font-family: 'JetBrains Mono', monospace; font-size: 7pt;
+  padding: 1px 4px; background: #1e40af; color: #fff;
+  border-radius: 3px; border: none; outline: none; cursor: pointer;
+  font-weight: 700;
+}
+.drug-line .dl-route[data-route="IM"] { background: #0f766e; }
+.drug-line .dl-route[data-route="SC"] { background: #b45309; }
+.drug-line .dl-route[data-route="PO"] { background: #4b5563; }
+.drug-line .dl-route[data-route="INH"] { background: #7c3aed; }
+.drug-line .dl-add-mix, .drug-line .dl-remove {
+  background: none; border: none; cursor: pointer;
+  font-size: 10pt; color: #777; padding: 0 3px;
+  line-height: 1; font-family: inherit; font-weight: 700;
+}
+.drug-line .dl-add-mix:hover { color: #1e40af; }
+.drug-line .dl-remove:hover { color: #b91c1c; }
+.dl-add-mix-row {
+  display: inline-block; margin-top: 1mm; padding: 1px 6px;
+  font-size: 7pt; color: #1e40af; cursor: pointer;
+  border: 1px dashed #1e40af; border-radius: 3px; background: none;
+  font-family: system-ui;
+}
+.dl-add-mix-row:hover { background: #1e40af; color: #fff; }
+
+/* ═══════════════════════════════════════════════════════════════
+   BADANIA (page 2 bottom)
+   ═══════════════════════════════════════════════════════════════ */
+.badania-title {
+  text-align: center; font-size: 11pt; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  border-top: 1.5px solid #000; border-bottom: 1.5px solid #000;
+  padding: 2mm 0; margin-top: 4mm;
+}
+.badania-table {
+  width: 100%; border-collapse: collapse; margin-top: 2mm;
+  font-size: 8.5pt; table-layout: fixed;
+}
+.badania-table col.b-name { width: 76mm; }
+.badania-table col.b-sig  { width: 30mm; }
+.badania-table col.b-exe  { width: 84mm; }
+.badania-table th, .badania-table td {
+  border: 0.8px solid #000; padding: 1.2mm 2mm; vertical-align: top;
+}
+.badania-table thead th {
+  background: #f0f0f0; font-size: 7.5pt; font-weight: 700;
+  text-align: center; line-height: 1.15;
+}
+.badania-cell {
+  min-height: 9mm; padding: 1mm 1.5mm; cursor: pointer;
+  background: #fafafa; position: relative;
+}
+.badania-cell.empty::before {
+  content: "+ wybierz badanie / konsultację";
+  position: absolute; left: 2mm; top: 2mm;
+  font-family: system-ui; font-size: 7.5pt; color: #8a8a8a; font-style: italic;
+}
+.badania-cell.empty:hover { background: #eef3ff; }
+.badania-cell.empty:hover::before { color: #1e40af; }
+.badania-line {
+  display: flex; align-items: baseline; gap: 6px;
+  font-size: 8.3pt; line-height: 1.25; margin-bottom: 0.6mm;
+  flex-wrap: wrap;
+}
+.badania-line .bl-name { font-weight: 700; flex: 1; min-width: 40mm; }
+.badania-line .bl-cat {
+  font-size: 7pt; padding: 1px 5px; background: #f0f0f0;
+  border-radius: 2px; text-transform: uppercase;
+  letter-spacing: .04em; color: #333;
+}
+.badania-line .bl-urgent {
+  font-family: 'JetBrains Mono', monospace; font-size: 7pt;
+  font-weight: 700; padding: 1px 4px; border-radius: 2px;
+  border: none; outline: none; cursor: pointer;
+}
+.badania-line .bl-urgent[data-v="cito"] { background: #b91c1c; color: #fff; }
+.badania-line .bl-urgent[data-v="rutyna"] { background: #6b7280; color: #fff; }
+.badania-line .bl-remove {
+  background: none; border: none; cursor: pointer;
+  font-size: 10pt; color: #777; padding: 0 4px; line-height: 1; font-weight: 700;
+}
+.badania-line .bl-remove:hover { color: #b91c1c; }
+
+.page-footer {
+  margin-top: auto; padding-top: 3mm;
+  font-size: 7pt; color: #555;
+  display: flex; justify-content: space-between;
+  border-top: 0.5px solid #ccc;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  display: none; align-items: flex-start; justify-content: center;
+  z-index: 1000; padding-top: 6vh;
+  font-family: system-ui, sans-serif;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  width: 640px; max-width: 94vw; max-height: 80vh;
+  background: #1a1a1a; color: #eee;
+  border-radius: 8px; display: flex; flex-direction: column;
+  overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+.modal header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid #2a2a2a;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.modal h2 { font-size: 15px; font-weight: 700; letter-spacing: .01em; }
+.modal .m-search {
+  width: 100%; padding: 9px 12px; font-size: 13px;
+  background: #0f0f0f; color: #eee; border: 1px solid #3a3a3a;
+  border-radius: 5px; outline: none;
+}
+.modal .m-search:focus { border-color: #1e40af; }
+.modal .m-filter { display: flex; flex-wrap: wrap; gap: 4px; }
+.modal .m-filter .chip {
+  padding: 4px 9px; font-size: 10.5px;
+  background: #2a2a2a; color: #c9c9c9; border-radius: 10px;
+  cursor: pointer; user-select: none;
+}
+.modal .m-filter .chip.on { background: #1e40af; color: #fff; }
+.modal .m-list { flex: 1; overflow-y: auto; padding: 4px 0; }
+.modal .m-list::-webkit-scrollbar { width: 8px; }
+.modal .m-list::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 4px; }
+.modal .m-item {
+  padding: 8px 16px; border-bottom: 1px solid #222;
+  cursor: pointer; display: flex; flex-direction: column; gap: 2px;
+}
+.modal .m-item:hover, .modal .m-item.focused { background: #2a2a2a; }
+.modal .m-item-name { font-size: 13px; font-weight: 600; }
+.modal .m-item-sub { font-size: 11px; color: #8a8a8a; }
+.modal .m-item-cat {
+  font-size: 9.5px; color: #d89a4a;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.modal footer {
+  padding: 10px 16px; border-top: 1px solid #2a2a2a;
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: #8a8a8a;
+}
+.modal footer kbd {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 1px 5px; background: #0f0f0f; border: 1px solid #3a3a3a;
+  border-radius: 3px; color: #e9c46a;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT
+   ═══════════════════════════════════════════════════════════════ */
+@page { size: A4; margin: 8mm 10mm; }
+@media print {
+  html, body { background: #fff !important; color: #000 !important; }
+  body { display: block !important; }
+  .side-panel, .modal-overlay { display: none !important; }
+  .pages-area { padding: 0 !important; gap: 0 !important; }
+  .page {
+    box-shadow: none !important; padding: 0 !important;
+    margin: 0 !important; min-height: auto !important;
+    width: 100% !important; page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+  .drug-cell.empty::before, .badania-cell.empty::before { display: none; }
+  .drug-line .dl-remove, .drug-line .dl-add-mix,
+  .badania-line .bl-remove, .dl-add-mix-row { display: none !important; }
+  .drug-line .dl-freq { border-bottom: none !important; }
+  .drug-line .dl-route, .badania-line .bl-urgent {
+    background: #fff !important; color: #000 !important;
+    border: 0.6px solid #000 !important; font-weight: 700;
+    padding: 0px 3px;
+  }
+  .drug-line .dl-inn { color: #333 !important; }
+  .badania-line .bl-cat { background: #fff; border: 0.5px solid #999; }
+  .drug-cell.empty, .badania-cell.empty { background: #fff !important; }
+}
+
+@media screen and (max-width: 900px) {
+  body { flex-direction: column; }
+  .side-panel { width: 100%; min-width: 0; height: auto; max-height: 40vh; position: static; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LEFT PANEL (screen only) ═══════════════ -->
+<aside class="side-panel">
+  <div><h3>📋 Karta Zleceń v3</h3></div>
+
+  <div class="side-tabs">
+    <div class="side-tab on" data-mode="leki" onclick="setMode('leki')">💊 Leki</div>
+    <div class="side-tab" data-mode="badania" onclick="setMode('badania')">🧪 Badania</div>
+  </div>
+
+  <input type="text" class="side-search" id="sideSearch" placeholder="🔍 Szukaj... (pyral, nacl, RTG…)"/>
+
+  <div class="side-filter" id="sideFilter"></div>
+  <div class="side-list" id="sideList"></div>
+
+  <div class="side-help">
+    <b>Jak używać:</b><br>
+    • Kliknij pustą komórkę w tabeli → wybór leku<br>
+    • <kbd>+</kbd> obok leku = <b>mieszanka</b><br>
+    • Kliknij <kbd>IV</kbd> → zmiana drogi (IM/SC/PO/INH)<br>
+    • <kbd>Ctrl+P</kbd> — drukuj obustronnie
+  </div>
+
+  <div class="side-actions">
+    <button onclick="window.print()">🖨️ Drukuj (Ctrl+P)</button>
+    <button class="btn-clear" onclick="clearAll()">Wyczyść kartę</button>
+    <a href="index.html">← Powrót do portalu</a>
+  </div>
+</aside>
+
+<!-- ═══════════════ PAGES ═══════════════ -->
+<div class="pages-area">
+
+  <!-- PAGE 1 -->
+  <section class="page" id="page1">
+    <header class="hdr">
+      <div class="herb"></div>
+      <div class="hdr-text">
+        <div class="hdr-name">Szpital Specjalistyczny im. J.K. Łukowicza w Chojnicach</div>
+        <div class="hdr-addr">89-600 Chojnice, ul. Leśna 10</div>
+        <div class="hdr-title">Indywidualna Karta Zleceń Lekarskich</div>
+      </div>
+      <div class="herb"></div>
+    </header>
+
+    <div class="patient-row">
+      <div class="patient-cell oddzial">
+        <div class="label">Oddział</div>
+        <div class="value">SOR</div>
+      </div>
+      <div class="patient-cell">
+        <div class="label">Imię i Nazwisko</div>
+        <input class="value" id="fImie" type="text"/>
+      </div>
+      <div class="patient-cell">
+        <div class="label">PESEL / Data ur.</div>
+        <input class="value" id="fPesel" type="text" maxlength="14"/>
+      </div>
+      <div class="patient-cell">
+        <div class="label">Nr ks. gł.</div>
+        <input class="value" id="fKsGl" type="text"/>
+      </div>
+    </div>
+
+    <div class="date-row">
+      <div class="dc">
+        <label>DATA:</label>
+        <input id="fData" type="text" placeholder="DD.MM.YYYY"/>
+      </div>
+      <div class="dc">
+        <label>DIETA:</label>
+        <input id="fDieta" type="text" placeholder="podstawowa / cukrzycowa / ścisła / NPO"/>
+      </div>
+      <div class="dc">
+        <div class="stamp-note">Pieczątka i podpis lekarza<br>zlecającego dietę</div>
+      </div>
+    </div>
+
+    <table class="drugs-table" data-page="1">
+      <colgroup>
+        <col class="col-name">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+      </colgroup>
+      <thead>
+        <tr>
+          <th rowspan="2">Nazwa handlowa leku, dawka,<br>krotność i droga podania</th>
+          <th colspan="3">Dzień 1 / dawka 1</th>
+          <th colspan="3">Dzień 2 / dawka 2</th>
+          <th colspan="3">Dzień 3 / dawka 3</th>
+        </tr>
+        <tr>
+          <th>Podpis<br>lekarza</th><th>Godzina<br>podania</th><th>Wykonuj.</th>
+          <th>Podpis<br>lekarza</th><th>Godzina<br>podania</th><th>Wykonuj.</th>
+          <th>Podpis<br>lekarza</th><th>Godzina<br>podania</th><th>Wykonuj.</th>
+        </tr>
+      </thead>
+      <tbody id="drugsBody1"></tbody>
+    </table>
+  </section>
+
+  <!-- PAGE 2 -->
+  <section class="page" id="page2">
+    <header class="hdr">
+      <div class="herb"></div>
+      <div class="hdr-text">
+        <div class="hdr-name">Szpital Specjalistyczny im. J.K. Łukowicza w Chojnicach</div>
+        <div class="hdr-addr">89-600 Chojnice, ul. Leśna 10 · strona 2</div>
+        <div class="hdr-title">Indywidualna Karta Zleceń Lekarskich</div>
+      </div>
+      <div class="herb"></div>
+    </header>
+
+    <table class="drugs-table" data-page="2" style="margin-top:3mm">
+      <colgroup>
+        <col class="col-name">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+      </colgroup>
+      <thead>
+        <tr>
+          <th rowspan="2">Nazwa handlowa leku, dawka,<br>krotność i droga podania — c.d.</th>
+          <th colspan="3">Dzień 1 / dawka 1</th>
+          <th colspan="3">Dzień 2 / dawka 2</th>
+          <th colspan="3">Dzień 3 / dawka 3</th>
+        </tr>
+        <tr>
+          <th>Podpis<br>lekarza</th><th>Godzina<br>podania</th><th>Wykonuj.</th>
+          <th>Podpis<br>lekarza</th><th>Godzina<br>podania</th><th>Wykonuj.</th>
+          <th>Podpis<br>lekarza</th><th>Godzina<br>podania</th><th>Wykonuj.</th>
+        </tr>
+      </thead>
+      <tbody id="drugsBody2"></tbody>
+    </table>
+
+    <div class="badania-title">Zlecone Badania Diagnostyczne i Konsultacje Lekarskie</div>
+
+    <table class="badania-table">
+      <colgroup>
+        <col class="b-name"><col class="b-sig"><col class="b-exe">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Zlecone badania diagnostyczne i konsultacje lekarskie</th>
+          <th>Podpis i pieczątka<br>zlecającego</th>
+          <th>Data i podpis wykonawcy</th>
+        </tr>
+      </thead>
+      <tbody id="badaniaBody"></tbody>
+    </table>
+
+    <div class="page-footer">
+      <span>EMLA · SOR Chojnice · Karta Zleceń Lekarskich v3</span>
+      <span>Strona 2 / 2</span>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ MODAL ═══════════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <header>
+      <h2 id="modalTitle">Wybierz lek</h2>
+      <input type="text" class="m-search" id="modalSearch" autocomplete="off"/>
+      <div class="m-filter" id="modalFilter"></div>
+    </header>
+    <div class="m-list" id="modalList"></div>
+    <footer>
+      <span><kbd>↑↓</kbd> nawigacja · <kbd>Enter</kbd> wybierz · <kbd>Esc</kbd> zamknij</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   STATE — wszystko w pamięci. Zamknięcie karty = koniec danych.
+   ═══════════════════════════════════════════════════════════════ */
+let LEKI = [];
+let BADANIA = [];
+let BADANIA_CATS = [];
+let LEK_CATS = [];
+
+let modalCtx = null;
+let modalMode = 'lek';
+let modalFilter = 'all';
+let modalFocusIdx = 0;
+let modalResults = [];
+
+let sideMode = 'leki';
+let sideFilter = 'all';
+
+const DRUG_ROWS_P1 = 16;
+const DRUG_ROWS_P2 = 18;
+const BADANIA_ROWS = 14;
+
+let drugRowsP1 = Array.from({length: DRUG_ROWS_P1}, () => []);
+let drugRowsP2 = Array.from({length: DRUG_ROWS_P2}, () => []);
+let badaniaRows = Array.from({length: BADANIA_ROWS}, () => []);
+
+function normPl(s) {
+  if (!s) return '';
+  return String(s).toLowerCase()
+    .replace(/ą/g,'a').replace(/ć/g,'c').replace(/ę/g,'e')
+    .replace(/ł/g,'l').replace(/ń/g,'n').replace(/ó/g,'o')
+    .replace(/ś/g,'s').replace(/ź/g,'z').replace(/ż/g,'z');
+}
+function escape(s) {
+  return String(s||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+async function loadData() {
+  try {
+    const [leki, bad] = await Promise.all([
+      fetch('data/leki_sor.json').then(r => r.json()),
+      fetch('data/badania.json').then(r => r.json())
+    ]);
+    LEKI = Array.isArray(leki) ? leki : (leki.leki || leki.medications || []);
+    LEK_CATS = [...new Set(LEKI.map(x => x.category || x.kategoria).filter(Boolean))].sort();
+
+    BADANIA_CATS = bad.categories || [];
+    BADANIA = [];
+    for (const cat of BADANIA_CATS) {
+      for (const it of (cat.items || [])) {
+        BADANIA.push({
+          code: it.code, name: it.name,
+          category_id: cat.id, category_name: cat.name,
+          icon: cat.icon, pilność_default: it.pilność_default || 'rutyna'
+        });
+      }
+    }
+  } catch (e) {
+    console.error('load fail:', e);
+    alert('Nie udało się załadować bazy leków/badań.\n' + e);
+  }
+  renderTables();
+  renderSidePanel();
+  const t = new Date();
+  const dd = String(t.getDate()).padStart(2,'0');
+  const mm = String(t.getMonth()+1).padStart(2,'0');
+  document.getElementById('fData').value = `${dd}.${mm}.${t.getFullYear()}`;
+}
+
+/* ─── SIDE PANEL ─── */
+function setMode(mode) {
+  sideMode = mode;
+  document.querySelectorAll('.side-tab').forEach(t => t.classList.toggle('on', t.dataset.mode === mode));
+  sideFilter = 'all';
+  renderSidePanel();
+}
+function setSideFilter(f) { sideFilter = f; renderSidePanel(); }
+function renderSidePanel() {
+  const cats = sideMode === 'leki' ? LEK_CATS : BADANIA_CATS.map(c => c.name);
+  document.getElementById('sideFilter').innerHTML =
+    `<span class="chip ${sideFilter==='all'?'on':''}" onclick="setSideFilter('all')">all</span>` +
+    cats.map(c => `<span class="chip ${sideFilter===c?'on':''}" onclick="setSideFilter('${c.replace(/'/g,"\\'")}')">${escape(c)}</span>`).join('');
+
+  const q = normPl(document.getElementById('sideSearch').value);
+  const listEl = document.getElementById('sideList');
+  let items;
+  if (sideMode === 'leki') {
+    items = LEKI.filter(x => {
+      if (sideFilter !== 'all' && (x.category || x.kategoria) !== sideFilter) return false;
+      if (!q) return true;
+      return normPl([x.pl_name, x.inn, (x.pl_aliases||[]).join(' '), x.dose_amp].join(' ')).includes(q);
+    });
+    listEl.innerHTML = items.slice(0, 200).map(x => `
+      <div class="side-item" onclick="quickAdd('lek','${x.id}')">
+        <div class="side-item-name">${escape(x.pl_name)} <span class="side-item-sub">· ${escape(x.dose_amp||'')} · ${escape((x.routes||[]).join('/'))}</span></div>
+        <div class="side-item-inn">${escape(x.inn||'')}</div>
+        <div class="side-item-cat">${escape(x.category||x.kategoria||'')}</div>
+      </div>`).join('') || `<div style="padding:20px;color:#666;text-align:center;font-size:11px">Brak wyników</div>`;
+  } else {
+    items = BADANIA.filter(x => {
+      if (sideFilter !== 'all' && x.category_name !== sideFilter) return false;
+      if (!q) return true;
+      return normPl(x.name + ' ' + x.code).includes(q);
+    });
+    listEl.innerHTML = items.slice(0, 200).map(x => `
+      <div class="side-item" onclick="quickAdd('badanie','${x.code}')">
+        <div class="side-item-name">${x.icon || ''} ${escape(x.name)}</div>
+        <div class="side-item-cat">${escape(x.category_name)} · ${escape(x.pilność_default)}</div>
+      </div>`).join('') || `<div style="padding:20px;color:#666;text-align:center;font-size:11px">Brak wyników</div>`;
+  }
+}
+
+function quickAdd(type, id) {
+  if (type === 'lek') {
+    const item = LEKI.find(x => x.id === id);
+    if (!item) return;
+    const route = item.default_route || (item.routes||['IV'])[0];
+    const idx = drugRowsP1.findIndex(r => r.length === 0);
+    if (idx >= 0) drugRowsP1[idx].push({ id: item.id, freq: 'co 8h', route });
+    else {
+      const i2 = drugRowsP2.findIndex(r => r.length === 0);
+      if (i2 >= 0) drugRowsP2[i2].push({ id: item.id, freq: 'co 8h', route });
+      else alert('Wszystkie wiersze zajęte.');
+    }
+  } else {
+    const b = BADANIA.find(x => x.code === id);
+    if (!b) return;
+    const idx = badaniaRows.findIndex(r => r.length === 0);
+    if (idx >= 0) badaniaRows[idx].push({ code: b.code, pilność: b.pilność_default });
+    else alert('Wszystkie wiersze badań zajęte.');
+  }
+  renderTables();
+}
+
+/* ─── TABLES ─── */
+function renderTables() {
+  document.getElementById('drugsBody1').innerHTML = renderDrugRows(drugRowsP1, 'p1');
+  document.getElementById('drugsBody2').innerHTML = renderDrugRows(drugRowsP2, 'p2');
+  document.getElementById('badaniaBody').innerHTML = renderBadaniaRows(badaniaRows);
+}
+
+function renderDrugRows(rows, prefix) {
+  return rows.map((row, ri) => {
+    const cell = row.length === 0
+      ? `<td class="drug-cell empty" onclick="openLekPicker('${prefix}',${ri})"></td>`
+      : `<td class="drug-cell">${row.map((drug, di) => renderDrugLine(drug, prefix, ri, di)).join('')}<button class="dl-add-mix-row" onclick="event.stopPropagation();addMix('${prefix}',${ri})">+ lek do mieszanki</button></td>`;
+    return `<tr>${cell}${Array.from({length: 9}, () => `<td></td>`).join('')}</tr>`;
+  }).join('');
+}
+
+function renderDrugLine(drug, prefix, ri, di) {
+  const item = LEKI.find(x => x.id === drug.id);
+  if (!item) return '';
+  const marker = di === 0 ? '●' : '+';
+  const mixClass = di > 0 ? 'mix' : '';
+  return `<div class="drug-line ${mixClass}">
+    <span class="dl-marker">${marker}</span>
+    <span class="dl-name">${escape(item.pl_name)}</span>
+    <span class="dl-inn">(${escape(item.inn||'')})</span>
+    <span class="dl-dose">${escape(item.dose_amp||'')}</span>
+    <input class="dl-freq" value="${escape(drug.freq||'')}" onchange="updateDrug('${prefix}',${ri},${di},'freq',this.value)" placeholder="krotność"/>
+    <button class="dl-route" data-route="${drug.route}" onclick="event.stopPropagation();cycleRoute('${prefix}',${ri},${di})" title="Kliknij aby zmienić drogę">${drug.route}</button>
+    <button class="dl-remove" onclick="event.stopPropagation();removeDrug('${prefix}',${ri},${di})" title="Usuń">×</button>
+  </div>`;
+}
+
+function renderBadaniaRows(rows) {
+  return rows.map((row, ri) => {
+    const cell = row.length === 0
+      ? `<td class="badania-cell empty" onclick="openBadaniePicker(${ri})"></td>`
+      : `<td class="badania-cell">${row.map((b, bi) => renderBadanieLine(b, ri, bi)).join('')}<button class="dl-add-mix-row" onclick="event.stopPropagation();addBadanieTo(${ri})">+ badanie / konsultację</button></td>`;
+    return `<tr>${cell}<td></td><td></td></tr>`;
+  }).join('');
+}
+
+function renderBadanieLine(b, ri, bi) {
+  const it = BADANIA.find(x => x.code === b.code);
+  if (!it) return '';
+  return `<div class="badania-line">
+    <span class="bl-name">${it.icon||''} ${escape(it.name)}</span>
+    <span class="bl-cat">${escape(it.category_name)}</span>
+    <button class="bl-urgent" data-v="${b.pilność}" onclick="event.stopPropagation();cyclePilnosc(${ri},${bi})">${b.pilność.toUpperCase()}</button>
+    <button class="bl-remove" onclick="event.stopPropagation();removeBadanie(${ri},${bi})">×</button>
+  </div>`;
+}
+
+/* ─── ACTIONS ─── */
+function openLekPicker(prefix, ri) {
+  modalCtx = { type: 'lek', onPick: (it) => {
+    (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri].push({ id: it.id, freq: 'co 8h', route: it.default_route || (it.routes||['IV'])[0] });
+    renderTables();
+  }};
+  openModal('Wybierz lek', 'lek');
+}
+function openBadaniePicker(ri) {
+  modalCtx = { type: 'badanie', onPick: (it) => {
+    badaniaRows[ri].push({ code: it.code, pilność: it.pilność_default });
+    renderTables();
+  }};
+  openModal('Wybierz badanie / konsultację', 'badanie');
+}
+function addMix(prefix, ri) {
+  modalCtx = { type: 'lek', onPick: (it) => {
+    (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri].push({ id: it.id, freq: '', route: it.default_route || (it.routes||['IV'])[0] });
+    renderTables();
+  }};
+  openModal('Dodaj lek do mieszanki', 'lek');
+}
+function addBadanieTo(ri) {
+  modalCtx = { type: 'badanie', onPick: (it) => {
+    badaniaRows[ri].push({ code: it.code, pilność: it.pilność_default });
+    renderTables();
+  }};
+  openModal('Dodaj badanie / konsultację', 'badanie');
+}
+
+function updateDrug(prefix, ri, di, field, val) {
+  const rows = prefix === 'p1' ? drugRowsP1 : drugRowsP2;
+  if (rows[ri][di]) rows[ri][di][field] = val;
+}
+function removeDrug(prefix, ri, di) {
+  (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri].splice(di, 1);
+  renderTables();
+}
+function cycleRoute(prefix, ri, di) {
+  const drug = (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri][di];
+  const item = LEKI.find(x => x.id === drug.id);
+  const routes = item?.routes || ['IV'];
+  drug.route = routes[(routes.indexOf(drug.route) + 1) % routes.length];
+  renderTables();
+}
+function removeBadanie(ri, bi) { badaniaRows[ri].splice(bi, 1); renderTables(); }
+function cyclePilnosc(ri, bi) {
+  const b = badaniaRows[ri][bi];
+  b.pilność = b.pilność === 'cito' ? 'rutyna' : 'cito';
+  renderTables();
+}
+
+function clearAll() {
+  if (!confirm('Wyczyścić całą kartę? Dane pacjenta, leki i badania zostaną usunięte.')) return;
+  drugRowsP1 = Array.from({length: DRUG_ROWS_P1}, () => []);
+  drugRowsP2 = Array.from({length: DRUG_ROWS_P2}, () => []);
+  badaniaRows = Array.from({length: BADANIA_ROWS}, () => []);
+  ['fImie','fPesel','fKsGl','fDieta'].forEach(id => document.getElementById(id).value = '');
+  renderTables();
+}
+
+/* ─── MODAL ─── */
+function openModal(title, mode) {
+  modalMode = mode;
+  modalFilter = 'all';
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSearch').value = '';
+  renderModalFilter();
+  renderModalList('');
+  document.getElementById('modal').classList.add('open');
+  setTimeout(() => document.getElementById('modalSearch').focus(), 50);
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); modalCtx = null; }
+function renderModalFilter() {
+  const cats = modalMode === 'lek' ? LEK_CATS : BADANIA_CATS.map(c => c.name);
+  document.getElementById('modalFilter').innerHTML =
+    `<span class="chip ${modalFilter==='all'?'on':''}" onclick="setModalFilter('all')">wszystkie</span>` +
+    cats.map(c => `<span class="chip ${modalFilter===c?'on':''}" onclick="setModalFilter('${c.replace(/'/g,"\\'")}')">${escape(c)}</span>`).join('');
+}
+function setModalFilter(f) {
+  modalFilter = f;
+  renderModalFilter();
+  renderModalList(document.getElementById('modalSearch').value);
+}
+function renderModalList(q) {
+  const nq = normPl(q);
+  const src = modalMode === 'lek' ? LEKI : BADANIA;
+  modalResults = src.filter(x => {
+    if (modalMode === 'lek') {
+      if (modalFilter !== 'all' && (x.category || x.kategoria) !== modalFilter) return false;
+      if (!nq) return true;
+      return normPl([x.pl_name, x.inn, (x.pl_aliases||[]).join(' '), x.dose_amp].join(' ')).includes(nq);
+    } else {
+      if (modalFilter !== 'all' && x.category_name !== modalFilter) return false;
+      if (!nq) return true;
+      return normPl(x.name + ' ' + x.code).includes(nq);
+    }
+  });
+  modalFocusIdx = 0;
+  const list = document.getElementById('modalList');
+  list.innerHTML = modalResults.slice(0, 150).map((x, i) => {
+    if (modalMode === 'lek') {
+      return `<div class="m-item ${i===0?'focused':''}" data-i="${i}" onclick="pickModal(${i})">
+        <div class="m-item-name">${escape(x.pl_name)} <span class="m-item-sub">· ${escape(x.dose_amp||'')} · ${escape((x.routes||[]).join('/'))}</span></div>
+        <div class="m-item-sub">${escape(x.inn||'')}</div>
+        <div class="m-item-cat">${escape(x.category||x.kategoria||'')}</div>
+      </div>`;
+    } else {
+      return `<div class="m-item ${i===0?'focused':''}" data-i="${i}" onclick="pickModal(${i})">
+        <div class="m-item-name">${x.icon||''} ${escape(x.name)}</div>
+        <div class="m-item-cat">${escape(x.category_name)} · ${escape(x.pilność_default)}</div>
+      </div>`;
+    }
+  }).join('') || `<div style="padding:24px;color:#888;text-align:center;font-size:13px">Brak wyników</div>`;
+}
+function pickModal(i) {
+  const item = modalResults[i];
+  if (!item || !modalCtx) { closeModal(); return; }
+  modalCtx.onPick(item);
+  closeModal();
+}
+function moveFocus(delta) {
+  const items = document.querySelectorAll('.m-item');
+  if (!items.length) return;
+  modalFocusIdx = Math.max(0, Math.min(items.length-1, modalFocusIdx + delta));
+  items.forEach((el, i) => el.classList.toggle('focused', i === modalFocusIdx));
+  const el = items[modalFocusIdx];
+  if (el) el.scrollIntoView({ block: 'nearest' });
+}
+
+/* ─── EVENTS ─── */
+document.addEventListener('keydown', (e) => {
+  const mOpen = document.getElementById('modal').classList.contains('open');
+  if (mOpen) {
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); moveFocus(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); moveFocus(-1); }
+    else if (e.key === 'Enter') { e.preventDefault(); pickModal(modalFocusIdx); }
+  }
+});
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target.id === 'modal') closeModal();
+});
+document.getElementById('modalSearch').addEventListener('input', (e) => renderModalList(e.target.value));
+document.getElementById('sideSearch').addEventListener('input', renderSidePanel);
+
+loadData();
+</script>
+</body>
+</html>
