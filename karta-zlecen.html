@@ -524,32 +524,156 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PRINT
+   PRINT — 2-sided A4, matches paper original (Times NR 9pt, clean B/W)
    ═══════════════════════════════════════════════════════════════ */
-@page { size: A4; margin: 8mm 10mm; }
+@page { size: A4 portrait; margin: 10mm 12mm; }
 @media print {
-  html, body { background: #fff !important; color: #000 !important; }
-  body { display: block !important; }
-  .side-panel, .modal-overlay { display: none !important; }
-  .pages-area { padding: 0 !important; gap: 0 !important; }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 9pt !important;
+  }
+  body { display: block !important; margin: 0 !important; padding: 0 !important; }
+
+  /* Hide ALL screen-only UI */
+  .side-panel,
+  .modal-overlay,
+  #emlaBackHome,
+  .toast,
+  .freq-menu,
+  .scanline,
+  .spotlight,
+  .aurora,
+  .bgcarousel,
+  .rd-sidebar,
+  .rd-side-backdrop,
+  .rd-reveal,
+  .rd-mini,
+  .rd-full {
+    display: none !important;
+  }
+  body::before, body::after { display: none !important; }
+
+  /* Pages area — no padding, fill printable zone */
+  .pages-area { padding: 0 !important; gap: 0 !important; display: block !important; }
   .page {
-    box-shadow: none !important; padding: 0 !important;
-    margin: 0 !important; min-height: auto !important;
-    width: 100% !important; page-break-after: always;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    page-break-after: always;
+    break-after: page;
   }
-  .page:last-child { page-break-after: auto; }
-  .drug-cell.empty::before, .badania-cell.empty::before { display: none; }
-  .drug-line .dl-remove, .drug-line .dl-add-mix,
-  .badania-line .bl-remove, .dl-add-mix-row { display: none !important; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  /* Header — ensure full border visibility */
+  .hdr { border-bottom: 1.8px solid #000 !important; page-break-after: avoid; }
+  .hdr-name, .hdr-title { color: #000 !important; }
+
+  /* Table borders — force black, visible */
+  .drugs-table, .drugs-table th, .drugs-table td,
+  .badania-table, .badania-table th, .badania-table td,
+  .patient-row, .patient-cell, .date-row, .date-row .dc {
+    border-color: #000 !important;
+  }
+  .drugs-table thead th, .badania-table thead th {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+  }
+
+  /* Row heights — enforce ~18mm for handwriting */
+  .drugs-table th, .drugs-table td { height: 18mm !important; }
+  .drugs-table thead th { height: auto !important; }
+  .badania-table th, .badania-table td { height: 16mm !important; }
+  .badania-table thead th { height: auto !important; }
+
+  /* Keep rows together (no break across pages mid-row) */
+  .drugs-table tr, .badania-table tr { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Hide all interactive screen-only elements in drug cells */
+  .drug-cell.empty::before, .badania-cell.empty::before { display: none !important; }
+  .drug-line .dl-remove,
+  .drug-line .dl-add-mix,
+  .dl-add-mix-row,
+  .badania-line .bl-remove,
+  .dl-calc { display: none !important; }
+
+  /* krotność picker → flatten to plain text for print */
   .drug-line .dl-freq { border-bottom: none !important; }
-  .drug-line .dl-route, .badania-line .bl-urgent {
-    background: #fff !important; color: #000 !important;
-    border: 0.6px solid #000 !important; font-weight: 700;
-    padding: 0px 3px;
+  .dl-freq-btn {
+    background: transparent !important;
+    color: #000 !important;
+    border: none !important;
+    padding: 0 !important;
+    font-family: 'Times New Roman', serif !important;
+    font-weight: 700 !important;
   }
-  .drug-line .dl-inn { color: #333 !important; }
-  .badania-line .bl-cat { background: #fff; border: 0.5px solid #999; }
+  .dl-freq-hours {
+    background: transparent !important;
+    border: none !important;
+    color: #000 !important;
+    font-family: 'Times New Roman', serif !important;
+    white-space: normal !important;
+    max-width: none !important;
+    overflow: visible !important;
+  }
+  .dl-freq-hours:empty::before { content: ''; }
+
+  /* Route pill → plain text with small border */
+  .drug-line .dl-route, .badania-line .bl-urgent {
+    background: #fff !important;
+    color: #000 !important;
+    border: 0.6px solid #000 !important;
+    font-weight: 700;
+    padding: 0 3px !important;
+    font-family: 'Times New Roman', serif !important;
+  }
+  .drug-line .dl-inn { color: #333 !important; font-style: italic; }
+  .drug-line .dl-marker { color: #000 !important; }
+  .drug-line .dl-name, .drug-line .dl-dose { font-family: 'Times New Roman', serif !important; }
+  .badania-line .bl-cat {
+    background: #fff !important;
+    border: 0.5px solid #666 !important;
+    color: #000 !important;
+  }
   .drug-cell.empty, .badania-cell.empty { background: #fff !important; }
+  .drug-cell, .badania-cell {
+    background: #fff !important;
+    overflow: visible !important;   /* allow handwritten additions */
+  }
+
+  /* Meta fields — ensure visible black text */
+  .patient-cell .value, .patient-cell .label,
+  .date-row input, .date-row label, .date-row .stamp-note,
+  .sig-row .sig-label, .sig-row .sig-sub {
+    color: #000 !important; background: transparent !important;
+    font-family: 'Times New Roman', serif !important;
+  }
+  .sig-row .sig-line, .patient-cell input, .date-row input {
+    border-color: #000 !important;
+    background: transparent !important;
+  }
+
+  /* Badania title */
+  .badania-title {
+    border-color: #000 !important;
+    color: #000 !important;
+    page-break-after: avoid;
+  }
+
+  /* Remove page footer decoration on print */
+  .page-footer { border-top: 0.5px solid #666 !important; color: #555 !important; }
+
+  /* Herb — ensure visible */
+  .hdr .herb { filter: none !important; opacity: 1 !important; }
 }
 
 @media screen and (max-width: 900px) {

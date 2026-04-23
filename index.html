@@ -162,21 +162,6 @@ body::after {
 }
 [data-theme="light"] .starfield { opacity: 0.18; }
 
-/* ═══ SCANLINE overlay ═══ */
-.scanline {
-  position: fixed; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(77, 163, 255, 0.22), transparent);
-  pointer-events: none; z-index: 9998;
-  animation: scan 7s linear infinite;
-  box-shadow: 0 0 12px rgba(77, 163, 255, 0.3);
-}
-@keyframes scan {
-  0%   { top: -2%; opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { top: 102%; opacity: 0; }
-}
-
 /* ═══ SPOTLIGHT cursor ═══ */
 .spotlight {
   position: fixed; width: 420px; height: 420px;
@@ -629,7 +614,7 @@ body::after {
     animation-iteration-count: 1 !important;
     transition-duration: 0.05ms !important;
   }
-  .aurora, .starfield, .scanline, .spotlight { display: none; }
+  .aurora, .starfield, .spotlight { display: none; }
 }
 @media (hover: none) {
   .spotlight { display: none; }
@@ -681,6 +666,497 @@ body::after {
 @media (prefers-reduced-motion: no-preference) {
   .hero-phone { animation: heli-drift 18s ease-in-out infinite; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   TAB-PILLS — quick-access tabs (Kalkulatory / Protokoły / …)
+   ═══════════════════════════════════════════════════════════════ */
+.tab-pills {
+  position: sticky; top: calc(68px + env(safe-area-inset-top));
+  z-index: 60;
+  padding: 8px 20px;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  max-width: 1400px; margin: 0 auto;
+  justify-content: center;
+}
+.tab-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 14px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  color: var(--fg-1);
+  font-family: var(--font-ui);
+  font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none; cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.3, 1.1);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-tap-highlight-color: transparent;
+}
+.tab-pill:hover { transform: translateY(-2px) scale(1.04); border-color: var(--border-hot); background: var(--bg-card-hi); color: var(--fg-0); }
+.tab-pill:active { transform: scale(0.97); }
+.tab-pill svg { width: 16px; height: 16px; flex-shrink: 0; }
+.tab-pill.red   { color: var(--red);    border-color: var(--red-gl);    background: var(--red-bg); }
+.tab-pill.red:hover   { box-shadow: 0 6px 24px var(--red-bg),   0 0 0 1px var(--red)    inset; }
+.tab-pill.orange { color: var(--orange); border-color: var(--ora-gl); background: var(--ora-bg); }
+.tab-pill.orange:hover { box-shadow: 0 6px 24px var(--ora-bg), 0 0 0 1px var(--orange) inset; }
+.tab-pill.green { color: var(--green); border-color: var(--grn-gl); background: var(--grn-bg); }
+.tab-pill.green:hover { box-shadow: 0 6px 24px var(--grn-bg), 0 0 0 1px var(--green) inset; }
+.tab-pill.blue  { color: var(--blue);  border-color: var(--blu-gl);  background: var(--blu-bg); }
+.tab-pill.blue:hover  { box-shadow: 0 6px 24px var(--blu-bg), 0 0 0 1px var(--blue)  inset; }
+.tab-pill.violet { color: #c084fc; border-color: rgba(192,132,252,0.4); background: rgba(192,132,252,0.1); }
+.tab-pill.violet:hover { box-shadow: 0 6px 24px rgba(192,132,252,0.2), 0 0 0 1px #c084fc inset; }
+.tab-pill.amber  { color: var(--yellow); border-color: rgba(234,179,8,0.4); background: rgba(234,179,8,0.1); }
+.tab-pill.amber:hover { box-shadow: 0 6px 24px rgba(234,179,8,0.18), 0 0 0 1px var(--yellow) inset; }
+
+@media (max-width: 700px) {
+  .tab-pills { padding: 6px 10px; gap: 6px; top: calc(60px + env(safe-area-inset-top)); }
+  .tab-pill { padding: 7px 11px; font-size: 11.5px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FORMULARZE overlay menu — appears on click of Formularze pill
+   ═══════════════════════════════════════════════════════════════ */
+.forms-overlay {
+  position: fixed; inset: 0; z-index: 9998;
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 20vh 16px 10vh;
+  background: rgba(5, 8, 22, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: forms-fade 0.28s ease-out;
+}
+.forms-overlay.open { display: flex; }
+[data-theme="light"] .forms-overlay { background: rgba(255,255,255,0.72); }
+@keyframes forms-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.forms-box {
+  width: 100%; max-width: 560px;
+  background: var(--bg-card-hi);
+  border: 1px solid var(--border-hot);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: var(--sh-elev);
+  animation: forms-slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes forms-slide-in { from { opacity: 0; transform: translateY(-18px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+.forms-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.forms-head h3 { font-size: 15px; font-weight: 700; color: var(--fg-0); letter-spacing: -0.01em; }
+.forms-close { width: 32px; height: 32px; border: 1px solid var(--border); background: var(--bg-elev); border-radius: 10px; color: var(--fg-1); cursor: pointer; font-size: 18px; }
+.forms-close:hover { background: var(--bg-elev-2); color: var(--fg-0); }
+
+.forms-list { display: flex; flex-direction: column; gap: 8px; }
+.forms-item {
+  display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none; color: var(--fg-0);
+  transition: all 0.15s;
+}
+.forms-item:hover { border-color: var(--border-str); background: var(--bg-elev-2); transform: translateX(3px); }
+.forms-item-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--bg-elev); font-size: 18px; }
+.forms-item-body { display: flex; flex-direction: column; gap: 2px; }
+.forms-item-title { font-size: 13.5px; font-weight: 700; color: var(--fg-0); }
+.forms-item-sub { font-size: 11px; color: var(--fg-2); }
+.forms-item svg { width: 16px; height: 16px; color: var(--fg-3); }
+
+/* ═══════════════════════════════════════════════════════════════
+   RADIO SIDEBAR — slide-in from right (replaces floating mini)
+   ═══════════════════════════════════════════════════════════════ */
+.rd-sidebar {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 380px; max-width: 90vw;
+  z-index: 9000;
+  background: var(--bg-card-hi);
+  border-left: 1px solid var(--border-hot);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow: -16px 0 48px rgba(0, 0, 0, 0.4);
+  transform: translateX(100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex; flex-direction: column;
+  padding: 20px;
+  padding-top: calc(20px + env(safe-area-inset-top));
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  gap: 14px;
+  overflow-y: auto;
+}
+#emla-radio.rd-sidebar-open .rd-sidebar { transform: translateX(0); }
+
+.rd-side-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.rd-side-title { display: flex; flex-direction: column; gap: 2px; }
+.rd-side-title b { font-size: 15px; font-weight: 800; color: var(--fg-0); letter-spacing: -0.01em; }
+.rd-side-title small { font-size: 11px; color: var(--fg-2); }
+.rd-side-actions { display: flex; gap: 6px; }
+.rd-side-actions button {
+  width: 34px; height: 34px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--fg-1);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.rd-side-actions button:hover { background: var(--bg-elev-2); color: var(--fg-0); transform: scale(1.06); }
+
+.rd-side-player {
+  display: grid; grid-template-columns: 62px 1fr;
+  gap: 12px; align-items: center;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.rd-side-logo {
+  width: 62px; height: 62px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 900; font-size: 15px; letter-spacing: 0.06em;
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--rd-accent) 40%, transparent);
+  animation: rd-logo-pulse 3s ease-in-out infinite;
+}
+@keyframes rd-logo-pulse {
+  0%, 100% { box-shadow: 0 4px 20px color-mix(in srgb, var(--rd-accent) 40%, transparent); }
+  50%      { box-shadow: 0 6px 28px color-mix(in srgb, var(--rd-accent) 60%, transparent); }
+}
+.rd-side-now { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rd-side-now-name { font-size: 14px; font-weight: 700; color: var(--fg-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rd-side-now-sub  { font-size: 11px; color: var(--fg-2); }
+
+.rd-side-viz {
+  position: relative;
+  height: 170px;
+  border-radius: 14px;
+  background: radial-gradient(circle at center, color-mix(in srgb, var(--rd-accent) 14%, var(--bg-void)), var(--bg-void));
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.rd-side-viz canvas { width: 100%; height: 100%; display: block; }
+
+.rd-side-controls { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 4px 0; }
+.rd-side-controls .rd-ctrl { width: 42px; height: 42px; }
+.rd-side-controls .rd-ctrl-play { width: 52px; height: 52px; background: var(--rd-accent); color: #fff; }
+
+.rd-side-vol { display: flex; align-items: center; gap: 10px; padding: 4px 8px; color: var(--fg-2); }
+.rd-side-vol input[type="range"] { flex: 1; -webkit-appearance: none; height: 4px; background: rgba(255,255,255,0.18); border-radius: 100px; outline: none; cursor: pointer; }
+.rd-side-vol input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--rd-accent); cursor: pointer; }
+
+.rd-side-stations { display: flex; flex-direction: column; gap: 6px; padding-bottom: 8px; }
+.rd-side-station {
+  --c: #4da3ff;
+  display: grid; grid-template-columns: 32px 1fr auto;
+  gap: 10px; align-items: center;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--fg-0);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  text-align: left;
+  transition: all 0.12s;
+}
+.rd-side-station:hover { border-color: var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); }
+.rd-side-station.active { border-color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); box-shadow: inset 0 0 0 1px var(--c); }
+.rd-side-station-abbr {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 60%, #000));
+  color: #fff; font-weight: 900; font-size: 10.5px;
+  border-radius: 8px; letter-spacing: 0.04em;
+}
+.rd-side-station-info { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.rd-side-station-name { font-size: 12.5px; font-weight: 700; color: var(--fg-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rd-side-station-sub { font-size: 10px; color: var(--fg-2); }
+.rd-side-station-eq { color: var(--c); font-size: 10px; opacity: 0.7; }
+.rd-side-station.active .rd-side-station-eq { opacity: 1; }
+
+.rd-side-hint { font-size: 10.5px; color: var(--fg-3); text-align: center; padding-top: 4px; }
+.rd-side-hint kbd { font-family: var(--font-mono); font-size: 9.5px; padding: 1px 5px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 4px; color: var(--fg-2); }
+
+/* Shaded backdrop when sidebar open */
+.rd-side-backdrop {
+  position: fixed; inset: 0; z-index: 8999;
+  background: rgba(5, 8, 22, 0.55);
+  backdrop-filter: blur(3px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s;
+}
+#emla-radio.rd-sidebar-open .rd-side-backdrop { opacity: 1; pointer-events: auto; }
+
+@media (max-width: 480px) {
+  .rd-sidebar { width: 100vw; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RADIO WIDGET — floating mini-player + full-screen visualizer
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --rd-accent: #4da3ff;
+  --rd-bg-glass: rgba(15, 23, 41, 0.78);
+  --rd-border: rgba(255, 255, 255, 0.12);
+}
+
+/* === Reveal button (hidden state) === */
+.rd-reveal {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 998;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(77, 163, 255, 0.16);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(77, 163, 255, 0.4);
+  border-radius: 100px;
+  color: var(--rd-accent);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(77, 163, 255, 0.28);
+  transition: all 0.2s;
+}
+#emla-radio.rd-hidden .rd-reveal { display: inline-flex; }
+.rd-reveal:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 32px rgba(77,163,255,0.4); }
+.rd-reveal svg { width: 16px; height: 16px; }
+
+/* === Mini player === */
+.rd-mini {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 997;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  min-width: 340px;
+  max-width: calc(100vw - 32px);
+  background: var(--rd-bg-glass);
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid var(--rd-border);
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 30px color-mix(in srgb, var(--rd-accent) 22%, transparent);
+  font-family: var(--font-ui);
+}
+#emla-radio.rd-mini .rd-mini { display: flex; }
+[data-theme="light"] .rd-mini { background: rgba(255,255,255,0.82); border-color: rgba(0,0,0,0.1); }
+
+.rd-mini-logo {
+  width: 42px; height: 42px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 900; font-size: 12px;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+.rd-mini-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rd-mini-name { font-size: 13px; font-weight: 700; color: var(--fg-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rd-mini-sub  { font-size: 10.5px; color: var(--fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rd-mini-waves { width: 72px; height: 36px; flex-shrink: 0; }
+
+.rd-btn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--rd-border);
+  border-radius: 9px;
+  color: var(--fg-1);
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+}
+.rd-btn:hover { background: rgba(255,255,255,0.12); color: var(--fg-0); transform: scale(1.06); }
+.rd-btn:active { transform: scale(0.92); }
+.rd-btn.rd-play { background: var(--rd-accent); color: #fff; border-color: var(--rd-accent); box-shadow: 0 2px 12px color-mix(in srgb, var(--rd-accent) 40%, transparent); }
+.rd-btn.rd-play:hover { filter: brightness(1.1); }
+.rd-btn.rd-hide { font-size: 20px; line-height: 0; font-weight: 400; }
+
+/* === Full-screen === */
+.rd-full {
+  position: fixed; inset: 0;
+  z-index: 9999;
+  display: none;
+  background: radial-gradient(ellipse at center, rgba(5,8,22,0.88) 0%, rgba(5,8,22,0.97) 60%, #000 100%);
+  backdrop-filter: blur(10px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 20px;
+  animation: rd-fade-in 0.4s ease-out;
+}
+#emla-radio.rd-full .rd-full { display: flex; }
+[data-theme="light"] .rd-full { background: radial-gradient(ellipse at center, rgba(244,246,252,0.92) 0%, rgba(244,246,252,0.98) 60%, #fff 100%); }
+@keyframes rd-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.rd-full-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 44px; height: 44px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--rd-border);
+  border-radius: 12px;
+  color: var(--fg-0);
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.rd-full-close:hover { background: rgba(255,59,74,0.22); color: var(--red); }
+
+.rd-viz-wrap {
+  position: relative;
+  width: min(720px, 88vmin);
+  height: min(720px, 88vmin);
+  display: flex; align-items: center; justify-content: center;
+}
+.rd-viz {
+  width: 100%; height: 100%;
+  position: absolute; inset: 0;
+  transition: opacity 0.8s;
+}
+.rd-viz.portal { animation: rd-portal 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes rd-portal {
+  0%   { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg) blur(18px); }
+  50%  { transform: scale(1.12) rotate(6deg); filter: hue-rotate(80deg) blur(8px); }
+  100% { transform: scale(1) rotate(0deg); filter: none; }
+}
+
+.rd-viz-center {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 12px;
+  pointer-events: none;
+}
+.rd-vinyl {
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  box-shadow: 0 0 60px color-mix(in srgb, var(--rd-accent) 50%, transparent), inset 0 0 40px rgba(0,0,0,0.6);
+  animation: rd-spin 12s linear infinite;
+  position: relative;
+}
+.rd-vinyl::before, .rd-vinyl::after {
+  content: ''; position: absolute; inset: 15%;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  border-radius: 50%;
+}
+.rd-vinyl::after { inset: 25%; border-color: rgba(255,255,255,0.1); }
+@keyframes rd-spin { to { transform: rotate(360deg); } }
+
+.rd-now { font-size: 22px; font-weight: 800; color: var(--fg-0); text-align: center; margin-top: 14px; letter-spacing: -0.01em; text-shadow: 0 0 24px color-mix(in srgb, var(--rd-accent) 55%, transparent); }
+.rd-now-sub { font-size: 13px; color: var(--fg-2); }
+
+.rd-controls {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--rd-border);
+  border-radius: 100px;
+  backdrop-filter: blur(20px);
+}
+.rd-ctrl {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; color: var(--fg-1);
+  cursor: pointer; border-radius: 50%;
+  transition: all 0.2s;
+}
+.rd-ctrl:hover { background: rgba(255,255,255,0.08); color: var(--fg-0); transform: scale(1.08); }
+.rd-ctrl-play {
+  width: 64px; height: 64px;
+  background: var(--rd-accent); color: #fff;
+  box-shadow: 0 4px 30px color-mix(in srgb, var(--rd-accent) 50%, transparent);
+}
+.rd-ctrl-play:hover { filter: brightness(1.15); box-shadow: 0 6px 40px color-mix(in srgb, var(--rd-accent) 65%, transparent); }
+
+.rd-vol { display: flex; align-items: center; gap: 10px; padding: 0 12px; color: var(--fg-1); }
+.rd-vol input[type="range"] {
+  -webkit-appearance: none;
+  width: 100px; height: 4px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 100px;
+  outline: none; cursor: pointer;
+}
+.rd-vol input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--rd-accent); cursor: pointer;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--rd-accent) 60%, transparent);
+}
+.rd-vol input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--rd-accent); border: none;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--rd-accent) 60%, transparent);
+}
+
+.rd-stations {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  width: 100%; max-width: 1000px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px;
+}
+.rd-station {
+  --c: #4da3ff;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  grid-template-rows: auto auto;
+  gap: 2px 10px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--rd-border);
+  border-radius: 12px;
+  color: var(--fg-0);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  text-align: left;
+  transition: all 0.15s;
+}
+.rd-station:hover {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  transform: translateY(-2px);
+}
+.rd-station.active {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 18%, transparent);
+  box-shadow: 0 0 0 1px var(--c) inset;
+}
+.rd-station-abbr {
+  grid-row: 1 / 3;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--c), color-mix(in srgb, var(--c) 60%, #000));
+  border-radius: 9px;
+  color: #fff; font-weight: 900; font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.rd-station-name { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+.rd-station-sub  { font-size: 10.5px; color: var(--fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+@media (max-width: 560px) {
+  .rd-mini { min-width: auto; width: calc(100vw - 32px); }
+  .rd-mini-waves { display: none; }
+  .rd-viz-wrap { width: 90vw; height: 90vw; }
+  .rd-now { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-vinyl, .rd-viz.portal { animation: none; }
+}
 </style>
 </head>
 
@@ -710,7 +1186,6 @@ body::after {
 
 <div class="aurora" aria-hidden="true"></div>
 <canvas class="starfield" id="starfield" aria-hidden="true"></canvas>
-<div class="scanline" aria-hidden="true"></div>
 <div class="spotlight" id="spotlight" aria-hidden="true"></div>
 
 <!-- Topbar -->
@@ -732,6 +1207,90 @@ body::after {
     </button>
   </div>
 </header>
+
+<!-- Tab-pills: quick access to tools (as in original) -->
+<nav class="tab-pills" aria-label="Szybki dostęp">
+  <a class="tab-pill blue" href="kalkulatory.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+    <span>Kalkulatory</span>
+  </a>
+  <a class="tab-pill red" href="protokoly.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    <span>Protokoły</span>
+  </a>
+  <a class="tab-pill green" href="farmakologia.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5a7 7 0 0 1-7-7V5.5a1 1 0 0 1 1-1h3v9a3 3 0 0 1-3 3M6.5 13.5h6M10.5 4.5h3a1 1 0 0 1 1 1v8a3 3 0 0 1-3 3"/><circle cx="19" cy="15" r="3"/><path d="M17 13l4 4"/></svg>
+    <span>Farmakologia</span>
+  </a>
+  <a class="tab-pill violet" href="karta-zlecen.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span>Karta zleceń</span>
+  </a>
+  <a class="tab-pill blue" href="transport-sanitarny.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
+    <span>Transport / LPR</span>
+  </a>
+  <button class="tab-pill amber" id="formsOpenBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    <span>Formularze</span>
+  </button>
+  <button class="tab-pill orange" id="radioOpenBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a1 1 0 0 0-.7-.95l-15-4"/><circle cx="16" cy="16" r="3"/><line x1="8" y1="10" x2="8" y2="10"/></svg>
+    <span>Radio</span>
+  </button>
+</nav>
+
+<!-- Formularze overlay -->
+<div class="forms-overlay" id="formsOverlay" onclick="if(event.target===this)closeForms()">
+  <div class="forms-box">
+    <div class="forms-head">
+      <h3>📄 Formularze i dokumenty</h3>
+      <button class="forms-close" onclick="closeForms()" aria-label="Zamknij">×</button>
+    </div>
+    <div class="forms-list">
+      <a class="forms-item" href="forms/zgoda-tk-dziecka.html" target="_blank" rel="noopener">
+        <span class="forms-item-icon">🧒</span>
+        <span class="forms-item-body">
+          <span class="forms-item-title">Zgoda TK dziecka</span>
+          <span class="forms-item-sub">Pediatryczna zgoda na tomografię komputerową</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+      <a class="forms-item" href="forms/zgoda-swiadczenie.html" target="_blank" rel="noopener">
+        <span class="forms-item-icon">📋</span>
+        <span class="forms-item-body">
+          <span class="forms-item-title">Zgoda / odmowa świadczenia</span>
+          <span class="forms-item-sub">Zgoda · odmowa · wypis na żądanie (3 sekcje)</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+      <a class="forms-item" href="karta-zlecen.html" target="_blank" rel="noopener">
+        <span class="forms-item-icon">📝</span>
+        <span class="forms-item-body">
+          <span class="forms-item-title">Karta zleceń (Glass + leki)</span>
+          <span class="forms-item-sub">Interaktywna z bazą 76 leków + krotność + kalkulator</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+      <a class="forms-item" href="forms/karta-zlecen.html" target="_blank" rel="noopener">
+        <span class="forms-item-icon">🗒</span>
+        <span class="forms-item-body">
+          <span class="forms-item-title">Karta zleceń — print</span>
+          <span class="forms-item-sub">Czysta A4 do drukowania (klasyczna)</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+      <a class="forms-item" href="forms/karta-zlecen-v2.html" target="_blank" rel="noopener">
+        <span class="forms-item-icon">📒</span>
+        <span class="forms-item-body">
+          <span class="forms-item-title">Karta zleceń v2</span>
+          <span class="forms-item-sub">Rozszerzona wersja z panelem leków</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- Search -->
 <div class="search-wrap">
@@ -1302,11 +1861,21 @@ function showToast(msg) {
   setInterval(tick, 60000);  // ~ 1 minute
 })();
 
+/* ─── Formularze overlay ─── */
+document.getElementById('formsOpenBtn').onclick = () => document.getElementById('formsOverlay').classList.add('open');
+function closeForms() { document.getElementById('formsOverlay').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeForms(); });
+
+/* ─── Radio sidebar trigger ─── */
+document.getElementById('radioOpenBtn').onclick = () => { if (window.rdSidebarOpen) window.rdSidebarOpen(); };
+
 /* ─── SW ─── */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 </script>
+
+<script src="js/radio.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "stations": [
+    {"id": "rmf",     "name": "RMF FM",           "sub": "Najwięcej muzyki",      "url": "https://stream.rcs.revma.com/ypqt40u0x1zuv",     "color": "#e53935", "abbr": "RMF", "genre": "pop"},
+    {"id": "zet",     "name": "Radio Zet",        "sub": "Pop hits",              "url": "https://stream.rcs.revma.com/em74fbxyq0hvv",     "color": "#ff6f00", "abbr": "ZET", "genre": "pop"},
+    {"id": "pr1",     "name": "Polskie Radio 1",  "sub": "Wiadomości 24h",        "url": "https://stream3.polskieradio.pl:8904/;",         "color": "#1e88e5", "abbr": "PR1", "genre": "news"},
+    {"id": "trojka",  "name": "Trójka",           "sub": "Rock / indie classics", "url": "https://stream3.polskieradio.pl:8906/;",         "color": "#7b1fa2", "abbr": "3",   "genre": "rock"},
+    {"id": "pr24",    "name": "PR 24",            "sub": "News non-stop",         "url": "https://stream3.polskieradio.pl:8080/;",         "color": "#5d4037", "abbr": "24",  "genre": "news"},
+    {"id": "open",    "name": "Open FM",          "sub": "100% Hits",             "url": "https://stream.open.fm/128",                     "color": "#00acc1", "abbr": "OFM", "genre": "pop"},
+    {"id": "eska",    "name": "Eska Warszawa",    "sub": "Dance / pop",           "url": "https://waw.ic.smcdn.pl/t046-1.mp3",              "color": "#43a047", "abbr": "ES",  "genre": "dance"},
+    {"id": "maryja",  "name": "Radio Maryja",     "sub": "Katolickie",            "url": "https://live.radiomaryja.pl:8000/rm.mp3",        "color": "#fdd835", "abbr": "RM",  "genre": "talk"},
+    {"id": "chill",   "name": "Trójka Chillout",  "sub": "Relaxing",              "url": "https://stream3.polskieradio.pl:8910/;",         "color": "#ec407a", "abbr": "CH",  "genre": "chill"},
+    {"id": "classic", "name": "Radio Classic",    "sub": "Klasyczna",             "url": "https://stream.rcs.revma.com/zv2j6d7y2zhvv",     "color": "#8d6e63", "abbr": "CL",  "genre": "classical"}
+  ]
+}

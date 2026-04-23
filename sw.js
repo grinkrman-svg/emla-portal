@@ -40,6 +40,8 @@ const PRECACHE_URLS = [
   'urologia.html',
   'css/styles.css',
   'js/app.js',
+  'js/radio.js',
+  'data/stations.json',
   'manifest.json',
   'logo.png',
   'img/herb-szpitala.png',
@@ -60,8 +62,7 @@ const PRECACHE_URLS = [
   'img/bg/landscape-05.webp', 'img/bg/landscape-06.webp', 'img/bg/landscape-07.webp', 'img/bg/landscape-08.webp',
   'img/bg/helicopter-day.webp', 'img/bg/helicopter-night.webp',
   'img/video/helicopter-day.mp4', 'img/video/helicopter-night.mp4',
-  'img/video/helicopter-day.webm', 'img/video/helicopter-night.webm',
-  'img/audio/helicopter-loop.mp3'
+  'img/video/helicopter-day.webm', 'img/video/helicopter-night.webm'
 ];
 
 /* Install — pre-cache all critical assets */

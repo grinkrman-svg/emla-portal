@@ -179,6 +179,53 @@
   .lek-tbl th, .lek-tbl td { padding:5px 7px; font-size:11.5px }
   .lek-kalk { flex-wrap:wrap }
 }
+
+/* ─── Category grouping (sticky headers) ─── */
+.lek-cat { margin-bottom: 1.8rem; position: relative; }
+.lek-cat-head {
+  position: sticky;
+  top: 58px;
+  z-index: 10;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  margin-bottom: 0.85rem;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid var(--bdh);
+  border-left: 4px solid var(--cat-c, #6b7280);
+  border-radius: 12px;
+  font-size: 15px; font-weight: 700;
+  color: var(--t0);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+[data-theme="dark"] .lek-cat-head { background: rgba(15,23,41,0.85); }
+.lek-cat-icon { font-size: 20px; line-height: 1; }
+.lek-cat-label { flex: 1; letter-spacing: -0.01em; }
+.lek-cat-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 3px 9px;
+  background: var(--cat-c, #6b7280);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 700;
+}
+.lek-cat-grid {
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+@media print {
+  .lek-cat-head {
+    position: static;
+    background: transparent;
+    border: none; border-left: 4px solid #000;
+    color: #000;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .lek-cat-count { background: #000; color: #fff; }
+}
 </style>
 </head>
 <body data-theme="light">
@@ -2948,7 +2995,45 @@ function renderLeki() {
   statEl.textContent = filtered.length;
   noRes.classList.toggle('show', filtered.length === 0);
 
-  grid.innerHTML = filtered.map(function(lek, idx) {
+  /* ── GROUPING BY CATEGORY (sticky section headers) ── */
+  var CAT_META = {
+    'waz':  { label: 'Wazopresory & inotropy',       icon: '💓', color: '#ef4444' },
+    'anal': { label: 'Analgetyki',                    icon: '💊', color: '#f97316' },
+    'sed':  { label: 'Sedacja',                       icon: '😴', color: '#8b5cf6' },
+    'rsi':  { label: 'RSI — indukcja i zwiotczenie', icon: '💉', color: '#a855f7' },
+    'abx':  { label: 'Antybiotyki',                   icon: '🦠', color: '#22c55e' },
+    'kar':  { label: 'Kardiologiczne',                icon: '❤️', color: '#dc2626' },
+    'neu':  { label: 'Neurologiczne',                 icon: '🧠', color: '#7c3aed' },
+    'ant':  { label: 'Antidota',                      icon: '☠️', color: '#78716c' },
+    'ply':  { label: 'Płyny i elektrolity',           icon: '💧', color: '#06b6d4' },
+    'ste':  { label: 'Steroidy',                      icon: '🏋️', color: '#eab308' },
+    'akg':  { label: 'Antykoagulanty',                icon: '🩸', color: '#be123c' },
+    'inh':  { label: 'Inhalacje',                     icon: '🌬️', color: '#0ea5e9' },
+    'gas':  { label: 'Gastro',                        icon: '🍽️', color: '#d97706' },
+    'inn':  { label: 'Inne',                          icon: '📦', color: '#6b7280' }
+  };
+
+  /* Group filtered drugs by primary category */
+  var groups = {};
+  filtered.forEach(function(lek) {
+    var primary = (lek.kat && lek.kat[0]) || 'inn';
+    if (!groups[primary]) groups[primary] = [];
+    groups[primary].push(lek);
+  });
+
+  /* Render order follows CAT_META (natural clinical order) */
+  var catOrder = Object.keys(CAT_META);
+  /* Any unknown categories appended at end */
+  Object.keys(groups).forEach(function(k) { if (catOrder.indexOf(k) === -1) catOrder.push(k); });
+
+  var globalIdx = 0;
+  grid.innerHTML = catOrder.filter(function(k) { return groups[k] && groups[k].length > 0; })
+    .map(function(catKey) {
+      var meta = CAT_META[catKey] || { label: catKey, icon: '📦', color: '#6b7280' };
+      var drugs = groups[catKey];
+      var drugsHTML = drugs.map(function(lek) {
+        var idx = globalIdx++;
+        var delay = Math.min(idx * 0.02, 0.25).toFixed(2);
     var delay = Math.min(idx * 0.03, 0.3).toFixed(2);
 
     /* --- Dawkowanie dorosly --- */
@@ -3018,7 +3103,17 @@ function renderLeki() {
       antSection +
       '<div class="lek-src">&#x17a;r\u00f3d\u0142o: ' + lek.zrodlo + '</div>' +
       '</div></div></div>';
-  }).join('');
+      }).join('');
+      /* Wrap each category in a section with sticky header */
+      return '<section class="lek-cat" data-cat="' + catKey + '" style="--cat-c:' + meta.color + '">' +
+             '  <h2 class="lek-cat-head">' +
+             '    <span class="lek-cat-icon">' + meta.icon + '</span>' +
+             '    <span class="lek-cat-label">' + meta.label + '</span>' +
+             '    <span class="lek-cat-count">' + drugs.length + '</span>' +
+             '  </h2>' +
+             '  <div class="lek-cat-grid">' + drugsHTML + '</div>' +
+             '</section>';
+    }).join('');
 }
 
 /* ============================================================
