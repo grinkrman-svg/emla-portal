@@ -1,0 +1,628 @@
+{
+  "generated_at": "2026-04-22T22:46:38",
+  "model": "flux-schnell",
+  "icons": [
+    {
+      "slug": "stemi",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/stemi.jpg",
+      "gid": "9d7cd4cd-f9d5-4355-94ab-6a27d37a92ab",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/9d7cd4cd-f9d5-4355-94ab-6a27d37a92ab/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "pe",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/pe.jpg",
+      "gid": "1e9a824d-177a-4f53-ba99-70c0340992f0",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/1e9a824d-177a-4f53-ba99-70c0340992f0/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "udar",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/udar.jpg",
+      "gid": "df54b04a-dd63-462f-85e7-926e864938ee",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/df54b04a-dd63-462f-85e7-926e864938ee/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "politrauma",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/politrauma.jpg",
+      "gid": "d1e057b4-8793-4f6d-911c-5c066ecd668c",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/d1e057b4-8793-4f6d-911c-5c066ecd668c/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "oparzenia",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/oparzenia.jpg",
+      "gid": "e19fe402-7425-48c8-8b97-f0958d07fb08",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/e19fe402-7425-48c8-8b97-f0958d07fb08/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "hipotermia",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/hipotermia.jpg",
+      "gid": "7395178e-d35b-4a26-8e45-dfe7059ea12a",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/7395178e-d35b-4a26-8e45-dfe7059ea12a/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "replantacja",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/replantacja.jpg",
+      "gid": "c5c53ee5-932c-49d2-a35d-a882e936ac00",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/c5c53ee5-932c-49d2-a35d-a882e936ac00/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "ecmo",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/ecmo.jpg",
+      "gid": "d019b340-a32b-430b-950d-783e02e6c6af",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/d019b340-a32b-430b-950d-783e02e6c6af/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "neurochirurgia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/neurochirurgia.jpg",
+      "gid": "52efee75-5aa9-4599-92b6-764fa0285d81",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/52efee75-5aa9-4599-92b6-764fa0285d81/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "kardiochirurgia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/kardiochirurgia.jpg",
+      "gid": "c2380546-b69b-4381-8503-58aadb52d039",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/c2380546-b69b-4381-8503-58aadb52d039/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "toksykologia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/toksykologia.jpg",
+      "gid": "9f3eed82-0d19-4fd3-8b8d-0162dd6d4ad6",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/9f3eed82-0d19-4fd3-8b8d-0162dd6d4ad6/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "hbo",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/hbo.jpg",
+      "gid": "963c3dd3-7215-4e2b-8787-784c883583cf",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/963c3dd3-7215-4e2b-8787-784c883583cf/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "naczyniowa",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/naczyniowa.jpg",
+      "gid": "43487f91-3aa1-42f9-bda8-7753d7d448d9",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/43487f91-3aa1-42f9-bda8-7753d7d448d9/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "radiologia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/radiologia.jpg",
+      "gid": "a1311176-1f59-4350-bb60-762a81e09fa2",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/a1311176-1f59-4350-bb60-762a81e09fa2/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "torako",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/torako.jpg",
+      "gid": "732cbdd2-b494-4b0b-8df4-883f6b497d94",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/732cbdd2-b494-4b0b-8df4-883f6b497d94/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "cialaobce",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/cialaobce.jpg",
+      "gid": "09b60eb3-1c1f-4762-9e27-05f201bf174e",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/09b60eb3-1c1f-4762-9e27-05f201bf174e/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "plazmafereza",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/plazmafereza.jpg",
+      "gid": "2044d222-5e0a-4d95-9579-e79bd9f6668d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/2044d222-5e0a-4d95-9579-e79bd9f6668d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "dekompresyjna",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/dekompresyjna.jpg",
+      "gid": "c0c41886-2d96-434c-9a27-1dd2a54bd193",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/c0c41886-2d96-434c-9a27-1dd2a54bd193/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "transplantologia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/transplantologia.jpg",
+      "gid": "af80cb32-f4f6-49fa-a0e5-b64d9295d9ea",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/af80cb32-f4f6-49fa-a0e5-b64d9295d9ea/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "zmija",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/zmija.jpg",
+      "gid": "99015343-047b-4bbd-9f66-2a291f722544",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/99015343-047b-4bbd-9f66-2a291f722544/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "neonatologia",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/neonatologia.jpg",
+      "gid": "a8bb7e38-8d87-4551-9457-0f729e5f7e4d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/a8bb7e38-8d87-4551-9457-0f729e5f7e4d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "dziecieca",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/dziecieca.jpg",
+      "gid": "85f6a619-9c78-41c4-acff-575357e92eba",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/85f6a619-9c78-41c4-acff-575357e92eba/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "ginekologia",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/ginekologia.jpg",
+      "gid": "1f9537cf-8089-4db3-86df-aeed4ab82e8d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/1f9537cf-8089-4db3-86df-aeed4ab82e8d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "szczekowa",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/szczekowa.jpg",
+      "gid": "663da049-398c-49c1-8c3c-543294b1247a",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/663da049-398c-49c1-8c3c-543294b1247a/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "okulistyka",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/okulistyka.jpg",
+      "gid": "590fcda5-ba18-4d2a-828e-24e0743bab4e",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/590fcda5-ba18-4d2a-828e-24e0743bab4e/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "psychiatria",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/psychiatria.jpg",
+      "gid": "7aab095c-5ab4-4052-a96d-16a5bc10f73f",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/7aab095c-5ab4-4052-a96d-16a5bc10f73f/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "zakazne",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/zakazne.jpg",
+      "gid": "b79e8a68-0112-4f19-a30b-ddb41d224e47",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/b79e8a68-0112-4f19-a30b-ddb41d224e47/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "urologia",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/urologia.jpg",
+      "gid": "4c3cff3e-2c86-4bd6-88a9-3546365af59e",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/4c3cff3e-2c86-4bd6-88a9-3546365af59e/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "protokoly",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/protokoly.jpg",
+      "gid": "54381a09-5c5f-4231-851b-56c3f37e2bc1",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/54381a09-5c5f-4231-851b-56c3f37e2bc1/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "karta",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/karta.jpg",
+      "gid": "74030072-4df4-4097-8709-13ed82308c4d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/74030072-4df4-4097-8709-13ed82308c4d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "kalkulatory",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/kalkulatory.jpg",
+      "gid": "2607ef9a-2c7e-437e-b843-42811442e544",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/2607ef9a-2c7e-437e-b843-42811442e544/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "farmakologia",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/farmakologia.jpg",
+      "gid": "37559a51-ad43-4d89-a0cb-ce045f4043f6",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/37559a51-ad43-4d89-a0cb-ce045f4043f6/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "transport",
+      "tier": "tool",
+      "color": "ORANGE+BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/transport.jpg",
+      "gid": "8f74a805-caf1-4795-a623-00b03b6ca782",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/8f74a805-caf1-4795-a623-00b03b6ca782/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    }
+  ],
+  "backgrounds": [
+    {
+      "slug": "helicopter-night",
+      "status": "ok",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/helicopter-night.webp",
+      "gid": "768cd55b-b7c4-4bd4-8eaa-db6b356ade02"
+    },
+    {
+      "slug": "helicopter-day",
+      "status": "ok",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/helicopter-day.webp",
+      "gid": "f2c62710-7c14-44f1-a859-b3b255af3548"
+    }
+  ],
+  "all_results": [
+    {
+      "slug": "stemi",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/stemi.jpg",
+      "gid": "9d7cd4cd-f9d5-4355-94ab-6a27d37a92ab",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/9d7cd4cd-f9d5-4355-94ab-6a27d37a92ab/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "pe",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/pe.jpg",
+      "gid": "1e9a824d-177a-4f53-ba99-70c0340992f0",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/1e9a824d-177a-4f53-ba99-70c0340992f0/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "udar",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/udar.jpg",
+      "gid": "df54b04a-dd63-462f-85e7-926e864938ee",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/df54b04a-dd63-462f-85e7-926e864938ee/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "politrauma",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/politrauma.jpg",
+      "gid": "d1e057b4-8793-4f6d-911c-5c066ecd668c",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/d1e057b4-8793-4f6d-911c-5c066ecd668c/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "oparzenia",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/oparzenia.jpg",
+      "gid": "e19fe402-7425-48c8-8b97-f0958d07fb08",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/e19fe402-7425-48c8-8b97-f0958d07fb08/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "hipotermia",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/hipotermia.jpg",
+      "gid": "7395178e-d35b-4a26-8e45-dfe7059ea12a",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/7395178e-d35b-4a26-8e45-dfe7059ea12a/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "replantacja",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/replantacja.jpg",
+      "gid": "c5c53ee5-932c-49d2-a35d-a882e936ac00",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/c5c53ee5-932c-49d2-a35d-a882e936ac00/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "ecmo",
+      "tier": "t1",
+      "color": "RED",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/ecmo.jpg",
+      "gid": "d019b340-a32b-430b-950d-783e02e6c6af",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/d019b340-a32b-430b-950d-783e02e6c6af/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "neurochirurgia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/neurochirurgia.jpg",
+      "gid": "52efee75-5aa9-4599-92b6-764fa0285d81",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/52efee75-5aa9-4599-92b6-764fa0285d81/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "kardiochirurgia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/kardiochirurgia.jpg",
+      "gid": "c2380546-b69b-4381-8503-58aadb52d039",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/c2380546-b69b-4381-8503-58aadb52d039/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "toksykologia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/toksykologia.jpg",
+      "gid": "9f3eed82-0d19-4fd3-8b8d-0162dd6d4ad6",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/9f3eed82-0d19-4fd3-8b8d-0162dd6d4ad6/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "hbo",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/hbo.jpg",
+      "gid": "963c3dd3-7215-4e2b-8787-784c883583cf",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/963c3dd3-7215-4e2b-8787-784c883583cf/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "naczyniowa",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/naczyniowa.jpg",
+      "gid": "43487f91-3aa1-42f9-bda8-7753d7d448d9",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/43487f91-3aa1-42f9-bda8-7753d7d448d9/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "radiologia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/radiologia.jpg",
+      "gid": "a1311176-1f59-4350-bb60-762a81e09fa2",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/a1311176-1f59-4350-bb60-762a81e09fa2/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "torako",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/torako.jpg",
+      "gid": "732cbdd2-b494-4b0b-8df4-883f6b497d94",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/732cbdd2-b494-4b0b-8df4-883f6b497d94/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "cialaobce",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/cialaobce.jpg",
+      "gid": "09b60eb3-1c1f-4762-9e27-05f201bf174e",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/09b60eb3-1c1f-4762-9e27-05f201bf174e/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "plazmafereza",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/plazmafereza.jpg",
+      "gid": "2044d222-5e0a-4d95-9579-e79bd9f6668d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/2044d222-5e0a-4d95-9579-e79bd9f6668d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "dekompresyjna",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/dekompresyjna.jpg",
+      "gid": "c0c41886-2d96-434c-9a27-1dd2a54bd193",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/c0c41886-2d96-434c-9a27-1dd2a54bd193/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "transplantologia",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/transplantologia.jpg",
+      "gid": "af80cb32-f4f6-49fa-a0e5-b64d9295d9ea",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/af80cb32-f4f6-49fa-a0e5-b64d9295d9ea/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "zmija",
+      "tier": "t2",
+      "color": "ORANGE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/zmija.jpg",
+      "gid": "99015343-047b-4bbd-9f66-2a291f722544",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/99015343-047b-4bbd-9f66-2a291f722544/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "neonatologia",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/neonatologia.jpg",
+      "gid": "a8bb7e38-8d87-4551-9457-0f729e5f7e4d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/a8bb7e38-8d87-4551-9457-0f729e5f7e4d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "dziecieca",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/dziecieca.jpg",
+      "gid": "85f6a619-9c78-41c4-acff-575357e92eba",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/85f6a619-9c78-41c4-acff-575357e92eba/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "ginekologia",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/ginekologia.jpg",
+      "gid": "1f9537cf-8089-4db3-86df-aeed4ab82e8d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/1f9537cf-8089-4db3-86df-aeed4ab82e8d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "szczekowa",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/szczekowa.jpg",
+      "gid": "663da049-398c-49c1-8c3c-543294b1247a",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/663da049-398c-49c1-8c3c-543294b1247a/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "okulistyka",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/okulistyka.jpg",
+      "gid": "590fcda5-ba18-4d2a-828e-24e0743bab4e",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/590fcda5-ba18-4d2a-828e-24e0743bab4e/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "psychiatria",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/psychiatria.jpg",
+      "gid": "7aab095c-5ab4-4052-a96d-16a5bc10f73f",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/7aab095c-5ab4-4052-a96d-16a5bc10f73f/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "zakazne",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/zakazne.jpg",
+      "gid": "b79e8a68-0112-4f19-a30b-ddb41d224e47",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/b79e8a68-0112-4f19-a30b-ddb41d224e47/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "urologia",
+      "tier": "t3",
+      "color": "BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/urologia.jpg",
+      "gid": "4c3cff3e-2c86-4bd6-88a9-3546365af59e",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/4c3cff3e-2c86-4bd6-88a9-3546365af59e/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "protokoly",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/protokoly.jpg",
+      "gid": "54381a09-5c5f-4231-851b-56c3f37e2bc1",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/54381a09-5c5f-4231-851b-56c3f37e2bc1/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "karta",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/karta.jpg",
+      "gid": "74030072-4df4-4097-8709-13ed82308c4d",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/74030072-4df4-4097-8709-13ed82308c4d/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "kalkulatory",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/kalkulatory.jpg",
+      "gid": "2607ef9a-2c7e-437e-b843-42811442e544",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/2607ef9a-2c7e-437e-b843-42811442e544/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "farmakologia",
+      "tier": "tool",
+      "color": "GREEN",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/farmakologia.jpg",
+      "gid": "37559a51-ad43-4d89-a0cb-ce045f4043f6",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/37559a51-ad43-4d89-a0cb-ce045f4043f6/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "transport",
+      "tier": "tool",
+      "color": "ORANGE+BLUE",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/icons-3d/transport.jpg",
+      "gid": "8f74a805-caf1-4795-a623-00b03b6ca782",
+      "url": "https://cdn.leonardo.ai/users/995bce2f-c6e3-42b0-ba01-a4f3a041ffa4/generations/8f74a805-caf1-4795-a623-00b03b6ca782/segments/1:1:1/Flux_Schnell_isometric_3D_medical_icon_premium_clinical_UI_des_0.jpg",
+      "status": "ok"
+    },
+    {
+      "slug": "helicopter-night",
+      "status": "ok",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/helicopter-night.webp",
+      "gid": "768cd55b-b7c4-4bd4-8eaa-db6b356ade02"
+    },
+    {
+      "slug": "helicopter-day",
+      "status": "ok",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/helicopter-day.webp",
+      "gid": "f2c62710-7c14-44f1-a859-b3b255af3548"
+    }
+  ]
+}

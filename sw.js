@@ -1,6 +1,6 @@
 /* EMLA Portal — Service Worker — Cache-First for offline-first medical tool */
 
-const CACHE_NAME = 'emla-v6-20260422';
+const CACHE_NAME = 'emla-v18-20260423-full-loop-audio';
 
 const PRECACHE_URLS = [
   './',
@@ -8,7 +8,7 @@ const PRECACHE_URLS = [
   'kalkulatory.html',
   'protokoly.html',
   'farmakologia.html',
-  'karta-zlecen-v3.html',
+  'karta-zlecen.html',
   'transport-sanitarny.html',
   'centrum-urazowe.html',
   'chirurgia-dziecieca.html',
@@ -52,7 +52,16 @@ const PRECACHE_URLS = [
   'icons/icon-128x128.png',
   'icons/icon-180x180.png',
   'icons/icon-192x192.png',
-  'icons/icon-512x512.png'
+  'icons/icon-512x512.png',
+  // 3D icons + backgrounds (Leonardo generated)
+  'img/bg/space-01.webp', 'img/bg/space-02.webp', 'img/bg/space-03.webp', 'img/bg/space-04.webp',
+  'img/bg/space-05.webp', 'img/bg/space-06.webp', 'img/bg/space-07.webp', 'img/bg/space-08.webp',
+  'img/bg/landscape-01.webp', 'img/bg/landscape-02.webp', 'img/bg/landscape-03.webp', 'img/bg/landscape-04.webp',
+  'img/bg/landscape-05.webp', 'img/bg/landscape-06.webp', 'img/bg/landscape-07.webp', 'img/bg/landscape-08.webp',
+  'img/bg/helicopter-day.webp', 'img/bg/helicopter-night.webp',
+  'img/video/helicopter-day.mp4', 'img/video/helicopter-night.mp4',
+  'img/video/helicopter-day.webm', 'img/video/helicopter-night.webm',
+  'img/audio/helicopter-loop.mp3'
 ];
 
 /* Install — pre-cache all critical assets */

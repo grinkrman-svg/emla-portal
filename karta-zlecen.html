@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Karta Zleceń Lekarskich — SOR Chojnice</title>
+<title>Indywidualna Karta Zleceń Lekarskich — SOR Chojnice</title>
 <style>
 /* ═══════════════════════════════════════════════════════════════
    RESET + BASE
@@ -144,16 +144,17 @@ body {
    ═══════════════════════════════════════════════════════════════ */
 .hdr {
   display: grid;
-  grid-template-columns: 52px 1fr 52px;
+  grid-template-columns: 82px 1fr 82px;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   padding-bottom: 4px;
   border-bottom: 1.5px solid #000;
 }
 .hdr .herb {
-  width: 52px; height: 60px;
+  width: 78px; height: 64px;
   background: url('img/herb-szpitala.png') center/contain no-repeat;
 }
+.hdr { grid-template-columns: 82px 1fr 82px !important; gap: 14px !important; }
 .hdr .hdr-text { text-align: center; font-family: 'Times New Roman', Times, serif; }
 .hdr .hdr-name {
   font-size: 11pt; font-weight: 700;
@@ -220,12 +221,18 @@ body {
 .drugs-table {
   width: 100%; border-collapse: collapse; margin-top: 2.5mm;
   font-size: 8.5pt; table-layout: fixed;
+  max-width: 100%;
 }
 .drugs-table th, .drugs-table td {
   border: 0.8px solid #000;
   padding: 1mm 1.5mm;
   vertical-align: top;
+  height: 18mm;  /* enforce row height for handwriting */
+  overflow: hidden;                /* keep column widths strict — nie rozjeżdżać */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
+.drugs-table thead th { height: auto; }
 .drugs-table thead th {
   background: #f0f0f0; font-size: 7pt; font-weight: 700;
   text-align: center; line-height: 1.1; padding: 1.5mm 1mm;
@@ -235,7 +242,12 @@ body {
 .drugs-table col.col-hour { width: 10mm; }
 .drugs-table col.col-exe { width: 14mm; }
 
-.drug-cell { position: relative; padding: 1mm 1.5mm; min-height: 11mm; }
+.drug-cell {
+  position: relative; padding: 1.5mm 2mm; min-height: 17mm;
+  max-width: 62mm;                /* hard cap równa width kolumny */
+  overflow: hidden;
+  word-wrap: break-word; overflow-wrap: break-word;
+}
 .drug-cell.empty { cursor: pointer; background: #fafafa; }
 .drug-cell.empty::before {
   content: "+ wybierz lek";
@@ -249,6 +261,12 @@ body {
   display: flex; align-items: baseline; gap: 4px;
   font-size: 8.3pt; line-height: 1.2; margin-bottom: 0.8mm;
   flex-wrap: wrap;
+  max-width: 100%;
+  min-width: 0;                    /* pozwól flex-items kurczyć się */
+}
+.drug-line > * { min-width: 0; }
+.drug-line .dl-name, .drug-line .dl-inn, .drug-line .dl-dose {
+  overflow-wrap: break-word; word-break: break-word;
 }
 .drug-line.mix { padding-left: 7px; border-left: 2px solid #c0c0c0; margin-left: 2px; }
 .drug-line .dl-marker {
@@ -264,6 +282,95 @@ body {
   background: transparent;
 }
 .drug-line .dl-freq:focus { border-bottom-color: #1e40af; }
+
+/* ─── Krotność picker ─── */
+.dl-freq-group { position: relative; display: inline-flex; align-items: baseline; gap: 3px; flex-wrap: wrap; }
+.dl-freq-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 7.2pt; font-weight: 700;
+  padding: 1px 6px; background: #eab308; color: #1a1a1a;
+  border-radius: 3px; border: none; outline: none; cursor: pointer;
+  letter-spacing: .02em; white-space: nowrap;
+}
+.dl-freq-btn[data-ft="rdz"]   { background: #6b7280; color: #fff; }
+.dl-freq-btn[data-ft="pompa"] { background: #7c3aed; color: #fff; }
+.dl-freq-btn[data-ft="custom"]{ background: #dc2626; color: #fff; }
+.dl-freq-btn:hover { filter: brightness(1.1); }
+.dl-freq-hours {
+  font-family: 'JetBrains Mono', monospace; font-size: 7pt;
+  color: #1a1a1a; background: #f0f0f0; padding: 1px 4px;
+  border-radius: 3px; border: 1px solid #ccc;
+  cursor: text; outline: none;
+  min-width: 18mm; max-width: 40mm;
+  overflow: hidden; text-overflow: ellipsis;
+  display: inline-block; white-space: nowrap;
+}
+.dl-freq-hours:focus { white-space: normal; overflow: visible; text-overflow: clip; }
+
+/* ─── Calc button ─── */
+.dl-calc {
+  background: #0ea5e9; color: #fff; border: none; cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-size: 9pt;
+  padding: 1px 5px; border-radius: 3px; line-height: 1;
+}
+.dl-calc:hover { filter: brightness(1.15); }
+
+/* ─── Variant sub-picker (in modal) ─── */
+.m-variant-block {
+  background: #252525; padding: 12px 16px;
+  border-top: 1px solid #333; border-bottom: 1px solid #333;
+  font-family: system-ui;
+}
+.m-variant-title { font-size: 11px; color: #a9a9a9; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-weight: 700; }
+.m-variant-current { font-size: 13px; color: #eee; margin-bottom: 10px; font-weight: 600; }
+.m-variant-current .chosen { color: #e9c46a; }
+.m-variant-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.m-variant-chip {
+  padding: 8px 14px; background: #1a1a1a; color: #ddd;
+  border: 1px solid #3a3a3a; border-radius: 6px;
+  cursor: pointer; font-size: 13px; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.15s;
+}
+.m-variant-chip:hover { background: #2a2a2a; border-color: #1e40af; }
+.m-variant-chip.confirm {
+  background: #1e40af; color: #fff; border-color: #1e40af;
+  font-family: system-ui; font-weight: 700;
+  margin-left: auto;
+}
+.m-variant-chip.confirm:hover { background: #2651c4; }
+.m-variant-back {
+  background: #2a2a2a; color: #a9a9a9; border: none;
+  padding: 6px 12px; border-radius: 4px; cursor: pointer;
+  font-size: 11px; margin-bottom: 8px;
+  font-family: system-ui;
+}
+.m-variant-back:hover { color: #fff; }
+.dl-freq-hours:focus { border-color: #1e40af; background: #eef3ff; }
+.dl-freq-hours:empty::before { content: '— —'; color: #aaa; }
+
+.freq-menu {
+  position: absolute; z-index: 2000;
+  background: #1a1a1a; color: #eee;
+  border-radius: 6px; padding: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  display: none; flex-direction: column; gap: 2px;
+  min-width: 140px; font-family: system-ui;
+}
+.freq-menu.open { display: flex; }
+.freq-menu button {
+  background: none; border: none; color: #ddd; cursor: pointer;
+  padding: 6px 10px; font-size: 12px; text-align: left;
+  border-radius: 4px; display: flex; justify-content: space-between; gap: 10px;
+  font-family: inherit;
+}
+.freq-menu button:hover, .freq-menu button.on { background: #1e40af; color: #fff; }
+.freq-menu button .hk {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: #888; min-width: 60px; text-align: right;
+}
+.freq-menu button:hover .hk, .freq-menu button.on .hk { color: rgba(255,255,255,.8); }
+.freq-menu .fm-divider { height: 1px; background: #333; margin: 3px 0; }
+.freq-menu .fm-title { font-size: 10px; color: #888; padding: 4px 10px 2px; text-transform: uppercase; letter-spacing: .06em; }
 .drug-line .dl-route {
   font-family: 'JetBrains Mono', monospace; font-size: 7pt;
   padding: 1px 4px; background: #1e40af; color: #fff;
@@ -313,9 +420,11 @@ body {
   text-align: center; line-height: 1.15;
 }
 .badania-cell {
-  min-height: 9mm; padding: 1mm 1.5mm; cursor: pointer;
+  min-height: 16mm; padding: 1.5mm 2mm; cursor: pointer;
   background: #fafafa; position: relative;
 }
+.badania-table th, .badania-table td { height: 16mm; }
+.badania-table thead th { height: auto; }
 .badania-cell.empty::before {
   content: "+ wybierz badanie / konsultację";
   position: absolute; left: 2mm; top: 2mm;
@@ -453,7 +562,7 @@ body {
 
 <!-- ═══════════════ LEFT PANEL (screen only) ═══════════════ -->
 <aside class="side-panel">
-  <div><h3>📋 Karta Zleceń v3</h3></div>
+  <div><h3>📋 Karta Zleceń</h3></div>
 
   <div class="side-tabs">
     <div class="side-tab on" data-mode="leki" onclick="setMode('leki')">💊 Leki</div>
@@ -604,7 +713,7 @@ body {
     </table>
 
     <div class="page-footer">
-      <span>EMLA · SOR Chojnice · Karta Zleceń Lekarskich v3</span>
+      <span>EMLA · SOR Chojnice · Karta Zleceń Lekarskich</span>
       <span>Strona 2 / 2</span>
     </div>
   </section>
@@ -643,9 +752,9 @@ let modalResults = [];
 let sideMode = 'leki';
 let sideFilter = 'all';
 
-const DRUG_ROWS_P1 = 16;
-const DRUG_ROWS_P2 = 18;
-const BADANIA_ROWS = 14;
+const DRUG_ROWS_P1 = 11;
+const DRUG_ROWS_P2 = 4;
+const BADANIA_ROWS = 12;
 
 let drugRowsP1 = Array.from({length: DRUG_ROWS_P1}, () => []);
 let drugRowsP2 = Array.from({length: DRUG_ROWS_P2}, () => []);
@@ -692,6 +801,123 @@ async function loadData() {
   const dd = String(t.getDate()).padStart(2,'0');
   const mm = String(t.getMonth()+1).padStart(2,'0');
   document.getElementById('fData').value = `${dd}.${mm}.${t.getFullYear()}`;
+}
+
+/* ─── Dose variants parser ─── */
+function parseDoseVariants(s) {
+  if (!s) return [];
+  const str = String(s).trim();
+  // "50mg/1ml, 100mg/2ml" → ['50mg/1ml', '100mg/2ml']
+  const commaParts = str.split(/,\s*/).map(v => v.trim()).filter(Boolean);
+  if (commaParts.length > 1) return commaParts;
+  // "100ml/250ml/500ml" → ['100ml','250ml','500ml'] only if all share the same unit
+  const slashParts = str.split('/').map(v => v.trim()).filter(Boolean);
+  if (slashParts.length > 1) {
+    const units = slashParts.map(p => (p.match(/[a-zA-Z]+$/) || [''])[0].toLowerCase());
+    if (units.every(u => u && u === units[0])) return slashParts;
+  }
+  return [str];
+}
+
+/* ─── Calculator mapping ─── */
+const CALC_HINTS = {
+  // id → hash anchor в kalkulatory.html
+  'p007': 'parkland',    // paracetamol → nic, ale TBSA dla oparzeń, tbsa
+  // default: brak — otwieramy generalną stronę kalkulatorów
+};
+function openCalc(drugId) {
+  const anchor = CALC_HINTS[drugId] || '';
+  const url = 'kalkulatory.html' + (anchor ? '#' + anchor : '');
+  window.open(url, '_blank', 'noopener');
+}
+
+/* ─── KROTNOŚĆ (частота подачи) ─── */
+const FREQ_LABELS = {
+  '1x': '1×', '2x': '2×', '3x': '3×', '4x': '4×',
+  '5x': '5×', '6x': '6×', 'rdz': 'r.dz.', 'pompa': 'POMPA', 'custom': '?'
+};
+const FREQ_HOURS = {
+  '1x': ['08:00'],
+  '2x': ['08:00','20:00'],
+  '3x': ['06:00','14:00','22:00'],
+  '4x': ['06:00','12:00','18:00','00:00'],
+  '5x': ['06:00','11:00','16:00','21:00','02:00'],
+  '6x': ['06:00','10:00','14:00','18:00','22:00','02:00'],
+  'rdz': [],
+  'pompa': [],
+  'custom': []
+};
+function defaultHoursFor(ft) { return (FREQ_HOURS[ft] || []).slice(); }
+
+function toggleFreqMenu(prefix, ri, di, btn) {
+  closeFreqMenu();
+  const rows = prefix === 'p1' ? drugRowsP1 : drugRowsP2;
+  const drug = rows[ri]?.[di]; if (!drug) return;
+  const menu = document.createElement('div');
+  menu.className = 'freq-menu open';
+  menu.innerHTML = `
+    <div class="fm-title">Ile razy na dobę</div>
+    ${['1x','2x','3x','4x','5x','6x'].map(ft =>
+      `<button data-ft="${ft}" class="${drug.freq_type===ft?'on':''}">${FREQ_LABELS[ft]} <span class="hk">${FREQ_HOURS[ft].join(' · ')}</span></button>`
+    ).join('')}
+    <div class="fm-divider"></div>
+    <div class="fm-title">Specjalne</div>
+    <button data-ft="rdz"   class="${drug.freq_type==='rdz'?'on':''}">r.dz. <span class="hk">razy dz.</span></button>
+    <button data-ft="pompa" class="${drug.freq_type==='pompa'?'on':''}">POMPA <span class="hk">wlew ciągły</span></button>
+    <button data-ft="custom" class="${drug.freq_type==='custom'?'on':''}">Inne… <span class="hk">ręcznie</span></button>
+  `;
+  document.body.appendChild(menu);
+  const r = btn.getBoundingClientRect();
+  menu.style.left = (r.left + window.scrollX) + 'px';
+  menu.style.top  = (r.bottom + window.scrollY + 4) + 'px';
+  menu.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setFreq(prefix, ri, di, b.dataset.ft);
+      closeFreqMenu();
+    });
+  });
+  setTimeout(() => {
+    document.addEventListener('click', closeFreqMenu, { once: true });
+  }, 0);
+}
+function closeFreqMenu() {
+  document.querySelectorAll('.freq-menu').forEach(m => m.remove());
+}
+function setFreq(prefix, ri, di, ft) {
+  const rows = prefix === 'p1' ? drugRowsP1 : drugRowsP2;
+  const drug = rows[ri]?.[di]; if (!drug) return;
+  drug.freq_type = ft;
+  if (ft === 'custom') {
+    const cur = drug.freq_custom || drug.hours?.join(' · ') || '';
+    const val = prompt('Wpisz krotność / uwagi (np. "co 4h do ustania bólu" lub "przy VAS>5"):', cur);
+    if (val === null) return;
+    drug.freq_custom = val;
+    drug.hours = [];
+  } else if (ft === 'rdz' || ft === 'pompa') {
+    drug.hours = [];
+    if (!drug.freq_custom) drug.freq_custom = (ft === 'pompa' ? 'wlew ciągły — ustawić na pompie' : '');
+  } else {
+    drug.hours = defaultHoursFor(ft);
+    drug.freq_custom = null;
+  }
+  renderTables();
+}
+function updateHoursText(prefix, ri, di, el) {
+  const rows = prefix === 'p1' ? drugRowsP1 : drugRowsP2;
+  const drug = rows[ri]?.[di]; if (!drug) return;
+  const txt = el.textContent.trim();
+  if (drug.freq_type === 'rdz' || drug.freq_type === 'pompa' || drug.freq_type === 'custom') {
+    drug.freq_custom = txt;
+  } else {
+    // parse hours like "06:00 · 14:00 · 22:00" or "06 14 22"
+    const parts = txt.split(/[\s·,;]+/).filter(Boolean).map(p => {
+      if (/^\d{1,2}:\d{2}$/.test(p)) return p.padStart(5, '0');
+      if (/^\d{1,2}$/.test(p)) return p.padStart(2, '0') + ':00';
+      return p;
+    });
+    drug.hours = parts;
+  }
 }
 
 /* ─── SIDE PANEL ─── */
@@ -743,10 +969,10 @@ function quickAdd(type, id) {
     if (!item) return;
     const route = item.default_route || (item.routes||['IV'])[0];
     const idx = drugRowsP1.findIndex(r => r.length === 0);
-    if (idx >= 0) drugRowsP1[idx].push({ id: item.id, freq: 'co 8h', route });
+    if (idx >= 0) drugRowsP1[idx].push({ id: item.id, variant: parseDoseVariants(item.dose_amp)[0] || item.dose_amp, freq_type: '3x', hours: defaultHoursFor('3x'), route });
     else {
       const i2 = drugRowsP2.findIndex(r => r.length === 0);
-      if (i2 >= 0) drugRowsP2[i2].push({ id: item.id, freq: 'co 8h', route });
+      if (i2 >= 0) drugRowsP2[i2].push({ id: item.id, variant: parseDoseVariants(item.dose_amp)[0] || item.dose_amp, freq_type: '3x', hours: defaultHoursFor('3x'), route });
       else alert('Wszystkie wiersze zajęte.');
     }
   } else {
@@ -780,15 +1006,44 @@ function renderDrugLine(drug, prefix, ri, di) {
   if (!item) return '';
   const marker = di === 0 ? '●' : '+';
   const mixClass = di > 0 ? 'mix' : '';
+  // Backward compat: старые записи имели drug.freq как текст
+  if (!drug.freq_type) {
+    drug.freq_type = '3x';
+    drug.hours = defaultHoursFor('3x');
+  }
+  const ft = drug.freq_type || '3x';
+  const ftLabel = FREQ_LABELS[ft] || ft;
+  const hoursStr = (drug.hours && drug.hours.length) ? drug.hours.join(' · ') : '';
+  const hoursDisplay = (ft === 'rdz' || ft === 'pompa') ? (drug.freq_custom || '') : hoursStr;
+
+  const dose = drug.variant || item.dose_amp || '';
+  const variants = parseDoseVariants(item.dose_amp);
+  const hasVariants = variants.length > 1;
   return `<div class="drug-line ${mixClass}">
     <span class="dl-marker">${marker}</span>
     <span class="dl-name">${escape(item.pl_name)}</span>
     <span class="dl-inn">(${escape(item.inn||'')})</span>
-    <span class="dl-dose">${escape(item.dose_amp||'')}</span>
-    <input class="dl-freq" value="${escape(drug.freq||'')}" onchange="updateDrug('${prefix}',${ri},${di},'freq',this.value)" placeholder="krotność"/>
+    <span class="dl-dose" ${hasVariants ? `style="cursor:pointer;border-bottom:1px dotted #1e40af;color:#1e40af" onclick="event.stopPropagation();changeVariant('${prefix}',${ri},${di})" title="Zmień dawkę"` : ''}>${escape(dose)}</span>
+    <span class="dl-freq-group">
+      <button class="dl-freq-btn" data-ft="${ft}" onclick="event.stopPropagation();toggleFreqMenu('${prefix}',${ri},${di},this)" title="Krotność — kliknij">${ftLabel}</button>
+      <span class="dl-freq-hours" contenteditable="true" data-p="${prefix}" data-ri="${ri}" data-di="${di}" oninput="updateHoursText('${prefix}',${ri},${di},this)" onclick="event.stopPropagation();" spellcheck="false">${escape(hoursDisplay)}</span>
+    </span>
     <button class="dl-route" data-route="${drug.route}" onclick="event.stopPropagation();cycleRoute('${prefix}',${ri},${di})" title="Kliknij aby zmienić drogę">${drug.route}</button>
+    <button class="dl-calc" onclick="event.stopPropagation();openCalc('${item.id}')" title="Kalkulator dawek →">🧮</button>
     <button class="dl-remove" onclick="event.stopPropagation();removeDrug('${prefix}',${ri},${di})" title="Usuń">×</button>
   </div>`;
+}
+
+/* Switch dose variant after dodania */
+function changeVariant(prefix, ri, di) {
+  const rows = prefix === 'p1' ? drugRowsP1 : drugRowsP2;
+  const drug = rows[ri]?.[di]; if (!drug) return;
+  const item = LEKI.find(x => x.id === drug.id); if (!item) return;
+  const variants = parseDoseVariants(item.dose_amp);
+  const cur = drug.variant || variants[0];
+  const next = variants[(variants.indexOf(cur) + 1) % variants.length];
+  drug.variant = next;
+  renderTables();
 }
 
 function renderBadaniaRows(rows) {
@@ -813,8 +1068,8 @@ function renderBadanieLine(b, ri, bi) {
 
 /* ─── ACTIONS ─── */
 function openLekPicker(prefix, ri) {
-  modalCtx = { type: 'lek', onPick: (it) => {
-    (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri].push({ id: it.id, freq: 'co 8h', route: it.default_route || (it.routes||['IV'])[0] });
+  modalCtx = { type: 'lek', onPick: (it, variant) => {
+    (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri].push({ id: it.id, variant: variant || it.dose_amp, freq_type: '3x', hours: defaultHoursFor('3x'), route: it.default_route || (it.routes||['IV'])[0] });
     renderTables();
   }};
   openModal('Wybierz lek', 'lek');
@@ -827,8 +1082,8 @@ function openBadaniePicker(ri) {
   openModal('Wybierz badanie / konsultację', 'badanie');
 }
 function addMix(prefix, ri) {
-  modalCtx = { type: 'lek', onPick: (it) => {
-    (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri].push({ id: it.id, freq: '', route: it.default_route || (it.routes||['IV'])[0] });
+  modalCtx = { type: 'lek', onPick: (it, variant) => {
+    (prefix === 'p1' ? drugRowsP1 : drugRowsP2)[ri].push({ id: it.id, variant: variant || it.dose_amp, freq_type: 'rdz', freq_custom: '', hours: [], route: it.default_route || (it.routes||['IV'])[0] });
     renderTables();
   }};
   openModal('Dodaj lek do mieszanki', 'lek');
@@ -929,8 +1184,67 @@ function renderModalList(q) {
 function pickModal(i) {
   const item = modalResults[i];
   if (!item || !modalCtx) { closeModal(); return; }
+  // Only for leki: show variant picker if multiple doses
+  if (modalCtx.type === 'lek') {
+    const variants = parseDoseVariants(item.dose_amp);
+    if (variants.length > 1) {
+      showVariantPicker(item, variants);
+      return;
+    }
+    modalCtx.onPick(item, variants[0] || item.dose_amp);
+    closeModal();
+    return;
+  }
   modalCtx.onPick(item);
   closeModal();
+}
+
+function showVariantPicker(item, variants) {
+  const list = document.getElementById('modalList');
+  let selected = variants[0];
+  const routes = (item.routes || ['IV']).slice();
+  const defRoute = item.default_route || routes[0];
+  let selRoute = defRoute;
+  const render = () => {
+    list.innerHTML = `
+      <div class="m-variant-block">
+        <button class="m-variant-back" onclick="renderModalList(document.getElementById('modalSearch').value)">← Wybierz inny lek</button>
+        <div class="m-variant-title">Wybrano</div>
+        <div class="m-variant-current"><b>${escape(item.pl_name)}</b> <span style="color:#888">· ${escape(item.inn||'')}</span></div>
+
+        <div class="m-variant-title">Dawka / Objętość</div>
+        <div class="m-variant-grid" id="varDoseGrid" style="margin-bottom:14px">
+          ${variants.map(v => `<button class="m-variant-chip ${v===selected?'confirm':''}" data-v="${escape(v)}">${escape(v)}</button>`).join('')}
+        </div>
+
+        ${routes.length > 1 ? `
+          <div class="m-variant-title">Droga podania</div>
+          <div class="m-variant-grid" id="varRouteGrid" style="margin-bottom:14px">
+            ${routes.map(r => `<button class="m-variant-chip ${r===selRoute?'confirm':''}" data-r="${escape(r)}">${escape(r)}</button>`).join('')}
+          </div>
+        ` : ''}
+
+        <div class="m-variant-grid" style="margin-top:10px">
+          <div style="font-size:11px;color:#888;align-self:center">Typowa dawka: ${escape(item.typical_adult_dose||'—')}</div>
+          <button class="m-variant-chip confirm" id="varConfirm" style="margin-left:auto;padding:10px 20px;font-size:14px">✓ Dodaj do karty</button>
+        </div>
+      </div>
+    `;
+    list.querySelectorAll('#varDoseGrid .m-variant-chip').forEach(b => {
+      b.onclick = () => { selected = b.dataset.v; render(); };
+    });
+    list.querySelectorAll('#varRouteGrid .m-variant-chip').forEach(b => {
+      b.onclick = () => { selRoute = b.dataset.r; render(); };
+    });
+    const conf = list.querySelector('#varConfirm');
+    if (conf) conf.onclick = () => {
+      if (!modalCtx) return;
+      const itemCopy = Object.assign({}, item, { default_route: selRoute });
+      modalCtx.onPick(itemCopy, selected);
+      closeModal();
+    };
+  };
+  render();
 }
 function moveFocus(delta) {
   const items = document.querySelectorAll('.m-item');
@@ -958,6 +1272,10 @@ document.getElementById('modalSearch').addEventListener('input', (e) => renderMo
 document.getElementById('sideSearch').addEventListener('input', renderSidePanel);
 
 loadData();
+</script>
+<script src="js/app.js" onerror="(function(){var s=document.createElement('script');s.textContent=document.querySelector('[data-back-home-fallback]').textContent;document.head.appendChild(s);})()" ></script>
+<script data-back-home-fallback type="text/plain">
+(function(){if(document.getElementById('emlaBackHome'))return;var a=document.createElement('a');a.id='emlaBackHome';a.href='index.html';a.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg><span>EMLA</span>';a.style.cssText='position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:2147483646;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:rgba(77,163,255,0.14);backdrop-filter:blur(20px) saturate(1.5);border:1px solid rgba(77,163,255,0.4);color:#4da3ff;font-family:Inter,system-ui,sans-serif;font-size:13.5px;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(77,163,255,0.22);transition:transform .15s;';document.body.appendChild(a);})();
 </script>
 </body>
 </html>

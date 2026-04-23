@@ -2,6 +2,8 @@
 Thumbs.db
 Desktop.ini
 .DS_Store
+._*
+**/._*
 
 # Editors
 *.swp
@@ -19,5 +21,16 @@ node_modules/
 # Environment
 .env
 
-# Local Netlify folder
+# Local Netlify
 .netlify
+
+# Bulky media — keep production assets but exclude backups + raw
+img/video/*-v1.mp4
+img/video/*-v1.webm
+img/video/*-raw.mp4
+img/video/*-lpr-src.jpg
+img/bg/*-hd.webp
+img/bg/*-old.webp
+
+# Old backups
+*-old-*.html

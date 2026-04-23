@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Transport Sanitarny (LPR) — EMLA Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.hero-lpr {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: #fff;
+  padding: 2rem 1.5rem 1.5rem;
+  margin: 0 1rem 1rem;
+  border-radius: var(--r);
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  max-width: 1400px;
+  margin-left: auto; margin-right: auto;
+}
+.hero-lpr .hero-icon {
+  font-size: 3.5rem; line-height: 1;
+}
+.hero-lpr .hero-body { flex: 1; min-width: 260px; }
+.hero-lpr h1 { font-size: 1.6rem; margin: 0 0 .25rem; font-weight: 700; }
+.hero-lpr p { opacity: .9; font-size: .95rem; margin: 0; }
+.hero-lpr .hero-num {
+  background: #fff; color: #1e40af;
+  padding: 1rem 1.6rem; border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem; font-weight: 700;
+  cursor: pointer; transition: transform .15s;
+  user-select: all;
+}
+.hero-lpr .hero-num:hover { transform: scale(1.04); }
+.hero-lpr .hero-num-label {
+  display: block; font-size: .7rem;
+  color: rgba(30,64,175,.8); text-transform: uppercase;
+  letter-spacing: .1em; font-family: 'DM Sans', sans-serif;
+  margin-bottom: 4px; font-weight: 600;
+}
+
+.sect {
+  max-width: 1400px; margin: 1.5rem auto; padding: 0 1rem;
+}
+.sect h2 {
+  font-size: 1.1rem; font-weight: 700; margin-bottom: .75rem;
+  color: var(--t0); letter-spacing: -.01em;
+}
+.sect .sub {
+  font-size: .82rem; color: var(--t2); margin-bottom: .85rem;
+}
+
+.bases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .75rem;
+}
+.base-card {
+  padding: .9rem 1rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  backdrop-filter: blur(10px);
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.base-card .b-name {
+  font-weight: 700; font-size: .98rem;
+  display: flex; justify-content: space-between; gap: .5rem; align-items: center;
+}
+.base-card .b-name .badge24 {
+  font-size: .65rem; padding: 2px 6px;
+  background: #16a34a; color: #fff; border-radius: 4px;
+  letter-spacing: .05em; font-weight: 700;
+}
+.base-card .b-name .badgeDay {
+  font-size: .65rem; padding: 2px 6px;
+  background: #d97706; color: #fff; border-radius: 4px;
+  letter-spacing: .05em; font-weight: 700;
+}
+.base-card .b-name .badgeSeason {
+  font-size: .65rem; padding: 2px 6px;
+  background: #6b7280; color: #fff; border-radius: 4px;
+  letter-spacing: .05em; font-weight: 700;
+}
+.base-card .b-port { font-size: .82rem; color: var(--t1); }
+.base-card .b-gps { font-size: .72rem; color: var(--t2); font-family: 'JetBrains Mono', monospace; }
+
+.emerg-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: .6rem;
+}
+.emerg-card {
+  padding: 1rem .9rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  display: flex; flex-direction: column; align-items: center; gap: .3rem;
+  text-align: center;
+}
+.emerg-card .e-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem; font-weight: 700; color: var(--red, #dc2626);
+  line-height: 1;
+}
+.emerg-card .e-name { font-size: .88rem; font-weight: 700; color: var(--t0); }
+.emerg-card .e-desc { font-size: .72rem; color: var(--t2); }
+
+.ezt-block {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  display: flex; flex-direction: column; gap: .6rem;
+}
+.ezt-block h3 { font-size: 1rem; color: var(--t0); margin-bottom: .2rem; }
+.ezt-block ol { padding-left: 1.3rem; font-size: .88rem; color: var(--t1); }
+.ezt-block ol li { margin-bottom: .3rem; }
+.ezt-block a {
+  display: inline-block; padding: .5rem 1rem;
+  background: #1e40af; color: #fff; border-radius: 6px;
+  font-weight: 600; text-decoration: none; font-size: .85rem;
+  width: fit-content;
+}
+
+.warn {
+  background: rgba(217, 119, 6, .1);
+  border-left: 3px solid #d97706;
+  padding: .75rem 1rem;
+  border-radius: 4px;
+  font-size: .82rem; color: var(--t1);
+  margin-top: 1rem;
+}
+.warn b { color: #d97706; }
+
+/* ════════ HELICOPTER HOVERING BACKGROUND ════════ */
+/* KEY: kill body/html opaque bg from css/styles.css — inaczej heli-bg jest schowany */
+html, body { background: transparent !important; }
+body::before { display: none !important; }  /* disable grain overlay from styles.css */
+
+.heli-bg {
+  position: fixed; inset: 0; z-index: -3;
+  pointer-events: none; overflow: hidden;
+  background-image: url('img/bg/helicopter-day.webp');
+  background-size: cover;
+  background-position: center 38%;
+  background-repeat: no-repeat;
+  animation: heli-hover 9s ease-in-out infinite;
+  will-change: transform;
+}
+[data-theme="dark"] .heli-bg { background-image: url('img/bg/helicopter-night.webp'); }
+
+/* Fallback background on html-level for rock-solid fill */
+html {
+  background: #0a1022 url('img/bg/helicopter-night.webp') center 38%/cover no-repeat fixed !important;
+}
+[data-theme="light"] html,
+html:has(body[data-theme="light"]) {
+  background: #f4f6fc url('img/bg/helicopter-day.webp') center 38%/cover no-repeat fixed !important;
+}
+
+@keyframes heli-hover {
+  0%, 100% { transform: translateY(0) scale(1.02); }
+  50%      { transform: translateY(-14px) scale(1.04); }
+}
+
+/* Readability scrim — dims image behind content */
+.heli-scrim {
+  position: fixed; inset: 0; z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(245, 248, 252, 0.55) 0%,
+      rgba(245, 248, 252, 0.15) 35%,
+      rgba(245, 248, 252, 0.35) 70%,
+      rgba(245, 248, 252, 0.85) 100%);
+}
+[data-theme="dark"] .heli-scrim {
+  background:
+    linear-gradient(180deg,
+      rgba(5, 8, 22, 0.65) 0%,
+      rgba(5, 8, 22, 0.25) 35%,
+      rgba(5, 8, 22, 0.55) 70%,
+      rgba(5, 8, 22, 0.92) 100%);
+}
+
+/* Night lights — horizontal sweeping beams at bottom (только в dark theme) */
+.heli-lights {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: 42vh; z-index: -1;
+  pointer-events: none; overflow: hidden;
+  opacity: 0; transition: opacity 1.5s ease;
+}
+[data-theme="dark"] .heli-lights { opacity: 1; }
+.heli-lights::before,
+.heli-lights::after {
+  content: ''; position: absolute; bottom: -20%;
+  width: 40vw; height: 100%;
+  background: radial-gradient(ellipse 50% 70% at 50% 100%,
+              rgba(220, 235, 255, 0.45) 0%,
+              rgba(180, 210, 255, 0.22) 30%,
+              transparent 65%);
+  filter: blur(6px);
+}
+.heli-lights::before { left: 22%; animation: heli-beam-l 14s ease-in-out infinite; }
+.heli-lights::after  { right: 22%; animation: heli-beam-r 14s ease-in-out infinite; }
+@keyframes heli-beam-l {
+  0%, 100% { transform: translateX(-15%) scale(1); opacity: 0.6; }
+  50%      { transform: translateX(5%) scale(1.15); opacity: 0.85; }
+}
+@keyframes heli-beam-r {
+  0%, 100% { transform: translateX(15%) scale(1); opacity: 0.6; }
+  50%      { transform: translateX(-5%) scale(1.15); opacity: 0.85; }
+}
+
+/* Floor spot — pulsing puddle of light */
+.heli-floor {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: 18vh; z-index: -1; pointer-events: none;
+  opacity: 0; transition: opacity 1.5s ease;
+  background: radial-gradient(ellipse 60% 100% at 50% 100%,
+              rgba(255, 245, 220, 0.22) 0%,
+              rgba(255, 230, 180, 0.1) 40%,
+              transparent 75%);
+  animation: heli-floor-pulse 6s ease-in-out infinite;
+}
+[data-theme="dark"] .heli-floor { opacity: 1; }
+@keyframes heli-floor-pulse {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+/* App content sits above bg layers */
+body > *:not(.heli-bg):not(.heli-scrim):not(.heli-lights):not(.heli-floor) { position: relative; z-index: 1; }
+
+/* Reduce blue intensity of hero-lpr banner (Roman: "слишком синий яркий") */
+body .hero-lpr {
+  background: linear-gradient(135deg, rgba(45, 75, 130, 0.78), rgba(30, 55, 110, 0.72)) !important;
+  backdrop-filter: blur(12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heli-bg, .heli-lights, .heli-lights::before, .heli-lights::after, .heli-floor { animation: none !important; }
+}
+</style>
+</head>
+<body data-theme="dark">
+<div class="heli-bg" aria-hidden="true"></div>
+<div class="heli-scrim" aria-hidden="true"></div>
+<div class="heli-lights" aria-hidden="true"></div>
+<div class="heli-floor" aria-hidden="true"></div>
+
+<div class="scroll-progress" id="scrollProg"></div>
+<div class="toast" id="toast"></div>
+
+<header class="topbar" id="topbar">
+  <div class="tbl">
+    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
+    <div class="tb-info">
+      <strong>Szpital im. J.K. Łukowicza</strong><br>
+      Chojnice · Transport Sanitarny
+    </div>
+  </div>
+  <div class="tba">
+    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    </button>
+    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+  </div>
+</header>
+
+<div class="app" id="app">
+
+  <!-- HERO (без 🚁 иконки — вертолёт живёт на заднем фоне) -->
+  <section class="hero-lpr">
+    <div class="hero-body">
+      <h1>LPR — Lotnicze Pogotowie Ratunkowe</h1>
+      <p>Transport lotniczy pacjenta do ośrodka specjalistycznego. Zasięg bazy: 60–70 km. 21 baz stałych na terenie Polski.</p>
+    </div>
+    <div class="hero-num" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
+      <span class="hero-num-label">Centrum Operacyjne</span>
+      2222 99999
+    </div>
+  </section>
+
+  <!-- EZT -->
+  <section class="sect">
+    <h2>📋 EZT — Elektroniczne Zlecenie Transportu</h2>
+    <div class="ezt-block">
+      <h3>Jak zlecić transport lotniczy</h3>
+      <ol>
+        <li><b>Zadzwoń</b> na Centrum Operacyjne <code>2222 99999</code> — dyspozytor LPR przyjmie zgłoszenie.</li>
+        <li><b>Lub:</b> zaloguj się na portal <b>EZT</b> (link poniżej) i utwórz elektroniczne zlecenie.</li>
+        <li>Podaj: PESEL pacjenta, rozpoznanie, szpital docelowy, zgodę na transport.</li>
+        <li>Dyspozytor przydzieli najbliższą bazę i śmigłowiec. Czas odpowiedzi zwykle 10–20 min.</li>
+        <li>Przygotuj pacjenta (stabilizacja) i drogę przyjęcia dla zespołu HEMS.</li>
+      </ol>
+      <a href="https://ezt.lpr.com.pl" target="_blank" rel="noopener">Otwórz portal EZT ↗</a>
+    </div>
+  </section>
+
+  <!-- BAZY 24/7 -->
+  <section class="sect">
+    <h2>🛫 Bazy 24-godzinne HEMS (6)</h2>
+    <div class="sub">Loty także w nocy. Przydzielane do najbardziej krytycznych transportów międzyszpitalnych.</div>
+    <div class="bases-grid">
+      <div class="base-card">
+        <div class="b-name">Warszawa-Babice <span class="badge24">24/7</span></div>
+        <div class="b-port">Port Lotniczy Babice (EPBC)</div>
+        <div class="b-gps">52.1450°N · 21.0419°E · EC 135 P3</div>
+      </div>
+      <div class="base-card">
+        <div class="b-name">Kraków-Balice <span class="badge24">24/7</span></div>
+        <div class="b-port">Port Lotniczy Kraków-Balice (EPKK)</div>
+        <div class="b-gps">50.0880°N · 19.7845°E · EC 135 P3</div>
+      </div>
+      <div class="base-card">
+        <div class="b-name">Gdańsk-Rębiechowo <span class="badge24">24/7</span></div>
+        <div class="b-port">Port Lotniczy Gdańsk im. Lecha Wałęsy (EPGD)</div>
+        <div class="b-gps">54.3779°N · 18.4709°E · EC 135 P3</div>
+      </div>
+      <div class="base-card">
+        <div class="b-name">Wrocław-Strachowice <span class="badge24">24/7</span></div>
+        <div class="b-port">Port Lotniczy Wrocław-Strachowice (EPWR)</div>
+        <div class="b-gps">51.1024°N · 16.9881°E · EC 135 P3</div>
+      </div>
+      <div class="base-card">
+        <div class="b-name">Poznań-Ławica <span class="badge24">24/7</span></div>
+        <div class="b-port">Port Lotniczy Poznań-Ławica (EPPO)</div>
+        <div class="b-gps">52.4212°N · 16.8268°E · EC 135 P3</div>
+      </div>
+      <div class="base-card">
+        <div class="b-name">Lublin-Świdnik <span class="badge24">24/7</span></div>
+        <div class="b-port">Port Lotniczy Lublin-Świdnik (EPLB)</div>
+        <div class="b-gps">51.2399°N · 22.0394°E · EC 135 P3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BAZY DNIOWE -->
+  <section class="sect">
+    <h2>🌤️ Bazy dzienne HEMS (15) — pracują 7:00–20:00</h2>
+    <div class="sub">W nocy transport z tych baz niemożliwy — zwróć się do najbliższej bazy 24/7 lub EZT.</div>
+    <div class="bases-grid">
+      <div class="base-card"><div class="b-name">Białystok-Krywlany <span class="badgeDay">7–20</span></div><div class="b-port">EPBK</div><div class="b-gps">52.7425°N · 23.1704°E</div></div>
+      <div class="base-card"><div class="b-name">Bydgoszcz <span class="badgeDay">7–20</span></div><div class="b-port">EPBY</div><div class="b-gps">53.0956°N · 18.2306°E</div></div>
+      <div class="base-card"><div class="b-name">Katowice <span class="badgeDay">7–20</span></div><div class="b-port">EPKT / EPKL</div><div class="b-gps">50.4745°N · 19.0881°E</div></div>
+      <div class="base-card"><div class="b-name">Kielce-Masłów <span class="badgeDay">7–20</span></div><div class="b-port">EPKD</div><div class="b-gps">50.9238°N · 20.9572°E</div></div>
+      <div class="base-card"><div class="b-name">Olsztyn-Mazury <span class="badgeDay">7–20</span></div><div class="b-port">EPOL</div><div class="b-gps">53.5878°N · 20.7253°E</div></div>
+      <div class="base-card"><div class="b-name">Opole <span class="badgeDay">7–20</span></div><div class="b-port">EPOP</div><div class="b-gps">50.6840°N · 17.9850°E</div></div>
+      <div class="base-card"><div class="b-name">Ostrów Wielkopolski <span class="badgeDay">7–20</span></div><div class="b-port">EPOT</div><div class="b-gps">51.5961°N · 17.9042°E</div></div>
+      <div class="base-card"><div class="b-name">Płock <span class="badgeDay">7–20</span></div><div class="b-port">—</div><div class="b-gps">52.6069°N · 19.6986°E</div></div>
+      <div class="base-card"><div class="b-name">Sanok-Długie <span class="badgeDay">7–20</span></div><div class="b-port">EPSS</div><div class="b-gps">49.5711°N · 21.7772°E</div></div>
+      <div class="base-card"><div class="b-name">Sokołów Podlaski <span class="badgeDay">7–20</span></div><div class="b-port">EPSO</div><div class="b-gps">52.0869°N · 22.0219°E</div></div>
+      <div class="base-card"><div class="b-name">Suwałki <span class="badgeDay">7–20</span></div><div class="b-port">EPSU</div><div class="b-gps">54.1031°N · 22.6456°E</div></div>
+      <div class="base-card"><div class="b-name">Szczecin-Goleniów <span class="badgeDay">7–20</span></div><div class="b-port">EPSC</div><div class="b-gps">53.5835°N · 14.8922°E</div></div>
+      <div class="base-card"><div class="b-name">Koszalin <span class="badgeSeason">sezon 1.06–5.09</span></div><div class="b-port">EPKS</div><div class="b-gps">53.5834°N · 15.6369°E</div></div>
+      <div class="base-card"><div class="b-name">Zielona Góra <span class="badgeDay">7–20</span></div><div class="b-port">EPZG</div><div class="b-gps">51.9381°N · 15.4608°E</div></div>
+      <div class="base-card"><div class="b-name">Łódź <span class="badgeDay">7–20</span></div><div class="b-port">EPLL</div><div class="b-gps">51.7219°N · 19.3981°E</div></div>
+    </div>
+  </section>
+
+  <!-- EMERGENCY NUMBERS -->
+  <section class="sect">
+    <h2>🚨 Numery alarmowe</h2>
+    <div class="sub">Ogólnokrajowe służby ratownictwa medycznego i specjalne.</div>
+    <div class="emerg-grid">
+      <div class="emerg-card" onclick="copyN('112','112')">
+        <div class="e-num">112</div>
+        <div class="e-name">Uniwersalny</div>
+        <div class="e-desc">PRM — dysponent ratunkowy</div>
+      </div>
+      <div class="emerg-card" onclick="copyN('999','999')">
+        <div class="e-num">999</div>
+        <div class="e-name">Pogotowie</div>
+        <div class="e-desc">Ratunkowe (telemedycyna)</div>
+      </div>
+      <div class="emerg-card" onclick="copyN('991','991')">
+        <div class="e-num">991</div>
+        <div class="e-name">GOPR</div>
+        <div class="e-desc">Górskie Ochotnicze</div>
+      </div>
+      <div class="emerg-card" onclick="copyN('985','985')">
+        <div class="e-num">985</div>
+        <div class="e-name">WOPR</div>
+        <div class="e-desc">Wodne Ochotnicze</div>
+      </div>
+      <div class="emerg-card" onclick="copyN('984','984')">
+        <div class="e-num">984</div>
+        <div class="e-name">TOPR</div>
+        <div class="e-desc">Tatrzańskie Ochotnicze</div>
+      </div>
+      <div class="emerg-card" onclick="copyN('601100300','601 100 300')">
+        <div class="e-num" style="font-size:1.2rem;padding-top:8px">601 100 300</div>
+        <div class="e-name">GOPR kom.</div>
+        <div class="e-desc">Telefon alarmowy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HELIPORTS -->
+  <section class="sect">
+    <h2>🏥 Szpitale z lądowiskiem (wybór)</h2>
+    <div class="sub">Potwierdzone lub prawdopodobne (zalecana weryfikacja przed transportem).</div>
+    <div class="bases-grid">
+      <div class="base-card"><div class="b-name">CLO Siemianowice Śląskie</div><div class="b-port">Centrum Leczenia Oparzeń</div><div class="b-gps">oparzenia, plastyka, HBO</div></div>
+      <div class="base-card"><div class="b-name">UCK Gdańsk (Dębinki)</div><div class="b-port">Uniwersyteckie Centrum Kliniczne</div><div class="b-gps">trauma, neurochirurgia, kardiochir.</div></div>
+      <div class="base-card"><div class="b-name">ICZMP Łódź</div><div class="b-port">Inst. Centrum Zdrowia Matki Polki</div><div class="b-gps">pediatria, neonatologia</div></div>
+      <div class="base-card"><div class="b-name">IP-CZD Warszawa (Anin)</div><div class="b-port">Inst.-Pomnik Centrum Zdrowia Dziecka</div><div class="b-gps">pediatria, transplantologia</div></div>
+      <div class="base-card"><div class="b-name">Inst. Kardiologii Warszawa-Anin</div><div class="b-port">Narodowy Instytut Kardiologii</div><div class="b-gps">kardiochirurgia, elektrofizjologia</div></div>
+      <div class="base-card"><div class="b-name">Szpital Uniwersytecki Bydgoszcz</div><div class="b-port">SU nr 1 im. Jurasza</div><div class="b-gps">neurochirurgia, trauma</div></div>
+      <div class="base-card"><div class="b-name">GCM Katowice-Ochojec</div><div class="b-port">Górnośląskie Centrum Medyczne</div><div class="b-gps">kardiochir., naczyniowa, trauma</div></div>
+      <div class="base-card"><div class="b-name">USK Wrocław (Borowska)</div><div class="b-port">Uniwersytecki Szpital Kliniczny</div><div class="b-gps">neurochirurgia, onkologia</div></div>
+    </div>
+
+    <div class="warn">
+      <b>Uwaga:</b> Numery dyżurnych poszczególnych baz LPR nie są publicznie dostępne — transport
+      zleca się przez <b>Centrum Operacyjne 2222 99999</b> lub portal <b>EZT</b>. Lista szpitali
+      z lądowiskami — szacunkowa, zweryfikuj przed kluczowymi transportami.
+    </div>
+  </section>
+
+  <div class="foot">
+    EMLA — Transport Sanitarny · dane zebrane 2026-04-22 · <a href="index.html" style="color:var(--ac)">← Dashboard</a>
+    <br>
+    <span class="eps-note">Źródło: LPR (lpr.com.pl), Wikipedia. Regionalne numery dyspozytorów niepublikowane.</span>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

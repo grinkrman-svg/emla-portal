@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-04-22T22:52:45",
+  "items": [
+    {
+      "slug": "space-01",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/space-01.webp",
+      "status": "ok"
+    },
+    {
+      "slug": "space-02",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/space-02.webp",
+      "status": "ok"
+    },
+    {
+      "slug": "space-04",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/space-04.webp",
+      "status": "ok"
+    },
+    {
+      "slug": "space-03",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/space-03.webp",
+      "status": "ok"
+    },
+    {
+      "slug": "landscape-02",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/landscape-02.webp",
+      "status": "ok"
+    },
+    {
+      "slug": "landscape-04",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/landscape-04.webp",
+      "status": "ok"
+    },
+    {
+      "slug": "landscape-01",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/landscape-01.webp",
+      "status": "ok"
+    },
+    {
+      "slug": "landscape-03",
+      "file": "/Volumes/Lexar/VS/emla/emla-portal/img/bg/landscape-03.webp",
+      "status": "ok"
+    }
+  ]
+}

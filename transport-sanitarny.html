@@ -2,179 +2,663 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Transport Sanitarny (LPR) — EMLA Portal</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Transport Sanitarny · LPR — EMLA</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180x180.png">
+<link rel="icon" href="icons/icon-32x32.png">
+<meta name="theme-color" content="#050816">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.hero-lpr {
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-  color: #fff;
-  padding: 2rem 1.5rem 1.5rem;
-  margin: 0 1rem 1rem;
-  border-radius: var(--r);
-  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-  max-width: 1400px;
-  margin-left: auto; margin-right: auto;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-void:    #050816;
+  --bg-deep:    #0a1022;
+  --bg-card:    rgba(15, 23, 41, 0.42);
+  --bg-card-hi: rgba(20, 29, 51, 0.58);
+  --bg-glass:   rgba(15, 23, 41, 0.25);
+  --fg-0: #f5f8ff;
+  --fg-1: #cdd6ef;
+  --fg-2: #8895b6;
+  --fg-3: #4e5a7a;
+  --border:      rgba(255, 255, 255, 0.08);
+  --border-str:  rgba(255, 255, 255, 0.16);
+  --border-hot:  rgba(255, 255, 255, 0.28);
+  --red:    #ff3b4a; --red-gl:  rgba(255, 59, 74, 0.55);
+  --orange: #ff8c3b; --ora-gl:  rgba(255, 140, 59, 0.5);
+  --blue:   #4da3ff; --blu-gl:  rgba(77, 163, 255, 0.55);
+  --green:  #4ade80; --grn-gl:  rgba(74, 222, 128, 0.45);
+  --amber:  #fbbf24; --amb-gl:  rgba(251, 191, 36, 0.5);
+  --cyan:   #22d3ee;
+
+  --radius: 18px;
+  --radius-sm: 12px;
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --sh-glow-b: 0 8px 48px var(--blu-gl), 0 2px 12px rgba(0,0,0,0.3);
+  --sh-elev:   0 16px 48px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.35);
 }
-.hero-lpr .hero-icon {
-  font-size: 3.5rem; line-height: 1;
-}
-.hero-lpr .hero-body { flex: 1; min-width: 260px; }
-.hero-lpr h1 { font-size: 1.6rem; margin: 0 0 .25rem; font-weight: 700; }
-.hero-lpr p { opacity: .9; font-size: .95rem; margin: 0; }
-.hero-lpr .hero-num {
-  background: #fff; color: #1e40af;
-  padding: 1rem 1.6rem; border-radius: 12px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2rem; font-weight: 700;
-  cursor: pointer; transition: transform .15s;
-  user-select: all;
-}
-.hero-lpr .hero-num:hover { transform: scale(1.04); }
-.hero-lpr .hero-num-label {
-  display: block; font-size: .7rem;
-  color: rgba(30,64,175,.8); text-transform: uppercase;
-  letter-spacing: .1em; font-family: 'DM Sans', sans-serif;
-  margin-bottom: 4px; font-weight: 600;
+[data-theme="light"] {
+  --bg-void: #f4f6fc;
+  --bg-card: rgba(255,255,255,0.48);
+  --bg-card-hi: rgba(255,255,255,0.62);
+  --bg-glass: rgba(255,255,255,0.25);
+  --fg-0: #0a1022; --fg-1: #1c2540; --fg-2: #56607e; --fg-3: #9aa3bd;
+  --border: rgba(0,0,0,0.08);
+  --border-str: rgba(0,0,0,0.15);
+  --border-hot: rgba(0,0,0,0.28);
 }
 
-.sect {
-  max-width: 1400px; margin: 1.5rem auto; padding: 0 1rem;
+html, body {
+  min-height: 100vh; min-height: 100dvh;
+  background: transparent !important;
 }
-.sect h2 {
-  font-size: 1.1rem; font-weight: 700; margin-bottom: .75rem;
-  color: var(--t0); letter-spacing: -.01em;
+body {
+  font-family: var(--font-ui);
+  color: var(--fg-0);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.45;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
 }
-.sect .sub {
-  font-size: .82rem; color: var(--t2); margin-bottom: .85rem;
+body::before { display: none !important; }  /* kill grain from css/styles.css */
+
+/* ═══════════ FULLSCREEN HELICOPTER — VIDEO + IMG FALLBACK ═══════════ */
+.heli-img, .heli-video {
+  position: fixed; inset: 0; z-index: -10;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+}
+.heli-img {
+  animation: heli-hover 10s ease-in-out infinite;
+  will-change: transform;
+}
+.heli-video { display: none; }  /* shown only when video is loaded successfully */
+.heli-video.ready { display: block; }
+.heli-video.ready ~ .heli-img { display: none; }  /* hide static when video active */
+
+/* Dual video for seamless crossfade loop */
+.heli-video-b {
+  position: fixed; inset: 0; z-index: -9;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+  display: none;
+}
+.heli-video-b.active { display: block; opacity: 1; }
+
+@keyframes heli-hover {
+  0%, 100% { transform: translateY(0) scale(1.02); }
+  50%      { transform: translateY(-14px) scale(1.05); }
 }
 
-.bases-grid {
+/* ═══════════ DOWNWASH PARTICLES ═══════════ */
+.downwash {
+  position: fixed; inset: 0; z-index: -4;
+  pointer-events: none;
+  width: 100%; height: 100%;
+}
+
+/* ═══════════ SOUND toggle button ═══════════ */
+.ph-btn.sound-btn { position: relative; }
+.ph-btn.sound-btn.playing {
+  color: var(--green);
+  border-color: rgba(74,222,128,0.5);
+  background: rgba(74,222,128,0.08);
+}
+.ph-btn.sound-btn.playing::after {
+  content: ''; position: absolute; inset: -3px;
+  border: 1px solid var(--grn-gl);
+  border-radius: 13px;
+  opacity: 0; animation: sound-ring 2s ease-out infinite;
+}
+@keyframes sound-ring {
+  0%   { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.3); }
+}
+
+/* Readability scrim */
+.scrim {
+  position: fixed; inset: 0; z-index: -9;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(5,8,22,0.50) 0%,
+      rgba(5,8,22,0.15) 25%,
+      rgba(5,8,22,0.25) 55%,
+      rgba(5,8,22,0.85) 100%);
+}
+[data-theme="light"] .scrim {
+  background:
+    linear-gradient(180deg,
+      rgba(245,248,252,0.35) 0%,
+      rgba(245,248,252,0.05) 25%,
+      rgba(245,248,252,0.15) 55%,
+      rgba(245,248,252,0.65) 100%);
+}
+
+/* Night lights (only dark theme) */
+.heli-lights {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: 48vh; z-index: -8;
+  pointer-events: none; overflow: hidden;
+  opacity: 0; transition: opacity 2s ease;
+}
+[data-theme="dark"] .heli-lights { opacity: 1; }
+.heli-lights::before,
+.heli-lights::after {
+  content: ''; position: absolute; bottom: -10%;
+  width: 44vw; height: 110%;
+  background: radial-gradient(ellipse 50% 70% at 50% 100%,
+              rgba(220, 235, 255, 0.5) 0%,
+              rgba(180, 210, 255, 0.24) 32%,
+              transparent 68%);
+  filter: blur(8px);
+}
+.heli-lights::before { left: 16%; animation: beam-l 15s ease-in-out infinite; }
+.heli-lights::after  { right: 16%; animation: beam-r 15s ease-in-out infinite; }
+@keyframes beam-l {
+  0%, 100% { transform: translateX(-12%); opacity: 0.55; }
+  50%      { transform: translateX(10%); opacity: 0.9; }
+}
+@keyframes beam-r {
+  0%, 100% { transform: translateX(12%); opacity: 0.55; }
+  50%      { transform: translateX(-10%); opacity: 0.9; }
+}
+.heli-floor {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: 24vh; z-index: -7; pointer-events: none;
+  opacity: 0; transition: opacity 2s ease;
+  background: radial-gradient(ellipse 70% 100% at 50% 100%,
+              rgba(255, 245, 220, 0.28) 0%,
+              rgba(255, 230, 180, 0.12) 42%,
+              transparent 78%);
+  animation: floor-pulse 7s ease-in-out infinite;
+}
+[data-theme="dark"] .heli-floor { opacity: 1; }
+@keyframes floor-pulse {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* Spotlight cursor */
+.spotlight {
+  position: fixed; width: 480px; height: 480px;
+  border-radius: 50%; pointer-events: none; z-index: -5;
+  background: radial-gradient(circle, rgba(77, 163, 255, 0.18) 0%, transparent 65%);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  will-change: left, top;
+  opacity: 0.9;
+}
+[data-theme="light"] .spotlight {
+  background: radial-gradient(circle, rgba(77, 163, 255, 0.12), transparent 65%);
+  mix-blend-mode: multiply;
+}
+
+/* Aurora glow (subtle) */
+.aurora {
+  position: fixed; inset: -20%; z-index: -6;
+  pointer-events: none; opacity: 0.4;
+  background:
+    radial-gradient(ellipse 40% 40% at 15% 15%, rgba(77, 163, 255, 0.22), transparent 60%),
+    radial-gradient(ellipse 35% 35% at 85% 30%, rgba(255, 59, 74, 0.16), transparent 60%),
+    radial-gradient(ellipse 45% 35% at 50% 90%, rgba(192, 132, 252, 0.14), transparent 60%);
+  animation: aurora-shift 45s ease-in-out infinite alternate;
+  filter: blur(60px);
+}
+@keyframes aurora-shift {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(3%, -2%) scale(1.08); }
+}
+
+/* Scanline */
+.scanline {
+  position: fixed; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(77, 163, 255, 0.26), transparent);
+  pointer-events: none; z-index: 9998;
+  animation: scan 9s linear infinite;
+  box-shadow: 0 0 16px rgba(77, 163, 255, 0.4);
+}
+@keyframes scan {
+  0%   { top: -2%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 102%; opacity: 0; }
+}
+
+/* ═══════════ BACK-HOME (perso-positioned so it doesn't cover title) ═══════════ */
+.back-home-v2 {
+  position: fixed;
+  top: max(72px, env(safe-area-inset-top));   /* well below page header */
+  left: 16px;
+  z-index: 1000;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px;
+  border-radius: 100px;
+  background: rgba(77, 163, 255, 0.12);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid rgba(77, 163, 255, 0.35);
+  color: var(--blue);
+  font-family: var(--font-ui); font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.02em; text-decoration: none;
+  box-shadow: 0 4px 20px rgba(77,163,255,0.25);
+  transition: all 0.18s;
+}
+.back-home-v2:hover {
+  background: rgba(77,163,255,0.22);
+  transform: translateX(-2px) scale(1.04);
+  box-shadow: 0 6px 28px rgba(77,163,255,0.4);
+}
+
+/* ═══════════ PAGE HEADER ═══════════ */
+.page-header {
+  position: sticky; top: 0; z-index: 100;
+  padding: 14px 22px 12px;
+  padding-top: calc(14px + env(safe-area-inset-top));
+  background: rgba(15, 23, 41, 0.3);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px;
+}
+[data-theme="light"] .page-header { background: rgba(255, 255, 255, 0.32); }
+.ph-title { min-width: 0; }
+.ph-title h1 {
+  font-size: 17px; font-weight: 700; color: var(--fg-0);
+  letter-spacing: -0.01em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ph-title span { font-size: 11.5px; color: var(--fg-2); display: block; margin-top: 1px; }
+.ph-controls { display: flex; gap: 6px; flex-shrink: 0; }
+.ph-btn {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 10px; color: var(--fg-1);
+  cursor: pointer; transition: all 0.15s;
+}
+.ph-btn:hover { background: rgba(255,255,255,0.1); color: var(--fg-0); border-color: var(--border-str); }
+.ph-btn svg { width: 18px; height: 18px; }
+
+/* ═══════════ MAIN ═══════════ */
+.main {
+  max-width: 1280px; margin: 0 auto;
+  padding: 24px 22px 96px;
+}
+
+/* ═══════════ LPR HERO — Glass+Neon REDESIGN ═══════════ */
+.lpr-hero {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: .75rem;
+  grid-template-columns: 1fr auto;
+  gap: 28px; align-items: center;
+  padding: 34px 38px;
+  margin-top: 12px;
+  border-radius: 24px;
+  background: linear-gradient(135deg,
+    rgba(45, 75, 130, 0.38) 0%,
+    rgba(30, 55, 110, 0.32) 50%,
+    rgba(77, 163, 255, 0.22) 100%);
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid rgba(77, 163, 255, 0.28);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 60px rgba(77, 163, 255, 0.22);
+  overflow: hidden;
+  isolation: isolate;
 }
-.base-card {
-  padding: .9rem 1rem;
-  background: var(--bg-glass);
-  border: 1px solid var(--bd);
-  border-radius: var(--r);
+.lpr-hero::before {
+  content: '';
+  position: absolute; inset: -2px;
+  border-radius: 24px;
+  padding: 2px;
+  background: conic-gradient(from 180deg at 50% 50%,
+    transparent 0deg, var(--blu-gl) 30deg, transparent 90deg,
+    transparent 270deg, var(--red-gl) 300deg, transparent 330deg);
+  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  mask-composite: exclude; -webkit-mask-composite: xor;
+  animation: hero-rotate 12s linear infinite;
+  opacity: 0.8; z-index: 0;
+}
+@keyframes hero-rotate { to { transform: rotate(360deg); } }
+
+.lpr-hero-body { position: relative; z-index: 1; }
+.lpr-hero-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10.5px; font-weight: 800; color: var(--blue);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  padding: 5px 11px; border-radius: 100px;
+  background: rgba(77, 163, 255, 0.14);
+  border: 1px solid rgba(77, 163, 255, 0.3);
+  margin-bottom: 14px;
+}
+.lpr-hero-label::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 10px var(--grn-gl);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.75); }
+}
+.lpr-hero h1 {
+  font-size: 32px; font-weight: 800;
+  color: var(--fg-0);
+  letter-spacing: -0.02em; line-height: 1.1;
+  margin-bottom: 10px;
+  text-shadow: 0 0 24px rgba(77, 163, 255, 0.4);
+}
+.lpr-hero p {
+  color: var(--fg-1); font-size: 14.5px;
+  line-height: 1.55; max-width: 560px;
+}
+
+.lpr-hero-num {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+  padding: 20px 26px; border-radius: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s;
   backdrop-filter: blur(10px);
-  display: flex; flex-direction: column; gap: .3rem;
 }
-.base-card .b-name {
-  font-weight: 700; font-size: .98rem;
-  display: flex; justify-content: space-between; gap: .5rem; align-items: center;
+.lpr-hero-num:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: scale(1.03);
+  box-shadow: 0 0 40px rgba(77, 163, 255, 0.35);
 }
-.base-card .b-name .badge24 {
-  font-size: .65rem; padding: 2px 6px;
-  background: #16a34a; color: #fff; border-radius: 4px;
-  letter-spacing: .05em; font-weight: 700;
+.lpr-hero-num-label {
+  font-size: 10px; font-weight: 700; color: var(--fg-1);
+  text-transform: uppercase; letter-spacing: 0.14em;
 }
-.base-card .b-name .badgeDay {
-  font-size: .65rem; padding: 2px 6px;
-  background: #d97706; color: #fff; border-radius: 4px;
-  letter-spacing: .05em; font-weight: 700;
+.lpr-hero-num-value {
+  font-family: var(--font-mono); font-size: 34px; font-weight: 700;
+  color: var(--fg-0); letter-spacing: 0.04em;
+  text-shadow: 0 0 18px rgba(77, 163, 255, 0.5);
 }
-.base-card .b-name .badgeSeason {
-  font-size: .65rem; padding: 2px 6px;
-  background: #6b7280; color: #fff; border-radius: 4px;
-  letter-spacing: .05em; font-weight: 700;
-}
-.base-card .b-port { font-size: .82rem; color: var(--t1); }
-.base-card .b-gps { font-size: .72rem; color: var(--t2); font-family: 'JetBrains Mono', monospace; }
 
-.emerg-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: .6rem;
+/* ═══════════ SECTIONS ═══════════ */
+.section {
+  margin-top: 34px;
 }
-.emerg-card {
-  padding: 1rem .9rem;
-  background: var(--bg-glass);
-  border: 1px solid var(--bd);
-  border-radius: var(--r);
-  display: flex; flex-direction: column; align-items: center; gap: .3rem;
+.section h2 {
+  font-size: 18px; font-weight: 700; color: var(--fg-0);
+  letter-spacing: -0.01em; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section h2::before {
+  content: ''; width: 4px; height: 22px; border-radius: 3px;
+  background: var(--blue); box-shadow: 0 0 10px var(--blu-gl);
+}
+.section .sub {
+  font-size: 12.5px; color: var(--fg-2);
+  margin-bottom: 16px;
+}
+
+/* ═══════════ EZT block ═══════════ */
+.ezt {
+  padding: 22px 26px; border-radius: var(--radius);
+  background: var(--bg-card);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-elev);
+  transition: all 0.2s;
+}
+.ezt:hover { border-color: var(--border-str); background: var(--bg-card-hi); }
+.ezt h3 {
+  font-size: 14.5px; font-weight: 700; color: var(--fg-0);
+  margin-bottom: 12px; letter-spacing: -0.01em;
+}
+.ezt ol {
+  font-size: 13.5px; color: var(--fg-1); line-height: 1.7;
+  padding-left: 22px;
+}
+.ezt ol li { margin-bottom: 4px; }
+.ezt ol b { color: var(--fg-0); font-weight: 700; }
+.ezt code {
+  font-family: var(--font-mono); font-size: 13px;
+  padding: 2px 6px; border-radius: 4px;
+  background: rgba(77, 163, 255, 0.14);
+  color: var(--blue); letter-spacing: 0.04em;
+}
+.ezt-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 16px; padding: 10px 18px;
+  border-radius: 10px; background: var(--blue);
+  color: #fff; font-weight: 600; font-size: 13.5px;
+  text-decoration: none; transition: all 0.2s;
+  box-shadow: 0 4px 20px var(--blu-gl);
+}
+.ezt-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px var(--blu-gl); }
+
+/* ═══════════ BASE CARDS ═══════════ */
+.bases {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.base {
+  position: relative; padding: 16px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--border);
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.28);
+  overflow: hidden; isolation: isolate;
+}
+.base::before {
+  content: ''; position: absolute; inset: -1px;
+  border-radius: inherit; z-index: -1;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%),
+    var(--accent-gl, rgba(77,163,255,0.22)), transparent 55%);
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.base:hover::before { opacity: 1; }
+.base:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-elev);
+  border-color: var(--border-str);
+}
+.base.green  { --accent-gl: rgba(74, 222, 128, 0.25); }
+.base.amber  { --accent-gl: rgba(251, 191, 36, 0.25); }
+.base.purple { --accent-gl: rgba(192, 132, 252, 0.25); }
+
+.base-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: 8px;
+}
+.base-name {
+  font-size: 14px; font-weight: 700; color: var(--fg-0);
+  letter-spacing: -0.01em;
+}
+.base-badge {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+  padding: 3px 9px; border-radius: 100px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.base-badge.b247  { background: rgba(74,222,128,0.15); color: var(--green); border: 1px solid rgba(74,222,128,0.35); }
+.base-badge.bday  { background: rgba(251,191,36,0.15); color: var(--amber); border: 1px solid rgba(251,191,36,0.35); }
+.base-badge.bseason { background: rgba(192,132,252,0.15); color: #c084fc; border: 1px solid rgba(192,132,252,0.35); }
+.base-port {
+  font-size: 12.5px; color: var(--fg-1); font-weight: 500;
+  margin-bottom: 6px;
+}
+.base-gps {
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--fg-3);
+  letter-spacing: 0.02em;
+}
+
+/* ═══════════ EMERGENCY NUMBERS ═══════════ */
+.emerg {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.e-card {
+  position: relative; padding: 18px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--border);
+  cursor: pointer;
   text-align: center;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.1);
+  overflow: hidden; isolation: isolate;
 }
-.emerg-card .e-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2rem; font-weight: 700; color: var(--red, #dc2626);
-  line-height: 1;
+.e-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--sh-elev);
+  border-color: var(--red-gl);
 }
-.emerg-card .e-name { font-size: .88rem; font-weight: 700; color: var(--t0); }
-.emerg-card .e-desc { font-size: .72rem; color: var(--t2); }
-
-.ezt-block {
-  padding: 1.25rem 1.5rem;
-  background: var(--bg-glass);
-  border: 1px solid var(--bd);
-  border-radius: var(--r);
-  display: flex; flex-direction: column; gap: .6rem;
+.e-card:active { transform: scale(0.97); }
+.e-num {
+  font-family: var(--font-mono); font-weight: 800;
+  font-size: 30px; color: var(--red);
+  letter-spacing: 0.02em; line-height: 1;
+  text-shadow: 0 0 20px var(--red-gl);
+  margin-bottom: 6px;
 }
-.ezt-block h3 { font-size: 1rem; color: var(--t0); margin-bottom: .2rem; }
-.ezt-block ol { padding-left: 1.3rem; font-size: .88rem; color: var(--t1); }
-.ezt-block ol li { margin-bottom: .3rem; }
-.ezt-block a {
-  display: inline-block; padding: .5rem 1rem;
-  background: #1e40af; color: #fff; border-radius: 6px;
-  font-weight: 600; text-decoration: none; font-size: .85rem;
-  width: fit-content;
+.e-name {
+  font-size: 13.5px; font-weight: 700; color: var(--fg-0);
+  margin-bottom: 3px;
+}
+.e-desc {
+  font-size: 11px; color: var(--fg-2); line-height: 1.35;
 }
 
-.warn {
-  background: rgba(217, 119, 6, .1);
-  border-left: 3px solid #d97706;
-  padding: .75rem 1rem;
-  border-radius: 4px;
-  font-size: .82rem; color: var(--t1);
-  margin-top: 1rem;
+/* ═══════════ Toast ═══════════ */
+.toast {
+  position: fixed; bottom: calc(24px + env(safe-area-inset-bottom)); left: 50%;
+  transform: translateX(-50%) translateY(24px); opacity: 0;
+  background: var(--fg-0); color: var(--bg-void);
+  padding: 12px 22px; border-radius: 100px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: var(--sh-elev);
+  z-index: 1000; pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.warn b { color: #d97706; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ═══════════ Responsive ═══════════ */
+@media (max-width: 860px) {
+  .page-header { padding: 10px 14px; padding-top: calc(10px + env(safe-area-inset-top)); }
+  .ph-title h1 { font-size: 15px; }
+  .ph-title span { font-size: 10.5px; }
+  .main { padding: 18px 14px 96px; }
+  .lpr-hero {
+    grid-template-columns: 1fr;
+    padding: 22px 24px;
+    gap: 14px;
+  }
+  .lpr-hero h1 { font-size: 24px; }
+  .lpr-hero-num { align-items: flex-start; }
+  .lpr-hero-num-value { font-size: 26px; }
+  .bases, .emerg { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .e-num { font-size: 26px; }
+}
+@media (max-width: 520px) {
+  .bases, .emerg { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.05s !important; }
+  .heli-img { animation: none !important; }
+}
+@media (hover: none) { .spotlight { display: none; } }
 </style>
 </head>
-<body data-theme="light">
+<body data-theme="dark">
 
-<div class="scroll-progress" id="scrollProg"></div>
-<div class="toast" id="toast"></div>
+<!-- Helicopter video (primary) + img fallback (if video unavailable) -->
+<video class="heli-video" id="heli-video" autoplay muted loop playsinline preload="metadata"
+       poster="img/bg/helicopter-night.webp" aria-hidden="true">
+  <source id="heli-video-src-mp4" src="img/video/helicopter-night.mp4" type="video/mp4">
+  <source id="heli-video-src-webm" src="img/video/helicopter-night.webm" type="video/webm">
+</video>
+<video class="heli-video-b" id="heli-video-b" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+<img class="heli-img" id="heli-img" src="img/bg/helicopter-night.webp" alt="" aria-hidden="true">
 
-<header class="topbar" id="topbar">
-  <div class="tbl">
-    <a href="index.html" class="tb-logo" title="← Dashboard">SOR</a>
-    <div class="tb-info">
-      <strong>Szpital im. J.K. Łukowicza</strong><br>
-      Chojnice · Transport Sanitarny
-    </div>
+<!-- Downwash particles (air from rotors stirring dust/leaves near camera) -->
+<canvas class="downwash" id="downwash" aria-hidden="true"></canvas>
+
+<!-- Audio (optional, controlled by user) -->
+<audio id="heli-audio" loop preload="none">
+  <source src="img/audio/helicopter-loop.mp3" type="audio/mpeg">
+</audio>
+
+<div class="scrim" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"></div>
+<div class="heli-lights" aria-hidden="true"></div>
+<div class="heli-floor" aria-hidden="true"></div>
+<div class="scanline" aria-hidden="true"></div>
+<div class="spotlight" id="spotlight" aria-hidden="true"></div>
+
+<a class="back-home-v2" href="index.html" title="Powrót (Backspace)">
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+  <span>EMLA</span>
+</a>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="ph-title">
+    <h1>Transport Sanitarny · LPR</h1>
+    <span>Szpital im. J.K. Łukowicza · Chojnice</span>
   </div>
-  <div class="tba">
-    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+  <div class="ph-controls">
+    <button class="ph-btn sound-btn" id="soundBtn" onclick="toggleSound()" title="Dźwięk śmigłowca">
+      <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
     </button>
-    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
+    <button class="ph-btn" id="themeBtn" onclick="toggleTheme()" title="Tryb jasny/ciemny">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="ph-btn" onclick="toggleFs()" title="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+    </button>
   </div>
 </header>
 
-<div class="app" id="app">
+<main class="main">
 
-  <!-- HERO -->
-  <section class="hero-lpr">
-    <div class="hero-icon">🚁</div>
-    <div class="hero-body">
+  <!-- LPR HERO — Glass+Neon -->
+  <section class="lpr-hero">
+    <div class="lpr-hero-body">
+      <span class="lpr-hero-label">Lotnicze Pogotowie · 24/7</span>
       <h1>LPR — Lotnicze Pogotowie Ratunkowe</h1>
-      <p>Transport lotniczy pacjenta do ośrodka specjalistycznego. Zasięg bazy: 60–70 km. 21 baz stałych na terenie Polski.</p>
+      <p>Transport lotniczy pacjenta do ośrodka specjalistycznego. Zasięg bazy 60–70 km. 21 baz stałych na terenie Polski. Czas odpowiedzi 10–20 min.</p>
     </div>
-    <div class="hero-num" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
-      <span class="hero-num-label">Centrum Operacyjne</span>
-      2222 99999
+    <div class="lpr-hero-num" onclick="copyNumber('222299999','2222 99999')">
+      <span class="lpr-hero-num-label">Centrum Operacyjne</span>
+      <span class="lpr-hero-num-value">2222 99999</span>
     </div>
   </section>
 
   <!-- EZT -->
-  <section class="sect">
-    <h2>📋 EZT — Elektroniczne Zlecenie Transportu</h2>
-    <div class="ezt-block">
+  <section class="section">
+    <h2>EZT — Elektroniczne Zlecenie Transportu</h2>
+    <div class="sub">Dwie drogi zgłoszenia — telefon lub portal online.</div>
+    <div class="ezt">
       <h3>Jak zlecić transport lotniczy</h3>
       <ol>
         <li><b>Zadzwoń</b> na Centrum Operacyjne <code>2222 99999</code> — dyspozytor LPR przyjmie zgłoszenie.</li>
@@ -183,139 +667,282 @@
         <li>Dyspozytor przydzieli najbliższą bazę i śmigłowiec. Czas odpowiedzi zwykle 10–20 min.</li>
         <li>Przygotuj pacjenta (stabilizacja) i drogę przyjęcia dla zespołu HEMS.</li>
       </ol>
-      <a href="https://ezt.lpr.com.pl" target="_blank" rel="noopener">Otwórz portal EZT ↗</a>
+      <a href="https://ezt.lpr.com.pl" target="_blank" rel="noopener" class="ezt-btn">
+        Otwórz portal EZT
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
     </div>
   </section>
 
   <!-- BAZY 24/7 -->
-  <section class="sect">
-    <h2>🛫 Bazy 24-godzinne HEMS (6)</h2>
+  <section class="section">
+    <h2>Bazy 24-godzinne HEMS · 6</h2>
     <div class="sub">Loty także w nocy. Przydzielane do najbardziej krytycznych transportów międzyszpitalnych.</div>
-    <div class="bases-grid">
-      <div class="base-card">
-        <div class="b-name">Warszawa-Babice <span class="badge24">24/7</span></div>
-        <div class="b-port">Port Lotniczy Babice (EPBC)</div>
-        <div class="b-gps">52.1450°N · 21.0419°E · EC 135 P3</div>
-      </div>
-      <div class="base-card">
-        <div class="b-name">Kraków-Balice <span class="badge24">24/7</span></div>
-        <div class="b-port">Port Lotniczy Kraków-Balice (EPKK)</div>
-        <div class="b-gps">50.0880°N · 19.7845°E · EC 135 P3</div>
-      </div>
-      <div class="base-card">
-        <div class="b-name">Gdańsk-Rębiechowo <span class="badge24">24/7</span></div>
-        <div class="b-port">Port Lotniczy Gdańsk im. Lecha Wałęsy (EPGD)</div>
-        <div class="b-gps">54.3779°N · 18.4709°E · EC 135 P3</div>
-      </div>
-      <div class="base-card">
-        <div class="b-name">Wrocław-Strachowice <span class="badge24">24/7</span></div>
-        <div class="b-port">Port Lotniczy Wrocław-Strachowice (EPWR)</div>
-        <div class="b-gps">51.1024°N · 16.9881°E · EC 135 P3</div>
-      </div>
-      <div class="base-card">
-        <div class="b-name">Poznań-Ławica <span class="badge24">24/7</span></div>
-        <div class="b-port">Port Lotniczy Poznań-Ławica (EPPO)</div>
-        <div class="b-gps">52.4212°N · 16.8268°E · EC 135 P3</div>
-      </div>
-      <div class="base-card">
-        <div class="b-name">Lublin-Świdnik <span class="badge24">24/7</span></div>
-        <div class="b-port">Port Lotniczy Lublin-Świdnik (EPLB)</div>
-        <div class="b-gps">51.2399°N · 22.0394°E · EC 135 P3</div>
-      </div>
+    <div class="bases">
+      <div class="base green"><div class="base-head"><span class="base-name">Warszawa-Babice</span><span class="base-badge b247">24/7</span></div><div class="base-port">Port Lotniczy Babice (EPBC)</div><div class="base-gps">52.1450°N · 21.0419°E · EC 135 P3</div></div>
+      <div class="base green"><div class="base-head"><span class="base-name">Kraków-Balice</span><span class="base-badge b247">24/7</span></div><div class="base-port">Port Lotniczy Kraków-Balice (EPKK)</div><div class="base-gps">50.0880°N · 19.7845°E · EC 135 P3</div></div>
+      <div class="base green"><div class="base-head"><span class="base-name">Gdańsk-Rębiechowo</span><span class="base-badge b247">24/7</span></div><div class="base-port">Port Lotniczy Gdańsk im. Lecha Wałęsy (EPGD)</div><div class="base-gps">54.3779°N · 18.4709°E · EC 135 P3</div></div>
+      <div class="base green"><div class="base-head"><span class="base-name">Wrocław-Strachowice</span><span class="base-badge b247">24/7</span></div><div class="base-port">Port Lotniczy Wrocław-Strachowice (EPWR)</div><div class="base-gps">51.1024°N · 16.9881°E · EC 135 P3</div></div>
+      <div class="base green"><div class="base-head"><span class="base-name">Poznań-Ławica</span><span class="base-badge b247">24/7</span></div><div class="base-port">Port Lotniczy Poznań-Ławica (EPPO)</div><div class="base-gps">52.4212°N · 16.8268°E · EC 135 P3</div></div>
+      <div class="base green"><div class="base-head"><span class="base-name">Lublin-Świdnik</span><span class="base-badge b247">24/7</span></div><div class="base-port">Port Lotniczy Lublin-Świdnik (EPLB)</div><div class="base-gps">51.2399°N · 22.0394°E · EC 135 P3</div></div>
     </div>
   </section>
 
-  <!-- BAZY DNIOWE -->
-  <section class="sect">
-    <h2>🌤️ Bazy dzienne HEMS (15) — pracują 7:00–20:00</h2>
+  <!-- BAZY DZIENNE -->
+  <section class="section">
+    <h2>Bazy dzienne HEMS · 15 — pracują 7:00–20:00</h2>
     <div class="sub">W nocy transport z tych baz niemożliwy — zwróć się do najbliższej bazy 24/7 lub EZT.</div>
-    <div class="bases-grid">
-      <div class="base-card"><div class="b-name">Białystok-Krywlany <span class="badgeDay">7–20</span></div><div class="b-port">EPBK</div><div class="b-gps">52.7425°N · 23.1704°E</div></div>
-      <div class="base-card"><div class="b-name">Bydgoszcz <span class="badgeDay">7–20</span></div><div class="b-port">EPBY</div><div class="b-gps">53.0956°N · 18.2306°E</div></div>
-      <div class="base-card"><div class="b-name">Katowice <span class="badgeDay">7–20</span></div><div class="b-port">EPKT / EPKL</div><div class="b-gps">50.4745°N · 19.0881°E</div></div>
-      <div class="base-card"><div class="b-name">Kielce-Masłów <span class="badgeDay">7–20</span></div><div class="b-port">EPKD</div><div class="b-gps">50.9238°N · 20.9572°E</div></div>
-      <div class="base-card"><div class="b-name">Olsztyn-Mazury <span class="badgeDay">7–20</span></div><div class="b-port">EPOL</div><div class="b-gps">53.5878°N · 20.7253°E</div></div>
-      <div class="base-card"><div class="b-name">Opole <span class="badgeDay">7–20</span></div><div class="b-port">EPOP</div><div class="b-gps">50.6840°N · 17.9850°E</div></div>
-      <div class="base-card"><div class="b-name">Ostrów Wielkopolski <span class="badgeDay">7–20</span></div><div class="b-port">EPOT</div><div class="b-gps">51.5961°N · 17.9042°E</div></div>
-      <div class="base-card"><div class="b-name">Płock <span class="badgeDay">7–20</span></div><div class="b-port">—</div><div class="b-gps">52.6069°N · 19.6986°E</div></div>
-      <div class="base-card"><div class="b-name">Sanok-Długie <span class="badgeDay">7–20</span></div><div class="b-port">EPSS</div><div class="b-gps">49.5711°N · 21.7772°E</div></div>
-      <div class="base-card"><div class="b-name">Sokołów Podlaski <span class="badgeDay">7–20</span></div><div class="b-port">EPSO</div><div class="b-gps">52.0869°N · 22.0219°E</div></div>
-      <div class="base-card"><div class="b-name">Suwałki <span class="badgeDay">7–20</span></div><div class="b-port">EPSU</div><div class="b-gps">54.1031°N · 22.6456°E</div></div>
-      <div class="base-card"><div class="b-name">Szczecin-Goleniów <span class="badgeDay">7–20</span></div><div class="b-port">EPSC</div><div class="b-gps">53.5835°N · 14.8922°E</div></div>
-      <div class="base-card"><div class="b-name">Koszalin <span class="badgeSeason">sezon 1.06–5.09</span></div><div class="b-port">EPKS</div><div class="b-gps">53.5834°N · 15.6369°E</div></div>
-      <div class="base-card"><div class="b-name">Zielona Góra <span class="badgeDay">7–20</span></div><div class="b-port">EPZG</div><div class="b-gps">51.9381°N · 15.4608°E</div></div>
-      <div class="base-card"><div class="b-name">Łódź <span class="badgeDay">7–20</span></div><div class="b-port">EPLL</div><div class="b-gps">51.7219°N · 19.3981°E</div></div>
+    <div class="bases">
+      <div class="base amber"><div class="base-head"><span class="base-name">Białystok-Krywlany</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPBK</div><div class="base-gps">52.7425°N · 23.1704°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Bydgoszcz</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPBY</div><div class="base-gps">53.0956°N · 18.2306°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Katowice</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPKT / EPKL</div><div class="base-gps">50.4745°N · 19.0881°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Kielce-Masłów</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPKD</div><div class="base-gps">50.9238°N · 20.9572°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Olsztyn-Mazury</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPOL</div><div class="base-gps">53.5878°N · 20.7253°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Opole</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPOP</div><div class="base-gps">50.6840°N · 17.9850°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Ostrów Wielkopolski</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPOT</div><div class="base-gps">51.5961°N · 17.9042°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Płock</span><span class="base-badge bday">7–20</span></div><div class="base-port">—</div><div class="base-gps">52.6069°N · 19.6986°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Sanok-Długie</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPSS</div><div class="base-gps">49.5711°N · 21.7772°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Sokołów Podlaski</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPSO</div><div class="base-gps">52.0869°N · 22.0219°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Suwałki</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPSU</div><div class="base-gps">54.1031°N · 22.6456°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Szczecin-Goleniów</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPSC</div><div class="base-gps">53.5835°N · 14.8922°E</div></div>
+      <div class="base purple"><div class="base-head"><span class="base-name">Koszalin</span><span class="base-badge bseason">sezon 1.06–5.09</span></div><div class="base-port">EPKS</div><div class="base-gps">53.5834°N · 15.6369°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Zielona Góra</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPZG</div><div class="base-gps">51.9381°N · 15.4608°E</div></div>
+      <div class="base amber"><div class="base-head"><span class="base-name">Łódź</span><span class="base-badge bday">7–20</span></div><div class="base-port">EPLL</div><div class="base-gps">51.7219°N · 19.3981°E</div></div>
     </div>
   </section>
 
-  <!-- EMERGENCY NUMBERS -->
-  <section class="sect">
-    <h2>🚨 Numery alarmowe</h2>
+  <!-- EMERGENCY -->
+  <section class="section">
+    <h2>Numery alarmowe</h2>
     <div class="sub">Ogólnokrajowe służby ratownictwa medycznego i specjalne.</div>
-    <div class="emerg-grid">
-      <div class="emerg-card" onclick="copyN('112','112')">
-        <div class="e-num">112</div>
-        <div class="e-name">Uniwersalny</div>
-        <div class="e-desc">PRM — dysponent ratunkowy</div>
-      </div>
-      <div class="emerg-card" onclick="copyN('999','999')">
-        <div class="e-num">999</div>
-        <div class="e-name">Pogotowie</div>
-        <div class="e-desc">Ratunkowe (telemedycyna)</div>
-      </div>
-      <div class="emerg-card" onclick="copyN('991','991')">
-        <div class="e-num">991</div>
-        <div class="e-name">GOPR</div>
-        <div class="e-desc">Górskie Ochotnicze</div>
-      </div>
-      <div class="emerg-card" onclick="copyN('985','985')">
-        <div class="e-num">985</div>
-        <div class="e-name">WOPR</div>
-        <div class="e-desc">Wodne Ochotnicze</div>
-      </div>
-      <div class="emerg-card" onclick="copyN('984','984')">
-        <div class="e-num">984</div>
-        <div class="e-name">TOPR</div>
-        <div class="e-desc">Tatrzańskie Ochotnicze</div>
-      </div>
-      <div class="emerg-card" onclick="copyN('601100300','601 100 300')">
-        <div class="e-num" style="font-size:1.2rem;padding-top:8px">601 100 300</div>
-        <div class="e-name">GOPR kom.</div>
-        <div class="e-desc">Telefon alarmowy</div>
-      </div>
+    <div class="emerg">
+      <div class="e-card" onclick="copyNumber('112','112')"><div class="e-num">112</div><div class="e-name">Uniwersalny</div><div class="e-desc">PRM — dysponent ratunkowy</div></div>
+      <div class="e-card" onclick="copyNumber('999','999')"><div class="e-num">999</div><div class="e-name">Pogotowie</div><div class="e-desc">Ratunkowe</div></div>
+      <div class="e-card" onclick="copyNumber('991','991')"><div class="e-num">991</div><div class="e-name">GOPR</div><div class="e-desc">Górskie Ochotnicze</div></div>
+      <div class="e-card" onclick="copyNumber('985','985')"><div class="e-num">985</div><div class="e-name">WOPR</div><div class="e-desc">Wodne Ochotnicze</div></div>
+      <div class="e-card" onclick="copyNumber('984','984')"><div class="e-num">984</div><div class="e-name">TOPR</div><div class="e-desc">Tatrzańskie Ochotnicze</div></div>
+      <div class="e-card" onclick="copyNumber('601100300','601 100 300')"><div class="e-num" style="font-size:22px;padding-top:4px">601 100 300</div><div class="e-name">GOPR kom.</div><div class="e-desc">Alarmowy</div></div>
     </div>
   </section>
 
-  <!-- HELIPORTS -->
-  <section class="sect">
-    <h2>🏥 Szpitale z lądowiskiem (wybór)</h2>
-    <div class="sub">Potwierdzone lub prawdopodobne (zalecana weryfikacja przed transportem).</div>
-    <div class="bases-grid">
-      <div class="base-card"><div class="b-name">CLO Siemianowice Śląskie</div><div class="b-port">Centrum Leczenia Oparzeń</div><div class="b-gps">oparzenia, plastyka, HBO</div></div>
-      <div class="base-card"><div class="b-name">UCK Gdańsk (Dębinki)</div><div class="b-port">Uniwersyteckie Centrum Kliniczne</div><div class="b-gps">trauma, neurochirurgia, kardiochir.</div></div>
-      <div class="base-card"><div class="b-name">ICZMP Łódź</div><div class="b-port">Inst. Centrum Zdrowia Matki Polki</div><div class="b-gps">pediatria, neonatologia</div></div>
-      <div class="base-card"><div class="b-name">IP-CZD Warszawa (Anin)</div><div class="b-port">Inst.-Pomnik Centrum Zdrowia Dziecka</div><div class="b-gps">pediatria, transplantologia</div></div>
-      <div class="base-card"><div class="b-name">Inst. Kardiologii Warszawa-Anin</div><div class="b-port">Narodowy Instytut Kardiologii</div><div class="b-gps">kardiochirurgia, elektrofizjologia</div></div>
-      <div class="base-card"><div class="b-name">Szpital Uniwersytecki Bydgoszcz</div><div class="b-port">SU nr 1 im. Jurasza</div><div class="b-gps">neurochirurgia, trauma</div></div>
-      <div class="base-card"><div class="b-name">GCM Katowice-Ochojec</div><div class="b-port">Górnośląskie Centrum Medyczne</div><div class="b-gps">kardiochir., naczyniowa, trauma</div></div>
-      <div class="base-card"><div class="b-name">USK Wrocław (Borowska)</div><div class="b-port">Uniwersytecki Szpital Kliniczny</div><div class="b-gps">neurochirurgia, onkologia</div></div>
-    </div>
+</main>
 
-    <div class="warn">
-      <b>Uwaga:</b> Numery dyżurnych poszczególnych baz LPR nie są publicznie dostępne — transport
-      zleca się przez <b>Centrum Operacyjne 2222 99999</b> lub portal <b>EZT</b>. Lista szpitali
-      z lądowiskami — szacunkowa, zweryfikuj przed kluczowymi transportami.
-    </div>
-  </section>
+<div class="toast" id="toast"></div>
 
-  <div class="foot">
-    EMLA — Transport Sanitarny · dane zebrane 2026-04-22 · <a href="index.html" style="color:var(--ac)">← Dashboard</a>
-    <br>
-    <span class="eps-note">Źródło: LPR (lpr.com.pl), Wikipedia. Regionalne numery dyspozytorów niepublikowane.</span>
-  </div>
+<script>
+/* Theme */
+(function(){
+  const saved = localStorage.getItem('emla.theme') || 'dark';
+  document.body.setAttribute('data-theme', saved);
+  updateHeliImg();
+})();
+function updateHeliBg() {
+  const theme = document.body.getAttribute('data-theme') || 'dark';
+  const vid = document.getElementById('heli-video');
+  const img = document.getElementById('heli-img');
+  const slug = theme === 'dark' ? 'helicopter-night' : 'helicopter-day';
+  img.src = `img/bg/${slug}.webp`;
+  // Swap video sources
+  const srcMp4 = document.getElementById('heli-video-src-mp4');
+  const srcWebm = document.getElementById('heli-video-src-webm');
+  srcMp4.src = `img/video/${slug}.mp4`;
+  srcWebm.src = `img/video/${slug}.webm`;
+  vid.classList.remove('ready');
+  vid.load();
+  vid.play().catch(() => {});
+}
+// Back-compat for old code
+function updateHeliImg() { updateHeliBg(); }
 
-</div>
+function toggleTheme() {
+  const cur = document.body.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', next);
+  localStorage.setItem('emla.theme', next);
+  updateHeliBg();
+  showToast(next === 'dark' ? '🌙 Tryb nocny — reflektory włączone' : '☀️ Tryb dzienny');
+}
 
-<script src="js/app.js"></script>
+/* Video ready handling */
+(function(){
+  const vid = document.getElementById('heli-video');
+  vid.addEventListener('loadeddata', () => {
+    if (vid.readyState >= 2) {
+      vid.classList.add('ready');
+      vid.play().catch(() => { vid.classList.remove('ready'); });
+    }
+  });
+  vid.addEventListener('error', () => {
+    vid.classList.remove('ready');
+    // fallback img stays visible
+  });
+})();
+
+/* ═══════════ SOUND toggle ═══════════ */
+const SOUND_KEY = 'emla.sound.enabled';
+const audio = document.getElementById('heli-audio');
+let soundTarget = 0.28;
+
+function toggleSound() {
+  const btn = document.getElementById('soundBtn');
+  if (audio.paused) {
+    audio.volume = 0;
+    audio.play().then(() => {
+      btn.classList.add('playing');
+      btn.querySelector('svg').innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+      localStorage.setItem(SOUND_KEY, 'on');
+      // Fade in
+      const start = performance.now();
+      (function fade(t){
+        const p = Math.min(1, (t - start) / 1200);
+        audio.volume = p * soundTarget;
+        if (p < 1) requestAnimationFrame(fade);
+      })(start);
+      showToast('🔊 Dźwięk śmigłowca włączony');
+    }).catch(err => {
+      showToast('⚠️ Plik dźwiękowy niedostępny');
+    });
+  } else {
+    audio.pause();
+    btn.classList.remove('playing');
+    btn.querySelector('svg').innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    localStorage.removeItem(SOUND_KEY);
+    showToast('🔇 Dźwięk wyłączony');
+  }
+}
+
+/* ═══════════ DOWNWASH PARTICLES ═══════════ */
+(function downwash(){
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) return;
+  const canvas = document.getElementById('downwash');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  const N = 60;
+  function resize() {
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    w = canvas.width = innerWidth * dpr;
+    h = canvas.height = innerHeight * dpr;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+    ctx.scale(dpr, dpr);
+  }
+  function spawn(p) {
+    // Particles spawn from lower-central "downwash zone" and drift outward+upward
+    // simulating debris kicked up by rotor downwash at ground level
+    const cx = innerWidth / 2 + (Math.random() - 0.5) * innerWidth * 0.6;
+    p.x = cx;
+    p.y = innerHeight - 10 + Math.random() * 30;
+    p.vx = (Math.random() - 0.5) * 1.8 + (cx > innerWidth/2 ? 0.4 : -0.4);  // outward from center
+    p.vy = -0.6 - Math.random() * 1.2;  // upward
+    p.life = 0;
+    p.maxLife = 180 + Math.random() * 120;
+    p.size = 1.5 + Math.random() * 3.5;
+    p.rot = Math.random() * Math.PI * 2;
+    p.vrot = (Math.random() - 0.5) * 0.08;
+    p.type = Math.random() < 0.25 ? 'leaf' : 'dust';
+    p.hue = p.type === 'leaf' ? 35 + Math.random() * 30 : 30 + Math.random() * 20;
+  }
+  for (let i = 0; i < N; i++) { const p = {}; spawn(p); p.y = innerHeight + Math.random() * 100; particles.push(p); }
+  resize();
+  addEventListener('resize', resize);
+  function frame() {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    const isDark = document.body.getAttribute('data-theme') !== 'light';
+    for (const p of particles) {
+      p.life++;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.004;  // slight gravity, particles eventually slow upward and fall back
+      p.rot += p.vrot;
+      if (p.life > p.maxLife || p.y < -20 || p.x < -30 || p.x > innerWidth + 30) {
+        spawn(p); continue;
+      }
+      const lifeFactor = p.life / p.maxLife;
+      const alpha = Math.sin(lifeFactor * Math.PI) * (isDark ? 0.35 : 0.45);
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      if (p.type === 'leaf') {
+        ctx.fillStyle = `hsla(${p.hue}, 55%, ${isDark ? 40 : 50}%, ${alpha})`;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.size * 1.4, p.size * 0.7, 0, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillStyle = `hsla(${p.hue}, 20%, ${isDark ? 55 : 65}%, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(0, 0, p.size * 0.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* Fullscreen */
+function toggleFs() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+/* Copy */
+function copyNumber(raw, pretty) {
+  if (navigator.clipboard) navigator.clipboard.writeText(raw).then(() => showToast('📋 Skopiowano · ' + pretty));
+  else { const t = document.createElement('textarea'); t.value = raw; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); showToast('📋 Skopiowano · ' + pretty); }
+}
+
+/* Toast */
+let tt;
+function showToast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m; t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 1900);
+}
+
+/* Spotlight cursor */
+(function(){
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touchOnly = matchMedia('(hover: none)').matches;
+  if (reducedMotion || touchOnly) { document.getElementById('spotlight').style.display = 'none'; return; }
+  const el = document.getElementById('spotlight');
+  let x = innerWidth/2, y = innerHeight/2, tx=x, ty=y;
+  addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+  (function loop(){
+    x += (tx - x) * 0.18; y += (ty - y) * 0.18;
+    el.style.left = x + 'px'; el.style.top = y + 'px';
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* Card glow tracking + 3D tilt */
+(function(){
+  if (matchMedia('(hover: none)').matches) return;
+  document.querySelectorAll('.base, .e-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width) * 100;
+      const my = ((e.clientY - r.top) / r.height) * 100;
+      card.style.setProperty('--mx', mx + '%');
+      card.style.setProperty('--my', my + '%');
+      const dx = (mx - 50) / 50, dy = (my - 50) / 50;
+      card.style.transform = `translateY(-3px) perspective(800px) rotateX(${-dy*2}deg) rotateY(${dx*2}deg)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+})();
+
+/* Backspace → home */
+addEventListener('keydown', e => {
+  if (e.key === 'Backspace' && !['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) {
+    e.preventDefault(); location.href = 'index.html';
+  }
+});
+
+/* SW */
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+</script>
+
 </body>
 </html>

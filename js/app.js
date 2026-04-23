@@ -839,3 +839,49 @@ if ('serviceWorker' in navigator) {
 
   init();
 })();
+
+/* ═══════════════════════════════════════════════
+   BACK-HOME BUTTON — visible fixed "← Główna"
+   ═══════════════════════════════════════════════ */
+(function injectBackHome() {
+  function add() {
+    if (document.getElementById('emlaBackHome')) return;
+    const path = location.pathname.toLowerCase();
+    // Skip on dashboard (index.html or root)
+    if (path.endsWith('/index.html') || path === '/' || path.endsWith('/')) return;
+
+    const a = document.createElement('a');
+    a.id = 'emlaBackHome';
+    a.href = 'index.html';
+    a.setAttribute('aria-label', 'Powrót do EMLA');
+    a.setAttribute('title', 'Powrót do głównej (Backspace)');
+    a.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg><span>EMLA</span>';
+    a.style.cssText = [
+      'position:fixed','top:max(12px,env(safe-area-inset-top))','left:12px','z-index:2147483646',
+      'display:inline-flex','align-items:center','gap:8px',
+      'padding:10px 14px','border-radius:12px',
+      'background:rgba(77,163,255,0.14)','backdrop-filter:blur(20px) saturate(1.5)','-webkit-backdrop-filter:blur(20px) saturate(1.5)',
+      'border:1px solid rgba(77,163,255,0.4)','color:#4da3ff',
+      'font-family:Inter,system-ui,sans-serif','font-size:13.5px','font-weight:700','letter-spacing:0.02em',
+      'text-decoration:none','box-shadow:0 4px 20px rgba(77,163,255,0.22),0 0 0 1px rgba(77,163,255,0.08)',
+      'transition:transform 0.15s,box-shadow 0.2s,background 0.15s',
+      'cursor:pointer','-webkit-tap-highlight-color:transparent'
+    ].join(';');
+    a.onmouseenter = () => { a.style.transform = 'translateX(-2px) scale(1.04)'; a.style.background = 'rgba(77,163,255,0.22)'; a.style.boxShadow = '0 6px 28px rgba(77,163,255,0.35)'; };
+    a.onmouseleave = () => { a.style.transform = ''; a.style.background = 'rgba(77,163,255,0.14)'; a.style.boxShadow = '0 4px 20px rgba(77,163,255,0.22),0 0 0 1px rgba(77,163,255,0.08)'; };
+    a.onmousedown = () => { a.style.transform = 'scale(0.96)'; };
+    document.body.appendChild(a);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', add);
+  } else {
+    add();
+  }
+  // Backspace → home (when not in input)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) {
+      e.preventDefault();
+      location.href = 'index.html';
+    }
+  });
+})();

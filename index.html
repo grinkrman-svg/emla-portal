@@ -2,410 +2,1310 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EMLA — Portal Kierowania Pacjentów</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EMLA — SOR Chojnice</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-180x180.png">
 <link rel="icon" href="icons/icon-32x32.png">
-<meta name="theme-color" content="#1e40af">
-<meta name="description" content="EMLA — Portal kierowania pacjentów SOR Chojnice. Szybki dostęp do telefonów specjalistycznych ośrodków.">
+<meta name="theme-color" content="#050816">
+<meta name="description" content="EMLA — Portal SOR Chojnice. Kontakt ze specjalistycznymi ośrodkami. Tryb nocny. Jedna ręka.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════
-   DASHBOARD-SPECIFIC STYLES
-   ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   EMLA — SOR first, cosmic effects, pure CSS+JS (no API)
+   ═══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.dash-title {
-  text-align: center;
-  padding: 2rem 1rem 0.5rem;
-  color: var(--t0);
-}
-.dash-title h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.dash-title p {
-  color: var(--t2);
-  font-size: 0.9rem;
-  margin-top: 0.3rem;
+:root {
+  /* Deep space night palette */
+  --bg-void:    #050816;
+  --bg-deep:    #0a1022;
+  --bg-card:    #0f1729;
+  --bg-card-hi: #141d33;
+  --bg-glass:   rgba(15, 23, 41, 0.72);
+  --bg-elev:    rgba(255, 255, 255, 0.03);
+  --bg-elev-2:  rgba(255, 255, 255, 0.06);
+
+  --fg-0: #f5f8ff;
+  --fg-1: #cdd6ef;
+  --fg-2: #8895b6;
+  --fg-3: #4e5a7a;
+
+  --border:      rgba(255, 255, 255, 0.07);
+  --border-str:  rgba(255, 255, 255, 0.14);
+  --border-hot:  rgba(255, 255, 255, 0.25);
+
+  /* Tier colors — neon tuned */
+  --red:     #ff3b4a;
+  --red-gl:  rgba(255, 59, 74, 0.5);
+  --red-bg:  rgba(255, 59, 74, 0.09);
+  --orange:  #ff8c3b;
+  --ora-gl:  rgba(255, 140, 59, 0.45);
+  --ora-bg:  rgba(255, 140, 59, 0.09);
+  --blue:    #4da3ff;
+  --blu-gl:  rgba(77, 163, 255, 0.45);
+  --blu-bg:  rgba(77, 163, 255, 0.09);
+  --green:   #4ade80;
+  --grn-gl:  rgba(74, 222, 128, 0.4);
+  --grn-bg:  rgba(74, 222, 128, 0.09);
+  --cyan:    #22d3ee;
+  --violet:  #c084fc;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  --sh-soft: 0 2px 12px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.25);
+  --sh-elev: 0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
 }
 
-.cat-grid {
+[data-theme="light"] {
+  --bg-void:    #f4f6fc;
+  --bg-deep:    #e9edf7;
+  --bg-card:    #ffffff;
+  --bg-card-hi: #f7f9ff;
+  --bg-glass:   rgba(255,255,255,0.78);
+  --bg-elev:    rgba(0,0,0,0.03);
+  --bg-elev-2:  rgba(0,0,0,0.06);
+  --fg-0: #0a1022;
+  --fg-1: #1c2540;
+  --fg-2: #56607e;
+  --fg-3: #9aa3bd;
+  --border: rgba(0,0,0,0.08);
+  --border-str: rgba(0,0,0,0.15);
+  --border-hot: rgba(0,0,0,0.25);
+  --sh-soft: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --sh-elev: 0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+html, body { min-height: 100vh; min-height: 100dvh; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--bg-void);
+  color: var(--fg-0);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.4;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+
+/* ═══ FULL-SCREEN BG CAROUSEL — Cosmos (dark) / Landscape (light) ═══ */
+.bgcarousel {
+  position: fixed; inset: 0; z-index: -4;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bgcarousel img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center center;
+  opacity: 0;
+  transition: opacity 2.8s ease-in-out;
+  animation: bg-breathe 90s ease-in-out infinite alternate;
+  filter: none;
+}
+/* Dark — dim the cosmos so text stays readable */
+.bgcarousel img.on         { opacity: 0.55; }
+[data-theme="light"] .bgcarousel img    { filter: none; }
+[data-theme="light"] .bgcarousel img.on { opacity: 1; }    /* light — full visibility, no filter */
+
+/* Subtle breathing zoom only, no rotate (so top edge never cropped) */
+@keyframes bg-breathe {
+  0%   { transform: scale(1.00); }
+  100% { transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) { .bgcarousel img { animation: none; } }
+
+/* No full-screen scrim — топбар/поиск имеют свой backdrop-blur, пусть картинка видна */
+/* Tiny gradient only at very top/bottom edges — keeps text edges readable */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(5,8,22,0.35) 0%, transparent 15%, transparent 85%, rgba(5,8,22,0.55) 100%);
+}
+[data-theme="light"] body::after {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 15%, transparent 85%, rgba(255,255,255,0.35) 100%);
+}
+
+/* ═══ AURORA — animated multi-radial gradient ═══ */
+.aurora {
+  position: fixed; inset: -20%; z-index: -3;
+  pointer-events: none; opacity: 0.55;
+  background:
+    radial-gradient(ellipse 40% 40% at 20% 30%, rgba(255, 59, 74, 0.18), transparent 60%),
+    radial-gradient(ellipse 35% 35% at 80% 20%, rgba(77, 163, 255, 0.2), transparent 60%),
+    radial-gradient(ellipse 45% 40% at 50% 80%, rgba(192, 132, 252, 0.16), transparent 60%),
+    radial-gradient(ellipse 30% 30% at 85% 70%, rgba(34, 211, 238, 0.14), transparent 60%);
+  animation: aurora-shift 32s ease-in-out infinite alternate;
+  filter: blur(40px);
+}
+[data-theme="light"] .aurora { opacity: 0.4; filter: blur(60px); }
+@keyframes aurora-shift {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(3%, -2%) scale(1.08); }
+  100% { transform: translate(-2%, 2%) scale(1.04); }
+}
+
+/* ═══ STARFIELD CANVAS ═══ */
+.starfield {
+  position: fixed; inset: 0; z-index: -2;
+  pointer-events: none; opacity: 0.6;
+}
+[data-theme="light"] .starfield { opacity: 0.18; }
+
+/* ═══ SCANLINE overlay ═══ */
+.scanline {
+  position: fixed; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(77, 163, 255, 0.22), transparent);
+  pointer-events: none; z-index: 9998;
+  animation: scan 7s linear infinite;
+  box-shadow: 0 0 12px rgba(77, 163, 255, 0.3);
+}
+@keyframes scan {
+  0%   { top: -2%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 102%; opacity: 0; }
+}
+
+/* ═══ SPOTLIGHT cursor ═══ */
+.spotlight {
+  position: fixed; width: 420px; height: 420px;
+  border-radius: 50%; pointer-events: none; z-index: -1;
+  background: radial-gradient(circle, rgba(77, 163, 255, 0.14) 0%, transparent 65%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+  mix-blend-mode: screen;
+  will-change: left, top;
+}
+[data-theme="light"] .spotlight { background: radial-gradient(circle, rgba(77,163,255,0.1), transparent 65%); mix-blend-mode: multiply; }
+
+/* ═══ TOPBAR — максимальная прозрачность, фон насквозь ═══ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  padding-top: calc(12px + env(safe-area-inset-top));
+  background: rgba(15, 23, 41, 0.18);
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+[data-theme="light"] .topbar {
+  background: rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.logo-mark {
+  position: relative;
+  width: 44px; height: 44px; flex-shrink: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--red) 0%, var(--orange) 60%, #ffd166 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; color: #fff; font-size: 14px; letter-spacing: 0.05em;
+  box-shadow: 0 6px 24px var(--red-gl), 0 2px 8px rgba(255,140,59,0.35);
+  overflow: hidden;
+}
+.logo-mark::after {
+  content: ''; position: absolute; inset: -50%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.35) 30deg, transparent 60deg);
+  animation: logo-spin 5s linear infinite;
+}
+@keyframes logo-spin { to { transform: rotate(360deg); } }
+.logo-mark span { position: relative; z-index: 1; }
+
+.logo-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.logo-text b { font-size: 15px; font-weight: 700; color: var(--fg-0); }
+.logo-text small { font-size: 11.5px; color: var(--fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.clock {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  font-size: 19px; font-weight: 700; color: var(--fg-0);
+  padding: 8px 16px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  letter-spacing: 0.03em;
+  position: relative; overflow: hidden;
+}
+.clock::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, var(--blu-bg), transparent);
+  transform: translateX(-100%);
+  animation: clock-sweep 6s ease-in-out infinite;
+}
+@keyframes clock-sweep {
+  0%, 60% { transform: translateX(-100%); }
+  70%     { transform: translateX(100%); }
+  100%    { transform: translateX(100%); }
+}
+.clock .sec { color: var(--blue); font-weight: 500; }
+
+.topbar-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.icon-btn {
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-elev); border: 1px solid var(--border);
+  border-radius: 11px; color: var(--fg-1); cursor: pointer;
+  transition: all 0.18s;
+}
+.icon-btn:hover { background: var(--bg-elev-2); color: var(--fg-0); border-color: var(--border-str); transform: translateY(-1px); }
+.icon-btn:active { transform: scale(0.95); }
+.icon-btn svg { width: 20px; height: 20px; }
+
+/* ═══ HERO bar ═══ */
+.hero-bar {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  padding: 0 1rem 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px 20px;
+  position: relative;
+}
+.hero-phone {
+  position: relative;
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; min-height: 84px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-str);
+  border-radius: var(--radius);
+  text-decoration: none; color: var(--fg-0);
+  box-shadow: var(--sh-soft);
+  transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.3, 1.1), box-shadow 0.2s, border-color 0.2s;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero-phone::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.hero-phone::after {
+  content: ''; position: absolute; inset: -1px;
+  border-radius: var(--radius);
+  padding: 1px; z-index: -1;
+  background: linear-gradient(130deg, transparent 40%, var(--hero-glow, var(--red-gl)) 60%, transparent 80%);
+  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  mask-composite: exclude; -webkit-mask-composite: xor;
+  opacity: 0; transition: opacity 0.3s;
+}
+.hero-phone.lpr { --hero-glow: var(--red-gl); }
+.hero-phone.lpr::before { background: var(--red); box-shadow: 0 0 16px var(--red-gl); }
+.hero-phone.sor { --hero-glow: var(--blu-gl); }
+.hero-phone.sor::before { background: var(--blue); box-shadow: 0 0 16px var(--blu-gl); }
+.hero-phone:hover::after { opacity: 1; }
+.hero-phone:hover { transform: translateY(-3px); box-shadow: var(--sh-elev); border-color: var(--border-hot); }
+.hero-phone:active { transform: scale(0.98); }
+
+.hero-icon {
+  width: 52px; height: 52px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px; position: relative;
+}
+.hero-phone.lpr .hero-icon {
+  background: var(--red-bg); color: var(--red);
+  box-shadow: inset 0 0 20px var(--red-bg), 0 0 24px var(--red-gl);
+}
+.hero-phone.sor .hero-icon {
+  background: var(--blu-bg); color: var(--blue);
+  box-shadow: inset 0 0 20px var(--blu-bg), 0 0 24px var(--blu-gl);
+}
+.hero-icon svg { width: 26px; height: 26px; }
+.hero-icon::before {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  opacity: 0; animation: ring 3s ease-out infinite;
+}
+.hero-phone.lpr .hero-icon::before { border-color: var(--red); }
+.hero-phone.sor .hero-icon::before { border-color: var(--blue); animation-delay: 1.5s; }
+@keyframes ring {
+  0%   { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
 }
 
-.cat-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 1.2rem 1.3rem;
-  background: var(--bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--bd);
-  border-radius: var(--r);
-  box-shadow: var(--sh);
-  text-decoration: none;
-  color: var(--t0);
-  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
-  cursor: pointer;
+.hero-body { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.hero-label {
+  font-size: 10.5px; font-weight: 700; color: var(--fg-2);
+  text-transform: uppercase; letter-spacing: 0.1em;
 }
-.cat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shh);
-  border-color: var(--bdh);
+.hero-number {
+  font-family: var(--font-mono); font-weight: 700; font-size: 21px;
+  letter-spacing: 0.03em; color: var(--fg-0);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-shadow: 0 0 20px var(--hero-glow, transparent);
 }
-.cat-card:active {
-  transform: translateY(0);
+.hero-sub { font-size: 11.5px; color: var(--fg-2); }
+.hero-dot {
+  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+  background: var(--green); box-shadow: 0 0 12px var(--grn-gl);
+  align-self: center; animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.3; transform: scale(0.8); }
 }
 
-.cat-icon {
-  font-size: 2rem;
-  line-height: 1;
+/* ═══ SEARCH ═══ */
+.search-wrap {
+  position: sticky; top: calc(68px + env(safe-area-inset-top));
+  z-index: 50;
+  padding: 8px 20px 14px;
+  background: transparent;  /* fully transparent — фон виден полностью */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
-.cat-name {
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--t0);
+.search-input {
+  background: rgba(15, 23, 41, 0.45);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
 }
-.cat-desc {
-  font-size: 0.82rem;
-  color: var(--t2);
-  line-height: 1.35;
+[data-theme="light"] .search-input {
+  background: rgba(255, 255, 255, 0.55);
+}
+.search-box { position: relative; max-width: 780px; margin: 0 auto; }
+.search-input {
+  width: 100%; height: 56px;
+  padding: 0 52px 0 52px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  color: var(--fg-0); font-family: var(--font-ui);
+  font-size: 16px; font-weight: 500;
+  outline: none; transition: border-color 0.15s, background 0.15s, box-shadow 0.2s;
+}
+.search-input::placeholder { color: var(--fg-3); }
+.search-input:focus {
+  border-color: var(--blue); background: var(--bg-card-hi);
+  box-shadow: 0 0 0 4px var(--blu-bg), 0 0 40px var(--blu-gl);
+}
+.search-icon {
+  position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+  width: 22px; height: 22px; color: var(--fg-2); pointer-events: none;
+}
+.search-clear {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; border-radius: 10px; border: none;
+  background: var(--bg-elev-2); color: var(--fg-1); cursor: pointer;
+  display: none; align-items: center; justify-content: center;
+  font-size: 20px; line-height: 1;
+}
+.search-clear.visible { display: flex; }
+
+/* ═══ MAIN ═══ */
+.main { max-width: 1320px; margin: 0 auto; padding: 0 20px 96px; }
+
+.section { margin-top: 28px; animation: sec-in 0.5s ease-out backwards; }
+.section[data-section="godziny"]  { animation-delay: 0.08s; }
+.section[data-section="speciali"] { animation-delay: 0.16s; }
+.section[data-section="tools"]    { animation-delay: 0.24s; }
+.section[data-section="recent"]   { animation-delay: 0.32s; }
+@keyframes sec-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 6px 4px 16px;
+}
+.section-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 100px;
+  font-size: 11.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  position: relative;
+}
+.section-chip.minuty   {
+  background: var(--red-bg); color: var(--red);
+  border: 1px solid var(--red-gl);
+  box-shadow: 0 0 24px var(--red-bg), inset 0 0 12px rgba(255,59,74,0.08);
+}
+.section-chip.godziny  { background: var(--ora-bg); color: var(--orange); border: 1px solid var(--ora-gl); box-shadow: 0 0 20px var(--ora-bg); }
+.section-chip.speciali { background: var(--blu-bg); color: var(--blue); border: 1px solid var(--blu-gl); box-shadow: 0 0 20px var(--blu-bg); }
+.section-chip.tools    { background: var(--grn-bg); color: var(--green); border: 1px solid var(--grn-gl); box-shadow: 0 0 20px var(--grn-bg); }
+.section-chip.recent   { background: var(--bg-elev); color: var(--fg-2); border: 1px solid var(--border); }
+.section-chip::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: currentColor; box-shadow: 0 0 8px currentColor;
+}
+.section-title { font-size: 12.5px; color: var(--fg-2); font-weight: 500; }
+.section-count { font-size: 11px; color: var(--fg-3); font-family: var(--font-mono); margin-left: auto; }
+
+/* ═══ GRID ═══ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+  gap: 12px;
+}
+.grid.grid-tools { grid-template-columns: repeat(auto-fill, minmax(208px, 1fr)); }
+
+/* ═══ CARD ═══ */
+.card {
+  position: relative;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 16px 16px; min-height: 110px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none; color: var(--fg-0);
+  box-shadow: var(--sh-soft);
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.3, 1.1),
+              box-shadow 0.22s, border-color 0.2s, background 0.2s;
+  overflow: hidden;
+  isolation: isolate;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.card::before {
+  /* glow edge on hover */
+  content: ''; position: absolute; inset: -1px;
+  border-radius: inherit; z-index: -1;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
+              var(--cardGlow, rgba(255,255,255,0.08)), transparent 55%);
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.card:hover::before { opacity: 1; }
+.card:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: var(--sh-elev);
+  border-color: var(--border-hot);
+  background: var(--bg-card-hi);
+}
+.card:active { transform: scale(0.97); }
+.card[data-hidden="true"] { display: none; }
+
+.card-top { display: flex; align-items: center; gap: 10px; }
+.card-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 11px; font-size: 22px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card.t1 .card-icon { background: var(--red-bg); box-shadow: inset 0 0 16px var(--red-bg); }
+.card.t2 .card-icon { background: var(--ora-bg); box-shadow: inset 0 0 16px var(--ora-bg); }
+.card.t3 .card-icon { background: var(--blu-bg); box-shadow: inset 0 0 16px var(--blu-bg); }
+.card.tool .card-icon { background: var(--grn-bg); box-shadow: inset 0 0 16px var(--grn-bg); }
+.card:hover .card-icon { transform: scale(1.08) rotate(-4deg); }
+.card.t1:hover .card-icon { box-shadow: inset 0 0 16px var(--red-bg), 0 0 20px var(--red-gl); }
+.card.t2:hover .card-icon { box-shadow: inset 0 0 16px var(--ora-bg), 0 0 20px var(--ora-gl); }
+.card.t3:hover .card-icon { box-shadow: inset 0 0 16px var(--blu-bg), 0 0 20px var(--blu-gl); }
+.card.tool:hover .card-icon { box-shadow: inset 0 0 16px var(--grn-bg), 0 0 20px var(--grn-gl); }
+
+.card-badge {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em;
+  padding: 3px 8px; border-radius: 100px;
+  color: var(--fg-2); background: var(--bg-elev); border: 1px solid var(--border);
+  text-transform: uppercase;
+}
+.card.t1 .card-badge { color: var(--red); background: var(--red-bg); border-color: var(--red-gl); animation: badge-pulse 2.5s ease-in-out infinite; }
+@keyframes badge-pulse { 0%, 100% { box-shadow: 0 0 0 0 var(--red-bg); } 50% { box-shadow: 0 0 0 5px transparent; } }
+
+.card-title { font-size: 15.5px; font-weight: 700; color: var(--fg-0); line-height: 1.25; letter-spacing: -0.01em; }
+.card-desc  { font-size: 12px; color: var(--fg-2); line-height: 1.35; }
+
+.card.t1 .card-title { text-shadow: 0 0 24px var(--red-bg); }
+.card.t1:hover .card-title { color: var(--red); text-shadow: 0 0 24px var(--red-gl); }
+
+/* Glitch effect for tier-1 title on hover */
+.card.t1:hover .card-title {
+  animation: glitch 0.3s steps(2) 1;
+}
+@keyframes glitch {
+  0%   { transform: translate(0); }
+  20%  { transform: translate(-1px, 0.5px); text-shadow: -1px 0 var(--cyan), 1px 0 var(--red); }
+  40%  { transform: translate(1px, -0.5px); text-shadow: -1px 0 var(--red), 1px 0 var(--cyan); }
+  60%  { transform: translate(-0.5px, 0); text-shadow: -1px 0 var(--cyan), 1px 0 var(--red); }
+  80%  { transform: translate(0.5px, 0.5px); }
+  100% { transform: translate(0); text-shadow: 0 0 24px var(--red-gl); }
 }
 
-.cat-card[data-hidden="true"] {
-  display: none;
+/* Ripple on tap */
+.card { position: relative; }
+.ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: scale(0); opacity: 1;
+  animation: ripple 0.6s ease-out;
+  pointer-events: none; z-index: 10;
+}
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
 }
 
-/* Search bar adjustments for dashboard */
-.sbar {
-  max-width: 600px;
-  margin: 1rem auto;
+/* ═══ RECENT ═══ */
+.recent-list { display: flex; flex-direction: column; gap: 5px; }
+.recent-item {
+  display: grid; grid-template-columns: 62px 1fr auto;
+  gap: 12px; align-items: center;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  text-decoration: none; color: var(--fg-1);
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.recent-item:hover { background: var(--bg-card-hi); border-color: var(--border-str); transform: translateX(2px); }
+.recent-time { font-family: var(--font-mono); color: var(--fg-2); font-size: 12.5px; }
+.recent-label { color: var(--fg-0); font-weight: 600; }
+.recent-x {
+  background: none; border: none; color: var(--fg-3); font-size: 18px;
+  cursor: pointer; padding: 4px 8px; line-height: 1;
+  transition: color 0.15s;
+}
+.recent-x:hover { color: var(--red); }
+.recent-empty {
+  padding: 16px 20px; color: var(--fg-3); font-size: 12.5px; font-style: italic;
+  border: 1px dashed var(--border); border-radius: var(--radius-sm); text-align: center;
 }
 
-/* Footer update line */
-.foot-update {
-  text-align: center;
-  color: var(--t3);
-  font-size: 0.78rem;
-  padding: 0.5rem 1rem 0;
+/* ═══ FOOTER ═══ */
+.foot {
+  max-width: 1320px; margin: 48px auto 0;
+  padding: 24px 20px; text-align: center;
+  font-size: 11.5px; color: var(--fg-3);
+  border-top: 1px solid var(--border);
+}
+.foot-stats {
+  display: inline-flex; gap: 16px; margin-bottom: 8px;
+  font-family: var(--font-mono); font-size: 12px;
+}
+.foot-stats b { color: var(--fg-0); font-weight: 700; font-size: 14px; }
+.foot a { color: var(--fg-2); text-decoration: none; }
+.foot a:hover { color: var(--fg-0); }
+.foot .eps { display: block; margin-top: 10px; font-size: 10.5px; }
+
+/* ═══ TOAST ═══ */
+.toast {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(24px); opacity: 0;
+  background: var(--fg-0); color: var(--bg-void);
+  padding: 12px 22px; border-radius: 100px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: var(--sh-elev);
+  z-index: 1000; pointer-events: none;
+  transition: opacity 0.25s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ═══ Responsive ═══ */
+@media (max-width: 700px) {
+  .topbar { padding: 10px 14px; padding-top: calc(10px + env(safe-area-inset-top)); gap: 8px; }
+  .logo-mark { width: 38px; height: 38px; font-size: 13px; }
+  .logo-text b { font-size: 14px; }
+  .logo-text small { font-size: 10.5px; }
+  .clock { font-size: 16px; padding: 6px 12px; }
+  .icon-btn { width: 40px; height: 40px; }
+  .hero-bar { grid-template-columns: 1fr; padding: 12px 14px; gap: 10px; }
+  .hero-number { font-size: 21px; }
+  .search-wrap { padding: 6px 14px 12px; top: calc(62px + env(safe-area-inset-top)); }
+  .search-input { height: 52px; font-size: 15px; }
+  .main { padding: 0 14px 96px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .grid.grid-tools { grid-template-columns: repeat(2, 1fr); }
+  .card { padding: 14px 12px 12px; min-height: 100px; }
+  .card-icon { width: 36px; height: 36px; font-size: 20px; }
+  .card-title { font-size: 14px; }
+  .card-desc { font-size: 11.5px; }
+  .section { margin-top: 22px; }
+}
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.05ms !important;
+  }
+  .aurora, .starfield, .scanline, .spotlight { display: none; }
+}
+@media (hover: none) {
+  .spotlight { display: none; }
+}
+
+/* ═══ 3D icons integration ═══ */
+.card-icon img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+}
+.card .card-icon {
+  width: 48px; height: 48px;
+  padding: 0; overflow: hidden;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1), transparent 60%), #000;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+@media (max-width: 700px) { .card .card-icon { width: 44px; height: 44px; } }
+
+/* ═══ HERO phone helicopter background (day/night) ═══ */
+.hero-phone {
+  position: relative;
+  background-image: url('img/bg/helicopter-day.webp');
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+}
+.hero-phone::after {
+  /* Dark scrim overlay — keeps text readable */
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--bg-card) 0%, rgba(15,23,41,0.85) 40%, rgba(15,23,41,0.55) 100%);
+  z-index: 0; pointer-events: none; border-radius: inherit;
+}
+.hero-phone > * { position: relative; z-index: 1; }
+.hero-phone:hover { background-position: center 45%; transition: background-position 4s ease; }
+
+/* Night — switch helicopter image on dark theme */
+[data-theme="dark"] .hero-phone { background-image: url('img/bg/helicopter-night.webp'); }
+[data-theme="dark"] .hero-phone::after {
+  background: linear-gradient(90deg, var(--bg-card) 0%, rgba(5,8,22,0.88) 35%, rgba(5,8,22,0.6) 100%);
+}
+
+/* Slow pan animation — very gentle drift */
+@keyframes heli-drift {
+  0%, 100% { background-position: 50% 42%; }
+  50%      { background-position: 53% 44%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-phone { animation: heli-drift 18s ease-in-out infinite; }
 }
 </style>
 </head>
-<body data-theme="light">
 
-<div class="scroll-progress" id="scrollProg"></div>
-<div class="toast" id="toast"></div>
+<body>
 
-<header class="topbar" id="topbar">
-  <div class="tbl">
-    <div class="tb-logo">SOR</div>
-    <div class="tb-info">
-      <strong>Szpital im. J.K. Łukowicza</strong><br>
-      Chojnice · Portal SOR
+<!-- Background layers -->
+<!-- Full-screen background carousel — 8 dark (NASA astrophotography + Earth-sky) / 8 light (Earth beauty) -->
+<div class="bgcarousel" id="bgcarousel" aria-hidden="true">
+  <img data-set="dark" data-i="0" src="img/bg/space-05.webp" alt="" loading="eager">
+  <img data-set="dark" data-i="1" src="img/bg/space-06.webp" alt="" loading="lazy">
+  <img data-set="dark" data-i="2" src="img/bg/space-08.webp" alt="" loading="lazy">
+  <img data-set="dark" data-i="3" src="img/bg/space-02.webp" alt="" loading="lazy">
+  <img data-set="dark" data-i="4" src="img/bg/space-07.webp" alt="" loading="lazy">
+  <img data-set="dark" data-i="5" src="img/bg/space-03.webp" alt="" loading="lazy">
+  <img data-set="dark" data-i="6" src="img/bg/space-01.webp" alt="" loading="lazy">
+  <img data-set="dark" data-i="7" src="img/bg/space-04.webp" alt="" loading="lazy">
+
+  <img data-set="light" data-i="0" src="img/bg/landscape-05.webp" alt="" loading="eager">
+  <img data-set="light" data-i="1" src="img/bg/landscape-06.webp" alt="" loading="lazy">
+  <img data-set="light" data-i="2" src="img/bg/landscape-07.webp" alt="" loading="lazy">
+  <img data-set="light" data-i="3" src="img/bg/landscape-02.webp" alt="" loading="lazy">
+  <img data-set="light" data-i="4" src="img/bg/landscape-08.webp" alt="" loading="lazy">
+  <img data-set="light" data-i="5" src="img/bg/landscape-03.webp" alt="" loading="lazy">
+  <img data-set="light" data-i="6" src="img/bg/landscape-01.webp" alt="" loading="lazy">
+  <img data-set="light" data-i="7" src="img/bg/landscape-04.webp" alt="" loading="lazy">
+</div>
+
+<div class="aurora" aria-hidden="true"></div>
+<canvas class="starfield" id="starfield" aria-hidden="true"></canvas>
+<div class="scanline" aria-hidden="true"></div>
+<div class="spotlight" id="spotlight" aria-hidden="true"></div>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo-mark"><span>SOR</span></div>
+    <div class="logo-text">
+      <b>EMLA · Chojnice</b>
+      <small>Szpital im. J.K. Łukowicza</small>
     </div>
   </div>
-  <div class="tba">
-    <button class="tb-btn" onclick="document.getElementById('search').focus()" title="Szybkie wyszukiwanie">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <span class="kbd">⌘K</span>
+  <div class="clock" id="clock">00:00<span class="sec">:00</span></div>
+  <div class="topbar-right">
+    <button class="icon-btn" onclick="toggleTheme()" title="Tryb jasny / ciemny" aria-label="Przełącz motyw">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
-    <button class="tb-btn" onclick="toggleFs()" title="Pełny ekran">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    <button class="icon-btn" onclick="toggleFullscreen()" title="Pełny ekran" aria-label="Pełny ekran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
     </button>
-    <div class="tsw" onclick="toggleTheme()" title="Tryb jasny / ciemny" role="switch" aria-label="Przełącz motyw"></div>
   </div>
 </header>
 
-<div class="app" id="app">
-
-  <div class="dash-title">
-    <h1>EMLA — Portal Kierowania Pacjentów</h1>
-    <p>28 kategorii medycznych · Kalkulatory kliniczne · SOR Chojnice</p>
+<!-- Search -->
+<div class="search-wrap">
+  <div class="search-box">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="search-input" id="search" placeholder="Szukaj: oparzenia, STEMI, udar, dziecko, ECMO…" autocomplete="off" inputmode="search" spellcheck="false">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Wyczyść">×</button>
   </div>
-
-  <div class="tools-row" style="display:flex;gap:0.6rem;padding:0 1rem 0.8rem;max-width:1400px;margin:0 auto;flex-wrap:wrap;">
-    <a href="kalkulatory.html" style="display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;background:var(--acs);border:1px solid var(--ac);border-radius:var(--rs);text-decoration:none;color:var(--ac);font-size:0.9rem;font-weight:600;transition:background 0.15s;">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
-      Kalkulatory kliniczne
-    </a>
-    <a href="protokoly.html" style="display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;background:var(--reds);border:1px solid var(--red);border-radius:var(--rs);text-decoration:none;color:var(--red);font-size:0.9rem;font-weight:600;transition:background 0.15s;">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Protokoły kliniczne
-    </a>
-    <a href="farmakologia.html" style="display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;background:var(--grns);border:1px solid var(--grn);border-radius:var(--rs);text-decoration:none;color:var(--grn);font-size:0.9rem;font-weight:600;transition:background 0.15s;">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>
-      Farmakologia SOR
-    </a>
-    <a href="karta-zlecen-v3.html" style="display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;background:rgba(150,100,180,0.12);border:1px solid #9064b4;border-radius:var(--rs);text-decoration:none;color:#9064b4;font-size:0.9rem;font-weight:600;transition:background 0.15s;">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Karta Zleceń v3
-    </a>
-    <a href="transport-sanitarny.html" style="display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;background:rgba(30,64,175,0.12);border:1px solid #1e40af;border-radius:var(--rs);text-decoration:none;color:#1e40af;font-size:0.9rem;font-weight:600;transition:background 0.15s;">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .8-4.5 4.3 1 6.2-5.5-2.9-5.5 2.9 1-6.2L3 8.8 9 8z"/></svg>
-      Transport sanitarny (LPR)
-    </a>
-  </div>
-
-  <div class="sbar">
-    <input type="text" id="search" placeholder="Szukaj kategorii... (np. oparzenia, udar, ECMO)" oninput="filterCategories()" aria-label="Szukaj kategorii">
-    <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-  </div>
-
-  <div class="cat-grid" id="catGrid">
-
-    <a class="cat-card" href="oparzenia.html" data-search="oparzenia centra leczenia oparzen">
-      <span class="cat-icon">🔥</span>
-      <span class="cat-name">Oparzenia</span>
-      <span class="cat-desc">Centra leczenia oparzeń</span>
-    </a>
-
-    <a class="cat-card" href="neurochirurgia.html" data-search="neurochirurgia urazy czaszkowo mozgowe">
-      <span class="cat-icon">🧠</span>
-      <span class="cat-name">Neurochirurgia</span>
-      <span class="cat-desc">Urazy czaszkowo-mózgowe</span>
-    </a>
-
-    <a class="cat-card" href="centrum-urazowe.html" data-search="centrum urazowe politrauma">
-      <span class="cat-icon">🚑</span>
-      <span class="cat-name">Centrum Urazowe</span>
-      <span class="cat-desc">Politrauma</span>
-    </a>
-
-    <a class="cat-card" href="udar-trombektomia.html" data-search="udar trombektomia mechaniczna">
-      <span class="cat-icon">⚡</span>
-      <span class="cat-name">Udar / Trombektomia</span>
-      <span class="cat-desc">Mechaniczna trombektomia</span>
-    </a>
-
-    <a class="cat-card" href="kardiochirurgia.html" data-search="kardiochirurgia chirurgia serca aorty">
-      <span class="cat-icon">❤️</span>
-      <span class="cat-name">Kardiochirurgia</span>
-      <span class="cat-desc">Chirurgia serca i aorty</span>
-    </a>
-
-    <a class="cat-card" href="ecmo.html" data-search="ecmo pozaustrojowa oksygenacja membranowa">
-      <span class="cat-icon">🫁</span>
-      <span class="cat-name">ECMO</span>
-      <span class="cat-desc">Pozaustrojowa oksygenacja</span>
-    </a>
-
-    <a class="cat-card" href="hemodynamika-pci.html" data-search="hemodynamika pci stemi kardiologia interwencyjna">
-      <span class="cat-icon">💓</span>
-      <span class="cat-name">Hemodynamika / PCI</span>
-      <span class="cat-desc">STEMI</span>
-    </a>
-
-    <a class="cat-card" href="toksykologia.html" data-search="toksykologia ostre zatrucia">
-      <span class="cat-icon">☠️</span>
-      <span class="cat-name">Toksykologia</span>
-      <span class="cat-desc">Ostre zatrucia</span>
-    </a>
-
-    <a class="cat-card" href="komory-hiperbaryczne.html" data-search="komory hiperbaryczne hbo zatrucie co tlenoterapia">
-      <span class="cat-icon">🫧</span>
-      <span class="cat-name">Komory hiperbaryczne</span>
-      <span class="cat-desc">HBO, zatrucie CO</span>
-    </a>
-
-    <a class="cat-card" href="replantacja.html" data-search="replantacja amputacje urazowe mikrochirurgia">
-      <span class="cat-icon">✋</span>
-      <span class="cat-name">Replantacja</span>
-      <span class="cat-desc">Amputacje urazowe</span>
-    </a>
-
-    <a class="cat-card" href="chirurgia-naczyniowa.html" data-search="chirurgia naczyniowa aaa tetniaki aorty">
-      <span class="cat-icon">🩸</span>
-      <span class="cat-name">Chirurgia naczyniowa</span>
-      <span class="cat-desc">AAA</span>
-    </a>
-
-    <a class="cat-card" href="neonatologia.html" data-search="neonatologia perinatologia noworodki">
-      <span class="cat-icon">👶</span>
-      <span class="cat-name">Neonatologia</span>
-      <span class="cat-desc">Perinatologia III°</span>
-    </a>
-
-    <a class="cat-card" href="chirurgia-dziecieca.html" data-search="chirurgia dziecieca stany nagle u dzieci pediatria">
-      <span class="cat-icon">🧒</span>
-      <span class="cat-name">Chirurgia dziecięca</span>
-      <span class="cat-desc">Stany nagłe u dzieci</span>
-    </a>
-
-    <a class="cat-card" href="okulistyka.html" data-search="okulistyka urazy oka">
-      <span class="cat-icon">👁️</span>
-      <span class="cat-name">Okulistyka</span>
-      <span class="cat-desc">Urazy oka</span>
-    </a>
-
-    <a class="cat-card" href="psychiatria.html" data-search="psychiatria stany nagle">
-      <span class="cat-icon">🧩</span>
-      <span class="cat-name">Psychiatria</span>
-      <span class="cat-desc">Stany nagłe</span>
-    </a>
-
-    <a class="cat-card" href="choroby-zakazne.html" data-search="choroby zakazne izolacja infekcje">
-      <span class="cat-icon">🦠</span>
-      <span class="cat-name">Choroby zakaźne</span>
-      <span class="cat-desc">Izolacja</span>
-    </a>
-
-    <a class="cat-card" href="chirurgia-szczekowa.html" data-search="chirurgia szczekowo twarzowa szczekowa">
-      <span class="cat-icon">🦷</span>
-      <span class="cat-name">Chirurgia szczękowo-twarzowa</span>
-      <span class="cat-desc">Urazy twarzoczaszki</span>
-    </a>
-
-    <a class="cat-card" href="torakochirurgia.html" data-search="torakochirurgia klatka piersiowa">
-      <span class="cat-icon">🫁</span>
-      <span class="cat-name">Torakochirurgia</span>
-      <span class="cat-desc">Klatka piersiowa</span>
-    </a>
-
-    <a class="cat-card" href="urologia.html" data-search="urologia stany nagle">
-      <span class="cat-icon">🔬</span>
-      <span class="cat-name">Urologia</span>
-      <span class="cat-desc">Stany nagłe</span>
-    </a>
-
-    <a class="cat-card" href="ginekologia.html" data-search="ginekologia poloznictwo">
-      <span class="cat-icon">🤰</span>
-      <span class="cat-name">Ginekologia / Położnictwo</span>
-      <span class="cat-desc">Stany nagłe położnicze</span>
-    </a>
-
-    <a class="cat-card" href="ciala-obce.html" data-search="ciala obce drogi oddechowe aspiracja">
-      <span class="cat-icon">🌬️</span>
-      <span class="cat-name">Ciała obce w drogach oddechowych</span>
-      <span class="cat-desc">Aspiracja ciał obcych</span>
-    </a>
-
-    <a class="cat-card" href="radiologia-interwencyjna.html" data-search="radiologia interwencyjna embolizacja">
-      <span class="cat-icon">📡</span>
-      <span class="cat-name">Radiologia interwencyjna</span>
-      <span class="cat-desc">Embolizacja, stentowanie</span>
-    </a>
-
-    <a class="cat-card" href="transplantologia.html" data-search="transplantologia przeszczepianie narzadow">
-      <span class="cat-icon">🏥</span>
-      <span class="cat-name">Transplantologia</span>
-      <span class="cat-desc">Koordynacja przeszczepów</span>
-    </a>
-
-    <a class="cat-card" href="choroba-dekompresyjna.html" data-search="choroba dekompresyjna nurkowanie">
-      <span class="cat-icon">🤿</span>
-      <span class="cat-name">Choroba dekompresyjna</span>
-      <span class="cat-desc">Wypadki nurkowe</span>
-    </a>
-
-    <a class="cat-card" href="ukaszenie-zmiji.html" data-search="ukaszenie zmiji zaskroniec waz jad surowica">
-      <span class="cat-icon">🐍</span>
-      <span class="cat-name">Ukąszenie żmiji</span>
-      <span class="cat-desc">Surowica antyjadowa</span>
-    </a>
-
-    <a class="cat-card" href="plazmafereza.html" data-search="plazmafereza ttp hus zespol hemolityczno mocznicowy">
-      <span class="cat-icon">🩸</span>
-      <span class="cat-name">Plazmafereza / TTP / HUS</span>
-      <span class="cat-desc">Plazmowe zabiegi lecznicze</span>
-    </a>
-
-    <a class="cat-card" href="masywna-pe.html" data-search="masywna zatorowosc plucna pe embolektomia">
-      <span class="cat-icon">🫀</span>
-      <span class="cat-name">Masywna zatorowość płucna</span>
-      <span class="cat-desc">Embolektomia, liza, ECMO</span>
-    </a>
-
-    <a class="cat-card" href="ciezka-hipotermia.html" data-search="ciezka hipotermia hipotermia gleboka ogrzewanie">
-      <span class="cat-icon">🥶</span>
-      <span class="cat-name">Ciężka hipotermia</span>
-      <span class="cat-desc">Ogrzewanie pozaustrojowe</span>
-    </a>
-
-  </div>
-
-  <div class="lpr">
-    <div class="lpr-l">
-      <span class="lpr-b">LPR</span>
-      <span class="lpr-n" onclick="copyN('222299999','2222 99999')" title="Kliknij aby skopiować">
-        <span class="pulse-dot"></span>
-        2222 99999
-      </span>
-      <span class="lpr-s">Centrum Operacyjne · transport lotniczy</span>
-    </div>
-    <div class="lpr-r">
-      <a href="https://www.lpr.com.pl/ezt/" target="_blank" rel="noopener">Zlecenie EZT</a>
-      <a href="https://www.lpr.com.pl" target="_blank" rel="noopener">lpr.com.pl</a>
-    </div>
-  </div>
-
-  <div class="foot-update">
-    Ostatnia aktualizacja: 2026-03-30
-  </div>
-
-  <div class="foot">
-    EMLA — Emergency Medical Logistics Assistant · SOR Chojnice · <span onclick="showToast('/: szukaj · Esc: wyczyść')">Skróty klawiszowe</span>
-    <br>
-    <span class="eps-note">Ogólnopolski system dostępności łóżek EPS (Ewidencja Potencjału Świadczeniodawcy) — planowane uruchomienie: 1 stycznia 2027 r.</span>
-  </div>
-
 </div>
 
-<script src="js/app.js"></script>
+<main class="main">
+
+  <!-- TIER 1 — MINUTY -->
+  <section class="section" data-section="minuty">
+    <div class="section-header">
+      <span class="section-chip minuty">⚡ Minuty</span>
+      <span class="section-title">Stan krytyczny · decyzja do 15 min</span>
+      <span class="section-count">8</span>
+    </div>
+    <div class="grid">
+      <a class="card t1" href="hemodynamika-pci.html" data-search="stemi hemodynamika pci zawal serca kardiologia interwencyjna">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/stemi.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">D2B 120'</span></div>
+        <span class="card-title">STEMI · PCI</span>
+        <span class="card-desc">Hemodynamika, zawał serca</span>
+      </a>
+      <a class="card t1" href="udar-trombektomia.html" data-search="udar trombektomia rt-pa niedokrwienny mozg">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/udar.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">6h okno</span></div>
+        <span class="card-title">Udar · Trombektomia</span>
+        <span class="card-desc">Mechaniczna, rt-PA</span>
+      </a>
+      <a class="card t1" href="masywna-pe.html" data-search="masywna zatorowosc plucna pe embolektomia liza">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/pe.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">Natychmiast</span></div>
+        <span class="card-title">Masywna PE</span>
+        <span class="card-desc">Embolektomia · ECMO</span>
+      </a>
+      <a class="card t1" href="centrum-urazowe.html" data-search="centrum urazowe politrauma uraz mnogi atls">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/politrauma.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">Golden h.</span></div>
+        <span class="card-title">Politrauma</span>
+        <span class="card-desc">Centrum urazowe</span>
+      </a>
+      <a class="card t1" href="oparzenia.html" data-search="oparzenia tbsa parkland centra leczenia oparzen">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/oparzenia.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">&gt;20% TBSA</span></div>
+        <span class="card-title">Oparzenia</span>
+        <span class="card-desc">Centra leczenia</span>
+      </a>
+      <a class="card t1" href="ciezka-hipotermia.html" data-search="hipotermia ciezka ogrzewanie pozaustrojowe ecmo">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/hipotermia.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">&lt;28°C</span></div>
+        <span class="card-title">Ciężka hipotermia</span>
+        <span class="card-desc">Ogrzewanie pozaustrojowe</span>
+      </a>
+      <a class="card t1" href="ecmo.html" data-search="ecmo pozaustrojowa oksygenacja membranowa va vv">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/ecmo.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">VA / VV</span></div>
+        <span class="card-title">ECMO</span>
+        <span class="card-desc">Pozaustrojowa oksygenacja</span>
+      </a>
+      <a class="card t1" href="replantacja.html" data-search="replantacja amputacja uraz reka palec mikrochirurgia">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/replantacja.jpg" alt="" loading="lazy" decoding="async"></span><span class="card-badge">6h ciepło</span></div>
+        <span class="card-title">Replantacja</span>
+        <span class="card-desc">Amputacje urazowe</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- TIER 2 — GODZINY -->
+  <section class="section" data-section="godziny">
+    <div class="section-header">
+      <span class="section-chip godziny">🕐 Godziny</span>
+      <span class="section-title">Pilna konsultacja specjalistyczna</span>
+      <span class="section-count">12</span>
+    </div>
+    <div class="grid">
+      <a class="card t2" href="neurochirurgia.html" data-search="neurochirurgia urazy czaszkowo mozgowe krwiak">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/neurochirurgia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Neurochirurgia</span>
+        <span class="card-desc">23 ośrodki · urazy CNS</span>
+      </a>
+      <a class="card t2" href="kardiochirurgia.html" data-search="kardiochirurgia aorta serce tetniak rozwarstwienie">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/kardiochirurgia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Kardiochirurgia</span>
+        <span class="card-desc">Serce, aorta</span>
+      </a>
+      <a class="card t2" href="toksykologia.html" data-search="toksykologia zatrucie ostre antidota">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/toksykologia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Toksykologia</span>
+        <span class="card-desc">Ostre zatrucia, antidota</span>
+      </a>
+      <a class="card t2" href="komory-hiperbaryczne.html" data-search="hbo komora hiperbaryczna zatrucie co nurkowanie">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/hbo.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">HBO · Komory</span>
+        <span class="card-desc">CO, zator powietrzny</span>
+      </a>
+      <a class="card t2" href="chirurgia-naczyniowa.html" data-search="chirurgia naczyniowa aaa tetniaki aorty niedokrwienie">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/naczyniowa.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Chirurgia naczyniowa</span>
+        <span class="card-desc">AAA, niedokrwienie</span>
+      </a>
+      <a class="card t2" href="radiologia-interwencyjna.html" data-search="radiologia interwencyjna embolizacja stent">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/radiologia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Radiologia interw.</span>
+        <span class="card-desc">Embolizacja, stentowanie</span>
+      </a>
+      <a class="card t2" href="torakochirurgia.html" data-search="torakochirurgia klatka piersiowa oddychanie">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/torako.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Torakochirurgia</span>
+        <span class="card-desc">Klatka piersiowa</span>
+      </a>
+      <a class="card t2" href="plazmafereza.html" data-search="plazmafereza ttp hus zespol hemolityczno mocznicowy">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/plazmafereza.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Plazmafereza</span>
+        <span class="card-desc">TTP / HUS</span>
+      </a>
+      <a class="card t2" href="ciala-obce.html" data-search="ciala obce drogi oddechowe aspiracja bronchoskopia">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/cialaobce.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Ciała obce DO</span>
+        <span class="card-desc">Bronchoskopia</span>
+      </a>
+      <a class="card t2" href="ukaszenie-zmiji.html" data-search="ukaszenie zmiji jad surowica antyjadowa">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/zmija.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Ukąszenie żmii</span>
+        <span class="card-desc">Surowica antyjadowa</span>
+      </a>
+      <a class="card t2" href="choroba-dekompresyjna.html" data-search="choroba dekompresyjna nurkowanie zator gazowy">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/dekompresyjna.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Dekompresyjna</span>
+        <span class="card-desc">Wypadki nurkowe</span>
+      </a>
+      <a class="card t2" href="transplantologia.html" data-search="transplantologia dawstwo narzadow koordynator">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/transplantologia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Transplantologia</span>
+        <span class="card-desc">Koordynacja</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- TIER 3 — SPECJALISTYCZNE -->
+  <section class="section" data-section="speciali">
+    <div class="section-header">
+      <span class="section-chip speciali">🎯 Specjalistyczne</span>
+      <span class="section-title">Wąskie specjalizacje i pediatria</span>
+      <span class="section-count">8</span>
+    </div>
+    <div class="grid">
+      <a class="card t3" href="neonatologia.html" data-search="neonatologia perinatologia noworodki transport">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/neonatologia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Neonatologia</span>
+        <span class="card-desc">Perinatologia III°</span>
+      </a>
+      <a class="card t3" href="chirurgia-dziecieca.html" data-search="chirurgia dziecieca dzieci pediatria stany nagle">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/dziecieca.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Chirurgia dziecięca</span>
+        <span class="card-desc">Stany nagłe u dzieci</span>
+      </a>
+      <a class="card t3" href="ginekologia.html" data-search="ginekologia poloznictwo ciaza krwawienie">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/ginekologia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Ginekologia</span>
+        <span class="card-desc">Położnictwo, stany nagłe</span>
+      </a>
+      <a class="card t3" href="okulistyka.html" data-search="okulistyka uraz oka ostre widzenie">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/okulistyka.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Okulistyka</span>
+        <span class="card-desc">Urazy oka</span>
+      </a>
+      <a class="card t3" href="chirurgia-szczekowa.html" data-search="szczekowo twarzowa uraz twarzoczaszki zlamanie">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/szczekowa.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Szczękowo-twarzowa</span>
+        <span class="card-desc">Urazy twarzoczaszki</span>
+      </a>
+      <a class="card t3" href="urologia.html" data-search="urologia nerki kamica moczowa pecherz">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/urologia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Urologia</span>
+        <span class="card-desc">Stany nagłe</span>
+      </a>
+      <a class="card t3" href="psychiatria.html" data-search="psychiatria stany nagle samobojstwo agresja">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/psychiatria.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Psychiatria</span>
+        <span class="card-desc">Stany nagłe</span>
+      </a>
+      <a class="card t3" href="choroby-zakazne.html" data-search="choroby zakazne izolacja meningokokowe sars">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/zakazne.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Choroby zakaźne</span>
+        <span class="card-desc">Izolacja</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="section" data-section="tools">
+    <div class="section-header">
+      <span class="section-chip tools">🛠 Narzędzia</span>
+      <span class="section-title">Protokoły · karta · leki · kalkulatory</span>
+      <span class="section-count">4</span>
+    </div>
+    <div class="grid grid-tools">
+      <a class="card tool" href="protokoly.html" data-search="protokoly kliniczne resuscytacja acls atls sepsa">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/protokoly.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Protokoły kliniczne</span>
+        <span class="card-desc">8 kategorii · ERC, ATLS, Sepsis</span>
+      </a>
+      <a class="card tool" href="karta-zlecen.html" data-search="karta zlecen lekarskich farmakoterapia">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/karta.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Karta zleceń</span>
+        <span class="card-desc">A4 · 76 leków · drukuj</span>
+      </a>
+      <a class="card tool" href="farmakologia.html" data-search="farmakologia leki sor dawkowanie wazopresory">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/farmakologia.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Farmakologia SOR</span>
+        <span class="card-desc">75 leków · 13 kategorii</span>
+      </a>
+      <a class="card tool" href="kalkulatory.html" data-search="kalkulatory tbsa parkland gfr cockcroft gault">
+        <div class="card-top"><span class="card-icon"><img src="img/icons-3d/kalkulatory.jpg" alt="" loading="lazy" decoding="async"></span></div>
+        <span class="card-title">Kalkulatory</span>
+        <span class="card-desc">TBSA · Parkland · GFR</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Transport shortcut — anchored at bottom -->
+  <section class="section" data-section="emergency" style="margin-top:32px">
+    <div class="section-header">
+      <span class="section-chip minuty">🚁 Transport sanitarny</span>
+      <span class="section-title">HEMS · EZT · 21 baz · helipady</span>
+    </div>
+    <div class="hero-bar" style="padding:0;grid-template-columns:1fr;gap:12px">
+      <a href="transport-sanitarny.html" class="hero-phone sor" style="min-height:96px">
+        <div class="hero-body" style="padding-left:4px">
+          <span class="hero-label">Transport lotniczy</span>
+          <span class="hero-number">Otwórz panel HEMS</span>
+          <span class="hero-sub">21 baz · LPR · EZT · helipady · 8 szpitali z lądowiskiem</span>
+        </div>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;margin-right:12px"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- RECENT -->
+  <section class="section" data-section="recent" id="section-recent">
+    <div class="section-header">
+      <span class="section-chip recent">📞 Ostatnio</span>
+      <span class="section-title">Historia — ta zmiana</span>
+    </div>
+    <div class="recent-list" id="recent-list"></div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-stats">
+    <span><b id="counterHosp">0</b> ośrodków</span>
+    <span>·</span>
+    <span><b id="counterPhones">0</b>+ telefonów</span>
+    <span>·</span>
+    <span><b id="counterCat">0</b> kategorii</span>
+  </div>
+  <div>
+    EMLA · SOR Chojnice
+    &nbsp;·&nbsp;
+    <a href="#" onclick="event.preventDefault();clearRecent();">Wyczyść historię</a>
+  </div>
+  <span class="eps">Ogólnopolski system EPS — start 1 stycznia 2027 r.</span>
+</footer>
+
+<div class="toast" id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   DASHBOARD — Category Search / Filter
-   ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   EMLA — no API, pure vanilla
+   ═══════════════════════════════════════════════════════════════ */
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const touchOnly = window.matchMedia('(hover: none)').matches;
+
+/* ─── THEME ─── */
+(function initTheme() {
+  const saved = localStorage.getItem('emla.theme') || 'dark';
+  document.body.setAttribute('data-theme', saved);
+})();
+function toggleTheme() {
+  const cur = document.body.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', next);
+  localStorage.setItem('emla.theme', next);
+  showToast(next === 'dark' ? '🌙 Tryb nocny' : '☀️ Tryb dzienny');
+}
+
+/* ─── CLOCK ─── */
+function tickClock() {
+  const n = new Date();
+  const hh = String(n.getHours()).padStart(2, '0');
+  const mm = String(n.getMinutes()).padStart(2, '0');
+  const ss = String(n.getSeconds()).padStart(2, '0');
+  document.getElementById('clock').innerHTML = `${hh}:${mm}<span class="sec">:${ss}</span>`;
+}
+setInterval(tickClock, 1000); tickClock();
+
+/* ─── STARFIELD ─── */
+(function starfield() {
+  if (reducedMotion) return;
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let w, h, stars = [];
+  const N = Math.min(120, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+  function resize() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    w = canvas.width = window.innerWidth * dpr;
+    h = canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.scale(dpr, dpr);
+    stars = Array.from({length: N}, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.4 + 0.3,
+      vx: (Math.random() - 0.5) * 0.04,
+      vy: (Math.random() - 0.5) * 0.04,
+      tw: Math.random() * Math.PI * 2
+    }));
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  let t = 0;
+  function frame() {
+    t += 0.015;
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    const isDark = document.body.getAttribute('data-theme') !== 'light';
+    for (const s of stars) {
+      s.x += s.vx; s.y += s.vy;
+      if (s.x < -5) s.x = window.innerWidth + 5;
+      if (s.x > window.innerWidth + 5) s.x = -5;
+      if (s.y < -5) s.y = window.innerHeight + 5;
+      if (s.y > window.innerHeight + 5) s.y = -5;
+      const tw = (Math.sin(t + s.tw) + 1) / 2 * 0.6 + 0.3;
+      ctx.fillStyle = isDark
+        ? `rgba(200, 210, 255, ${tw * 0.75})`
+        : `rgba(60, 90, 200, ${tw * 0.35})`;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ─── SPOTLIGHT cursor ─── */
+(function spotlight() {
+  if (reducedMotion || touchOnly) {
+    const el = document.getElementById('spotlight');
+    if (el) el.style.display = 'none';
+    return;
+  }
+  const el = document.getElementById('spotlight');
+  let x = window.innerWidth / 2, y = window.innerHeight / 2;
+  let tx = x, ty = y;
+  window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+  function loop() {
+    x += (tx - x) * 0.15;
+    y += (ty - y) * 0.15;
+    el.style.left = x + 'px';
+    el.style.top  = y + 'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ─── CARD GLOW (mouse tracking per-card) + 3D TILT ─── */
+(function cardInteract() {
+  if (touchOnly || reducedMotion) return;
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width) * 100;
+      const my = ((e.clientY - r.top) / r.height) * 100;
+      card.style.setProperty('--mx', mx + '%');
+      card.style.setProperty('--my', my + '%');
+      // Tier colored glow
+      const tier = card.classList.contains('t1') ? 'rgba(255,59,74,0.2)'
+                 : card.classList.contains('t2') ? 'rgba(255,140,59,0.2)'
+                 : card.classList.contains('t3') ? 'rgba(77,163,255,0.2)'
+                 : card.classList.contains('tool') ? 'rgba(74,222,128,0.2)'
+                 : 'rgba(255,255,255,0.1)';
+      card.style.setProperty('--cardGlow', tier);
+      // Subtle 3D tilt
+      const dx = (mx - 50) / 50;   // -1..1
+      const dy = (my - 50) / 50;
+      card.style.transform = `translateY(-3px) scale(1.015) perspective(800px) rotateX(${-dy * 3}deg) rotateY(${dx * 3}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+})();
+
+/* ─── RIPPLE on tap ─── */
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.card, .hero-phone');
+  if (!card) return;
+  const r = card.getBoundingClientRect();
+  const d = Math.max(r.width, r.height);
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.width = ripple.style.height = d + 'px';
+  ripple.style.left = (e.clientX - r.left - d/2) + 'px';
+  ripple.style.top  = (e.clientY - r.top - d/2) + 'px';
+  card.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 650);
+});
+
+/* ─── SEARCH ─── */
 function normPl(s) {
-  return s.toLowerCase()
+  return (s || '').toLowerCase()
     .replace(/ą/g,'a').replace(/ć/g,'c').replace(/ę/g,'e')
     .replace(/ł/g,'l').replace(/ń/g,'n').replace(/ó/g,'o')
     .replace(/ś/g,'s').replace(/ź/g,'z').replace(/ż/g,'z');
 }
-
-function filterCategories() {
-  const q = normPl(document.getElementById('search').value.trim());
-  const cards = document.querySelectorAll('.cat-card');
-  cards.forEach(c => {
-    if (!q) {
-      c.setAttribute('data-hidden', 'false');
-      return;
-    }
-    const name = normPl(c.querySelector('.cat-name').textContent);
-    const desc = normPl(c.querySelector('.cat-desc').textContent);
-    const tags = normPl(c.getAttribute('data-search') || '');
-    const match = name.includes(q) || desc.includes(q) || tags.includes(q);
-    c.setAttribute('data-hidden', match ? 'false' : 'true');
+const searchEl = document.getElementById('search');
+const searchClear = document.getElementById('searchClear');
+function applyFilter() {
+  const q = normPl(searchEl.value.trim());
+  searchClear.classList.toggle('visible', !!q);
+  document.querySelectorAll('.card').forEach(card => {
+    if (!q) { card.removeAttribute('data-hidden'); return; }
+    const title = normPl(card.querySelector('.card-title')?.textContent || '');
+    const desc  = normPl(card.querySelector('.card-desc')?.textContent  || '');
+    const tags  = normPl(card.getAttribute('data-search') || '');
+    const match = title.includes(q) || desc.includes(q) || tags.includes(q);
+    card.setAttribute('data-hidden', match ? 'false' : 'true');
+  });
+  document.querySelectorAll('section.section[data-section]').forEach(sec => {
+    if (sec.id === 'section-recent') return;
+    const visible = sec.querySelectorAll('.card:not([data-hidden="true"])').length;
+    sec.style.display = (q && visible === 0) ? 'none' : '';
   });
 }
+searchEl.addEventListener('input', applyFilter);
+function clearSearch() { searchEl.value = ''; applyFilter(); searchEl.focus(); }
 
-/* Keyboard shortcuts for dashboard */
+/* ─── KEYBOARD ─── */
 document.addEventListener('keydown', function(e) {
-  if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
-    e.preventDefault();
-    document.getElementById('search').focus();
-  }
-  if (e.key === 'Escape') {
-    const s = document.getElementById('search');
-    if (s.value) { s.value = ''; filterCategories(); }
-    s.blur();
+  const t = document.activeElement?.tagName;
+  if (e.key === '/' && t !== 'INPUT' && !e.ctrlKey && !e.metaKey) {
+    e.preventDefault(); searchEl.focus();
   }
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-    e.preventDefault();
-    document.getElementById('search').focus();
+    e.preventDefault(); searchEl.focus();
+  }
+  if (e.key === 'Escape') {
+    if (searchEl.value) { clearSearch(); }
+    else searchEl.blur();
   }
 });
+
+/* ─── FULLSCREEN ─── */
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+/* ─── RECENT CALLS (localStorage) ─── */
+const RECENT_KEY = 'emla.recent.v1';
+const RECENT_MAX = 8;
+function getRecent() {
+  try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch { return []; }
+}
+function logCall(label, number, href) {
+  const list = getRecent();
+  const filtered = list.filter(x => !(x.label === label && x.number === number));
+  filtered.unshift({ label, number, href: href || '#', ts: Date.now() });
+  localStorage.setItem(RECENT_KEY, JSON.stringify(filtered.slice(0, RECENT_MAX)));
+  renderRecent();
+}
+function clearRecent() {
+  localStorage.removeItem(RECENT_KEY); renderRecent();
+  showToast('Historia wyczyszczona');
+}
+function removeRecent(idx) {
+  const list = getRecent(); list.splice(idx, 1);
+  localStorage.setItem(RECENT_KEY, JSON.stringify(list)); renderRecent();
+}
+function formatAgo(ts) {
+  const sec = Math.floor((Date.now() - ts) / 1000);
+  if (sec < 60) return 'teraz';
+  if (sec < 3600) return `${Math.floor(sec / 60)} min`;
+  const d = new Date(ts);
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function renderRecent() {
+  const list = getRecent();
+  const el = document.getElementById('recent-list');
+  if (!list.length) {
+    el.innerHTML = `<div class="recent-empty">Brak historii w tej zmianie. Kliknij HERO-telefon lub kategorię — pojawi się tu.</div>`;
+    return;
+  }
+  el.innerHTML = list.map((x, i) => `
+    <a class="recent-item" href="${x.href}">
+      <span class="recent-time">${formatAgo(x.ts)}</span>
+      <span><b class="recent-label">${escape(x.label)}</b> · ${escape(x.number)}</span>
+      <button class="recent-x" onclick="event.preventDefault();event.stopPropagation();removeRecent(${i});" aria-label="Usuń">×</button>
+    </a>
+  `).join('');
+}
+function escape(s) {
+  return String(s||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('a.card');
+  if (!card) return;
+  const title = card.querySelector('.card-title')?.textContent?.trim() || '';
+  const href = card.getAttribute('href') || '#';
+  if (title && !href.startsWith('tel:')) {
+    const list = getRecent();
+    const filtered = list.filter(x => x.label !== title);
+    filtered.unshift({ label: title, number: '→ otwarto', href, ts: Date.now() });
+    localStorage.setItem(RECENT_KEY, JSON.stringify(filtered.slice(0, RECENT_MAX)));
+  }
+}, true);
+renderRecent();
+setInterval(renderRecent, 60000);
+
+/* ─── COUNTERS animate ─── */
+function animateCounter(el, target, duration = 1400) {
+  if (reducedMotion) { el.textContent = target; return; }
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min(1, (now - start) / duration);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(target * e);
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+window.addEventListener('load', () => {
+  animateCounter(document.getElementById('counterHosp'),   120);
+  animateCounter(document.getElementById('counterPhones'), 200);
+  animateCounter(document.getElementById('counterCat'),    28);
+});
+
+/* ─── TOAST ─── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1900);
+}
+
+
+/* ─── BG CAROUSEL (~ 1 minute per image, fade ~3 sec) ─── */
+(function bgCarousel() {
+  const el = document.getElementById('bgcarousel');
+  if (!el) return;
+  let idx = 0;
+  function tick() {
+    const imgs = Array.from(el.querySelectorAll('img'));
+    const theme = document.body.getAttribute('data-theme') || 'dark';
+    // Hide all first
+    imgs.forEach(i => i.classList.remove('on'));
+    // Show next image from matching theme set
+    const matching = imgs.filter(i => i.dataset.set === theme);
+    if (matching.length) matching[idx % matching.length].classList.add('on');
+    idx++;
+  }
+  tick();
+  // Theme change — immediately refresh
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.icon-btn')) setTimeout(tick, 50);
+  });
+  setInterval(tick, 60000);  // ~ 1 minute
+})();
+
+/* ─── SW ─── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
 </script>
 
 </body>
