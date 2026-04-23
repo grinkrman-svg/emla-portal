@@ -504,8 +504,12 @@ if ('serviceWorker' in navigator) {
     foot.appendChild(link);
   }
 
-  /* Init */
-  if (!checkPin()) {
+  /* Init — PIN only on dashboard (index.html or root).
+     Sub-tools (karta-zlecen, kalkulatory, protokoly, farmakologia, 28 categories)
+     don't need PIN — user already authenticated before clicking into them. */
+  const path = (location.pathname || '').toLowerCase();
+  const isDashboard = path.endsWith('/index.html') || path === '/' || path.endsWith('/');
+  if (isDashboard && !checkPin()) {
     showPinScreen();
   }
   addLogoutLink();

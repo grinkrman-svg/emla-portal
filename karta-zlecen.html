@@ -248,6 +248,39 @@ body {
   overflow: hidden;
   word-wrap: break-word; overflow-wrap: break-word;
 }
+
+/* ═══ Triplet hour cells (auto-fill from drug.hours) ═══ */
+.drugs-table td.tri-hour {
+  padding: 0 !important;
+  vertical-align: stretch;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  text-align: center;
+  font-size: 9pt;
+}
+.drugs-table td.tri-hour .hr-slot {
+  padding: 2mm 1mm;
+  min-height: 16mm;
+  border-bottom: 0.4px dashed #777;
+  display: flex; align-items: center; justify-content: center;
+}
+.drugs-table td.tri-hour .hr-slot:last-child { border-bottom: none; }
+
+/* Matching subdivision lines on Podpis and Wykonuj. cells */
+.drugs-table td.tri-sig[data-sub],
+.drugs-table td.tri-exec[data-sub] { position: relative; }
+.drugs-table td.tri-sig[data-sub="2"]::before,
+.drugs-table td.tri-exec[data-sub="2"]::before {
+  content: ''; position: absolute; left: 1mm; right: 1mm; top: 50%;
+  border-top: 0.4px dashed #777;
+}
+.drugs-table td.tri-sig[data-sub="3"]::before,
+.drugs-table td.tri-exec[data-sub="3"]::before {
+  content: ''; position: absolute; left: 1mm; right: 1mm;
+  top: 33.33%;
+  border-top: 0.4px dashed #777;
+  box-shadow: 0 16mm 0 0.4px #777;  /* second divider */
+}
 .drug-cell.empty { cursor: pointer; background: #fafafa; }
 .drug-cell.empty::before {
   content: "+ wybierz lek";
@@ -589,11 +622,15 @@ body {
     color: #000 !important;
   }
 
-  /* Row heights — enforce ~18mm for handwriting */
-  .drugs-table th, .drugs-table td { height: 18mm !important; }
+  /* Row heights — enforced via inline style per row (18mm × perTriplet) */
   .drugs-table thead th { height: auto !important; }
   .badania-table th, .badania-table td { height: 16mm !important; }
   .badania-table thead th { height: auto !important; }
+  /* Force visible borders on EVERY cell (including empty) */
+  .drugs-table td, .drugs-table th,
+  .badania-table td, .badania-table th {
+    border: 0.8px solid #000 !important;
+  }
 
   /* Keep rows together (no break across pages mid-row) */
   .drugs-table tr, .badania-table tr { page-break-inside: avoid; break-inside: avoid; }
@@ -604,7 +641,8 @@ body {
   .drug-line .dl-add-mix,
   .dl-add-mix-row,
   .badania-line .bl-remove,
-  .dl-calc { display: none !important; }
+  .dl-calc,
+  .dl-calc * { display: none !important; visibility: hidden !important; }
 
   /* krotność picker → flatten to plain text for print */
   .drug-line .dl-freq { border-bottom: none !important; }
@@ -627,14 +665,40 @@ body {
   }
   .dl-freq-hours:empty::before { content: ''; }
 
-  /* Route pill → plain text with small border */
-  .drug-line .dl-route, .badania-line .bl-urgent {
+  /* Route — plain text in print, no button styling, no border */
+  .drug-line .dl-route {
+    background: transparent !important;
+    color: #000 !important;
+    border: none !important;
+    font-weight: 700;
+    padding: 0 2px !important;
+    font-family: 'Times New Roman', serif !important;
+  }
+  .badania-line .bl-urgent {
     background: #fff !important;
     color: #000 !important;
     border: 0.6px solid #000 !important;
     font-weight: 700;
     padding: 0 3px !important;
     font-family: 'Times New Roman', serif !important;
+  }
+  /* Hour triplet cells — visible in print */
+  .drugs-table td.tri-hour {
+    font-weight: 700 !important;
+    font-size: 9pt !important;
+    color: #000 !important;
+    font-family: 'Times New Roman', serif !important;
+  }
+  .drugs-table td.tri-hour .hr-slot {
+    border-bottom-color: #000 !important;
+    border-bottom-style: solid !important;
+    border-bottom-width: 0.4px !important;
+  }
+  .drugs-table td.tri-sig[data-sub]::before,
+  .drugs-table td.tri-exec[data-sub]::before {
+    border-top-color: #000 !important;
+    border-top-style: solid !important;
+    border-top-width: 0.4px !important;
   }
   .drug-line .dl-inn { color: #333 !important; font-style: italic; }
   .drug-line .dl-marker { color: #000 !important; }
@@ -919,12 +983,16 @@ async function loadData() {
     console.error('load fail:', e);
     alert('Nie udało się załadować bazy leków/badań.\n' + e);
   }
+  /* Restore state from localStorage BEFORE first render */
+  const hadState = loadKartaState();
   renderTables();
   renderSidePanel();
-  const t = new Date();
-  const dd = String(t.getDate()).padStart(2,'0');
-  const mm = String(t.getMonth()+1).padStart(2,'0');
-  document.getElementById('fData').value = `${dd}.${mm}.${t.getFullYear()}`;
+  if (!hadState) {
+    const t = new Date();
+    const dd = String(t.getDate()).padStart(2,'0');
+    const mm = String(t.getMonth()+1).padStart(2,'0');
+    document.getElementById('fData').value = `${dd}.${mm}.${t.getFullYear()}`;
+  }
 }
 
 /* ─── Dose variants parser ─── */
@@ -1109,19 +1177,77 @@ function quickAdd(type, id) {
   renderTables();
 }
 
+/* ─── PERSISTENCE (localStorage) ─── */
+const KARTA_KEY = 'emla.karta.state.v1';
+function saveKartaState() {
+  try {
+    const s = {
+      drugRowsP1, drugRowsP2, badaniaRows,
+      fImie:  document.getElementById('fImie')?.value  || '',
+      fPesel: document.getElementById('fPesel')?.value || '',
+      fKsGl:  document.getElementById('fKsGl')?.value  || '',
+      fData:  document.getElementById('fData')?.value  || '',
+      fDieta: document.getElementById('fDieta')?.value || ''
+    };
+    localStorage.setItem(KARTA_KEY, JSON.stringify(s));
+  } catch (e) {}
+}
+function loadKartaState() {
+  try {
+    const raw = localStorage.getItem(KARTA_KEY);
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    if (Array.isArray(s.drugRowsP1) && s.drugRowsP1.length === DRUG_ROWS_P1) drugRowsP1 = s.drugRowsP1;
+    if (Array.isArray(s.drugRowsP2) && s.drugRowsP2.length === DRUG_ROWS_P2) drugRowsP2 = s.drugRowsP2;
+    if (Array.isArray(s.badaniaRows) && s.badaniaRows.length === BADANIA_ROWS) badaniaRows = s.badaniaRows;
+    ['fImie','fPesel','fKsGl','fData','fDieta'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && s[id] !== undefined) el.value = s[id];
+    });
+    return true;
+  } catch (e) { return false; }
+}
+
 /* ─── TABLES ─── */
 function renderTables() {
   document.getElementById('drugsBody1').innerHTML = renderDrugRows(drugRowsP1, 'p1');
   document.getElementById('drugsBody2').innerHTML = renderDrugRows(drugRowsP2, 'p2');
   document.getElementById('badaniaBody').innerHTML = renderBadaniaRows(badaniaRows);
+  saveKartaState();
 }
 
 function renderDrugRows(rows, prefix) {
   return rows.map((row, ri) => {
+    // Build triplet hour distribution from first drug's hours (mieszanka shares schedule)
+    const triplets = [[], [], []];
+    if (row.length > 0) {
+      const first = row[0];
+      const hrs = Array.isArray(first.hours) ? first.hours : [];
+      if (hrs.length > 0) {
+        const per = Math.ceil(hrs.length / 3);
+        for (let i = 0; i < 3; i++) triplets[i] = hrs.slice(i * per, (i + 1) * per);
+      }
+    }
+    const maxTri = Math.max(triplets[0].length, triplets[1].length, triplets[2].length, 1);
+    const rowHeight = 18 * maxTri; // mm
+
     const cell = row.length === 0
-      ? `<td class="drug-cell empty" onclick="openLekPicker('${prefix}',${ri})"></td>`
-      : `<td class="drug-cell">${row.map((drug, di) => renderDrugLine(drug, prefix, ri, di)).join('')}<button class="dl-add-mix-row" onclick="event.stopPropagation();addMix('${prefix}',${ri})">+ lek do mieszanki</button></td>`;
-    return `<tr>${cell}${Array.from({length: 9}, () => `<td></td>`).join('')}</tr>`;
+      ? `<td class="drug-cell empty" onclick="openLekPicker('${prefix}',${ri})" style="height:${rowHeight}mm"></td>`
+      : `<td class="drug-cell" style="height:${rowHeight}mm">${row.map((drug, di) => renderDrugLine(drug, prefix, ri, di)).join('')}<button class="dl-add-mix-row" onclick="event.stopPropagation();addMix('${prefix}',${ri})">+ lek do mieszanki</button></td>`;
+
+    // Generate 9 triplet cells (3 triplets × Podpis/Godzina/Wykonuj)
+    let triCells = '';
+    for (let t = 0; t < 3; t++) {
+      const hrs = triplets[t];
+      const hoursHtml = hrs.length
+        ? hrs.map(h => `<div class="hr-slot">${h}</div>`).join('')
+        : '';
+      const subRowsHtml = hrs.length > 1 ? `data-sub="${hrs.length}"` : '';
+      triCells += `<td class="tri-sig" ${subRowsHtml}></td>` +
+                  `<td class="tri-hour" ${subRowsHtml}>${hoursHtml}</td>` +
+                  `<td class="tri-exec" ${subRowsHtml}></td>`;
+    }
+    return `<tr data-tri="${maxTri}">${cell}${triCells}</tr>`;
   }).join('');
 }
 
@@ -1249,7 +1375,18 @@ function clearAll() {
   badaniaRows = Array.from({length: BADANIA_ROWS}, () => []);
   ['fImie','fPesel','fKsGl','fDieta'].forEach(id => document.getElementById(id).value = '');
   renderTables();
+  localStorage.removeItem(KARTA_KEY);
 }
+
+/* Auto-save on patient-field changes */
+(function bindKartaPersist(){
+  const fields = ['fImie','fPesel','fKsGl','fData','fDieta'];
+  fields.forEach(id => {
+    document.addEventListener('input', e => {
+      if (e.target && e.target.id === id) saveKartaState();
+    });
+  });
+})();
 
 /* ─── MODAL ─── */
 function openModal(title, mode) {
