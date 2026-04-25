@@ -1,6 +1,6 @@
 /* EMLA Portal — Service Worker — Cache-First for offline-first medical tool */
 
-const CACHE_NAME = 'emla-v18-20260423-full-loop-audio';
+const CACHE_NAME = 'emla-v20-20260425';
 
 const PRECACHE_URLS = [
   './',
@@ -9,6 +9,7 @@ const PRECACHE_URLS = [
   'protokoly.html',
   'farmakologia.html',
   'karta-zlecen.html',
+  'zalecenia-neurologiczne.html',
   'transport-sanitarny.html',
   'centrum-urazowe.html',
   'chirurgia-dziecieca.html',
