@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obserwacja Neurologiczna po Urazie Głowy — SOR Chojnice</title>
+<style>
+/* ══════════════════════════════════════════════════════
+   BASE TYPOGRAPHY
+   ══════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 10pt;
+  color: #111;
+  background: #e8e8e8;
+  line-height: 1.45;
+}
+
+/* ══════════════════════════════════════════════════════
+   SCREEN CHROME
+   ══════════════════════════════════════════════════════ */
+.screen-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1a2a3c;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+}
+.screen-bar h1 { font-size: 14px; font-weight: 700; letter-spacing: .02em; flex: 1; }
+
+.toggle-group {
+  display: flex;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.toggle-btn {
+  padding: 6px 16px;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,.7);
+  font-size: 12px;
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  font-weight: 600;
+}
+.toggle-btn.active { background: #2f81f7; color: #fff; }
+.toggle-btn:hover:not(.active) { background: rgba(255,255,255,.1); color: #fff; }
+
+.btn-print {
+  padding: 7px 18px;
+  background: #2f81f7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  transition: background .15s;
+}
+.btn-print:hover { background: #1a6ed4; }
+
+.pages-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* ══════════════════════════════════════════════════════
+   A4 PAGE
+   ══════════════════════════════════════════════════════ */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #fff;
+  padding: 12mm 14mm 12mm 14mm;
+  box-shadow: 0 3px 12px rgba(0,0,0,.18);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Version panels */
+.ver { display: none; flex-direction: column; gap: 0; flex: 1; }
+.ver.active { display: flex; }
+
+/* ══════════════════════════════════════════════════════
+   HOSPITAL HEADER
+   ══════════════════════════════════════════════════════ */
+.hdr {
+  border-bottom: 2px solid #1a3a5c;
+  padding-bottom: 4mm;
+  margin-bottom: 4mm;
+  display: flex;
+  align-items: center;
+  gap: 8mm;
+}
+.hdr-text { flex: 1; }
+.hdr-name {
+  font-size: 10pt;
+  font-weight: 700;
+  color: #1a3a5c;
+  letter-spacing: .01em;
+  font-family: Georgia, serif;
+}
+.hdr-addr {
+  font-size: 7.5pt;
+  color: #555;
+  margin-top: 1mm;
+}
+.hdr-logo {
+  width: 14mm;
+  height: 14mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hdr-logo svg { width: 14mm; height: 14mm; }
+
+/* ══════════════════════════════════════════════════════
+   DOCUMENT TITLE
+   ══════════════════════════════════════════════════════ */
+.doc-title {
+  text-align: center;
+  margin-bottom: 4mm;
+}
+.doc-title h2 {
+  font-size: 13pt;
+  font-weight: 700;
+  color: #1a3a5c;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  font-family: Georgia, serif;
+}
+.doc-title .subtitle {
+  font-size: 9.5pt;
+  color: #444;
+  margin-top: 1mm;
+  font-style: italic;
+}
+.doc-title .badge {
+  display: inline-block;
+  margin-top: 2mm;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-family: Georgia, serif;
+}
+.badge-child { background: #dbeafe; color: #1e3a8a; border: 0.8px solid #93c5fd; }
+.badge-adult { background: #dcfce7; color: #14532d; border: 0.8px solid #86efac; }
+
+/* ══════════════════════════════════════════════════════
+   CONTENT SECTIONS
+   ══════════════════════════════════════════════════════ */
+.section {
+  margin-bottom: 3mm;
+}
+.section-title {
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: #1a3a5c;
+  border-left: 3px solid #1a3a5c;
+  padding-left: 4mm;
+  margin-bottom: 2mm;
+  font-family: Georgia, serif;
+}
+
+/* Pathophysiology box */
+.patho-box {
+  background: #f8fafc;
+  border: 0.8px solid #cbd5e1;
+  border-radius: 3px;
+  padding: 3mm 4mm;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  color: #222;
+}
+.patho-box p { margin-bottom: 1.5mm; }
+.patho-box p:last-child { margin-bottom: 0; }
+.patho-box strong { color: #1a3a5c; }
+
+/* Observation timing */
+.obs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+  font-size: 8.5pt;
+}
+.obs-item {
+  background: #f1f5f9;
+  border: 0.6px solid #cbd5e1;
+  border-radius: 3px;
+  padding: 2mm 3mm;
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+}
+.obs-icon { font-size: 10pt; line-height: 1; flex-shrink: 0; }
+.obs-icon-bw { display: none; font-weight: 900; font-size: 9pt; line-height: 1; flex-shrink: 0; }
+
+/* Alarm section */
+.alarm-box {
+  background: #fff5f5;
+  border: 1.5px solid #c0392b;
+  border-radius: 3px;
+  padding: 3mm 4mm;
+}
+.alarm-title {
+  font-size: 9pt;
+  font-weight: 700;
+  color: #c0392b;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 2mm;
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  font-family: Georgia, serif;
+}
+.alarm-list {
+  list-style: none;
+  font-size: 8.5pt;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1mm 4mm;
+  color: #1a1a1a;
+}
+.alarm-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+}
+.alarm-list li::before {
+  content: '▶';
+  color: #c0392b;
+  font-size: 7pt;
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-weight: 900;
+}
+
+/* Mild symptoms */
+.mild-list {
+  list-style: none;
+  font-size: 8.5pt;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5mm;
+}
+.mild-list li {
+  background: #f0fdf4;
+  border: 0.6px solid #86efac;
+  padding: 1mm 3mm;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+}
+.mild-list li::before {
+  content: '✓';
+  color: #16a34a;
+  font-weight: 700;
+}
+
+/* Do/Don't */
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+  font-size: 8.5pt;
+}
+.rules-col-title {
+  font-weight: 700;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 1.5mm;
+}
+.rules-do .rules-col-title { color: #16a34a; }
+.rules-dont .rules-col-title { color: #c0392b; }
+.rules-list { list-style: none; }
+.rules-list li {
+  padding: 1mm 0;
+  border-bottom: 0.4px solid #e2e8f0;
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+  line-height: 1.3;
+}
+.rules-list li:last-child { border-bottom: none; }
+.rules-do .rules-list li::before { content: '✓'; color: #16a34a; font-weight: 700; flex-shrink: 0; }
+.rules-dont .rules-list li::before { content: '✕'; color: #c0392b; font-weight: 700; flex-shrink: 0; }
+
+/* Recovery timeline */
+.timeline {
+  display: flex;
+  gap: 2mm;
+  font-size: 8pt;
+}
+.tl-item {
+  flex: 1;
+  background: #f8fafc;
+  border: 0.6px solid #cbd5e1;
+  border-radius: 3px;
+  padding: 2mm;
+  text-align: center;
+}
+.tl-day { font-weight: 700; font-size: 9pt; color: #1a3a5c; display: block; }
+.tl-desc { font-size: 7.5pt; color: #444; margin-top: 0.5mm; line-height: 1.3; }
+
+/* ══════════════════════════════════════════════════════
+   HOSPITAL CARDS (dziecko version)
+   ══════════════════════════════════════════════════════ */
+.hosp-section-title {
+  font-size: 8.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #1a3a5c;
+  border-left: 3px solid #1a3a5c;
+  padding-left: 4mm;
+  margin-bottom: 2mm;
+  font-family: Georgia, serif;
+}
+.hosp-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+.hosp-card {
+  display: flex;
+  align-items: stretch;
+  border: 0.8px solid #cbd5e1;
+  border-radius: 3px;
+  overflow: hidden;
+  font-size: 8pt;
+}
+.hosp-badge {
+  width: 8mm;
+  background: #1a3a5c;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7pt;
+  font-weight: 700;
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 2mm 1mm;
+  flex-shrink: 0;
+}
+.hosp-info {
+  flex: 1;
+  padding: 2mm 3mm;
+  line-height: 1.4;
+}
+.hosp-name { font-weight: 700; font-size: 8.5pt; color: #1a3a5c; }
+.hosp-dept { font-size: 7.5pt; color: #444; font-style: italic; }
+.hosp-addr { font-size: 7.5pt; color: #222; margin-top: 0.5mm; }
+.hosp-tel { font-size: 7.5pt; color: #1a3a5c; margin-top: 0.5mm; }
+.hosp-tel strong { font-weight: 700; }
+.hosp-dist { font-size: 7pt; color: #666; }
+.hosp-qr {
+  width: 18mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2mm;
+  border-left: 0.6px solid #e2e8f0;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+.hosp-qr canvas { width: 14mm !important; height: 14mm !important; }
+.hosp-qr-label { font-size: 5.5pt; color: #888; text-align: center; margin-top: 1mm; line-height: 1.2; font-family: Georgia, serif; }
+
+/* SOR Chojnice (adult version) */
+.sor-box {
+  border: 1.5px solid #1a3a5c;
+  border-radius: 3px;
+  overflow: hidden;
+  font-size: 8.5pt;
+}
+.sor-header {
+  background: #1a3a5c;
+  color: #fff;
+  padding: 2mm 4mm;
+  font-weight: 700;
+  font-size: 9pt;
+  letter-spacing: .02em;
+}
+.sor-body {
+  padding: 3mm 4mm;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5mm;
+  background: #f8fafc;
+}
+.sor-tel-row { display: flex; gap: 3mm; align-items: baseline; line-height: 1.5; }
+.sor-tel-label { color: #555; font-size: 7.5pt; min-width: 100px; }
+.sor-tel-num { font-weight: 700; color: #1a3a5c; font-size: 9pt; font-family: Georgia, serif; }
+.sor-addr { font-size: 7.5pt; color: #444; grid-column: 1 / -1; margin-top: 1mm; }
+
+/* ══════════════════════════════════════════════════════
+   SIGNATURE ROW
+   ══════════════════════════════════════════════════════ */
+.sig-row {
+  display: flex;
+  gap: 8mm;
+  margin-top: auto;
+  padding-top: 4mm;
+  border-top: 0.8px solid #cbd5e1;
+}
+.sig-block { flex: 1; text-align: center; }
+.sig-line {
+  border-bottom: 0.8px solid #444;
+  height: 8mm;
+  margin-bottom: 1mm;
+}
+.sig-label { font-size: 7.5pt; color: #666; }
+
+/* ══════════════════════════════════════════════════════
+   PRINT CSS
+   ══════════════════════════════════════════════════════ */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 9.5pt !important;
+  }
+
+  .screen-bar { display: none !important; }
+  .pages-wrap { padding: 0 !important; background: #fff !important; }
+
+  .page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 12mm 14mm !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Show only active version */
+  .ver { display: none !important; }
+  .ver.active { display: flex !important; }
+
+  /* Force colors for print */
+  .hdr-name { color: #1a3a5c !important; }
+  .doc-title h2 { color: #1a3a5c !important; }
+  .section-title { color: #1a3a5c !important; border-left-color: #1a3a5c !important; }
+  .hosp-section-title { color: #1a3a5c !important; border-left-color: #1a3a5c !important; }
+  .patho-box { background: #f8fafc !important; border-color: #cbd5e1 !important; }
+  .alarm-box { background: #fff5f5 !important; border-color: #c0392b !important; }
+  .alarm-title { color: #c0392b !important; }
+  .alarm-list li::before { color: #c0392b !important; }
+  .mild-list li { background: #f0fdf4 !important; border-color: #86efac !important; }
+  .hosp-badge { background: #1a3a5c !important; }
+  .sor-header { background: #1a3a5c !important; }
+  .sor-body { background: #f8fafc !important; }
+  .badge-child { background: #dbeafe !important; }
+  .badge-adult { background: #dcfce7 !important; }
+
+  /* QR canvas — maintain size */
+  .hosp-qr canvas { width: 14mm !important; height: 14mm !important; }
+
+  /* Prevent page breaks inside key sections */
+  .alarm-box, .sor-box, .hosp-card { page-break-inside: avoid; break-inside: avoid; }
+  .sig-row { page-break-inside: avoid; break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════ SCREEN BAR ════════════════ -->
+<div class="screen-bar">
+  <h1>🧠 Obserwacja Neurologiczna po Urazie Głowy</h1>
+  <div class="toggle-group">
+    <button class="toggle-btn active" id="btn-child" onclick="setVer('child')">👶 Dziecko</button>
+    <button class="toggle-btn" id="btn-adult" onclick="setVer('adult')">🧑 Dorosły</button>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨 Drukuj</button>
+</div>
+
+<!-- ════════════════ PAGES ════════════════ -->
+<div class="pages-wrap">
+<div class="page">
+
+  <!-- ── WERSJA DZIECKO ── -->
+  <div class="ver active" id="ver-child">
+
+    <!-- HEADER -->
+    <div class="hdr">
+      <div class="hdr-text">
+        <div class="hdr-name">Szpital Specjalistyczny im. J.K. Łukowicza w Chojnicach</div>
+        <div class="hdr-addr">89-600 Chojnice, ul. Leśna 10 &nbsp;·&nbsp; SOR: 52 395 65 75 &nbsp;·&nbsp; www.szpital-chojnice.pl</div>
+      </div>
+    </div>
+
+    <!-- TITLE -->
+    <div class="doc-title">
+      <h2>Obserwacja Neurologiczna po Urazie Głowy</h2>
+      <div class="subtitle">Informacja dla Rodzica / Opiekuna</div>
+      <div class="badge badge-child">WERSJA PEDIATRYCZNA · ≤ 18 LAT</div>
+    </div>
+
+    <!-- PATHOPHYSIOLOGY -->
+    <div class="section">
+      <div class="section-title">Co się dzieje w głowie dziecka po urazie</div>
+      <div class="patho-box">
+        <p>Po uderzeniu głową mózg <strong>nie ulega trwałemu uszkodzeniu</strong>, lecz doświadcza chwilowego przeciążenia — podobnego do krótkiego spięcia elektrycznego. Fale uderzeniowe powodują <strong>tymczasowe zaburzenie chemii neuronów</strong>: jony sodu i potasu przemieszczają się nieprawidłowo przez błony komórkowe, przez co komórki nerwowe zużywają dużo energii, starając się przywrócić równowagę.</p>
+        <p>W efekcie dziecko może czuć ból głowy, mdłości, być senne lub drażliwe — to normalny objaw <strong>przeciążenia metabolicznego mózgu</strong>, a nie oznaka trwałego urazu. Naczynia krwionośne w mózgu mogą też reagować skurczem, co chwilowo ogranicza przepływ krwi i nasila objawy.</p>
+        <p><strong>Czas powrotu do normy u dzieci: 7–14 dni</strong> (u mniejszych dzieci nawet krócej). <strong>Uwaga:</strong> w tym czasie mózg jest wyjątkowo wrażliwy na <em>kolejny</em> uraz — nawet łagodny może wywołać poważne powikłania. Dlatego bezwzględnie unikać sportu i aktywności przez 7 dni.</p>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="section">
+      <div class="section-title">Przebieg gojenia — czego się spodziewać</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-day">1–2 doby</span>
+          <span class="tl-desc">Ból głowy, senność, nudności — NORMALNE. Budzić co 2h w nocy.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-day">3–5 dni</span>
+          <span class="tl-desc">Stopniowe ustępowanie bólu. Możliwa drażliwość, zmęczenie, trudność z koncentracją.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-day">7–14 dni</span>
+          <span class="tl-desc">Pełna normalizacja. Powrót do szkoły i sportu możliwy po kontroli lekarskiej.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALARM SYMPTOMS -->
+    <div class="section">
+      <div class="alarm-box">
+        <div class="alarm-title">⚑ Natychmiast DZWOŃ 112 lub jedź na SOR — objawy alarmowe</div>
+        <ul class="alarm-list">
+          <li>Nie można obudzić / traci przytomność</li>
+          <li>Drgawki — sztywność lub drżenie całego ciała</li>
+          <li>Wymioty powtarzające się (więcej niż 2 razy)</li>
+          <li>Narastający silny ból głowy (coraz gorszy)</li>
+          <li>Zaburzenia mowy, wzroku lub chodu</li>
+          <li>Krew lub płyn wyciekający z nosa / ucha</li>
+          <li>Nierówne źrenice lub brak reakcji na światło</li>
+          <li>Dziecko nie reaguje normalnie / zachowuje się dziwnie</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MILD / RULES -->
+    <div class="section">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2mm;">
+        <div>
+          <div class="section-title">Łagodne objawy — dopuszczalne</div>
+          <ul class="mild-list" style="flex-direction:column;gap:1mm;">
+            <li>Ból głowy (nie narastający)</li>
+            <li>Jednorazowe wymioty</li>
+            <li>Zawroty głowy, senność</li>
+            <li>Drażliwość, płaczliwość</li>
+          </ul>
+        </div>
+        <div>
+          <div class="section-title">Co robić / czego unikać</div>
+          <div class="rules-grid" style="grid-template-columns:1fr;gap:1mm;">
+            <ul class="rules-list rules-do" style="list-style:none;">
+              <li>Odpoczynek — fizyczny i umysłowy</li>
+              <li>Budzić w nocy co 2 godziny</li>
+              <li>Paracetamol / Ibuprofen wg ulotki</li>
+            </ul>
+            <ul class="rules-list rules-dont" style="list-style:none;">
+              <li>Ekrany (TV, tablet, telefon) — 48h</li>
+              <li>Sport, bieganie, zabawa — 7 dni</li>
+              <li>Zostawiać dziecko samego — 24h</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOSPITALS -->
+    <div class="section">
+      <div class="hosp-section-title">Kieruję do Oddziału Chirurgii / Neurochirurgii Dziecięcej — najbliższe ośrodki</div>
+      <div class="hosp-cards">
+
+        <div class="hosp-card">
+          <div class="hosp-badge">~80&nbsp;km</div>
+          <div class="hosp-info">
+            <div class="hosp-name">Szpital Miejski im. PCK — Słupsk</div>
+            <div class="hosp-dept">Oddział Chirurgiczny Ogólny dla Dzieci · blok D, II piętro</div>
+            <div class="hosp-addr">ul. Hubalczyków 1, 76-200 Słupsk</div>
+            <div class="hosp-tel"><strong>tel. 59 84 60 407</strong> (gabinet lek., czynny 24h) · 59 84 60 410 (sekretariat)</div>
+            <div class="hosp-dist">Trasa: Chojnice → DK22 → Słupsk (ok. 1h)</div>
+          </div>
+          <div class="hosp-qr">
+            <canvas id="qr-slupsk"></canvas>
+            <div class="hosp-qr-label">Nawigacja<br>Google Maps</div>
+          </div>
+        </div>
+
+        <div class="hosp-card">
+          <div class="hosp-badge">~90&nbsp;km</div>
+          <div class="hosp-info">
+            <div class="hosp-name">Wojewódzki Szpital Dziecięcy im. J. Brudzińskiego — Bydgoszcz</div>
+            <div class="hosp-dept">Oddział Chirurgii, Urologii i Ortopedii Dziecięcej · budynek B1, IV piętro</div>
+            <div class="hosp-addr">ul. J.K. Chodkiewicza 44, 85-667 Bydgoszcz</div>
+            <div class="hosp-tel"><strong>tel. 52 32 62 110</strong> (sekretariat) · 52 32 62 100 (centrala)</div>
+            <div class="hosp-dist">Trasa: Chojnice → DK22 → Bydgoszcz (ok. 1h)</div>
+          </div>
+          <div class="hosp-qr">
+            <canvas id="qr-bydgoszcz"></canvas>
+            <div class="hosp-qr-label">Nawigacja<br>Google Maps</div>
+          </div>
+        </div>
+
+        <div class="hosp-card">
+          <div class="hosp-badge">~120&nbsp;km</div>
+          <div class="hosp-info">
+            <div class="hosp-name">Copernicus / GUMed — Gdańsk</div>
+            <div class="hosp-dept">Kliniczny Oddział Chirurgii i Urologii Dzieci i Młodzieży</div>
+            <div class="hosp-addr">ul. Nowe Ogrody 1-6, 80-803 Gdańsk</div>
+            <div class="hosp-tel"><strong>tel. 58 302 30 31</strong></div>
+            <div class="hosp-dist">Trasa: Chojnice → A1/S6 → Gdańsk (ok. 1h 30min)</div>
+          </div>
+          <div class="hosp-qr">
+            <canvas id="qr-gdansk"></canvas>
+            <div class="hosp-qr-label">Nawigacja<br>Google Maps</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="sig-row">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">lek. dyżurny SOR / chirurg — podpis i pieczątka</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">data i godzina wypisania</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">podpis rodzica / opiekuna (odbiór informacji)</div>
+      </div>
+    </div>
+
+  </div><!-- /ver-child -->
+
+
+  <!-- ── WERSJA DOROSŁY ── -->
+  <div class="ver" id="ver-adult">
+
+    <!-- HEADER -->
+    <div class="hdr">
+      <div class="hdr-text">
+        <div class="hdr-name">Szpital Specjalistyczny im. J.K. Łukowicza w Chojnicach</div>
+        <div class="hdr-addr">89-600 Chojnice, ul. Leśna 10 &nbsp;·&nbsp; SOR: 52 395 65 75 &nbsp;·&nbsp; www.szpital-chojnice.pl</div>
+      </div>
+    </div>
+
+    <!-- TITLE -->
+    <div class="doc-title">
+      <h2>Obserwacja Neurologiczna po Urazie Głowy</h2>
+      <div class="subtitle">Informacja dla Pacjenta / Osoby Sprawującej Opiekę</div>
+      <div class="badge badge-adult">WERSJA DLA DOROSŁYCH</div>
+    </div>
+
+    <!-- PATHOPHYSIOLOGY -->
+    <div class="section">
+      <div class="section-title">Co się dzieje w mózgu po urazie — patofizjologia w skrócie</div>
+      <div class="patho-box">
+        <p>Wstrząśnienie mózgu <strong>nie powoduje trwałego uszkodzenia komórek nerwowych</strong> — jest zaburzeniem czynnościowym, nie strukturalnym. W chwili urazu fala uderzeniowa powoduje gwałtowne przemieszczenie mózgu w czaszce, co zaburza przepływ jonów (sodu, potasu, wapnia) przez błony neuronów. Komórki nerwowe, starając się przywrócić równowagę elektrochemiczną, <strong>zużywają ogromne ilości energii</strong> — jednocześnie przepływ krwi przez mózg jest chwilowo obniżony.</p>
+        <p>To właśnie ten <strong>niedobór energetyczny</strong> odpowiada za objawy: ból głowy, nudności, senność, problemy z koncentracją i pamięcią. Nie są to objawy uszkodzenia — są dowodem na to, że mózg aktywnie się naprawia. U zdrowego dorosłego pełna normalizacja trwa <strong>5–10 dni</strong>.</p>
+        <p><strong>Najważniejsze:</strong> w tym czasie mózg jest <em>szczególnie podatny na kolejny uraz</em>. Nawet łagodne uderzenie w głowę podczas aktywności fizycznej może wywołać tzw. <strong>zespół drugiego uderzenia</strong> — stan zagrożenia życia. Bezwzględnie unikać sportu przez 7 dni.</p>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="section">
+      <div class="section-title">Typowy przebieg gojenia u dorosłego</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-day">1–2 doby</span>
+          <span class="tl-desc">Ból głowy, nudności, senność — NORMALNE. Nie zostawać samemu.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-day">3–5 dni</span>
+          <span class="tl-desc">Poprawa. Możliwe zmęczenie poznawcze, drażliwość, lekki ból głowy.</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-day">7–10 dni</span>
+          <span class="tl-desc">Pełna normalizacja. Powrót do pracy / sportu po ustąpieniu objawów.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALARM SYMPTOMS -->
+    <div class="section">
+      <div class="alarm-box">
+        <div class="alarm-title">⚑ Natychmiast DZWOŃ 112 lub jedź na SOR — objawy alarmowe</div>
+        <ul class="alarm-list">
+          <li>Utrata przytomności / nie można obudzić</li>
+          <li>Drgawki — sztywność lub drżenie całego ciała</li>
+          <li>Wymioty powtarzające się (więcej niż 2 razy)</li>
+          <li>Narastający silny ból głowy (coraz gorszy)</li>
+          <li>Zaburzenia mowy, wzroku, siły / czucia w kończynach</li>
+          <li>Krew lub płyn wyciekający z nosa / ucha</li>
+          <li>Nierówne źrenice lub brak reakcji na światło</li>
+          <li>Dezorientacja, niemożność przypomnienia co się stało</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MILD / RULES -->
+    <div class="section">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2mm;">
+        <div>
+          <div class="section-title">Łagodne objawy — dopuszczalne</div>
+          <ul class="mild-list" style="flex-direction:column;gap:1mm;">
+            <li>Ból głowy (nie narastający)</li>
+            <li>Jednorazowe wymioty lub nudności</li>
+            <li>Zawroty głowy, senność</li>
+            <li>Trudność z koncentracją, drażliwość</li>
+          </ul>
+        </div>
+        <div>
+          <div class="section-title">Co robić / czego unikać</div>
+          <div class="rules-grid" style="grid-template-columns:1fr;gap:1mm;">
+            <ul class="rules-list rules-do" style="list-style:none;">
+              <li>Odpoczynek — fizyczny i umysłowy</li>
+              <li>Nie przebywać samemu przez 1. dobę</li>
+              <li>Paracetamol / Ibuprofen wg ulotki</li>
+            </ul>
+            <ul class="rules-list rules-dont" style="list-style:none;">
+              <li>Ekrany (TV, komputer, telefon) — 24–48h</li>
+              <li>Alkohol — absolutnie przez 7 dni</li>
+              <li>Sport, intensywny wysiłek — 7 dni</li>
+              <li>Prowadzenie pojazdu — min. 24h</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOR CHOJNICE — adults go here -->
+    <div class="section">
+      <div class="hosp-section-title">W razie pogorszenia — zgłoś się do SOR Szpitala Chojnice</div>
+      <div class="sor-box">
+        <div class="sor-header">SOR — Szpitalny Oddział Ratunkowy · Szpital Specjalistyczny w Chojnicach</div>
+        <div class="sor-body">
+          <div class="sor-tel-row">
+            <span class="sor-tel-label">Dyspozytor SOR:</span>
+            <span class="sor-tel-num">52 395 65 75</span>
+          </div>
+          <div class="sor-tel-row">
+            <span class="sor-tel-label">Lekarz dyżurny:</span>
+            <span class="sor-tel-num">52 395 65 79</span>
+          </div>
+          <div class="sor-tel-row">
+            <span class="sor-tel-label">Gabinet pediatryczny:</span>
+            <span class="sor-tel-num">52 395 65 83</span>
+          </div>
+          <div class="sor-tel-row">
+            <span class="sor-tel-label">Centrala szpitala:</span>
+            <span class="sor-tel-num">52 395 65 00</span>
+          </div>
+          <div class="sor-tel-row">
+            <span class="sor-tel-label">Ratownictwo medyczne:</span>
+            <span class="sor-tel-num">112</span>
+          </div>
+          <div class="sor-addr">ul. Leśna 10, 89-600 Chojnice &nbsp;·&nbsp; Oddział SOR czynny 24h/7 dni w tygodniu</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="sig-row">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">lek. dyżurny SOR / chirurg — podpis i pieczątka</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">data i godzina wypisania</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-label">podpis pacjenta (odbiór informacji)</div>
+      </div>
+    </div>
+
+  </div><!-- /ver-adult -->
+
+</div><!-- /page -->
+</div><!-- /pages-wrap -->
+
+<!-- ════════════════ QR CODE LIBRARY ════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+  integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSE1cuerPPOHn9LB9/6QneHHnJ0ow0Lk/PYDQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+// ── Toggle version ──
+function setVer(v) {
+  document.getElementById('ver-child').classList.toggle('active', v === 'child');
+  document.getElementById('ver-adult').classList.toggle('active', v === 'adult');
+  document.getElementById('btn-child').classList.toggle('active', v === 'child');
+  document.getElementById('btn-adult').classList.toggle('active', v === 'adult');
+}
+
+// ── QR Codes — Google Maps directions from current location ──
+function makeQR(canvasId, destination) {
+  const enc = encodeURIComponent(destination);
+  const url = 'https://www.google.com/maps/dir/?api=1&destination=' + enc;
+  try {
+    new QRCode(document.getElementById(canvasId), {
+      text: url,
+      width: 53,   // ~14mm at 96dpi
+      height: 53,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  } catch(e) {
+    console.warn('QR failed for', canvasId, e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  makeQR('qr-slupsk',    'ul. Hubalczyków 1, 76-200 Słupsk, Polska');
+  makeQR('qr-bydgoszcz', 'ul. Chodkiewicza 44, 85-667 Bydgoszcz, Polska');
+  makeQR('qr-gdansk',    'Nowe Ogrody 1-6, 80-803 Gdańsk, Polska');
+});
+</script>
+</body>
+</html>
