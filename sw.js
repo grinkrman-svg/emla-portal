@@ -1,6 +1,6 @@
 /* EMLA Portal — Service Worker — Cache-First for offline-first medical tool */
 
-const CACHE_NAME = 'emla-v20-20260425';
+const CACHE_NAME = 'emla-v21-20260426';
 
 const PRECACHE_URLS = [
   './',
@@ -10,6 +10,7 @@ const PRECACHE_URLS = [
   'farmakologia.html',
   'karta-zlecen.html',
   'zalecenia-neurologiczne.html',
+  'zgody-master.html',
   'transport-sanitarny.html',
   'centrum-urazowe.html',
   'chirurgia-dziecieca.html',
