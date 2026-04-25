@@ -861,7 +861,7 @@ if ('serviceWorker' in navigator) {
     a.setAttribute('title', 'Powrót do głównej (Backspace)');
     a.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg><span>EMLA</span>';
     a.style.cssText = [
-      'position:fixed','top:max(12px,env(safe-area-inset-top))','left:12px','z-index:2147483646',
+      'position:fixed','top:calc(72px + env(safe-area-inset-top))','left:12px','z-index:2147483646',
       'display:inline-flex','align-items:center','gap:8px',
       'padding:10px 14px','border-radius:12px',
       'background:rgba(77,163,255,0.14)','backdrop-filter:blur(20px) saturate(1.5)','-webkit-backdrop-filter:blur(20px) saturate(1.5)',
