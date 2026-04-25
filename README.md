@@ -1,3 +1,33 @@
+<div align="center">
+
+# 🏥 EMLA Portal
+
+### Emergency Medical Logistics Assistant — SOR Chojnice
+
+**Portal szybkiego kierowania pacjentów dla lekarzy SOR Szpital Specjalistyczny im. J.K. Łukowicza**
+
+[![Status](https://img.shields.io/badge/status-✅%20PRODUCTION-success?style=flat-square)](https://grinkrman-svg.github.io/emla-portal/)
+[![Public](https://img.shields.io/badge/public-🟢%20open%20to%20colleagues-brightgreen?style=flat-square)](#)
+[![Stack](https://img.shields.io/badge/PWA-HTML%2FJS-blue?style=flat-square)](#)
+[![Categories](https://img.shields.io/badge/28-emergency%20categories-orange?style=flat-square)](#)
+[![Hospital](https://img.shields.io/badge/SOR-Szpital%20Chojnice-red?style=flat-square)](#)
+
+[**🌐 Open Live App**](https://grinkrman-svg.github.io/emla-portal/) · [**🩺 Chirurg-AI**](https://github.com/grinkrman-svg/chirurg-ai) · [**🌌 Vexor Omnis**](https://github.com/grinkrman-svg)
+
+</div>
+
+---
+
+## 🇵🇱 O portalu
+
+Portal szybkiego kierowania pacjentów dla lekarzy dyżurnych SOR Szpital Chojnice. **28 kategorii stanów zagrażających życiu** — na każdej stronie lista ośrodków specjalistycznych z bezpośrednimi numerami lekarzy, czasami transportu, możliwościami klinicznymi. Cel: skrócić czas od decyzji o transferze do pierwszego kontaktu telefonicznego ze specjalistą.
+
+Wykorzystywany podczas nocnych dyżurów. Projekt siostrzany do [Chirurg-AI](https://github.com/grinkrman-svg/chirurg-ai) (dokumentacji dla tych samych lekarzy).
+
+---
+
+<!-- ↓ Existing README content below ↓ -->
+
 # EMLA Portal
 ## Emergency Medical Logistics Assistant — SOR Chojnice
 
