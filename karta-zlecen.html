@@ -237,10 +237,10 @@ body {
   background: #f0f0f0; font-size: 7pt; font-weight: 700;
   text-align: center; line-height: 1.1; padding: 1.5mm 1mm;
 }
-.drugs-table col.col-name { width: 80mm; }
-.drugs-table col.col-sig { width: 50mm; }
-.drugs-table col.col-hour { width: 18mm; }
-.drugs-table col.col-exe { width: 22mm; }
+.drugs-table col.col-name { width: 62mm; }
+.drugs-table col.col-sig { width: 14mm; }
+.drugs-table col.col-hour { width: 11mm; }
+.drugs-table col.col-exe { width: 13mm; }
 
 .drug-cell {
   position: relative; padding: 1.5mm 2mm; min-height: 17mm;
@@ -838,13 +838,20 @@ body {
       <colgroup>
         <col class="col-name">
         <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
       </colgroup>
       <thead>
         <tr>
-          <th>Nazwa handlowa leku, dawka, krotność i droga podania</th>
-          <th>Podpis i pieczątka<br>lekarza zlecającego</th>
-          <th>Godzina<br>podania</th>
-          <th>Podpis osoby<br>wykonującej</th>
+          <th rowspan="2" style="vertical-align:middle">Nazwa handlowa leku, dawka,<br>krotność i droga podania</th>
+          <th colspan="3">Dzień 1 / dawka 1</th>
+          <th colspan="3">Dzień 2 / dawka 2</th>
+          <th colspan="3">Dzień 3 / dawka 3</th>
+        </tr>
+        <tr>
+          <th>Podpis lekarza</th><th>Godzina podania</th><th>Wykonuj.</th>
+          <th>Podpis lekarza</th><th>Godzina podania</th><th>Wykonuj.</th>
+          <th>Podpis lekarza</th><th>Godzina podania</th><th>Wykonuj.</th>
         </tr>
       </thead>
       <tbody id="drugsBody1"></tbody>
@@ -867,13 +874,20 @@ body {
       <colgroup>
         <col class="col-name">
         <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
+        <col class="col-sig"><col class="col-hour"><col class="col-exe">
       </colgroup>
       <thead>
         <tr>
-          <th>Nazwa handlowa leku, dawka, krotność i droga podania — c.d.</th>
-          <th>Podpis i pieczątka<br>lekarza zlecającego</th>
-          <th>Godzina<br>podania</th>
-          <th>Podpis osoby<br>wykonującej</th>
+          <th rowspan="2" style="vertical-align:middle">Nazwa handlowa leku, dawka,<br>krotność i droga podania — c.d.</th>
+          <th colspan="3">Dzień 1 / dawka 1</th>
+          <th colspan="3">Dzień 2 / dawka 2</th>
+          <th colspan="3">Dzień 3 / dawka 3</th>
+        </tr>
+        <tr>
+          <th>Podpis lekarza</th><th>Godzina podania</th><th>Wykonuj.</th>
+          <th>Podpis lekarza</th><th>Godzina podania</th><th>Wykonuj.</th>
+          <th>Podpis lekarza</th><th>Godzina podania</th><th>Wykonuj.</th>
         </tr>
       </thead>
       <tbody id="drugsBody2"></tbody>
@@ -1213,7 +1227,6 @@ function renderTables() {
 
 function renderDrugRows(rows, prefix) {
   return rows.map((row, ri) => {
-    // All hours for this drug row (single-day: show all times in one column)
     let hrs = [];
     if (row.length > 0) {
       const first = row[0];
@@ -1230,11 +1243,11 @@ function renderDrugRows(rows, prefix) {
       ? hrs.map(h => `<div class="hr-slot">${h}</div>`).join('')
       : '';
     const subAttr = hrs.length > 1 ? `data-sub="${hrs.length}"` : '';
-    const triCells = `<td class="tri-sig" ${subAttr}></td>` +
-                     `<td class="tri-hour" ${subAttr}>${hoursHtml}</td>` +
-                     `<td class="tri-exec" ${subAttr}></td>`;
+    // 3 day triplets: day1 shows pre-filled hours, day2+3 empty for nurse to fill
+    const day1 = `<td class="tri-sig" ${subAttr}></td><td class="tri-hour" ${subAttr}>${hoursHtml}</td><td class="tri-exec" ${subAttr}></td>`;
+    const day23 = `<td class="tri-sig" ${subAttr}></td><td class="tri-hour" ${subAttr}></td><td class="tri-exec" ${subAttr}></td>`;
 
-    return `<tr data-tri="${maxSlots}">${cell}${triCells}</tr>`;
+    return `<tr data-tri="${maxSlots}">${cell}${day1}${day23}${day23}</tr>`;
   }).join('');
 }
 
