@@ -2795,9 +2795,9 @@ function showDoc(id) {
       hour: '2-digit', minute: '2-digit', hour12: false
     }).replace(',', '');
     const fd = document.getElementById('fda_' + id);
-    if (fd && !fd.value) { fd.value = pl; }
+    if (fd) { fd.value = pl; }
     const gd = document.getElementById('g_date');
-    if (gd && !gd.value) { gd.value = pl; localStorage.setItem('pt_date', pl); }
+    if (gd) { gd.value = pl; }
   };
   _autoDate();
   if (activeId) {
