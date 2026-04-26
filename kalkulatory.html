@@ -551,7 +551,7 @@
     <!-- ════════════════════════════════════════
          1. GCS — Glasgow Coma Scale
     ════════════════════════════════════════ -->
-    <div class="ck open" id="ck-gcs" data-calc-id="gcs">
+    <div class="ck" id="ck-gcs" data-calc-id="gcs">
       <div class="ck-stripe"></div>
       <div class="ck-head" onclick="toggleCalc('ck-gcs')">
         <div class="ck-title-row">
@@ -1682,14 +1682,17 @@ function calcGCS() {
   if (total >= 13) {
     scoreEl.className = 'result-score c-grn';
     labelEl.textContent = 'Łagodne zaburzenia świadomości (13–15)';
+    detailEl.innerHTML = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}<br><span style="font-size:0.82rem;color:var(--t2)">TK głowy rozważ gdy: utrata przytomności, amnezja, wymioty ≥2×, wiek &gt;65 lat, skaza krwotoczna, ogniskowy deficyt nerwowy (wg NICE)</span>`;
     alertEl.style.display = 'none';
   } else if (total >= 9) {
     scoreEl.className = 'result-score c-amb';
     labelEl.textContent = 'Umiarkowane zaburzenia świadomości (9–12)';
+    detailEl.innerHTML = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}<br><span style="font-size:0.82rem;color:var(--t2)">Wskazana TK głowy · Monitorowanie co 30 min · Najsilniejszy predyktor — składnik ruchowy (M)</span>`;
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
     labelEl.textContent = 'Ciężkie zaburzenia świadomości (≤ 8)';
+    detailEl.innerHTML = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}<br><span style="font-size:0.82rem;color:var(--t2)">GCS ≤ 8 = kryterium intubacji · TK głowy pilna · Neurolodzy/neurochirurgia w trybie nagłym</span>`;
     alertEl.style.display = 'flex';
   }
 }
@@ -1724,18 +1727,18 @@ function calcWells() {
 
   if (total <= 1) {
     scoreEl.className = 'result-score c-grn';
-    labelEl.textContent = 'Małe prawdopodobieństwo PE';
-    detailEl.textContent = 'Zalecenie: D-dimer (czułość 95–99%) — jeśli ujemny → wyklucza PE';
+    labelEl.textContent = 'Małe prawdopodobieństwo PE (~8%)';
+    detailEl.innerHTML = 'D-dimer: wartość graniczna <b>wiek × 10 μg/L</b> u pacjentów >50 lat · Jeśli ujemny — PE wykluczona bez CTA<br><span style="font-size:0.82rem;color:var(--t2)">Standardowy próg: 500 μg/L · U >80 lat rozważ próg 800 μg/L</span>';
     alertEl.style.display = 'none';
   } else if (total <= 6) {
     scoreEl.className = 'result-score c-amb';
-    labelEl.textContent = 'Pośrednie prawdopodobieństwo PE';
-    detailEl.textContent = 'Zalecenie: CTA tętnic płucnych lub scyntygrafia V/Q';
+    labelEl.textContent = 'Pośrednie prawdopodobieństwo PE (~28%)';
+    detailEl.innerHTML = '<b>CTA tętnic płucnych</b> — metoda z wyboru · Scyntygrafia V/Q gdy kontraindykacje do jodu lub ciąża<br><span style="font-size:0.82rem;color:var(--t2)">Heparyna pomostowa do czasu wyniku CTA · Monitoruj SpO₂ i RR</span>';
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
-    labelEl.textContent = 'Duże prawdopodobieństwo PE (> 6)';
-    detailEl.textContent = 'Zalecenie: Natychmiastowe leczenie przeciwkrzepliwe — nie czekaj na CTA';
+    labelEl.textContent = 'Duże prawdopodobieństwo PE (~60%)';
+    detailEl.innerHTML = '<b>Natychmiastowe leczenie przeciwkrzepliwe</b> — nie czekaj na CTA<br>NFH: bolus 80 IU/kg IV → 18 IU/kg/h · lub LMWH: enoksaparyna 1 mg/kg sc co 12h<br><span style="font-size:0.82rem;color:var(--t2)">Przy niestabilności hemo → tromboliza: rtPA 100 mg/2h lub bolus 0,6 mg/kg</span>';
     alertEl.style.display = 'flex';
   }
 }
@@ -1769,17 +1772,17 @@ function calcCURB() {
   if (total <= 1) {
     scoreEl.className = 'result-score c-grn';
     labelEl.textContent = 'Niskie ryzyko — leczenie ambulatoryjne';
-    detailEl.textContent = 'Śmiertelność < 3% · Rozważ leczenie w domu przy CURB=0';
+    detailEl.innerHTML = 'Śmiertelność &lt;3% · Leczenie w domu<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: amoksycylina 500 mg 3×/d p.o. (7 dni) · Alternatywa: doksycyklina 100 mg 2×/d · Kontrola po 48h</span>';
     alertEl.style.display = 'none';
   } else if (total === 2) {
     scoreEl.className = 'result-score c-amb';
     labelEl.textContent = 'Umiarkowane ryzyko — hospitalizacja';
-    detailEl.textContent = 'Śmiertelność ~9% · Wskazana hospitalizacja na oddziale';
+    detailEl.innerHTML = 'Śmiertelność ~9% · Hospitalizacja na oddziale<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: ceftriakson 2g IV 1×/d + azytromycyna 500 mg IV/p.o. · lub lewofloksacyna 750 mg IV · Tlen, nawodnienie IV</span>';
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
-    labelEl.textContent = 'Wysokie ryzyko — rozważ OIT';
-    detailEl.textContent = 'Śmiertelność > 17% · CURB ≥ 3 = kryteria ciężkiego ZP';
+    labelEl.textContent = 'Wysokie ryzyko — OIT / intensywna opieka';
+    detailEl.innerHTML = 'Śmiertelność &gt;22% (CURB≥3) · Kryteria ciężkiego ZP (IDSA/ATS)<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: pip/taz 4,5g IV co 8h + azytromycyna 500 mg IV · Przy podejrzeniu MRSA: wankomycyna lub linezolid · Ocena wskazań do wentylacji mechanicznej</span>';
     alertEl.style.display = 'flex';
   }
 }
@@ -1860,7 +1863,8 @@ function calcParkland() {
   document.getElementById('park-16h').textContent = rate16h + ' ml/h';
   document.getElementById('park-fluid').textContent = 'Ringer\nmleczanowy';
 
-  const day2Note = `<strong>2. doba (24–48h):</strong> 0,5 × V₁ = ${day2Vol} ml — koloidy (5% albuminy lub FFP) + glukoza 5% (pokrycie bilansu wodnego). Monitoruj diurezę: cel 0,5–1 ml/kg/h dorosły, 1 ml/kg/h dziecko.`;
+  const urineTarget = PARK_TYPE === 'child' ? `${fmt0(1*wt)}–${fmt0(2*wt)} ml/h (1–2 ml/kg/h)` : `${fmt0(0.5*wt)}–${fmt0(wt)} ml/h (0,5–1 ml/kg/h)`;
+  const day2Note = `<strong>2. doba (24–48h):</strong> 0,5 × V₁ = ${day2Vol} ml — koloidy (5% albuminy lub FFP) + glukoza 5%. Dostosuj tempo do diurezy.<br><br><strong>🎯 Cel diurezy:</strong> ${urineTarget} · Jeśli za mała — przyspiesz wlew o 20% · Jeśli za duża — zwolnij o 20% · Diureza <b>nie &lt;0,5 ml/kg/h</b> (ryzyko AKI). Nie stosuj forsowanej diurezy (mannitol) bez wskazań.`;
   document.getElementById('park-day2').innerHTML = day2Note;
   breakdown.style.display = 'block';
 
@@ -2105,20 +2109,21 @@ function calcHEART() {
   scoreEl.textContent = total;
   detailEl.textContent = `H=${HEART.h} + E=${HEART.e} + A=${HEART.a} + R=${HEART.r} + T=${HEART.t} = ${total}`;
 
+  const sub = `H=${HEART.h} + E=${HEART.e} + A=${HEART.a} + R=${HEART.r} + T=${HEART.t} = ${total}`;
   if (total <= 3) {
     scoreEl.className = 'result-score c-grn';
     labelEl.textContent = 'Niskie ryzyko MACE (0–3 pkt)';
-    detailEl.textContent = detailEl.textContent + ' · Ryzyko MACE 0.9–1.7% · Rozważ wypisanie z SOR';
+    detailEl.innerHTML = sub + '<br>Ryzyko MACE <b>0,9–1,7%</b> w ciągu 6 tygodni<br><span style="font-size:0.82rem;color:var(--t2)">Rozważ wypisanie z SOR · Kontrola w poradni kardiologicznej · Test wysiłkowy/obrazowy jeśli klinicznie wskazane · Seryjne troponiny nie wymagane przy niskim HEART</span>';
     alertEl.style.display = 'none';
   } else if (total <= 6) {
     scoreEl.className = 'result-score c-amb';
     labelEl.textContent = 'Pośrednie ryzyko MACE (4–6 pkt)';
-    detailEl.textContent = detailEl.textContent + ' · Ryzyko MACE 12–16.6% · Obserwacja, serial troponin';
+    detailEl.innerHTML = sub + '<br>Ryzyko MACE <b>12–16,6%</b> w ciągu 6 tygodni<br><span style="font-size:0.82rem;color:var(--t2)">Hospitalizacja · Seryjne troponiny (0h/3h lub 0h/6h) · EKG co 4–6h · Koronarografia lub CCTA zależnie od kliniki · Konsultacja kardiologiczna</span>';
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
     labelEl.textContent = 'Wysokie ryzyko MACE (7–10 pkt)';
-    detailEl.textContent = detailEl.textContent + ' · Ryzyko MACE > 50% · Pilna interwencja kardiologiczna';
+    detailEl.innerHTML = sub + '<br>Ryzyko MACE <b>&gt;50%</b> w ciągu 6 tygodni<br><span style="font-size:0.82rem;color:var(--t2)">Wczesna strategia inwazyjna · Pilna koronarografia · Podwójna antyplatykoterapia (ASA + tikagrelor/klopidogrel) · Monitorowanie hemodynamiczne · Konsultacja OIOK</span>';
     alertEl.style.display = 'flex';
   }
 }
@@ -2269,18 +2274,18 @@ function calcQSOFA() {
   scoreEl.textContent = total;
   if (total === 0) {
     scoreEl.className = 'result-score c-grn';
-    labelEl.textContent = 'Niskie ryzyko — mało prawdopodobna sepsa';
-    detailEl.textContent = 'Monitoruj, ponowna ocena przy zmianie stanu klinicznego';
+    labelEl.textContent = 'Niskie ryzyko — sepsa mało prawdopodobna';
+    detailEl.innerHTML = 'Ponowna ocena przy pogorszeniu lub podejrzeniu infekcji<br><span style="font-size:0.82rem;color:var(--t2)">qSOFA nie wyklucza sepsy — przy klinicznym podejrzeniu oceń pełny SOFA</span>';
     alertEl.style.display = 'none';
   } else if (total === 1) {
     scoreEl.className = 'result-score c-amb';
     labelEl.textContent = 'Podwyższone ryzyko (qSOFA = 1)';
-    detailEl.textContent = 'Uważna obserwacja, rozważ pełny SOFA jeśli podejrzenie infekcji';
+    detailEl.innerHTML = 'Uważna obserwacja · Rozważ pełny SOFA jeśli podejrzenie infekcji<br><span style="font-size:0.82rem;color:var(--t2)">SOFA ocenia: oddychanie (PaO₂/FiO₂), nerki (kreatynina), wątroba (bilirubina), krzepnięcie (płytki), GCS, MAP+wazopresory</span>';
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
     labelEl.textContent = 'WYSOKIE RYZYKO SEPSY (qSOFA ≥ 2)';
-    detailEl.textContent = 'Śmiertelność poza OIT > 10% · Posiewy, antybiotyki, mleczany, pełny SOFA, konsultacja OIT';
+    detailEl.innerHTML = 'Śmiertelność szpitalna &gt;10% · <b>Protocół sepsy (w ciągu 1h):</b><br>① Posiewy ×2 (krew, mocz) przed antybiotykiem ② Antybiotyk szerokospektralny IV ③ Mleczany (cel &lt;2 mmol/L) ④ Bolus 30 ml/kg 0,9%NaCl/Ringera jeśli MAP &lt;65 ⑤ Wdrożenie SOFA · konsultacja OIT<br><span style="font-size:0.82rem;color:var(--t2)">Sepsis-3: infekcja + SOFA ≥2 pkt · Wstrząs septyczny: sepsa + wazopresory + mleczany >2 mmol/L</span>';
     alertEl.style.display = 'flex';
   }
 }
@@ -2314,18 +2319,22 @@ function calcMAP() {
   if (map < 65) {
     scoreEl.className = 'result-score c-red';
     labelEl.textContent = 'WSTRZĄS / krytyczna hipoperfuzja (MAP < 65)';
+    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Noradrenalina: wazopressor z wyboru · Cel w sepsie: MAP ≥65 · Cel w TBI/udarze: MAP ≥80 · Cel w krwotoku: MAP 50–65 (do hemostazy)</span>`;
     alertEl.style.display = 'flex';
   } else if (map < 70) {
     scoreEl.className = 'result-score c-amb';
     labelEl.textContent = 'Graniczna perfuzja narządowa (MAP 65–70)';
+    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Cele MAP wg kontekstu: sepsa ≥65 · TBI ≥80 · Udar niedokrwienny <180/105 · AKI ryzyko → cel ≥75</span>`;
     alertEl.style.display = 'none';
   } else if (map <= 100) {
     scoreEl.className = 'result-score c-grn';
     labelEl.textContent = 'Prawidłowe MAP (70–100 mmHg)';
+    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Cele MAP wg kontekstu: sepsa ≥65 · TBI ≥80–90 · Udar niedokrwienny ≤180 · Ciśnienie perfuzji mózgu: CPP = MAP − ICP (cel ≥60)</span>`;
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-amb';
     labelEl.textContent = 'Podwyższone MAP (> 100 mmHg) — nadciśnienie';
+    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Pilna interwencja przy MAP &gt;130 + uszkodzenie narządów (udar, OZW, dyssekacja aorty, ostra nefropatia)</span>`;
     alertEl.style.display = 'none';
   }
 }
@@ -2687,20 +2696,25 @@ function calcNEWS2() {
   // Check for single parameter score = 3 (high risk regardless of total)
   const hasSingle3 = [sRR, sSpO2, sSBP, sHR, sTemp, sAVPU].some(s => s === 3);
 
-  if (total <= 4 && !hasSingle3) {
+  if (total === 0) {
     scoreEl.className = 'result-score c-grn';
-    labelEl.textContent = 'Niskie ryzyko (NEWS2 0–4)';
-    detailEl.textContent = 'Kontrola min. co 12h · Poinformuj lekarza o niepokojących zmianach';
+    labelEl.textContent = 'Minimalny poziom monitorowania (NEWS2 = 0)';
+    detailEl.innerHTML = 'Monitoring co 12h · Pielęgniarka informuje przy pogorszeniu<br><span style="font-size:0.82rem;color:var(--t2)">Brak odchyleń w żadnym z 7 parametrów — kontynuuj obserwację rutynową</span>';
+    alertEl.style.display = 'none';
+  } else if (total <= 4 && !hasSingle3) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Niskie ryzyko (NEWS2 1–4)';
+    detailEl.innerHTML = 'Monitoring co 4–6h · Pielęgniarka ocenia i informuje lekarza prowadzącego<br><span style="font-size:0.82rem;color:var(--t2)">Dokumentuj trend: wzrost NEWS2 o ≥2 pkt = wymagany kontakt z lekarzem niezależnie od sumy</span>';
     alertEl.style.display = 'none';
   } else if (total <= 6 || hasSingle3) {
     scoreEl.className = 'result-score c-amb';
-    labelEl.textContent = hasSingle3 ? 'Średnie ryzyko — parametr krytyczny' : 'Średnie ryzyko (NEWS2 5–6)';
-    detailEl.textContent = 'Kontrola min. co 1h · Pilna ocena lekarska · Rozważ transfer do monitorowania';
+    labelEl.textContent = hasSingle3 ? 'Średnie ryzyko — parametr krytyczny (single ≥3)' : 'Średnie ryzyko (NEWS2 5–6)';
+    detailEl.innerHTML = '<b>Monitoring co 1h</b> · Pilna ocena lekarska w ciągu 30 min · Rozważ stały monitoring<br><span style="font-size:0.82rem;color:var(--t2)">Przygotuj: dostęp IV, O₂, pulsoksymetr ciągły · Powiadom lekarza dyżurnego niezwłocznie · Rozważ konsultację OIT/anestezjologa</span>';
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
-    labelEl.textContent = 'WYSOKIE RYZYKO (NEWS2 ≥ 7)';
-    detailEl.textContent = 'Natychmiastowa ocena lekarska · Monitorowanie ciągłe · Rozważ OIT/HDU';
+    labelEl.textContent = 'WYSOKIE RYZYKO — Natychmiastowa interwencja (NEWS2 ≥ 7)';
+    detailEl.innerHTML = '<b>Monitoring ciągły</b> · Natychmiastowe wezwanie lekarza / zespołu RRT<br>① O₂ (cel SpO₂ 94–98%) ② Dostęp IV + pobranie krwi ③ 12-odprow. EKG ④ Bolus IV jeśli RRs &lt;90 ⑤ Przygotuj: rurka, ambú, defibrylator<br><span style="font-size:0.82rem;color:var(--t2)">NEWS2 ≥7 predykcja śmiertelności w ciągu 24h: ~15–20% · Ocena przydatności wentylacji nieinwazyjnej lub intubacji</span>';
     alertEl.style.display = 'flex';
   }
 }
@@ -2829,9 +2843,18 @@ document.addEventListener('DOMContentLoaded', function() {
   calcQSOFA();
   renderTbsa();
   calcParkland();
-  // init catecholamines
   const firstDrugBtn = document.querySelector('#cat-drug-pills .btn-opt');
   if (firstDrugBtn) catSetDrug('dopamina', firstDrugBtn);
+
+  // Hash routing: open only the targeted calculator
+  const hash = (location.hash || '').replace('#', '').trim();
+  if (hash) {
+    const target = document.querySelector(`[data-calc-id="${hash}"]`);
+    if (target) {
+      target.classList.add('open');
+      setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+    }
+  }
 });
 
 /* W opracowaniu banner + back-home */
