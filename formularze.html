@@ -431,7 +431,7 @@ function renderGrid() {
       <div class="card-img" onclick="toggleCard('${d.id}')">
         <img src="${IMG_BASE}${d.img}.jpg" alt="${d.name}" loading="lazy">
         <div class="card-overlay">
-          <div class="card-icon">${d.icon}</div>
+          
           <div class="card-name">${d.name}</div>
           <div class="card-tag">${d.docs.length} ${d.docs.length === 1 ? 'dokument' : 'dokumenty/ów'}</div>
         </div>
@@ -456,7 +456,7 @@ function renderGrid() {
 function renderDocList(d) {
   return `<div class="doc-list">${d.docs.map(doc => `
     <a class="doc-item" href="${doc.url}" target="_blank" rel="noopener">
-      <span class="doc-item-icon">${doc.icon}</span>
+      
       <span class="doc-item-body">
         <span class="doc-item-label">${doc.label}</span>
         <span class="doc-item-sub">${doc.sub}</span>
