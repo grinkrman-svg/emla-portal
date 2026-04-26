@@ -166,35 +166,89 @@ html,body{font-family:Georgia,'Times New Roman',Times,serif;font-size:10pt;color
 @page{size:A4 portrait;margin:0}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  html,body{background:#fff!important;overflow:visible!important;margin:0!important;padding:0!important}
+  html,body{background:#fff!important;overflow:visible!important;margin:0!important;padding:0!important;font-size:7pt!important}
   .screen-bar{display:none!important}
   .pages-wrap{padding:0!important;display:block!important}
   .ver-group{display:none!important}
   .ver-group.active{display:block!important}
-  .page{box-shadow:none!important;margin:0!important;padding:7mm 9mm!important;width:210mm!important;min-height:0!important;overflow:visible!important}
-  body{font-size:7.5pt!important}
+
+  /* === EXACT 2 PAGES: each .page = exactly 1 A4 === */
+  .page{
+    box-shadow:none!important;margin:0!important;
+    padding:6mm 8mm!important;
+    width:210mm!important;height:297mm!important;
+    overflow:hidden!important;
+    page-break-after:always!important;break-after:page!important;
+    display:flex!important;flex-direction:column!important;
+  }
+  .page-break{page-break-before:always!important;break-before:page!important;margin-top:0!important}
+  .page:last-child{page-break-after:auto!important;break-after:auto!important}
+
+  /* Header */
+  .hdr{padding-bottom:2mm!important;margin-bottom:1.5mm!important}
+  .hdr-name{font-size:8pt!important;font-weight:700!important}
+  .hdr-addr,.hdr-ts{font-size:6pt!important}
+
+  /* Title */
+  .doc-title{padding:1mm 0!important;margin-bottom:1.5mm!important}
+  .doc-title h2,.guide-title h2{font-size:11pt!important;margin-bottom:1mm!important}
+  .subtitle{font-size:7pt!important}
+  .badge{font-size:6.5pt!important;padding:1mm 3mm!important}
+
+  /* Sections */
   .section{margin-bottom:2mm!important}
-  .patho-box{padding:2.5mm 3mm!important;font-size:7pt!important}
-  .patho-box p{margin-bottom:1.5mm!important}
-  .alarm-box{padding:2.5mm 3mm!important}
-  .alarm-list li{padding:0.8mm 0!important;line-height:1.3!important}
-  .tl-item{padding:1.5mm 2mm!important}
-  .mild-list li{padding:1mm 3mm!important}
-  .rules-list li{padding:0.5mm 0!important}
-  .hosp-card{padding:2mm 3mm!important;gap:3mm!important}
-  .hosp-cards{gap:2mm!important}
-  .doc-title{padding:2mm 0!important}
-  .doc-title h2{font-size:13pt!important}
-  .section-title,.hosp-section-title,.guide-section-title{font-size:8pt!important;padding:1.5mm 0 1.5mm 3mm!important;margin-bottom:1.5mm!important}
-  .obs-table td,.obs-table th{padding:1.5mm 2mm!important;font-size:7pt!important}
-  .timeline{gap:1.5mm!important}
-  .return-grid{gap:2mm!important}
-  .companion-box{padding:2mm 3mm!important}
-  .speech-box{padding:2mm 3mm!important}
-  .guide-title h2{font-size:13pt!important}
-  .hosp-name{font-size:8.5pt!important}
-  .hosp-dept,.hosp-addr,.hosp-tel,.hosp-dist{font-size:6.5pt!important}
-  .page-break{page-break-before:always;break-before:page;margin-top:0!important}
+  .section-title,.hosp-section-title,.guide-section-title{
+    font-size:7.5pt!important;padding:1mm 0 1mm 2.5mm!important;margin-bottom:1mm!important;
+  }
+
+  /* Patho box */
+  .patho-box{padding:2mm!important;font-size:6.5pt!important;line-height:1.35!important}
+  .patho-box p{margin-bottom:1mm!important}
+
+  /* Timeline */
+  .timeline{gap:1mm!important;flex-direction:row!important;flex-wrap:wrap!important}
+  .tl-item{padding:1.5mm 2mm!important;flex:1!important;min-width:56mm!important;font-size:6.5pt!important}
+  .tl-day{font-size:7pt!important}
+  .tl-desc{font-size:6pt!important}
+
+  /* Alarm list — 2 COLUMNS */
+  .alarm-box{padding:2mm 2.5mm!important}
+  .alarm-title{font-size:7.5pt!important;margin-bottom:1mm!important}
+  .alarm-list{
+    columns:2!important;column-gap:4mm!important;
+    font-size:6.5pt!important;line-height:1.3!important;
+  }
+  .alarm-list li{padding:0.5mm 0!important;break-inside:avoid!important}
+
+  /* Two-col mild/rules */
+  .two-col{gap:3mm!important}
+  .col-title{font-size:7pt!important;margin-bottom:0.5mm!important}
+  .mild-list li{padding:0.8mm 2.5mm!important;font-size:6.5pt!important}
+  .rules-list li{font-size:6.5pt!important;padding:0.3mm 0!important;line-height:1.3!important}
+
+  /* Hospital cards — compact row layout */
+  .hosp-cards{gap:1.5mm!important;flex-direction:column!important}
+  .hosp-card{padding:1.5mm 2.5mm!important;gap:2mm!important;align-items:flex-start!important}
+  .hosp-badge{font-size:6.5pt!important;padding:1mm 2mm!important;min-width:14mm!important}
+  .hosp-name{font-size:7.5pt!important;font-weight:700!important}
+  .hosp-dept,.hosp-addr,.hosp-dist{font-size:6pt!important;line-height:1.3!important}
+  .hosp-tel{font-size:6.5pt!important}
+  .hosp-qr canvas{width:16mm!important;height:16mm!important}
+  .hosp-qr-label{font-size:5.5pt!important}
+
+  /* Observation table */
+  .obs-table td,.obs-table th{padding:1.2mm 1.5mm!important;font-size:6.5pt!important}
+
+  /* Guide page */
+  .guide-section{margin-bottom:2mm!important;padding:2mm!important}
+  .companion-box{padding:1.5mm 2mm!important;font-size:6.5pt!important}
+  .speech-box{padding:1.5mm 2mm!important}
+  .speech-bubble{font-size:6.5pt!important;padding:1.5mm 2mm!important}
+  .return-grid{gap:1.5mm!important}
+  .return-item{padding:1.5mm!important;font-size:6.5pt!important}
+  .warn-box{padding:1.5mm 2mm!important;font-size:6.5pt!important}
+
+  /* Colors */
   .hdr-name,.doc-title h2,.section-title,.hosp-section-title,
   .guide-title h2,.guide-section-title,.guide-hdr-name{color:#1a3a5c!important}
   .section-title,.hosp-section-title,.guide-section-title{border-left-color:#1a3a5c!important}
@@ -203,14 +257,12 @@ html,body{font-family:Georgia,'Times New Roman',Times,serif;font-size:10pt;color
   .alarm-title{color:#c0392b!important}
   .alarm-list li::before{color:#c0392b!important}
   .mild-list li{background:#f0fdf4!important;border-color:#86efac!important}
-  .hosp-badge,.sor-header,.obs-table th{background:#1a3a5c!important}
+  .hosp-badge,.sor-header,.obs-table th{background:#1a3a5c!important;color:#fff!important}
   .sor-body,.obs-table tr:nth-child(even) td,.return-item,.companion-box{background:#f8fafc!important}
   .badge-child{background:#dbeafe!important;color:#1e3a8a!important}
   .badge-adult{background:#dcfce7!important;color:#14532d!important}
   .speech-box{background:#fffbeb!important;border-color:#fcd34d!important}
   .warn-box{background:#fff5f5!important;border-color:#c0392b!important}
-  .alarm-box,.sor-box,.hosp-card,.warn-box,.speech-box,.guide-section,
-  .obs-table,.return-grid{page-break-inside:avoid;break-inside:avoid}
 }
 </style>
 </head>
