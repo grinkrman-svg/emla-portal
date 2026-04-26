@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Formularze i Dokumenty — EMLA Chojnice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════════════ */
+:root {
+  --bg:       #090b10;
+  --bg2:      #111520;
+  --bg3:      #1a1f2e;
+  --fg0:      #f0f4ff;
+  --fg1:      #b8c4d8;
+  --fg2:      #7a8aa0;
+  --bd:       rgba(255,255,255,.08);
+  --bd2:      rgba(255,255,255,.14);
+  --glass:    rgba(10,14,24,.72);
+  --glass2:   rgba(255,255,255,.04);
+  --shadow:   0 8px 40px rgba(0,0,0,.6);
+  --rad:      16px;
+  --font:     'Plus Jakarta Sans', system-ui, sans-serif;
+  --trans:    .22s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="light"] {
+  --bg: #f0f2f7; --bg2: #e4e8f2; --bg3: #dde1eb;
+  --fg0: #0d1117; --fg1: #3a4455; --fg2: #6b7a90;
+  --bd: rgba(0,0,0,.09); --bd2: rgba(0,0,0,.14);
+  --glass: rgba(240,242,247,.82); --glass2: rgba(0,0,0,.03);
+  --shadow: 0 8px 40px rgba(0,0,0,.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg0);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Background ambient ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 10% 20%, oklch(0.55 0.22 280 / .06) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 80% at 90% 80%, oklch(0.55 0.22 15  / .05) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════════════════════ */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 20px;
+  background: var(--glass);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border-bottom: 1px solid var(--bd);
+}
+.topbar-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 10px;
+  background: rgba(77,163,255,.1); border: 1px solid rgba(77,163,255,.3);
+  color: #4da3ff; font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: var(--trans);
+}
+.topbar-back:hover { background: rgba(77,163,255,.18); }
+.topbar-title {
+  flex: 1; font-size: 15px; font-weight: 700; color: var(--fg0);
+  letter-spacing: -.01em;
+}
+.topbar-sub { font-size: 11px; color: var(--fg2); font-weight: 400; margin-left: 8px; }
+.theme-btn {
+  width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--bd2);
+  background: var(--glass2); color: var(--fg1); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+  transition: var(--trans);
+}
+.theme-btn:hover { background: var(--bd2); }
+
+/* ══════════════════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════════════════ */
+main {
+  max-width: 1320px; margin: 0 auto;
+  padding: 80px 20px 60px;
+  position: relative; z-index: 1;
+}
+
+.page-header { margin-bottom: 32px; }
+.page-header h1 {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 800; letter-spacing: -.02em;
+  background: linear-gradient(135deg, var(--fg0) 40%, var(--fg2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.page-header p { color: var(--fg2); font-size: 14px; margin-top: 6px; }
+
+/* ══════════════════════════════════════════════════════
+   GRID
+══════════════════════════════════════════════════════ */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+/* ══════════════════════════════════════════════════════
+   DEPT CARD
+══════════════════════════════════════════════════════ */
+.dept-card {
+  border-radius: var(--rad);
+  border: 1px solid var(--bd);
+  overflow: hidden;
+  background: var(--bg2);
+  box-shadow: var(--shadow);
+  transition: var(--trans);
+  position: relative;
+}
+.dept-card:hover { border-color: var(--bd2); transform: translateY(-2px); }
+.dept-card.open { border-color: color-mix(in oklch, var(--accent) 40%, transparent); }
+
+/* Card image header */
+.card-img {
+  position: relative; height: 180px; overflow: hidden; cursor: pointer;
+}
+.card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .4s ease;
+  display: block;
+}
+.dept-card:hover .card-img img { transform: scale(1.04); }
+
+.card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(0,0,0,.2) 0%, rgba(0,0,0,.6) 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 14px 16px;
+}
+.card-icon { font-size: 28px; line-height: 1; margin-bottom: 6px; }
+.card-name {
+  font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.01em;
+  text-shadow: 0 1px 4px rgba(0,0,0,.4);
+}
+.card-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 5px;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: #fff;
+  background: color-mix(in oklch, var(--accent) 80%, black 20%);
+  width: fit-content;
+}
+.card-lock-badge {
+  position: absolute; top: 12px; right: 12px;
+  padding: 4px 10px; border-radius: 20px;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2);
+  font-size: 10px; font-weight: 700; color: #fbbf24;
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* Card footer trigger */
+.card-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer; user-select: none;
+  border-top: 1px solid var(--bd);
+  transition: var(--trans);
+}
+.card-trigger:hover { background: var(--glass2); }
+.card-doc-count {
+  font-size: 12px; color: var(--fg2);
+}
+.card-doc-count strong { color: var(--fg0); font-weight: 700; }
+.card-chevron {
+  color: var(--fg2); transition: transform var(--trans);
+  display: flex;
+}
+.dept-card.open .card-chevron { transform: rotate(180deg); }
+
+/* Accordion body */
+.card-body {
+  display: none; border-top: 1px solid var(--bd);
+  animation: slideDown .2s ease;
+}
+.dept-card.open .card-body { display: block; }
+@keyframes slideDown { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+
+/* Doc list */
+.doc-list { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.doc-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  background: var(--bg3); border: 1px solid var(--bd);
+  text-decoration: none; color: inherit;
+  transition: var(--trans);
+  cursor: pointer;
+}
+.doc-item:hover { border-color: color-mix(in oklch, var(--accent) 50%, transparent); background: color-mix(in oklch, var(--accent) 6%, var(--bg3)); }
+.doc-item-icon { font-size: 20px; width: 36px; text-align: center; flex-shrink: 0; }
+.doc-item-body { flex: 1; min-width: 0; }
+.doc-item-label { font-size: 13px; font-weight: 700; color: var(--fg0); }
+.doc-item-sub { font-size: 11px; color: var(--fg2); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-item-arrow { color: var(--fg2); flex-shrink: 0; }
+.doc-item-badge {
+  font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 4px;
+  background: color-mix(in oklch, var(--accent) 20%, transparent);
+  color: var(--accent); border: 1px solid color-mix(in oklch, var(--accent) 40%, transparent);
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════
+   PIN PAD
+══════════════════════════════════════════════════════ */
+.pin-area { padding: 16px 12px 12px; }
+.pin-label { font-size: 11px; color: var(--fg2); text-align: center; margin-bottom: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.pin-display {
+  display: flex; justify-content: center; gap: 8px; margin-bottom: 14px;
+}
+.pin-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--bd2);
+  transition: var(--trans);
+}
+.pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+.pin-pad {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+  max-width: 200px; margin: 0 auto;
+}
+.pin-btn {
+  height: 44px; border-radius: 10px;
+  border: 1px solid var(--bd2);
+  background: var(--bg3);
+  color: var(--fg0); font-family: var(--font);
+  font-size: 17px; font-weight: 700; cursor: pointer;
+  transition: var(--trans);
+  display: flex; align-items: center; justify-content: center;
+}
+.pin-btn:hover { background: var(--bd2); }
+.pin-btn:active { transform: scale(.95); }
+.pin-btn.del { font-size: 14px; color: var(--fg2); }
+.pin-btn.ok { background: color-mix(in oklch, var(--accent) 20%, var(--bg3)); color: var(--accent); border-color: color-mix(in oklch, var(--accent) 40%, transparent); }
+.pin-error-msg { font-size: 11px; color: #ef4444; text-align: center; margin-top: 8px; min-height: 16px; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+.pin-area.shake { animation: shake .35s ease; }
+
+/* ══════════════════════════════════════════════════════
+   SECTION HEADERS
+══════════════════════════════════════════════════════ */
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--fg2);
+  padding: 6px 12px 0; margin-bottom: 2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════ */
+@media (max-width: 520px) {
+  .dept-grid { grid-template-columns: 1fr; }
+  .topbar-sub { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="topbar-back" href="index.html">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    EMLA
+  </a>
+  <div class="topbar-title">Formularze i Dokumenty<span class="topbar-sub">Szpital Chojnice</span></div>
+  <button class="theme-btn" onclick="toggleTheme()" title="Tryb jasny/ciemny">☀</button>
+</div>
+
+<main>
+  <div class="page-header">
+    <h1>Formularze według oddziałów</h1>
+    <p>Wybierz oddział, aby uzyskać dostęp do formularzy, kart zleceń i dokumentów medycznych.</p>
+  </div>
+
+  <div class="dept-grid" id="deptGrid"></div>
+</main>
+
+<script>
+const IMG_BASE = 'https://raw.githubusercontent.com/grinkrman-svg/emla-portal/main/images/';
+
+const DEPTS = [
+  {
+    id: 'sor-amb', name: 'SOR — Ambulatorium Chirurgiczne', short: 'Ambulatorium Chir.',
+    img: 'sor-ambulatorium', color: '#ef4444', icon: '🚨', pin: null,
+    docs: [
+      { label: 'Karta Zleceń Lekarskich', url: 'karta-zlecen.html', icon: '📝', sub: 'Interaktywna karta z bazą 76 leków + krotność' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zalecenia Neurologiczne', url: 'zalecenia-neurologiczne.html', icon: '🧠', sub: 'Obserwacja po urazie głowy · dziecko + dorosły' },
+    ]
+  },
+  {
+    id: 'sor-obs', name: 'SOR — Sala Obserwacyjna', short: 'Sala Obserwacyjna',
+    img: 'sor-obserwacja', color: '#22c55e', icon: '🛏️', pin: null,
+    docs: [
+      { label: 'Karta Zleceń Lekarskich', url: 'karta-zlecen.html', icon: '📝', sub: 'Interaktywna karta z bazą 76 leków + krotność' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'chirurgia', name: 'Oddział Chirurgii Ogólnej', short: 'Chirurgia Ogólna',
+    img: 'chirurgia-ogolna', color: '#8b5cf6', icon: '🔬', pin: '54321',
+    docs: [
+      { label: 'Zgody i Odmowy Operacyjne', url: 'zgody-master.html', icon: '✍️', sub: '21 dokumentów chirurgicznych — pełny dostęp', badge: 'PEŁNY DOSTĘP' },
+    ]
+  },
+  {
+    id: 'ortopedia', name: 'Chirurgia Urazowo-Ortopedyczna', short: 'Ortopedia i Traumatologia',
+    img: 'ortopedia', color: '#f59e0b', icon: '🦴', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'interna', name: 'Oddział Chorób Wewnętrznych', short: 'Choroby Wewnętrzne',
+    img: 'interna', color: '#a855f7', icon: '🫀', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'neurologia', name: 'Neurologia z Oddziałem Udarowym', short: 'Neurologia',
+    img: 'neurologia', color: '#6366f1', icon: '🧠', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'kardiologia', name: 'Oddział Kardiologiczny', short: 'Kardiologia',
+    img: 'kardiologia', color: '#f43f5e', icon: '❤️', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'pediatria', name: 'Oddział Pediatryczny', short: 'Pediatria',
+    img: 'pediatria', color: '#f97316', icon: '👶', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'ginekologia', name: 'Oddział Ginekologiczno-Położniczy', short: 'Ginekologia / Położnictwo',
+    img: 'ginekologia', color: '#ec4899', icon: '🌸', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'oit', name: 'Oddział Anestezjologii i Intensywnej Terapii', short: 'OIT / Anestezjologia',
+    img: 'oit', color: '#14b8a6', icon: '💊', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'urologia', name: 'Urologia i Onkologia Urologiczna', short: 'Urologia',
+    img: 'urologia', color: '#0ea5e9', icon: '🔵', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'otolaryngologia', name: 'Oddział Otolaryngologiczny', short: 'Otolaryngologia',
+    img: 'otolaryngologia', color: '#84cc16', icon: '👂', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'okulistyka', name: 'Oddział Okulistyczny', short: 'Okulistyka',
+    img: 'okulistyka', color: '#10b981', icon: '👁️', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'pluca', name: 'Oddział Chorób Płuc', short: 'Choroby Płuc',
+    img: 'pluca', color: '#06b6d4', icon: '🌬️', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'neonatologia', name: 'Oddział Neonatologiczny', short: 'Neonatologia',
+    img: 'neonatologia', color: '#fbbf24', icon: '🍼', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'dializa', name: 'Stacja Dializ', short: 'Dializoterapia',
+    img: 'dializa', color: '#f43f5e', icon: '🩸', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+  {
+    id: 'blok', name: 'Blok Operacyjny', short: 'Blok Operacyjny',
+    img: 'blok-operacyjny', color: '#3b82f6', icon: '🏥', pin: null,
+    docs: [
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+    ]
+  },
+];
+
+// ── PIN state per card ──
+const pinState = {};
+
+function renderGrid() {
+  const grid = document.getElementById('deptGrid');
+  grid.innerHTML = DEPTS.map(d => `
+    <div class="dept-card" id="card-${d.id}" style="--accent:${d.color}">
+      <div class="card-img" onclick="toggleCard('${d.id}')">
+        <img src="${IMG_BASE}${d.img}.jpg" alt="${d.name}" loading="lazy">
+        <div class="card-overlay">
+          <div class="card-icon">${d.icon}</div>
+          <div class="card-name">${d.name}</div>
+          <div class="card-tag">${d.docs.length} ${d.docs.length === 1 ? 'dokument' : 'dokumenty/ów'}</div>
+        </div>
+        ${d.pin ? `<div class="card-lock-badge">🔒 Chroniony PIN</div>` : ''}
+      </div>
+      <div class="card-trigger" onclick="toggleCard('${d.id}')">
+        <div class="card-doc-count">
+          <strong>${d.docs.length}</strong> ${d.docs.length === 1 ? 'dokument' : 'dokumenty'}
+          ${d.pin ? ' · <span style="color:#fbbf24;font-size:11px">🔒 PIN wymagany</span>' : ''}
+        </div>
+        <div class="card-chevron">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="card-body" id="body-${d.id}">
+        ${d.pin && !isPinUnlocked(d.id) ? renderPinPad(d.id) : renderDocList(d)}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderDocList(d) {
+  return `<div class="doc-list">${d.docs.map(doc => `
+    <a class="doc-item" href="${doc.url}" target="_blank" rel="noopener">
+      <span class="doc-item-icon">${doc.icon}</span>
+      <span class="doc-item-body">
+        <span class="doc-item-label">${doc.label}</span>
+        <span class="doc-item-sub">${doc.sub}</span>
+      </span>
+      ${doc.badge ? `<span class="doc-item-badge">${doc.badge}</span>` : `<svg class="doc-item-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>`}
+    </a>
+  `).join('')}</div>`;
+}
+
+function renderPinPad(id) {
+  pinState[id] = pinState[id] || { entered: '' };
+  return `
+    <div class="pin-area" id="pinarea-${id}">
+      <div class="pin-label">Wpisz kod PIN oddziału</div>
+      <div class="pin-display" id="pindots-${id}">
+        ${[0,1,2,3,4].map(i => `<div class="pin-dot" id="dot-${id}-${i}"></div>`).join('')}
+      </div>
+      <div class="pin-pad">
+        ${[7,8,9,4,5,6,1,2,3].map(n => `<button class="pin-btn" onclick="pinPress('${id}',${n})">${n}</button>`).join('')}
+        <button class="pin-btn del" onclick="pinDel('${id}')">⌫</button>
+        <button class="pin-btn" onclick="pinPress('${id}',0)">0</button>
+        <button class="pin-btn ok" onclick="pinConfirm('${id}')">✓</button>
+      </div>
+      <div class="pin-error-msg" id="pinerr-${id}"></div>
+    </div>`;
+}
+
+function isPinUnlocked(id) {
+  return sessionStorage.getItem('pin_' + id) === 'ok';
+}
+
+function pinPress(id, n) {
+  const st = pinState[id] || (pinState[id] = { entered: '' });
+  if (st.entered.length >= 5) return;
+  st.entered += n;
+  updateDots(id, st.entered.length);
+  if (st.entered.length === 5) setTimeout(() => pinConfirm(id), 150);
+}
+
+function pinDel(id) {
+  const st = pinState[id] || (pinState[id] = { entered: '' });
+  st.entered = st.entered.slice(0, -1);
+  updateDots(id, st.entered.length);
+}
+
+function updateDots(id, count) {
+  for (let i = 0; i < 5; i++) {
+    const dot = document.getElementById(`dot-${id}-${i}`);
+    if (dot) dot.classList.toggle('filled', i < count);
+  }
+}
+
+function pinConfirm(id) {
+  const dept = DEPTS.find(d => d.id === id);
+  const st = pinState[id] || {};
+  if (st.entered === dept.pin) {
+    sessionStorage.setItem('pin_' + id, 'ok');
+    const body = document.getElementById('body-' + id);
+    if (body) body.innerHTML = renderDocList(dept);
+  } else {
+    const area = document.getElementById('pinarea-' + id);
+    const err = document.getElementById('pinerr-' + id);
+    if (err) err.textContent = 'Nieprawidłowy kod PIN. Spróbuj ponownie.';
+    if (area) { area.classList.add('shake'); setTimeout(() => area.classList.remove('shake'), 400); }
+    st.entered = '';
+    updateDots(id, 0);
+  }
+}
+
+function toggleCard(id) {
+  const card = document.getElementById('card-' + id);
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open', !isOpen);
+  const body = document.getElementById('body-' + id);
+  if (body) body.style.display = isOpen ? '' : '';
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  document.querySelector('.theme-btn').textContent = html.getAttribute('data-theme') === 'dark' ? '☀' : '🌙';
+}
+
+renderGrid();
+</script>
+</body>
+</html>
