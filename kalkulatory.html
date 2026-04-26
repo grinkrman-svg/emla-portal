@@ -6,7 +6,7 @@
 <title>Kalkulatory Kliniczne — EMLA SOR</title>
 <link rel="icon" href="icons/icon-32x32.png">
 <meta name="theme-color" content="#1e40af">
-<meta name="description" content="Kalkulatory kliniczne dla lekarzy SOR: GCS, Wells PE, CURB-65, Parkland, Dawkowanie pediatryczne, Prędkość wlewu, HEART Score.">
+<meta name="description" content="Kalkulatory kliniczne dla lekarzy SOR: GCS, Wells PE, CURB-65, Parkland, qSOFA, MAP, Dawkowanie infuzji, NaHCO3, Osmolalność, Anion Gap, NEWS2, Dawkowanie pediatryczne, Prędkość wlewu, HEART Score.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -543,7 +543,7 @@
 
   <div class="page-header">
     <h1>Kalkulatory Kliniczne</h1>
-    <p>7 narzędzi · Wyniki w czasie rzeczywistym · Dane nie są zapisywane</p>
+    <p>17 narzędzi · Wyniki w czasie rzeczywistym · Dane nie są zapisywane</p>
   </div>
 
   <div class="calc-grid">
@@ -551,7 +551,7 @@
     <!-- ════════════════════════════════════════
          1. GCS — Glasgow Coma Scale
     ════════════════════════════════════════ -->
-    <div class="ck open" id="ck-gcs">
+    <div class="ck open" id="ck-gcs" data-calc-id="gcs">
       <div class="ck-stripe"></div>
       <div class="ck-head" onclick="toggleCalc('ck-gcs')">
         <div class="ck-title-row">
@@ -627,7 +627,7 @@
     <!-- ════════════════════════════════════════
          2. WELLS — Zatorowość Płucna
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-wells">
+    <div class="ck" id="ck-wells" data-calc-id="wells-pe">
       <div class="ck-stripe red"></div>
       <div class="ck-head" onclick="toggleCalc('ck-wells')">
         <div class="ck-title-row">
@@ -694,7 +694,7 @@
     <!-- ════════════════════════════════════════
          3. CURB-65 — Zapalenie Płuc
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-curb">
+    <div class="ck" id="ck-curb" data-calc-id="curb65">
       <div class="ck-stripe grn"></div>
       <div class="ck-head" onclick="toggleCalc('ck-curb')">
         <div class="ck-title-row">
@@ -749,61 +749,92 @@
     </div>
 
     <!-- ════════════════════════════════════════
-         4. PARKLAND — Oparzenia
+         4. PARKLAND — Oparzenia (rozszerzony)
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-park">
+    <div class="ck" id="ck-park" data-calc-id="parkland">
       <div class="ck-stripe" style="background: linear-gradient(90deg, oklch(0.65 0.2 35), oklch(0.75 0.18 55))"></div>
       <div class="ck-head" onclick="toggleCalc('ck-park')">
         <div class="ck-title-row">
           <span class="ck-icon">🔥</span>
           <div>
             <div class="ck-name">Parkland — Oparzenia</div>
-            <div class="ck-sub">Wzór Baxtera · objętość infuzji 24h</div>
+            <div class="ck-sub">Wzór Baxtera · objętość infuzji 24h · pediatria / dorosły</div>
           </div>
         </div>
         <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="ck-body">
-        <div class="calc-inputs" style="margin-top:10px">
+        <!-- Typ pacjenta -->
+        <div style="display:flex;gap:8px;margin:12px 0 10px">
+          <button class="btn-opt sel" id="park-adult-btn" onclick="parkSetType('adult',this)">Dorosły</button>
+          <button class="btn-opt" id="park-child-btn" onclick="parkSetType('child',this)">Dziecko (≤15 kg lub ≤15 r.ż.)</button>
+        </div>
+        <div class="calc-inputs">
           <div class="inp-row">
             <label>Masa ciała</label>
             <input type="number" id="park-wt" min="1" max="250" placeholder="np. 70" oninput="calcParkland()">
             <span class="inp-unit">kg</span>
           </div>
           <div class="inp-row">
-            <label>Powierzchnia oparzeń (TBSA)</label>
-            <input type="number" id="park-tbsa" min="1" max="100" placeholder="np. 30" oninput="calcParkland()">
-            <span class="inp-unit">%</span>
+            <label>TBSA (%)</label>
+            <input type="range" id="park-tbsa" min="1" max="99" value="20" oninput="calcParkland()">
+            <span class="range-val" id="park-tbsa-val">20%</span>
+          </div>
+          <div class="inp-row">
+            <label>Stopień oparzenia</label>
+            <select id="park-degree" onchange="calcParkland()">
+              <option value="II">II stopień (niepełnej grubości)</option>
+              <option value="III">III stopień (pełnej grubości)</option>
+              <option value="mix">Mieszany (II+III)</option>
+            </select>
+          </div>
+          <div class="inp-row">
+            <label>Oparzenie inhalacyjne</label>
+            <select id="park-inhale" onchange="calcParkland()">
+              <option value="no">Nie</option>
+              <option value="yes">Tak (+2 ml/kg/%TBSA)</option>
+            </select>
           </div>
         </div>
-        <p style="font-size:0.8rem;color:var(--t3);margin-bottom:8px">
-          Wzór: <strong style="font-family:var(--m)">4 ml × kg × % TBSA</strong> = całkowita objętość 24h (Ringer mleczanowy)<br>
-          <em>Połowa w ciągu pierwszych 8 h od oparzenia, połowa w ciągu kolejnych 16 h</em>
-        </p>
         <div class="calc-result" id="park-result">
           <div class="result-score c-blue" id="park-score">—</div>
           <div class="result-label" id="park-label">Podaj masę ciała i %TBSA</div>
           <div class="result-detail" id="park-detail"></div>
         </div>
-        <div class="park-breakdown" id="park-breakdown" style="display:none">
-          <div class="park-box">
-            <div class="lbl">Łącznie 24h</div>
-            <div class="val" id="park-total">—</div>
+        <div id="park-breakdown-ext" style="display:none">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+            <div class="park-box">
+              <div class="lbl">24h łącznie</div>
+              <div class="val" id="park-total">—</div>
+            </div>
+            <div class="park-box">
+              <div class="lbl">Pierwsze 8h<br><small style="font-size:0.7rem">V/2</small></div>
+              <div class="val" id="park-8h-vol">—</div>
+            </div>
+            <div class="park-box">
+              <div class="lbl">ml/h (8h)</div>
+              <div class="val" id="park-8h">—</div>
+            </div>
+            <div class="park-box">
+              <div class="lbl">Kolejne 16h<br><small style="font-size:0.7rem">V/2</small></div>
+              <div class="val" id="park-16h-vol">—</div>
+            </div>
+            <div class="park-box">
+              <div class="lbl">ml/h (16h)</div>
+              <div class="val" id="park-16h">—</div>
+            </div>
+            <div class="park-box">
+              <div class="lbl">Płyn</div>
+              <div class="val" style="font-size:0.75rem;line-height:1.2" id="park-fluid">RL</div>
+            </div>
           </div>
-          <div class="park-box">
-            <div class="lbl">Pierwsze 8h<br>(ml/h)</div>
-            <div class="val" id="park-8h">—</div>
-          </div>
-          <div class="park-box">
-            <div class="lbl">Kolejne 16h<br>(ml/h)</div>
-            <div class="val" id="park-16h">—</div>
-          </div>
+          <div style="margin-top:8px;padding:10px 14px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--bd);font-size:0.82rem;color:var(--t1)" id="park-day2">—</div>
         </div>
         <div class="calc-alert" id="park-alert" style="display:none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          TBSA &gt; 20% — rozważ konsultację centrum oparzelniczego
+          <span id="park-alert-txt">TBSA &gt; 20% — hospitalizacja OIT, konsultacja centrum oparzelniczego</span>
         </div>
-        <div class="calc-source">Źródło: Baxter CR. Fluid resuscitation, burn percentage, and physiologic age. J Trauma 1979.</div>
+        <div class="calc-source">Źródło: Baxter CR. J Trauma 1979 · Galveston formula for pediatrics · ABA Guidelines 2018.</div>
         <button class="btn-reset" onclick="resetParkland()">Wyczyść / Reset</button>
       </div>
     </div>
@@ -811,7 +842,7 @@
     <!-- ════════════════════════════════════════
          5. DAWKOWANIE PEDIATRYCZNE
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-ped">
+    <div class="ck" id="ck-ped" data-calc-id="dawkowanie-ped">
       <div class="ck-stripe" style="background: linear-gradient(90deg, oklch(0.65 0.18 195), oklch(0.72 0.16 210))"></div>
       <div class="ck-head" onclick="toggleCalc('ck-ped')">
         <div class="ck-title-row">
@@ -859,7 +890,7 @@
     <!-- ════════════════════════════════════════
          6. PRĘDKOŚĆ WLEWU (KROPLÓWKI)
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-inf">
+    <div class="ck" id="ck-inf" data-calc-id="predkosc-wlewu">
       <div class="ck-stripe pur"></div>
       <div class="ck-head" onclick="toggleCalc('ck-inf')">
         <div class="ck-title-row">
@@ -935,7 +966,7 @@
     <!-- ════════════════════════════════════════
          7. HEART SCORE
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-heart">
+    <div class="ck" id="ck-heart" data-calc-id="heart-score">
       <div class="ck-stripe red"></div>
       <div class="ck-head" onclick="toggleCalc('ck-heart')">
         <div class="ck-title-row">
@@ -1061,7 +1092,7 @@
     <!-- ════════════════════════════════════════
          8. TBSA — Reguła Dziewiątek (Wallace)
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-tbsa">
+    <div class="ck" id="ck-tbsa" data-calc-id="tbsa">
       <div class="ck-stripe" style="background:#dc2626"></div>
       <div class="ck-head" onclick="toggleCalc('ck-tbsa')">
         <div class="ck-title-row">
@@ -1094,7 +1125,7 @@
     <!-- ════════════════════════════════════════
          9. COCKCROFT-GAULT — Klirens kreatyniny
     ════════════════════════════════════════ -->
-    <div class="ck" id="ck-cg">
+    <div class="ck" id="ck-cg" data-calc-id="cockcroft-gault">
       <div class="ck-stripe" style="background:#16a34a"></div>
       <div class="ck-head" onclick="toggleCalc('ck-cg')">
         <div class="ck-title-row">
@@ -1134,6 +1165,442 @@
         </div>
         <div class="calc-source">Źródło: Cockcroft DW, Gault MH. Nephron 1976. Wzór: [(140−wiek)×masa / (72×sCr)] × (0.85 jeśli kobieta).</div>
         <button class="btn-reset" onclick="resetCG()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         10. qSOFA — Sepsis Screening
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-qsofa" data-calc-id="qsofa">
+      <div class="ck-stripe" style="background: linear-gradient(90deg, oklch(0.55 0.22 25), oklch(0.65 0.2 35))"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-qsofa')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🦠</span>
+          <div>
+            <div class="ck-name">qSOFA — Przesiew Sepsy</div>
+            <div class="ck-sub">Quick SOFA · śmiertelność pozaOIT · Sepsis-3</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <ul class="criteria-list" style="margin-top:10px" id="qsofa-list">
+          <li class="crit-item" onclick="qsofaToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>RR ≥ 22/min</strong> — szybki oddech</span>
+            <span class="crit-pts">+1</span>
+          </li>
+          <li class="crit-item" onclick="qsofaToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>Zaburzenia świadomości</strong> — GCS &lt; 15</span>
+            <span class="crit-pts">+1</span>
+          </li>
+          <li class="crit-item" onclick="qsofaToggle(this)" data-pts="1">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text"><strong>SBP ≤ 100 mmHg</strong> — hipotonia</span>
+            <span class="crit-pts">+1</span>
+          </li>
+        </ul>
+        <div class="calc-result" id="qsofa-result">
+          <div class="result-score c-grn" id="qsofa-score">0</div>
+          <div class="result-label" id="qsofa-label">Niskie ryzyko sepsy</div>
+          <div class="result-detail" id="qsofa-detail">Oznacz kryteria powyżej</div>
+        </div>
+        <div class="calc-alert" id="qsofa-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          qSOFA ≥ 2 — WYSOKIE RYZYKO SEPSY · posiewy, antybiotyki, SOFA pełne
+        </div>
+        <div class="calc-source">Źródło: Singer M et al. JAMA 2016 (Sepsis-3). qSOFA nie zastępuje pełnego SOFA.</div>
+        <button class="btn-reset" onclick="resetQSOFA()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         11. MAP — Średnie Ciśnienie Tętnicze
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-map" data-calc-id="map">
+      <div class="ck-stripe teal"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-map')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🩺</span>
+          <div>
+            <div class="ck-name">MAP — Średnie Ciśnienie Tętnicze</div>
+            <div class="ck-sub">Mean Arterial Pressure · próg perfuzji narządowej</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="calc-inputs" style="margin-top:10px">
+          <div class="inp-row">
+            <label>RRs (skurczowe)</label>
+            <input type="number" id="map-sbp" min="40" max="300" placeholder="np. 120" oninput="calcMAP()">
+            <span class="inp-unit">mmHg</span>
+          </div>
+          <div class="inp-row">
+            <label>RRr (rozkurczowe)</label>
+            <input type="number" id="map-dbp" min="20" max="200" placeholder="np. 80" oninput="calcMAP()">
+            <span class="inp-unit">mmHg</span>
+          </div>
+        </div>
+        <p style="font-size:0.8rem;color:var(--t3);margin-bottom:8px">
+          Wzór: <strong style="font-family:var(--m)">MAP = RRr + (RRs − RRr) / 3</strong>
+        </p>
+        <div class="calc-result" id="map-result">
+          <div class="result-score c-blue" id="map-score">—</div>
+          <div class="result-label" id="map-label">Podaj RRs i RRr</div>
+          <div class="result-detail" id="map-detail"></div>
+        </div>
+        <div class="calc-alert" id="map-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          MAP &lt; 65 mmHg — WSTRZĄS · pilnie wazopresory (noradrenalina)
+        </div>
+        <div class="calc-source">Wzór: MAP = DBP + (SBP−DBP)/3 · Cel terapeutyczny: MAP ≥ 65 mmHg (sepsa, wstrząs).</div>
+        <button class="btn-reset" onclick="resetMAP()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         12. Dawkowanie infuzji katecholamin
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-catecholamine" data-calc-id="catecholamine">
+      <div class="ck-stripe pur"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-catecholamine')">
+        <div class="ck-title-row">
+          <span class="ck-icon">💊</span>
+          <div>
+            <div class="ck-name">Katecholaminy — Dawkowanie infuzji</div>
+            <div class="ck-sub">Dopamina · Dobutamina · Noradrenalina · Adrenalina</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div style="margin-top:10px">
+          <div style="font-size:0.78rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Wybierz lek</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px" id="cat-drug-pills">
+            <button class="btn-opt sel" onclick="catSetDrug('dopamina',this)">Dopamina</button>
+            <button class="btn-opt" onclick="catSetDrug('dobutamina',this)">Dobutamina</button>
+            <button class="btn-opt" onclick="catSetDrug('noradrenalina',this)">Noradrenalina</button>
+            <button class="btn-opt" onclick="catSetDrug('adrenalina',this)">Adrenalina</button>
+          </div>
+          <div style="font-size:0.78rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Stężenie ampułek</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px" id="cat-conc-pills"></div>
+        </div>
+        <div class="calc-inputs">
+          <div class="inp-row">
+            <label>Masa ciała</label>
+            <input type="number" id="cat-wt" min="1" max="300" placeholder="np. 70" oninput="calcCat()">
+            <span class="inp-unit">kg</span>
+          </div>
+          <div class="inp-row">
+            <label>Stężenie w worku</label>
+            <input type="number" id="cat-conc-val" min="0.001" step="0.001" placeholder="np. 4" oninput="calcCat()">
+            <span class="inp-unit">mg/ml</span>
+          </div>
+          <div class="inp-row">
+            <label>Dawka (<span id="cat-dose-unit-label">mcg/kg/min</span>)</label>
+            <input type="range" id="cat-dose-range" min="0" max="20" step="0.5" value="5" oninput="catDoseUpdate()">
+            <span class="range-val" id="cat-dose-val">5 mcg/kg/min</span>
+          </div>
+        </div>
+        <div class="inf-results" id="cat-results" style="display:grid;margin-top:10px">
+          <div class="inf-box">
+            <div class="lbl">Prędkość wlewu</div>
+            <div class="val" id="cat-rate">—</div>
+          </div>
+          <div class="inf-box">
+            <div class="lbl">Krople/min</div>
+            <div class="val" id="cat-drops">—</div>
+          </div>
+        </div>
+        <div id="cat-note" style="margin-top:8px;font-size:0.8rem;color:var(--t3);font-style:italic"></div>
+        <div class="calc-source">Źródło: ChPL producenta · Wytyczne ESC/ESA 2022 wstrząs kardiogenny.</div>
+        <button class="btn-reset" onclick="resetCat()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         13. Niedobór NaHCO3
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-nahco3" data-calc-id="nahco3">
+      <div class="ck-stripe" style="background: linear-gradient(90deg, var(--teal), oklch(0.72 0.16 210))"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-nahco3')">
+        <div class="ck-title-row">
+          <span class="ck-icon">⚗️</span>
+          <div>
+            <div class="ck-name">Niedobór NaHCO₃</div>
+            <div class="ck-sub">Wodorowęglany 8,4% · kwasica metaboliczna</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="calc-inputs" style="margin-top:10px">
+          <div class="inp-row">
+            <label>Masa ciała</label>
+            <input type="number" id="hco3-wt" min="1" max="250" placeholder="np. 70" oninput="calcHCO3()">
+            <span class="inp-unit">kg</span>
+          </div>
+          <div class="inp-row">
+            <label>HCO₃ zmierzone</label>
+            <input type="number" id="hco3-meas" min="1" max="40" step="0.1" placeholder="np. 12" oninput="calcHCO3()">
+            <span class="inp-unit">mmol/L</span>
+          </div>
+          <div class="inp-row">
+            <label>HCO₃ docelowe</label>
+            <input type="number" id="hco3-target" min="10" max="30" step="0.1" value="24" oninput="calcHCO3()">
+            <span class="inp-unit">mmol/L</span>
+          </div>
+        </div>
+        <p style="font-size:0.8rem;color:var(--t3);margin-bottom:8px">
+          Wzór: <strong style="font-family:var(--m)">Deficyt = 0,3 × masa × (HCO₃_cel − HCO₃_mierzone)</strong><br>
+          NaHCO₃ 8,4% = 1 mmol/ml · podawać powoli, maks ½ deficytu w 1h
+        </p>
+        <div class="calc-result" id="hco3-result">
+          <div class="result-score c-blue" id="hco3-score">—</div>
+          <div class="result-label" id="hco3-label">Podaj dane pacjenta</div>
+          <div class="result-detail" id="hco3-detail"></div>
+        </div>
+        <div class="calc-alert" id="hco3-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Ciężka kwasica — nie korygować zbyt szybko; monitorować K⁺ i Ca²⁺
+        </div>
+        <div class="calc-source">Wzór: Deficyt HCO₃ (mmol) = 0,3 × m.c.(kg) × (24 − HCO₃_meas). AHA Advanced CV Life Support.</div>
+        <button class="btn-reset" onclick="resetHCO3()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         14. Osmolalność surowicy
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-osm" data-calc-id="osmolalnosc">
+      <div class="ck-stripe grn"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-osm')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🧪</span>
+          <div>
+            <div class="ck-name">Osmolalność Surowicy</div>
+            <div class="ck-sub">Obliczona · hiperosmolalność · luka osmolalna</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div style="display:flex;gap:8px;margin:12px 0 10px">
+          <button class="btn-opt sel" id="osm-mmol-btn" onclick="osmSetUnit('mmol',this)">mmol/L (SI)</button>
+          <button class="btn-opt" id="osm-mgdl-btn" onclick="osmSetUnit('mgdl',this)">mg/dL</button>
+        </div>
+        <div class="calc-inputs">
+          <div class="inp-row">
+            <label>Sód (Na)</label>
+            <input type="number" id="osm-na" min="100" max="180" step="0.1" placeholder="np. 140" oninput="calcOsm()">
+            <span class="inp-unit">mmol/L</span>
+          </div>
+          <div class="inp-row">
+            <label>Glukoza</label>
+            <input type="number" id="osm-gluc" min="0" max="2000" step="0.1" placeholder="np. 5.5" oninput="calcOsm()">
+            <span class="inp-unit" id="osm-gluc-unit">mmol/L</span>
+          </div>
+          <div class="inp-row">
+            <label>Mocznik (BUN)</label>
+            <input type="number" id="osm-urea" min="0" max="500" step="0.1" placeholder="np. 5" oninput="calcOsm()">
+            <span class="inp-unit" id="osm-urea-unit">mmol/L</span>
+          </div>
+        </div>
+        <div class="calc-result" id="osm-result">
+          <div class="result-score c-blue" id="osm-score">—</div>
+          <div class="result-label" id="osm-label">Podaj Na, glukozę i mocznik</div>
+          <div class="result-detail" id="osm-detail">Wzór: 2×Na + glukoza + mocznik (mmol/L)</div>
+        </div>
+        <div class="calc-alert" id="osm-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Hiperosmolalność &gt; 320 — ryzyko śpiączki hiperosmolarnej; HONK/HHS
+        </div>
+        <div class="calc-source">Wzór: Osm = 2×Na + glukoza + mocznik (mmol/L). Norma: 280–295 mOsm/kg.</div>
+        <button class="btn-reset" onclick="resetOsm()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         15. Luka Anionowa (Anion Gap)
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-ag" data-calc-id="anion-gap">
+      <div class="ck-stripe" style="background: linear-gradient(90deg, var(--pur), oklch(0.65 0.2 285))"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-ag')">
+        <div class="ck-title-row">
+          <span class="ck-icon">⚖️</span>
+          <div>
+            <div class="ck-name">Luka Anionowa (Anion Gap)</div>
+            <div class="ck-sub">AG · korekta albumin · MUDPILES · kwasica metaboliczna</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="calc-inputs" style="margin-top:10px">
+          <div class="inp-row">
+            <label>Sód (Na⁺)</label>
+            <input type="number" id="ag-na" min="100" max="180" step="0.1" placeholder="np. 140" oninput="calcAG()">
+            <span class="inp-unit">mmol/L</span>
+          </div>
+          <div class="inp-row">
+            <label>Chlorki (Cl⁻)</label>
+            <input type="number" id="ag-cl" min="70" max="130" step="0.1" placeholder="np. 102" oninput="calcAG()">
+            <span class="inp-unit">mmol/L</span>
+          </div>
+          <div class="inp-row">
+            <label>Wodorowęglany (HCO₃⁻)</label>
+            <input type="number" id="ag-hco3" min="1" max="45" step="0.1" placeholder="np. 24" oninput="calcAG()">
+            <span class="inp-unit">mmol/L</span>
+          </div>
+          <div class="inp-row">
+            <label>Albuminy (opcjonalnie)</label>
+            <input type="number" id="ag-alb" min="0" max="60" step="0.1" placeholder="np. 4.0 (norma)" oninput="calcAG()">
+            <span class="inp-unit">g/dL</span>
+          </div>
+        </div>
+        <p style="font-size:0.8rem;color:var(--t3);margin-bottom:8px">
+          AG = Na − (Cl + HCO₃) · Norma: 8–12 mmol/L<br>
+          AG_koryg = AG + 2,5 × (4 − albuminy)
+        </p>
+        <div class="calc-result" id="ag-result">
+          <div class="result-score c-blue" id="ag-score">—</div>
+          <div class="result-label" id="ag-label">Podaj Na, Cl, HCO₃</div>
+          <div class="result-detail" id="ag-detail"></div>
+        </div>
+        <div id="ag-mudpiles" style="display:none;margin-top:10px;padding:12px 14px;border-radius:var(--rs);background:oklch(0.55 0.22 285 / 0.08);border:1px solid oklch(0.55 0.22 285 / 0.3)">
+          <div style="font-weight:700;font-size:0.84rem;color:var(--pur);margin-bottom:6px">MUDPILES — przyczyny wysokiego AG:</div>
+          <div style="font-size:0.8rem;color:var(--t1);line-height:1.6">
+            <strong>M</strong> — Metanol &nbsp;·&nbsp; <strong>U</strong> — Uremia &nbsp;·&nbsp; <strong>D</strong> — DKA/ketoacidoza &nbsp;·&nbsp; <strong>P</strong> — Paracetamol/Propylene glycol<br>
+            <strong>I</strong> — Izoniazyd/Żelazo &nbsp;·&nbsp; <strong>L</strong> — Kwas mlekowy (lactate) &nbsp;·&nbsp; <strong>E</strong> — Etanol/Etylenglikol &nbsp;·&nbsp; <strong>S</strong> — Salicylany
+          </div>
+        </div>
+        <div class="calc-source">Źródło: Emmett M, Narins RG. Medicine 1977. Korekta albumin: Figge J. JAMA 1998.</div>
+        <button class="btn-reset" onclick="resetAG()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         16. NEWS2 — National Early Warning Score
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-news2" data-calc-id="news2">
+      <div class="ck-stripe" style="background: linear-gradient(90deg, oklch(0.62 0.2 165), oklch(0.7 0.18 165))"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-news2')">
+        <div class="ck-title-row">
+          <span class="ck-icon">📊</span>
+          <div>
+            <div class="ck-name">NEWS2 — Early Warning Score</div>
+            <div class="ck-sub">National Early Warning Score 2 · eskalacja opieki</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="calc-inputs" style="margin-top:10px">
+          <div class="inp-row">
+            <label>Częstość oddechów (RR)</label>
+            <input type="number" id="news-rr" min="1" max="60" placeholder="np. 18" oninput="calcNEWS2()">
+            <span class="inp-unit">/min</span>
+          </div>
+          <div class="inp-row">
+            <label>SpO₂</label>
+            <input type="number" id="news-spo2" min="70" max="100" step="0.1" placeholder="np. 97" oninput="calcNEWS2()">
+            <span class="inp-unit">%</span>
+          </div>
+          <div class="inp-row">
+            <label>Tlenoterapia</label>
+            <select id="news-o2" onchange="calcNEWS2()">
+              <option value="no">Nie (powietrze)</option>
+              <option value="yes">Tak (tlen suplementacyjny) +2</option>
+            </select>
+          </div>
+          <div class="inp-row">
+            <label>RRs (skurczowe)</label>
+            <input type="number" id="news-sbp" min="40" max="300" placeholder="np. 120" oninput="calcNEWS2()">
+            <span class="inp-unit">mmHg</span>
+          </div>
+          <div class="inp-row">
+            <label>HR (tętno)</label>
+            <input type="number" id="news-hr" min="20" max="250" placeholder="np. 80" oninput="calcNEWS2()">
+            <span class="inp-unit">/min</span>
+          </div>
+          <div class="inp-row">
+            <label>Temperatura</label>
+            <input type="number" id="news-temp" min="30" max="43" step="0.1" placeholder="np. 37.0" oninput="calcNEWS2()">
+            <span class="inp-unit">°C</span>
+          </div>
+          <div class="inp-row">
+            <label>Świadomość (AVPU)</label>
+            <select id="news-avpu" onchange="calcNEWS2()">
+              <option value="A">A — Alert (przytomny) · 0 pkt</option>
+              <option value="C">C — Confusion (nowe zaburzenia) · 3 pkt</option>
+              <option value="V">V — Voice (reaguje na głos) · 3 pkt</option>
+              <option value="P">P — Pain (reaguje na ból) · 3 pkt</option>
+              <option value="U">U — Unresponsive (brak reakcji) · 3 pkt</option>
+            </select>
+          </div>
+        </div>
+        <div class="calc-result" id="news-result">
+          <div class="result-score c-blue" id="news-score">—</div>
+          <div class="result-label" id="news-label">Uzupełnij parametry</div>
+          <div class="result-detail" id="news-detail"></div>
+        </div>
+        <div class="calc-alert" id="news-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          NEWS2 ≥ 7 — PILNA ESKALACJA · wezwij lekarza dyżurnego / OIT
+        </div>
+        <div id="news-subscores" style="margin-top:10px;font-size:0.8rem;color:var(--t2);display:none"></div>
+        <div class="calc-source">Źródło: Royal College of Physicians. NEWS2. London: RCP, 2017.</div>
+        <button class="btn-reset" onclick="resetNEWS2()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         17. Kod resuscytacyjny pediatryczny
+    ════════════════════════════════════════ -->
+    <div class="ck" id="ck-resus" data-calc-id="resuscytacja-ped">
+      <div class="ck-stripe" style="background: linear-gradient(90deg, oklch(0.55 0.22 25), oklch(0.72 0.16 55))"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-resus')">
+        <div class="ck-title-row">
+          <span class="ck-icon">🚨</span>
+          <div>
+            <div class="ck-name">Kod resuscytacyjny — Pediatria</div>
+            <div class="ck-sub">Wszystkie leki ratunkowe wg masy · intubacja · bolus</div>
+          </div>
+        </div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div class="calc-inputs" style="margin-top:10px">
+          <div class="inp-row">
+            <label>Masa ciała dziecka</label>
+            <input type="number" id="resus-wt" min="0.5" max="100" step="0.1" placeholder="np. 15" oninput="calcResus()">
+            <span class="inp-unit">kg</span>
+          </div>
+          <div class="inp-row">
+            <label>Wiek (lata)</label>
+            <input type="number" id="resus-age" min="0" max="18" step="0.5" placeholder="np. 5" oninput="calcResus()">
+            <span class="inp-unit">lat</span>
+          </div>
+        </div>
+        <div id="resus-table-wrap" style="overflow-x:auto;margin-top:8px">
+          <table class="drug-table" id="resus-table">
+            <thead>
+              <tr>
+                <th>Lek / procedura</th>
+                <th>Dawka standardowa</th>
+                <th>Obliczona dawka</th>
+                <th>Uwagi / maks</th>
+              </tr>
+            </thead>
+            <tbody id="resus-tbody">
+              <tr><td colspan="4" style="text-align:center;color:var(--t3);padding:16px">Podaj masę ciała dziecka</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="calc-source">Źródło: ERC Guidelines 2021 · APLS 6th Ed. · ChPL · ILCOR 2022.</div>
+        <button class="btn-reset" onclick="resetResus()">Wyczyść / Reset</button>
       </div>
     </div>
 
@@ -1323,49 +1790,102 @@ function resetCURB() {
 }
 
 /* ══════════════════════════════════════════════
-   4. PARKLAND
+   4. PARKLAND (rozszerzony)
 ══════════════════════════════════════════════ */
+let PARK_TYPE = 'adult';
+function parkSetType(t, btn) {
+  PARK_TYPE = t;
+  document.querySelectorAll('#ck-park .btn-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  calcParkland();
+}
+
 function calcParkland() {
   const wt = parseFloat(document.getElementById('park-wt').value);
-  const tbsa = parseFloat(document.getElementById('park-tbsa').value);
+  const tbsaEl = document.getElementById('park-tbsa');
+  const tbsa = parseFloat(tbsaEl.value);
+  document.getElementById('park-tbsa-val').textContent = tbsa + '%';
+  const inhale = document.getElementById('park-inhale').value === 'yes';
 
   const scoreEl = document.getElementById('park-score');
   const labelEl = document.getElementById('park-label');
   const detailEl = document.getElementById('park-detail');
   const alertEl = document.getElementById('park-alert');
-  const breakdown = document.getElementById('park-breakdown');
+  const breakdown = document.getElementById('park-breakdown-ext');
 
-  if (!wt || !tbsa || wt <= 0 || tbsa <= 0) {
+  if (!wt || wt <= 0 || !tbsa || tbsa <= 0) {
     scoreEl.textContent = '—';
     scoreEl.className = 'result-score c-blue';
-    labelEl.textContent = 'Podaj masę ciała i % TBSA';
+    labelEl.textContent = 'Podaj masę ciała i %TBSA';
     detailEl.textContent = '';
     breakdown.style.display = 'none';
     alertEl.style.display = 'none';
     return;
   }
 
-  const total = 4 * wt * tbsa;
+  // Współczynnik: 4 ml dorosły, 3 ml pediatryczny
+  const factor = (PARK_TYPE === 'child') ? 3 : 4;
+  // Dodatkowe płyny przy oparzeniu inhalacyjnym
+  const extraFactor = inhale ? 2 : 0;
+  const totalFactor = factor + extraFactor;
+
+  let total = totalFactor * wt * tbsa;
+
+  // Płyny podtrzymujące u dzieci (Holliday-Segar): 100 ml/kg dla ≤10kg, +50 ml/kg 10-20kg, +20 ml/kg >20kg
+  let maintenance = 0;
+  if (PARK_TYPE === 'child') {
+    if (wt <= 10) maintenance = 100 * wt;
+    else if (wt <= 20) maintenance = 1000 + 50 * (wt - 10);
+    else maintenance = 1500 + 20 * (wt - 20);
+    total += maintenance;
+  }
+
   const half = total / 2;
   const rate8h = fmt0(half / 8);
   const rate16h = fmt0(half / 16);
+  const day2Vol = fmt0(total * 0.5);
 
   scoreEl.textContent = fmt0(total) + ' ml';
   scoreEl.className = 'result-score c-blue';
+  const formulaStr = PARK_TYPE === 'child'
+    ? `3 ml × ${wt} kg × ${tbsa}% + ${fmt0(maintenance)} ml maintenance`
+    : `4 ml × ${wt} kg × ${tbsa}%`;
   labelEl.textContent = `Łącznie 24h: ${fmt0(total)} ml Ringera mleczanowego`;
-  detailEl.textContent = `4 ml × ${wt} kg × ${tbsa}% = ${fmt0(total)} ml`;
+  detailEl.textContent = formulaStr + (inhale ? ` + ${fmt0(2*wt*tbsa)} ml (inhalacja)` : '');
 
   document.getElementById('park-total').textContent = fmt0(total) + ' ml';
+  document.getElementById('park-8h-vol').textContent = fmt0(half) + ' ml';
   document.getElementById('park-8h').textContent = rate8h + ' ml/h';
+  document.getElementById('park-16h-vol').textContent = fmt0(half) + ' ml';
   document.getElementById('park-16h').textContent = rate16h + ' ml/h';
-  breakdown.style.display = 'grid';
+  document.getElementById('park-fluid').textContent = 'Ringer\nmleczanowy';
 
-  alertEl.style.display = tbsa > 20 ? 'flex' : 'none';
+  const day2Note = `<strong>2. doba (24–48h):</strong> 0,5 × V₁ = ${day2Vol} ml — koloidy (5% albuminy lub FFP) + glukoza 5% (pokrycie bilansu wodnego). Monitoruj diurezę: cel 0,5–1 ml/kg/h dorosły, 1 ml/kg/h dziecko.`;
+  document.getElementById('park-day2').innerHTML = day2Note;
+  breakdown.style.display = 'block';
+
+  let alertTxt = '';
+  if (tbsa > 60) {
+    alertEl.style.display = 'flex';
+    alertTxt = 'TBSA > 60% — omów rokowanie z rodziną; konsultacja centrum oparzelniczego pilna';
+  } else if (tbsa > 20) {
+    alertEl.style.display = 'flex';
+    alertTxt = 'TBSA > 20% — hospitalizacja OIT, konsultacja centrum oparzelniczego (CLO)';
+  } else {
+    alertEl.style.display = 'none';
+  }
+  const alertTxtEl = document.getElementById('park-alert-txt');
+  if (alertTxtEl) alertTxtEl.textContent = alertTxt;
 }
 
 function resetParkland() {
   document.getElementById('park-wt').value = '';
-  document.getElementById('park-tbsa').value = '';
+  document.getElementById('park-tbsa').value = '20';
+  document.getElementById('park-degree').value = 'II';
+  document.getElementById('park-inhale').value = 'no';
+  PARK_TYPE = 'adult';
+  document.querySelectorAll('#ck-park .btn-opt').forEach(b => b.classList.remove('sel'));
+  document.querySelector('#ck-park #park-adult-btn').classList.add('sel');
   calcParkland();
 }
 
@@ -1731,13 +2251,587 @@ function resetCG() {
 }
 
 /* ══════════════════════════════════════════════
+   10. qSOFA
+══════════════════════════════════════════════ */
+function qsofaToggle(el) {
+  el.classList.toggle('checked');
+  calcQSOFA();
+}
+function calcQSOFA() {
+  let total = 0;
+  document.querySelectorAll('#qsofa-list .crit-item.checked').forEach(el => {
+    total += parseInt(el.getAttribute('data-pts'));
+  });
+  const scoreEl = document.getElementById('qsofa-score');
+  const labelEl = document.getElementById('qsofa-label');
+  const detailEl = document.getElementById('qsofa-detail');
+  const alertEl = document.getElementById('qsofa-alert');
+  scoreEl.textContent = total;
+  if (total === 0) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Niskie ryzyko — mało prawdopodobna sepsa';
+    detailEl.textContent = 'Monitoruj, ponowna ocena przy zmianie stanu klinicznego';
+    alertEl.style.display = 'none';
+  } else if (total === 1) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Podwyższone ryzyko (qSOFA = 1)';
+    detailEl.textContent = 'Uważna obserwacja, rozważ pełny SOFA jeśli podejrzenie infekcji';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'WYSOKIE RYZYKO SEPSY (qSOFA ≥ 2)';
+    detailEl.textContent = 'Śmiertelność poza OIT > 10% · Posiewy, antybiotyki, mleczany, pełny SOFA, konsultacja OIT';
+    alertEl.style.display = 'flex';
+  }
+}
+function resetQSOFA() {
+  document.querySelectorAll('#qsofa-list .crit-item').forEach(el => el.classList.remove('checked'));
+  calcQSOFA();
+}
+
+/* ══════════════════════════════════════════════
+   11. MAP
+══════════════════════════════════════════════ */
+function calcMAP() {
+  const sbp = parseFloat(document.getElementById('map-sbp').value);
+  const dbp = parseFloat(document.getElementById('map-dbp').value);
+  const scoreEl = document.getElementById('map-score');
+  const labelEl = document.getElementById('map-label');
+  const detailEl = document.getElementById('map-detail');
+  const alertEl = document.getElementById('map-alert');
+  if (!sbp || !dbp || sbp <= dbp) {
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = !sbp || !dbp ? 'Podaj RRs i RRr' : 'Błąd: RRs musi być > RRr';
+    detailEl.textContent = '';
+    alertEl.style.display = 'none';
+    return;
+  }
+  const map = dbp + (sbp - dbp) / 3;
+  const mapR = Math.round(map * 10) / 10;
+  scoreEl.textContent = mapR;
+  detailEl.textContent = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg`;
+  if (map < 65) {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'WSTRZĄS / krytyczna hipoperfuzja (MAP < 65)';
+    alertEl.style.display = 'flex';
+  } else if (map < 70) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Graniczna perfuzja narządowa (MAP 65–70)';
+    alertEl.style.display = 'none';
+  } else if (map <= 100) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Prawidłowe MAP (70–100 mmHg)';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Podwyższone MAP (> 100 mmHg) — nadciśnienie';
+    alertEl.style.display = 'none';
+  }
+}
+function resetMAP() {
+  document.getElementById('map-sbp').value = '';
+  document.getElementById('map-dbp').value = '';
+  calcMAP();
+}
+
+/* ══════════════════════════════════════════════
+   12. KATECHOLAMINY
+══════════════════════════════════════════════ */
+const CAT_DRUGS = {
+  dopamina: {
+    label: 'Dopamina',
+    unit: 'mcg/kg/min',
+    rangeMin: 2, rangeMax: 20, rangeStep: 0.5, defaultDose: 5,
+    presets: [
+      { label: '200 mg / 50 ml = 4 mg/ml', val: 4 },
+      { label: '400 mg / 50 ml = 8 mg/ml', val: 8 },
+      { label: '200 mg / 250 ml = 0,8 mg/ml', val: 0.8 },
+    ],
+    note: 'Dawka 2–5 mcg/kg/min: dopaminergiczna (nerkowa); 5–10: β1 (inotropowa); >10: α (wazopresyjna)'
+  },
+  dobutamina: {
+    label: 'Dobutamina',
+    unit: 'mcg/kg/min',
+    rangeMin: 2, rangeMax: 20, rangeStep: 0.5, defaultDose: 5,
+    presets: [
+      { label: '250 mg / 50 ml = 5 mg/ml', val: 5 },
+      { label: '250 mg / 250 ml = 1 mg/ml', val: 1 },
+    ],
+    note: 'Dawka 2–20 mcg/kg/min; inotrop + chronotrop. Unikać w wstrząsie septycznym jako monoterapia.'
+  },
+  noradrenalina: {
+    label: 'Noradrenalina',
+    unit: 'mcg/kg/min',
+    rangeMin: 0.01, rangeMax: 2, rangeStep: 0.01, defaultDose: 0.1,
+    presets: [
+      { label: '4 mg / 50 ml = 0,08 mg/ml', val: 0.08 },
+      { label: '8 mg / 50 ml = 0,16 mg/ml', val: 0.16 },
+      { label: '16 mg / 50 ml = 0,32 mg/ml', val: 0.32 },
+    ],
+    note: 'Lek z wyboru w wstrząsie septycznym. Cel: MAP ≥ 65 mmHg.'
+  },
+  adrenalina: {
+    label: 'Adrenalina',
+    unit: 'mcg/kg/min',
+    rangeMin: 0.01, rangeMax: 1, rangeStep: 0.01, defaultDose: 0.1,
+    presets: [
+      { label: '1 mg / 50 ml = 0,02 mg/ml', val: 0.02 },
+      { label: '5 mg / 50 ml = 0,1 mg/ml', val: 0.1 },
+      { label: '10 mg / 50 ml = 0,2 mg/ml', val: 0.2 },
+    ],
+    note: 'Anafilaksja / NZK: patrz protokół. Wlew: wstrząs oporny, kardiogenny.'
+  }
+};
+let CAT_CURRENT = 'dopamina';
+let CAT_CONC = 4;
+
+function catSetDrug(drug, btn) {
+  CAT_CURRENT = drug;
+  document.querySelectorAll('#cat-drug-pills .btn-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  const d = CAT_DRUGS[drug];
+  const rangeEl = document.getElementById('cat-dose-range');
+  rangeEl.min = d.rangeMin;
+  rangeEl.max = d.rangeMax;
+  rangeEl.step = d.rangeStep;
+  rangeEl.value = d.defaultDose;
+  document.getElementById('cat-dose-unit-label').textContent = d.unit;
+  document.getElementById('cat-dose-val').textContent = d.defaultDose + ' ' + d.unit;
+  // render concentration presets
+  const pillsEl = document.getElementById('cat-conc-pills');
+  pillsEl.innerHTML = d.presets.map((p, i) =>
+    `<button class="btn-opt${i===0?' sel':''}" onclick="catSelectPreset(${p.val},this)">${p.label}</button>`
+  ).join('');
+  CAT_CONC = d.presets[0].val;
+  document.getElementById('cat-conc-val').value = CAT_CONC;
+  document.getElementById('cat-note').textContent = d.note;
+  calcCat();
+}
+
+function catSelectPreset(val, btn) {
+  CAT_CONC = val;
+  document.getElementById('cat-conc-val').value = val;
+  document.querySelectorAll('#cat-conc-pills .btn-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  calcCat();
+}
+
+function catDoseUpdate() {
+  const v = document.getElementById('cat-dose-range').value;
+  const d = CAT_DRUGS[CAT_CURRENT];
+  document.getElementById('cat-dose-val').textContent = v + ' ' + d.unit;
+  calcCat();
+}
+
+function calcCat() {
+  const wt = parseFloat(document.getElementById('cat-wt').value);
+  const conc_mg_ml = parseFloat(document.getElementById('cat-conc-val').value);
+  const dose_mcg_kg_min = parseFloat(document.getElementById('cat-dose-range').value);
+  const rateEl = document.getElementById('cat-rate');
+  const dropsEl = document.getElementById('cat-drops');
+
+  if (!wt || !conc_mg_ml || !dose_mcg_kg_min || wt <= 0 || conc_mg_ml <= 0) {
+    rateEl.textContent = '—';
+    dropsEl.textContent = '—';
+    return;
+  }
+  // ml/h = dose(mcg/kg/min) * wt(kg) * 60(min/h) / (conc(mg/ml) * 1000(mcg/mg))
+  const rate_ml_h = (dose_mcg_kg_min * wt * 60) / (conc_mg_ml * 1000);
+  const drops_min = rate_ml_h * 20 / 60;
+  rateEl.textContent = fmt1(rate_ml_h) + ' ml/h';
+  dropsEl.textContent = fmt0(drops_min) + ' kr/min';
+}
+
+function resetCat() {
+  document.getElementById('cat-wt').value = '';
+  catSetDrug('dopamina', document.querySelector('#cat-drug-pills .btn-opt'));
+}
+
+/* ══════════════════════════════════════════════
+   13. NaHCO3
+══════════════════════════════════════════════ */
+function calcHCO3() {
+  const wt = parseFloat(document.getElementById('hco3-wt').value);
+  const meas = parseFloat(document.getElementById('hco3-meas').value);
+  const target = parseFloat(document.getElementById('hco3-target').value) || 24;
+  const scoreEl = document.getElementById('hco3-score');
+  const labelEl = document.getElementById('hco3-label');
+  const detailEl = document.getElementById('hco3-detail');
+  const alertEl = document.getElementById('hco3-alert');
+
+  if (!wt || !meas || wt <= 0 || meas <= 0 || meas >= target) {
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = meas >= target ? 'HCO₃ zmierzone ≥ docelowego — brak niedoboru' : 'Podaj masę ciała i HCO₃';
+    detailEl.textContent = '';
+    alertEl.style.display = 'none';
+    return;
+  }
+
+  const deficit = 0.3 * wt * (target - meas);
+  const vol84 = deficit; // 8.4% NaHCO3 = 1 mmol/ml
+  const halfVol = fmt0(vol84 / 2);
+
+  scoreEl.textContent = fmt0(deficit) + ' mmol';
+  scoreEl.className = meas < 15 ? 'result-score c-red' : 'result-score c-amb';
+  labelEl.textContent = `Deficyt HCO₃: ${fmt0(deficit)} mmol → ${fmt0(vol84)} ml NaHCO₃ 8,4%`;
+  detailEl.textContent = `0,3 × ${wt} kg × (${target} − ${meas}) = ${fmt0(deficit)} mmol · Podać max ${halfVol} ml w 1h, resztę w 2–4h`;
+  alertEl.style.display = meas < 15 ? 'flex' : 'none';
+}
+function resetHCO3() {
+  ['hco3-wt','hco3-meas'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('hco3-target').value = '24';
+  calcHCO3();
+}
+
+/* ══════════════════════════════════════════════
+   14. OSMOLALNOŚĆ SUROWICY
+══════════════════════════════════════════════ */
+let OSM_UNIT = 'mmol';
+function osmSetUnit(u, btn) {
+  OSM_UNIT = u;
+  document.querySelectorAll('#ck-osm .btn-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  const glucUnitEl = document.getElementById('osm-gluc-unit');
+  const ureaUnitEl = document.getElementById('osm-urea-unit');
+  glucUnitEl.textContent = u === 'mmol' ? 'mmol/L' : 'mg/dL';
+  ureaUnitEl.textContent = u === 'mmol' ? 'mmol/L' : 'mg/dL';
+  calcOsm();
+}
+function calcOsm() {
+  const na = parseFloat(document.getElementById('osm-na').value);
+  let gluc = parseFloat(document.getElementById('osm-gluc').value);
+  let urea = parseFloat(document.getElementById('osm-urea').value);
+  const scoreEl = document.getElementById('osm-score');
+  const labelEl = document.getElementById('osm-label');
+  const detailEl = document.getElementById('osm-detail');
+  const alertEl = document.getElementById('osm-alert');
+
+  if (!na || isNaN(gluc) || isNaN(urea)) {
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = 'Podaj Na, glukozę i mocznik';
+    alertEl.style.display = 'none';
+    return;
+  }
+
+  // Convert to mmol/L if needed
+  if (OSM_UNIT === 'mgdl') {
+    gluc = gluc / 18; // mg/dL → mmol/L
+    urea = urea / 6;  // mg/dL → mmol/L
+  }
+
+  const osm = 2 * na + gluc + urea;
+  const osmR = Math.round(osm * 10) / 10;
+
+  scoreEl.textContent = osmR;
+  detailEl.textContent = `2×${na} + ${fmt1(gluc)} + ${fmt1(urea)} = ${osmR} mOsm/kg`;
+
+  if (osm < 280) {
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = 'Hipoosmolalność (< 280 mOsm/kg)';
+    alertEl.style.display = 'none';
+  } else if (osm <= 295) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Prawidłowa osmolalność (280–295 mOsm/kg)';
+    alertEl.style.display = 'none';
+  } else if (osm <= 320) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'Łagodna hiperosmolalność (296–320 mOsm/kg)';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'Ciężka hiperosmolalność (> 320 mOsm/kg)';
+    alertEl.style.display = 'flex';
+  }
+}
+function resetOsm() {
+  ['osm-na','osm-gluc','osm-urea'].forEach(id => document.getElementById(id).value = '');
+  calcOsm();
+}
+
+/* ══════════════════════════════════════════════
+   15. LUKA ANIONOWA
+══════════════════════════════════════════════ */
+function calcAG() {
+  const na = parseFloat(document.getElementById('ag-na').value);
+  const cl = parseFloat(document.getElementById('ag-cl').value);
+  const hco3 = parseFloat(document.getElementById('ag-hco3').value);
+  const alb = parseFloat(document.getElementById('ag-alb').value);
+  const scoreEl = document.getElementById('ag-score');
+  const labelEl = document.getElementById('ag-label');
+  const detailEl = document.getElementById('ag-detail');
+  const mudpilesEl = document.getElementById('ag-mudpiles');
+
+  if (!na || !cl || !hco3) {
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = 'Podaj Na, Cl, HCO₃';
+    detailEl.textContent = '';
+    mudpilesEl.style.display = 'none';
+    return;
+  }
+
+  const ag = na - (cl + hco3);
+  let agCorr = ag;
+  let corrNote = '';
+  if (!isNaN(alb) && alb > 0) {
+    agCorr = ag + 2.5 * (4 - alb);
+    corrNote = ` · AG_koryg (albuminy ${alb} g/dL) = ${fmt1(agCorr)}`;
+  }
+
+  scoreEl.textContent = fmt1(ag);
+  detailEl.textContent = `${na} − (${cl} + ${hco3}) = ${fmt1(ag)}${corrNote}`;
+
+  const elevated = (!isNaN(alb) && alb > 0) ? agCorr > 12 : ag > 12;
+
+  if (ag <= 12) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Prawidłowa luka anionowa (≤ 12 mmol/L)';
+    mudpilesEl.style.display = 'none';
+  } else if (ag <= 20) {
+    scoreEl.className = elevated ? 'result-score c-amb' : 'result-score c-grn';
+    labelEl.textContent = elevated ? 'Podwyższona luka anionowa (12–20) — rozważ przyczyny' : 'Prawidłowa po korekcie albumin';
+    mudpilesEl.style.display = elevated ? 'block' : 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'Wysoka luka anionowa (> 20) — kwasica metaboliczna wysokolukowa';
+    mudpilesEl.style.display = 'block';
+  }
+}
+function resetAG() {
+  ['ag-na','ag-cl','ag-hco3','ag-alb'].forEach(id => document.getElementById(id).value = '');
+  calcAG();
+}
+
+/* ══════════════════════════════════════════════
+   16. NEWS2
+══════════════════════════════════════════════ */
+function scoreNEWS_RR(rr) {
+  if (rr <= 8) return 3;
+  if (rr <= 11) return 1;
+  if (rr <= 20) return 0;
+  if (rr <= 24) return 2;
+  return 3;
+}
+function scoreNEWS_SpO2(spo2) {
+  if (spo2 >= 96) return 0;
+  if (spo2 >= 94) return 1;
+  if (spo2 >= 92) return 2;
+  return 3;
+}
+function scoreNEWS_SBP(sbp) {
+  if (sbp <= 90) return 3;
+  if (sbp <= 100) return 2;
+  if (sbp <= 110) return 1;
+  if (sbp <= 219) return 0;
+  return 3;
+}
+function scoreNEWS_HR(hr) {
+  if (hr <= 40) return 3;
+  if (hr <= 50) return 1;
+  if (hr <= 90) return 0;
+  if (hr <= 110) return 1;
+  if (hr <= 130) return 2;
+  return 3;
+}
+function scoreNEWS_Temp(t) {
+  if (t <= 35.0) return 3;
+  if (t <= 36.0) return 1;
+  if (t <= 38.0) return 0;
+  if (t <= 39.0) return 1;
+  return 2;
+}
+
+function calcNEWS2() {
+  const rr = parseFloat(document.getElementById('news-rr').value);
+  const spo2 = parseFloat(document.getElementById('news-spo2').value);
+  const o2 = document.getElementById('news-o2').value === 'yes';
+  const sbp = parseFloat(document.getElementById('news-sbp').value);
+  const hr = parseFloat(document.getElementById('news-hr').value);
+  const temp = parseFloat(document.getElementById('news-temp').value);
+  const avpu = document.getElementById('news-avpu').value;
+
+  const scoreEl = document.getElementById('news-score');
+  const labelEl = document.getElementById('news-label');
+  const detailEl = document.getElementById('news-detail');
+  const alertEl = document.getElementById('news-alert');
+  const subscoresEl = document.getElementById('news-subscores');
+
+  const hasAll = [rr, spo2, sbp, hr, temp].every(v => !isNaN(v) && v > 0);
+  if (!hasAll) {
+    scoreEl.textContent = '—';
+    scoreEl.className = 'result-score c-blue';
+    labelEl.textContent = 'Uzupełnij wszystkie parametry';
+    detailEl.textContent = '';
+    alertEl.style.display = 'none';
+    subscoresEl.style.display = 'none';
+    return;
+  }
+
+  const sRR = scoreNEWS_RR(rr);
+  const sSpO2 = scoreNEWS_SpO2(spo2);
+  const sO2 = o2 ? 2 : 0;
+  const sSBP = scoreNEWS_SBP(sbp);
+  const sHR = scoreNEWS_HR(hr);
+  const sTemp = scoreNEWS_Temp(temp);
+  const sAVPU = (avpu === 'A') ? 0 : 3;
+
+  const total = sRR + sSpO2 + sO2 + sSBP + sHR + sTemp + sAVPU;
+
+  scoreEl.textContent = total;
+  subscoresEl.innerHTML = `RR:${sRR} · SpO₂:${sSpO2} · O₂:${sO2} · RRs:${sSBP} · HR:${sHR} · Temp:${sTemp} · AVPU:${sAVPU}`;
+  subscoresEl.style.display = 'block';
+
+  // Check for single parameter score = 3 (high risk regardless of total)
+  const hasSingle3 = [sRR, sSpO2, sSBP, sHR, sTemp, sAVPU].some(s => s === 3);
+
+  if (total <= 4 && !hasSingle3) {
+    scoreEl.className = 'result-score c-grn';
+    labelEl.textContent = 'Niskie ryzyko (NEWS2 0–4)';
+    detailEl.textContent = 'Kontrola min. co 12h · Poinformuj lekarza o niepokojących zmianach';
+    alertEl.style.display = 'none';
+  } else if (total <= 6 || hasSingle3) {
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = hasSingle3 ? 'Średnie ryzyko — parametr krytyczny' : 'Średnie ryzyko (NEWS2 5–6)';
+    detailEl.textContent = 'Kontrola min. co 1h · Pilna ocena lekarska · Rozważ transfer do monitorowania';
+    alertEl.style.display = 'none';
+  } else {
+    scoreEl.className = 'result-score c-red';
+    labelEl.textContent = 'WYSOKIE RYZYKO (NEWS2 ≥ 7)';
+    detailEl.textContent = 'Natychmiastowa ocena lekarska · Monitorowanie ciągłe · Rozważ OIT/HDU';
+    alertEl.style.display = 'flex';
+  }
+}
+function resetNEWS2() {
+  ['news-rr','news-spo2','news-sbp','news-hr','news-temp'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('news-o2').value = 'no';
+  document.getElementById('news-avpu').value = 'A';
+  calcNEWS2();
+}
+
+/* ══════════════════════════════════════════════
+   17. KOD RESUSCYTACYJNY PEDIATRYCZNY
+══════════════════════════════════════════════ */
+function calcResus() {
+  const wt = parseFloat(document.getElementById('resus-wt').value);
+  const age = parseFloat(document.getElementById('resus-age').value) || 0;
+  const tbody = document.getElementById('resus-tbody');
+
+  if (!wt || wt <= 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:16px">Podaj masę ciała dziecka</td></tr>';
+    return;
+  }
+
+  // Adrenalina NZK IV/IO
+  const adrNzk_mg = Math.min(0.01 * wt, 1);
+  const adrNzk_ml_1_10000 = fmt1(adrNzk_mg * 10); // 1:10000 = 0.1 mg/ml → ml = mg/0.1
+
+  // Adrenalina NZK endotrachealna
+  const adrET_mg = Math.min(0.1 * wt, 2);
+
+  // Atropina
+  const atrop_mg = Math.min(Math.max(0.02 * wt, 0.1), wt >= 20 ? 1.0 : 0.5);
+
+  // Adenozyna
+  const aden1_mg = Math.min(0.1 * wt, 6);
+  const aden2_mg = Math.min(0.2 * wt, 12);
+
+  // Amiodaron NZK
+  const amio_mg = Math.min(5 * wt, 300);
+  const amio_ml = fmt1(amio_mg / 50); // 150mg/3ml = 50mg/ml
+
+  // Glukoza 10%
+  const gluc_ml = fmt0(2 * wt); // 2ml/kg
+
+  // NaCl bolus
+  const nacl_ml = fmt0(20 * wt);
+
+  // Diazepam doodbytniczy
+  const diaz_mg = Math.min(0.5 * wt, 10);
+
+  // Midazolam IV
+  const midaz_mg = Math.min(0.1 * wt, 5);
+  const midaz_buccal_mg = Math.min(0.3 * wt, 10);
+
+  // Nalokson
+  const nalox_mg = Math.min(0.01 * wt, 0.4);
+  const nalox_ml = fmt1(nalox_mg / 0.4); // 0.4mg/ml
+
+  // Intubacja
+  const ageY = age;
+  const tubeSize = ageY > 0 ? fmt1(ageY / 4 + 4) : '(wiek nieznany)';
+  const tubeDepth = ageY > 0 ? fmt1(ageY / 2 + 12) : '(wiek nieznany)';
+
+  // Defibrylacja
+  const defib1 = fmt0(4 * wt);
+  const defib2 = fmt0(4 * wt);
+
+  const rows = [
+    ['Adrenalina IV/IO — NZK', '0,01 mg/kg (maks 1 mg)<br><small>1:10000 = 0,1 mg/ml</small>',
+      `<span class="drug-calc">${fmt1(adrNzk_mg)} mg → ${adrNzk_ml_1_10000} ml 1:10000</span>`,
+      'Co 3–5 min w NZK · ET: ×10 = ' + fmt1(adrET_mg) + ' mg'],
+    ['Atropina IV/IO', '0,02 mg/kg (min 0,1 mg)<br><small>maks 0,5 mg (dziecko), 1 mg (nastolatek)</small>',
+      `<span class="drug-calc">${fmt1(atrop_mg)} mg IV/IO</span>`,
+      'Bradykardia z niestabilnością hemodynamiczną'],
+    ['Adenozyna IV', '0,1 mg/kg bolus — 1. dawka (maks 6 mg)<br>2. dawka: 0,2 mg/kg (maks 12 mg)',
+      `<span class="drug-calc">1. dawka: ${fmt1(aden1_mg)} mg<br>2. dawka: ${fmt1(aden2_mg)} mg</span>`,
+      'SVT — szybki bolus IV, płukanie NaCl'],
+    ['Amiodaron IV/IO — NZK', '5 mg/kg (maks 300 mg)<br><small>150 mg/3 ml = 50 mg/ml</small>',
+      `<span class="drug-calc">${fmt0(amio_mg)} mg → ${amio_ml} ml</span>`,
+      'VF/VT bez tętna — po 3. defibrylacji'],
+    ['Glukoza 10% IV/IO', '2 ml/kg',
+      `<span class="drug-calc">${gluc_ml} ml glukozy 10%</span>`,
+      'Hipoglikemia · Noworodki: glukoza 10%, starsze: 10%'],
+    ['NaCl 0,9% — bolus', '20 ml/kg IV/IO',
+      `<span class="drug-calc">${nacl_ml} ml NaCl 0,9%</span>`,
+      'Wstrząs · powtarzaj do 3× · Monitoruj objawy przeciążenia'],
+    ['Diazepam — doodbytniczo', '0,5 mg/kg PR (maks 10 mg)',
+      `<span class="drug-calc">${fmt1(diaz_mg)} mg PR</span>`,
+      'Drgawki · dostępna też wersja donosowa'],
+    ['Midazolam IV', '0,1 mg/kg IV (maks 5 mg)<br>Buccal: 0,3 mg/kg (maks 10 mg)',
+      `<span class="drug-calc">IV: ${fmt1(midaz_mg)} mg<br>Buccal: ${fmt1(midaz_buccal_mg)} mg</span>`,
+      'Drgawki · Sedacja proceduralna'],
+    ['Nalokson IV/IM', '0,01 mg/kg IV (maks 0,4 mg)<br><small>0,4 mg/ml</small>',
+      `<span class="drug-calc">${fmt1(nalox_mg)} mg → ${nalox_ml} ml</span>`,
+      'Zatrucie opioidami · Miareczkuj dawkę'],
+    ['Defibrylacja', '4 J/kg — 1. i kolejne',
+      `<span class="drug-calc">${defib1} J</span>`,
+      'VF/VT bez tętna · Powtarzaj co 2 min'],
+    ['Intubacja — rurka', `Rozmiar: (wiek/4)+4<br>Głębokość: (wiek/2)+12 cm`,
+      `<span class="drug-calc">Rozmiar: ${tubeSize}<br>Głębokość: ${tubeDepth} cm</span>`,
+      'Rurka bez mankietu u dzieci &lt; 8 r.ż.'],
+  ];
+
+  tbody.innerHTML = rows.map(([name, dose, calc, note]) => `
+    <tr>
+      <td><span class="drug-name">${name}</span></td>
+      <td><span class="drug-dose">${dose}</span></td>
+      <td>${calc}</td>
+      <td style="font-size:0.75rem;color:var(--t2)">${note}</td>
+    </tr>
+  `).join('');
+}
+function resetResus() {
+  document.getElementById('resus-wt').value = '';
+  document.getElementById('resus-age').value = '';
+  calcResus();
+}
+
+/* ══════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
   pedAgeUpdate();
   calcWells();
   calcCURB();
+  calcQSOFA();
   renderTbsa();
+  calcParkland();
+  // init catecholamines
+  const firstDrugBtn = document.querySelector('#cat-drug-pills .btn-opt');
+  if (firstDrugBtn) catSetDrug('dopamina', firstDrugBtn);
 });
 
 /* W opracowaniu banner + back-home */
