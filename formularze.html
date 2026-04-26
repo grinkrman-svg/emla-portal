@@ -146,7 +146,6 @@ main {
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 14px 16px;
 }
-.card-icon { font-size: 28px; line-height: 1; margin-bottom: 6px; }
 .card-name {
   font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.01em;
   text-shadow: 0 1px 4px rgba(0,0,0,.4);
@@ -207,7 +206,6 @@ main {
   cursor: pointer;
 }
 .doc-item:hover { border-color: color-mix(in oklch, var(--accent) 50%, transparent); background: color-mix(in oklch, var(--accent) 6%, var(--bg3)); }
-.doc-item-icon { font-size: 20px; width: 36px; text-align: center; flex-shrink: 0; }
 .doc-item-body { flex: 1; min-width: 0; }
 .doc-item-label { font-size: 13px; font-weight: 700; color: var(--fg0); }
 .doc-item-sub { font-size: 11px; color: var(--fg2); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -299,124 +297,161 @@ const IMG_BASE = 'https://raw.githubusercontent.com/grinkrman-svg/emla-portal/ma
 const DEPTS = [
   {
     id: 'sor-amb', name: 'SOR — Ambulatorium Chirurgiczne', short: 'Ambulatorium Chir.',
-    img: 'sor-ambulatorium', color: '#ef4444', icon: '🚨', pin: null,
+    img: 'sor-ambulatorium', color: '#ef4444',
+ pin: null,
     docs: [
-      { label: 'Karta Zleceń Lekarskich', url: 'karta-zlecen.html', icon: '📝', sub: 'Interaktywna karta z bazą 76 leków + krotność' },
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
-      { label: 'Zalecenia Neurologiczne', url: 'zalecenia-neurologiczne.html', icon: '🧠', sub: 'Obserwacja po urazie głowy · dziecko + dorosły' },
+      { label: 'Karta Zleceń Lekarskich', url: 'karta-zlecen.html',
+ sub: 'Interaktywna karta z bazą 76 leków + krotność' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zalecenia Neurologiczne', url: 'zalecenia-neurologiczne.html',
+ sub: 'Obserwacja po urazie głowy · dziecko + dorosły' },
     ]
   },
   {
     id: 'sor-obs', name: 'SOR — Sala Obserwacyjna', short: 'Sala Obserwacyjna',
-    img: 'sor-obserwacja', color: '#22c55e', icon: '🛏️', pin: null,
+    img: 'sor-obserwacja', color: '#22c55e',
+ pin: null,
     docs: [
-      { label: 'Karta Zleceń Lekarskich', url: 'karta-zlecen.html', icon: '📝', sub: 'Interaktywna karta z bazą 76 leków + krotność' },
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Karta Zleceń Lekarskich', url: 'karta-zlecen.html',
+ sub: 'Interaktywna karta z bazą 76 leków + krotność' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'chirurgia', name: 'Oddział Chirurgii Ogólnej', short: 'Chirurgia Ogólna',
-    img: 'chirurgia-ogolna', color: '#8b5cf6', icon: '🔬', pin: '54321',
+    img: 'chirurgia-ogolna', color: '#8b5cf6',
+ pin: '54321',
     docs: [
-      { label: 'Zgody i Odmowy Operacyjne', url: 'zgody-master.html', icon: '✍️', sub: '21 dokumentów chirurgicznych — pełny dostęp', badge: 'PEŁNY DOSTĘP' },
+      { label: 'Zgody i Odmowy Operacyjne', url: 'zgody-master.html',
+ sub: '21 dokumentów chirurgicznych — pełny dostęp', badge: 'PEŁNY DOSTĘP' },
     ]
   },
   {
     id: 'ortopedia', name: 'Chirurgia Urazowo-Ortopedyczna', short: 'Ortopedia i Traumatologia',
-    img: 'ortopedia', color: '#f59e0b', icon: '🦴', pin: null,
+    img: 'ortopedia', color: '#f59e0b',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'interna', name: 'Oddział Chorób Wewnętrznych', short: 'Choroby Wewnętrzne',
-    img: 'interna', color: '#a855f7', icon: '🫀', pin: null,
+    img: 'interna', color: '#a855f7',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'neurologia', name: 'Neurologia z Oddziałem Udarowym', short: 'Neurologia',
-    img: 'neurologia', color: '#6366f1', icon: '🧠', pin: null,
+    img: 'neurologia', color: '#6366f1',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'kardiologia', name: 'Oddział Kardiologiczny', short: 'Kardiologia',
-    img: 'kardiologia', color: '#f43f5e', icon: '❤️', pin: null,
+    img: 'kardiologia', color: '#f43f5e',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'pediatria', name: 'Oddział Pediatryczny', short: 'Pediatria',
-    img: 'pediatria', color: '#f97316', icon: '👶', pin: null,
+    img: 'pediatria', color: '#f97316',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'ginekologia', name: 'Oddział Ginekologiczno-Położniczy', short: 'Ginekologia / Położnictwo',
-    img: 'ginekologia', color: '#ec4899', icon: '🌸', pin: null,
+    img: 'ginekologia', color: '#ec4899',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'oit', name: 'Oddział Anestezjologii i Intensywnej Terapii', short: 'OIT / Anestezjologia',
-    img: 'oit', color: '#14b8a6', icon: '💊', pin: null,
+    img: 'oit', color: '#14b8a6',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'urologia', name: 'Urologia i Onkologia Urologiczna', short: 'Urologia',
-    img: 'urologia', color: '#0ea5e9', icon: '🔵', pin: null,
+    img: 'urologia', color: '#0ea5e9',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'otolaryngologia', name: 'Oddział Otolaryngologiczny', short: 'Otolaryngologia',
-    img: 'otolaryngologia', color: '#84cc16', icon: '👂', pin: null,
+    img: 'otolaryngologia', color: '#84cc16',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'okulistyka', name: 'Oddział Okulistyczny', short: 'Okulistyka',
-    img: 'okulistyka', color: '#10b981', icon: '👁️', pin: null,
+    img: 'okulistyka', color: '#10b981',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'pluca', name: 'Oddział Chorób Płuc', short: 'Choroby Płuc',
-    img: 'pluca', color: '#06b6d4', icon: '🌬️', pin: null,
+    img: 'pluca', color: '#06b6d4',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'neonatologia', name: 'Oddział Neonatologiczny', short: 'Neonatologia',
-    img: 'neonatologia', color: '#fbbf24', icon: '🍼', pin: null,
+    img: 'neonatologia', color: '#fbbf24',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'dializa', name: 'Stacja Dializ', short: 'Dializoterapia',
-    img: 'dializa', color: '#f43f5e', icon: '🩸', pin: null,
+    img: 'dializa', color: '#f43f5e',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
   {
     id: 'blok', name: 'Blok Operacyjny', short: 'Blok Operacyjny',
-    img: 'blok-operacyjny', color: '#3b82f6', icon: '🏥', pin: null,
+    img: 'blok-operacyjny', color: '#3b82f6',
+ pin: null,
     docs: [
-      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html', icon: '📋', sub: 'Oświadczenie pacjenta — dokument nr 21' },
+      { label: 'Zgoda / Odmowa / Wypis na żądanie', url: 'zgody-master.html',
+ sub: 'Oświadczenie pacjenta — dokument nr 21' },
     ]
   },
 ];
