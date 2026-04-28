@@ -92,7 +92,17 @@
 .proto-print-btn svg{width:14px;height:14px}
 .proto-empty{text-align:center;padding:3rem 1rem;color:var(--c-muted);display:none}
 .proto-empty.vis{display:block}
-@media print{.topbar,.proto-chips,.proto-search-wrap,.proto-stats,.proto-breadcrumb,.proto-print-btn,.lpr,.scroll-progress,.toast{display:none!important}.proto-card-body{display:block!important}.proto-card{border:1px solid #ccc;page-break-inside:avoid;margin-bottom:1rem}}
+@page { size: A4 portrait; margin: 14mm 16mm; }
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  html, body { background: #fff !important; color: #000 !important; width: auto !important; margin: 0 !important; padding: 0 !important; font-family: 'Times New Roman', Times, serif !important; }
+  .topbar, .proto-chips, .proto-search-wrap, .proto-stats, .proto-breadcrumb, .proto-print-btn, .lpr, .scroll-progress, .toast, .proto-calc-link { display: none !important; }
+  .proto-container, main, .proto-list { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  .proto-card-body { display: block !important; }
+  .proto-card { border: 1px solid #888; page-break-inside: avoid; margin-bottom: 8mm; padding: 4mm; width: 100% !important; box-sizing: border-box; }
+  .proto-card-name, .proto-card h2, .proto-card h3 { color: #000 !important; }
+  .proto-card p, .proto-card li { font-size: 10pt !important; line-height: 1.45 !important; color: #000 !important; }
+}
 @media(max-width:600px){.proto-card-name{font-size:.88rem}.proto-badge{display:none}}
 .proto-calc-link { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--c-border); }
 .proto-calc-btn {

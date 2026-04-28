@@ -329,7 +329,7 @@ body {
 }
 
 /* ══════════ PRINT ══════════ */
-@page { size: A4 portrait; margin: 0; }
+@page { size: A4 portrait; margin: 14mm 16mm; }
 @media print {
   .proc-input {
     border: none !important;
@@ -344,35 +344,38 @@ body {
   }
 }
 @media print {
-  html, body { width: 210mm !important; margin: 0 !important; padding: 0 !important; background: #fff !important; color: #111 !important; }
+  html, body { width: auto !important; margin: 0 !important; padding: 0 !important; background: #fff !important; color: #111 !important; }
   body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  #particles-canvas, #dashboard, #doc-nav, .aurora-blob, #spotlight { display: none !important; }
+  #particles-canvas, #dashboard, #doc-nav, .aurora-blob, #spotlight, .topbar, .toast { display: none !important; }
   .doc-page .form-panel { display: none !important; }
-  .doc-page { display: block !important; min-height: auto !important; position: static !important; z-index: auto !important; }
+  .doc-page { display: block !important; min-height: auto !important; position: static !important; z-index: auto !important; padding-top: 0 !important; }
   .doc-page:not(.active) { display: none !important; }
-  /* margins are now padding inside doc-page, not @page — browser can't mess this up */
-  .doc-page.active { width: 210mm !important; box-sizing: border-box !important; padding: 14mm 16mm !important; margin: 0 !important; min-height: auto !important; position: static !important; z-index: auto !important; }
-  .document { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+  /* @page handles margins — doc-page must NOT add its own padding/width or browsers double-margin */
+  .doc-page.active { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 0 !important; margin: 0 !important; min-height: auto !important; position: static !important; z-index: auto !important; }
+  .document { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
   /* font sizes for print */
   .document .section p, .document .section-body { font-size: 9.5pt !important; line-height: 1.55 !important; }
   .document .section-title { font-size: 9.5pt !important; }
   .document .sig-item .sig-sub { font-size: 7.5pt !important; }
+  /* hospital header — always show, never break */
+  .document .hospital-header, .document .doc-title, .document .patient-block { display: grid !important; page-break-inside: avoid; break-inside: avoid; }
+  .document .doc-title { display: block !important; }
+  .document .patient-block { display: block !important; }
   /* page-break: only title stays with content, section itself can break freely */
   .document .section { break-inside: auto !important; page-break-inside: auto !important; }
   .document .section-title { break-after: avoid; page-break-after: avoid; }
   .document .section ul, .document .section ol { break-inside: auto !important; page-break-inside: auto !important; }
   .document .sig-row, .document .sig-block { page-break-inside: avoid; break-inside: avoid; }
   .document .doc-footer { page-break-after: avoid; break-after: avoid; }
-  .document .hospital-header, .document .doc-title, .document .patient-block { page-break-inside: avoid; break-inside: avoid; }
 }
 
 /* Defensive: applied via JS beforeprint in case @media print is overridden by driver */
-body.printing { width: 210mm !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
-body.printing #particles-canvas, body.printing #dashboard, body.printing #doc-nav, body.printing .aurora-blob, body.printing #spotlight { display: none !important; }
-body.printing .doc-page { display: block !important; min-height: auto !important; position: static !important; }
+body.printing { width: auto !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
+body.printing #particles-canvas, body.printing #dashboard, body.printing #doc-nav, body.printing .aurora-blob, body.printing #spotlight, body.printing .topbar { display: none !important; }
+body.printing .doc-page { display: block !important; min-height: auto !important; position: static !important; padding-top: 0 !important; }
 body.printing .doc-page:not(.active) { display: none !important; }
-body.printing .doc-page.active { width: 210mm !important; box-sizing: border-box !important; padding: 14mm 16mm !important; margin: 0 !important; }
+body.printing .doc-page.active { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 0 !important; margin: 0 !important; }
 body.printing .document { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
 body.printing .doc-page .form-panel { display: none !important; }
 
