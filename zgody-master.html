@@ -353,11 +353,20 @@ body {
   .doc-page:not(.active) { display: none !important; }
   /* @page handles margins — doc-page must NOT add its own padding/width or browsers double-margin */
   .doc-page.active { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 0 !important; margin: 0 !important; min-height: auto !important; position: static !important; z-index: auto !important; }
-  .document { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
-  /* font sizes for print */
-  .document .section p, .document .section-body { font-size: 9.5pt !important; line-height: 1.55 !important; }
-  .document .section-title { font-size: 9.5pt !important; }
-  .document .sig-item .sig-sub { font-size: 7.5pt !important; }
+  .document { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; font-size: 11.5pt !important; }
+  /* font sizes for print — bumped up for readability */
+  .document .section p, .document .section-body { font-size: 11pt !important; line-height: 1.5 !important; }
+  .document .section ul, .document .section ol { font-size: 11pt !important; line-height: 1.5 !important; }
+  .document .section-title { font-size: 11.5pt !important; }
+  .document .hosp-name { font-size: 13pt !important; }
+  .document .hosp-addr { font-size: 9.5pt !important; }
+  .document .hosp-codes { font-size: 9pt !important; }
+  .document .hosp-dept { font-size: 11pt !important; }
+  .document .doc-title { font-size: 13pt !important; }
+  .document .field-line .lbl { font-size: 10.5pt !important; }
+  .document .field-line .val { font-size: 11.5pt !important; }
+  .document .sig-item .sig-sub { font-size: 9pt !important; }
+  .document .doc-footer { font-size: 9pt !important; }
   /* hospital header — always show, never break */
   .document .hospital-header, .document .doc-title, .document .patient-block { display: grid !important; page-break-inside: avoid; break-inside: avoid; }
   .document .doc-title { display: block !important; }
