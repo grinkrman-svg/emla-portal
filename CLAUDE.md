@@ -681,3 +681,72 @@ Separate from the portal, standalone print-ready forms were built in D:/VS/emla/
 - Workflow: generate zalecenia -> identify that patient needs transfer -> look up specialist center -> call
 - Currently these are two separate tools. Integration makes it one workflow.
 - EMLA phone hierarchy is exactly what a surgeon needs when transferring a patient.
+
+---
+
+## §17 — SUPABASE BACKEND DLA SECONDARY TABS (added 2026-04-29)
+
+**Decision:** Vkladki `kalkulatory.html`, `protokoly.html`, `farmakologia.html` zyskują backend Supabase obok dotychczasowych embedded data. Main routing portal (28 kategorii placówek) pozostaje 100% offline z embedded `const FACILITIES`.
+
+### Architektura (hybrid)
+- **Main portal (28 kategorii):** offline, `const FACILITIES = [...]` w HTML — bez zmian.
+- **Secondary tabs (kalkulatory / protokoły / farmakologia):** Supabase jako single source of truth + lokalny cache dla offline.
+
+### Supabase project
+- **Project ref:** `zqfqqwdfndkipnklajdf` (TrendDrop main, ten sam co Chirurg-AI/Arcalion)
+- **URL:** `https://zqfqqwdfndkipnklajdf.supabase.co`
+- **Schema:** `emla` (exposed via PostgREST Management API obok `public, arcalion`)
+
+### Tabele
+| Tabela | Cel | Stan 2026-04-29 |
+|--------|-----|-----------------|
+| `emla.drugs` | Reference: leki SOR | **86 wpisów** (76 z `data/leki_sor.json` + 10 priority) |
+| `emla.protocols` | Reference: protokoły kliniczne | **72 wpisy** (zsynchronizowane z inline `PROTOKOLY` z protokoly.html) |
+| `emla.calculators` | Reference: kalkulatory medyczne | 0 (do wypełnienia w Phase 3) |
+| `emla.calculator_history` | Per-doctor: historia obliczeń kalkulatorów | 0 (czeka na auth wiring) |
+| `emla.guidelines_versions` | Wersje wytycznych z `valid_until` | 9 źródeł (ERC 2021, ESC 2023, ATLS 10ed, SSC 2021, ESO 2022, PALS 2020, GINA 2024, GOLD 2025, URPL live) |
+
+### RLS & dostęp
+- Public read przez anon key (na danych referencyjnych).
+- Modyfikacje: tylko service_role / admin via Supabase SQL Editor.
+- Calculator history: doctor_id = auth.uid() (own rows only).
+
+### JS loader
+`js/emla-loader.js` eksponuje `window.EmlaAPI`:
+```js
+EmlaAPI.getDrugs({ category: 'antybiotyki' })
+EmlaAPI.getProtocols({ category: 'sepsa' })
+EmlaAPI.getProtocol('INLINE-ERC-3')
+EmlaAPI.searchDrugs('paracetamol')
+EmlaAPI.getCalculators()
+EmlaAPI.getGuidelinesVersions()
+EmlaAPI.saveCalcResult({ calc_code, inputs, result_value, ... })   // localStorage fallback
+EmlaAPI.renderMd(content_md)
+```
+
+### Audit-trail / правила
+1. **Każdy `emla.drugs` ma `verified bool` + `source_ref text` + `source_url`.** Bez weryfikacji `verified=false` (jeszcze nie sprawdzone z URPL CPL).
+2. **Każdy `emla.protocols` ma `source` + `source_year` + `valid_until` + `smoke_test_passed bool`.** Pole `valid_until` z `guidelines_versions` — wymusza okresowe re-review.
+3. **Trigger `updated_at`:** każda zmiana wiersza odświeża timestamp.
+4. **Migration files** w `supabase/migrations/YYYYMMDD_NNN_*.sql` — version controlled.
+5. **NIE wpisywać dawek z głowy.** Każde `verified=true` musi mieć `source_url` do CPL URPL lub oficjalnego wytycznego.
+
+### Roadmap (pozostałe fazy)
+- **Phase 1:** rozszerzyć `emla.drugs` z 86 → ~150 leków (brakuje wazopresorów rzadkich, antydotów ekstr. tox, antykoagulantów DOAC pełnych).
+- **Phase 2:** rozszerzyć `emla.protocols` z 72 → ~150 (brakuje rzadkich pediatrycznych, anestezjologii regionalnej, OIT-specyficznych).
+- **Phase 3:** populacja `emla.calculators` (17 istniejących inline → schema + extend o 20 missing: Wells DVT, CHA2DS2-VASc, HAS-BLED, Padua, Caprini, Alvarado, Ranson, Glasgow-Blatchford, Genewa, sPESI, APACHE II, SOFA, Child-Pugh, MELD, PERC, CRB-65).
+- **Phase 4:** Integracja z Chirurg-AI: epikryza odwołuje się do protokołu po `code`; dawki z `farmakologia` używane w `zalecenia.md` rendererze.
+- **Phase 5:** Service Worker + IndexedDB cache → 100% offline read.
+- **Phase 6:** Audit log dla zmian (kto/kiedy/co).
+- **Phase 7:** Auto-reminder kiedy `valid_until` dla wytycznego się zbliża → notyfikacja e-mailowa.
+
+### Bug znalezione 2026-04-29 (do naprawy)
+1. **`protokoly.html` — duplicate `const PROTOKOLY` declaration** (linie 187-260 ORAZ 474-547). Drugi zastępuje pierwszy. Ok. 100KB nadmiarowych danych w pliku. **Fix: usunąć blok 473-547 (drugi script).**
+2. **`leki_sor.json` — typo:** `Metopropolum` → poprawione w Supabase na `Metoprololum tartras` (id `c004`). Trzeba też poprawić w `data/leki_sor.json` przy następnej synchronizacji.
+3. **`leki_sor.json` — błędna kategoria:** Dexmedetomidine (id `g006`) była w `gastro`, poprawione w Supabase na `RSI_sedacja`. Tak samo w JSON.
+
+### Jak ja (Claude) mam tu pracować
+- **Single source of truth:** `emla.*` tabele w Supabase. Inline data w HTML traktuj jako cache/fallback.
+- **Sync direction:** modyfikacje robi się w Supabase → eksportuje do JSON / inline (przy build/deploy time, nie ad-hoc).
+- **`verified=false` = NIE NADAJE SIĘ DO PRODUKCJI bez ręcznej weryfikacji Roman.** Filtruj UI: pokazuj tylko `verified=true` w trybie produkcyjnym.
+- **WebFetch nie wykonuje JS** — sprawdzaj realny stan przez `fetch /rest/v1/...` lub czytaj inline JS przez Node `Function('return ' + arrayLiteral)()`.
