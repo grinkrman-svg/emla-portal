@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ICD-10 — przeglądarka SOR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:var(--f);background:var(--bg0);color:var(--t0);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* header — cienki */
+.hd{display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:1px solid var(--bd);background:var(--bgc);flex-shrink:0;z-index:5}
+.hd a.back{color:var(--t2);text-decoration:none;font-size:13px;font-weight:500;padding:6px 10px;border-radius:9px;border:1px solid var(--bd);transition:.16s}
+.hd a.back:hover{color:var(--t0);border-color:var(--bdh)}
+.hd .brand{font-weight:700;font-size:14px}.hd .brand span{color:var(--ac)}
+/* wąskie szukanie */
+.srch{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--bg1);border:1px solid var(--bd);border-radius:10px;padding:7px 11px;width:300px;transition:.16s}
+.srch:focus-within{border-color:var(--ac);box-shadow:0 0 0 3px var(--acs);background:var(--bgc)}
+.srch svg{width:16px;height:16px;color:var(--t3);flex-shrink:0}
+.srch input{flex:1;border:0;background:transparent;outline:none;font-family:var(--f);font-size:13.5px;color:var(--t0)}
+.srch input::placeholder{color:var(--t3)}
+.srch .clr{cursor:pointer;color:var(--t3);font-size:14px;display:none}.srch.has .clr{display:block}
+.tgl{width:34px;height:34px;border-radius:9px;border:1px solid var(--bd);background:var(--bg1);color:var(--t1);cursor:pointer;font-size:14px;flex-shrink:0}
+.tgl:hover{border-color:var(--bdh);color:var(--t0)}
+
+/* obszar główny */
+.main{flex:1;display:flex;min-height:0}
+/* kaskada Millera */
+#cols{flex:1;display:flex;min-height:0;overflow-x:auto}
+.col{flex:1 0 0;min-width:230px;max-width:360px;overflow-y:auto;border-right:1px solid var(--bd)}
+.col:last-child{border-right:0}
+.col-h{position:sticky;top:0;background:var(--bgc);padding:9px 14px;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--bd);z-index:1}
+.row{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;border-bottom:1px solid var(--bd);transition:background .13s,color .13s;line-height:1.3}
+.row:hover{background:var(--bg1)}
+.row.sel{background:var(--acs);color:var(--ac)}
+.row .rc{font-family:var(--m);font-size:12px;font-weight:600;color:var(--t2);flex-shrink:0;min-width:30px}
+.row.sel .rc{color:var(--ac)}
+.row .rn{flex:1;font-size:13px;color:var(--t1);overflow:hidden;text-overflow:ellipsis}
+.row.sel .rn{color:var(--ac)}
+.row .chev{color:var(--t3);font-size:11px;flex-shrink:0}
+.row .rzc{font-size:10px;color:var(--t3);font-family:var(--m)}
+
+/* wyniki szukania (zamiast kaskady) */
+#results{flex:1;overflow-y:auto;display:none}
+#results .row .rc{min-width:54px}
+
+/* detal — dolny pasek */
+#detail{flex-shrink:0;border-top:1px solid var(--bd);background:var(--bgc);padding:0;max-height:0;overflow:hidden;transition:max-height .22s ease}
+#detail.on{max-height:230px}
+.det-in{padding:16px 20px;display:flex;gap:18px;align-items:flex-start}
+.det-code{font-family:var(--m);font-weight:700;font-size:22px;color:var(--ac);background:var(--acs);padding:10px 16px;border-radius:12px;flex-shrink:0}
+.det-body{flex:1;min-width:0}
+.det-name{font-size:17px;font-weight:600;color:var(--t0);line-height:1.3}
+.det-rz{font-size:12px;color:var(--t3);margin-top:3px}
+.det-syn{font-size:12px;color:var(--t2);margin-top:9px;line-height:1.5}
+.det-syn b{color:var(--t3);font-weight:600;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.det-copy{flex-shrink:0;background:var(--ac);color:#fff;border:0;border-radius:11px;padding:11px 18px;font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.15s}
+.det-copy:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.det-copy svg{width:16px;height:16px}
+
+.empty{padding:40px;text-align:center;color:var(--t3);font-size:13.5px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);z-index:30;background:var(--grn-bright,var(--grn));color:#fff;font-weight:600;font-size:13px;padding:10px 17px;border-radius:11px;box-shadow:var(--shh);opacity:0;transition:.22s;pointer-events:none;font-family:var(--m)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:640px){.srch{width:160px}.col{min-width:170px}}
+
+/* ── żywe tło medyczne (ECG + poświata) ── */
+#bgfx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#bgfx::before{content:'';position:absolute;inset:-12%;
+  background:
+    radial-gradient(40% 50% at 12% 4%, oklch(0.62 0.18 255/.22), transparent 60%),
+    radial-gradient(44% 54% at 90% 14%, oklch(0.6 0.2 285/.22), transparent 62%),
+    radial-gradient(52% 60% at 74% 100%, oklch(0.66 0.16 195/.2), transparent 60%)}
+#bgfx svg{position:absolute;left:0;top:44%;width:200%;height:42%;opacity:.14;color:var(--ac);
+  animation:ecgdrift 19s linear infinite}
+#bgfx .ecg2{top:62%;height:34%;opacity:.06;color:var(--teal, oklch(0.7 0.15 195));animation-duration:29s}
+#bgfx path{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+@keyframes ecgdrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){#bgfx svg{animation:none}}
+[data-theme="light"] #bgfx::before{opacity:.6}
+[data-theme="light"] #bgfx svg{opacity:.07}
+
+/* szkło — treść unosi się nad tłem */
+body{background:radial-gradient(125% 120% at 50% 0%, var(--bg1) 0%, var(--bg0) 68%)}
+.hd{background:color-mix(in srgb, var(--bgc) 80%, transparent);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);position:relative;z-index:6}
+.main{position:relative;z-index:2}
+.col{background:color-mix(in srgb, var(--bgc) 68%, transparent);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.col-h{background:color-mix(in srgb, var(--bgc) 88%, transparent);backdrop-filter:blur(12px)}
+#results{background:color-mix(in srgb, var(--bgc) 60%, transparent);backdrop-filter:blur(9px)}
+#detail{background:color-mix(in srgb, var(--bgc) 90%, transparent);backdrop-filter:blur(18px);position:relative;z-index:4}
+.hd .brand span{text-shadow:0 0 18px var(--acs)}
+</style>
+</head>
+<body>
+<div id="bgfx" aria-hidden="true">
+  <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0 50 L70 50 L76 44 L82 50 L92 50 L98 58 L104 18 L110 74 L116 50 L150 50 L165 40 L180 50 L200 50 L270 50 L276 44 L282 50 L292 50 L298 58 L304 18 L310 74 L316 50 L350 50 L365 40 L380 50 L400 50 L470 50 L476 44 L482 50 L492 50 L498 58 L504 18 L510 74 L516 50 L550 50 L565 40 L580 50 L600 50 L670 50 L676 44 L682 50 L692 50 L698 58 L704 18 L710 74 L716 50 L750 50 L765 40 L780 50 L800 50 L870 50 L876 44 L882 50 L892 50 L898 58 L904 18 L910 74 L916 50 L950 50 L965 40 L980 50 L1000 50 L1070 50 L1076 44 L1082 50 L1092 50 L1098 58 L1104 18 L1110 74 L1116 50 L1150 50 L1165 40 L1180 50 L1200 50"/></svg>
+  <svg class="ecg2" viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0 50 L70 50 L76 44 L82 50 L92 50 L98 58 L104 18 L110 74 L116 50 L150 50 L165 40 L180 50 L200 50 L270 50 L276 44 L282 50 L292 50 L298 58 L304 18 L310 74 L316 50 L350 50 L365 40 L380 50 L400 50 L470 50 L476 44 L482 50 L492 50 L498 58 L504 18 L510 74 L516 50 L550 50 L565 40 L580 50 L600 50 L670 50 L676 44 L682 50 L692 50 L698 58 L704 18 L710 74 L716 50 L750 50 L765 40 L780 50 L800 50 L870 50 L876 44 L882 50 L892 50 L898 58 L904 18 L910 74 L916 50 L950 50 L965 40 L980 50 L1000 50 L1070 50 L1076 44 L1082 50 L1092 50 L1098 58 L1104 18 L1110 74 L1116 50 L1150 50 L1165 40 L1180 50 L1200 50"/></svg>
+</div>
+<div class="hd">
+  <a class="back" href="index.html">← powrót</a>
+  <div class="brand">ICD-10 · <span>SOR</span></div>
+  <div class="srch" id="sb">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="q" type="text" placeholder="szukaj: nazwa lub kod…" autocomplete="off" spellcheck="false">
+    <span class="clr" id="clr">✕</span>
+  </div>
+  <button class="tgl" id="tgl" title="Motyw">☀</button>
+</div>
+
+<div class="main">
+  <div id="cols"></div>
+  <div id="results"></div>
+</div>
+
+<div id="detail">
+  <div class="det-in">
+    <div class="det-code" id="dCode">—</div>
+    <div class="det-body">
+      <div class="det-name" id="dName"></div>
+      <div class="det-rz" id="dRz"></div>
+      <div class="det-syn" id="dSyn"></div>
+    </div>
+    <button class="det-copy" id="dCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Kopiuj kod</button>
+  </div>
+</div>
+<div class="toast" id="toast">skopiowano</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const cols=$('#cols'),results=$('#results'),q=$('#q'),sb=$('#sb');
+let D=null,ROZ=[],TREE=[],FLAT=[];
+const MAP={'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ż':'z','ź':'z'};
+const norm=s=>(s||'').toLowerCase().replace(/[ąćęłńóśżź]/g,c=>MAP[c]||c);
+const isCode=s=>/^[a-z]\d/i.test(s.trim());
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const ROM=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII'];
+
+// — kaskada —
+function colHTML(title,rows){
+  return `<div class="col-h">${title}</div>`+rows;
+}
+function clearFrom(n){ [...cols.children].slice(n).forEach(c=>c.remove()); }
+function addCol(html){ const d=document.createElement('div'); d.className='col'; d.innerHTML=html; cols.appendChild(d); }
+
+function showRoz(){
+  cols.innerHTML='';
+  const rows=ROZ.map((r,i)=>`<div class="row" data-lvl="0" data-i="${i}"><span class="rc">${ROM[i]||''}</span><span class="rn">${esc(r.n)}</span><span class="chev">›</span></div>`).join('');
+  addCol(colHTML('Rozdziały',rows));
+}
+function showGrupy(ri){
+  clearFrom(1);
+  const rows=TREE[ri].map((g,gi)=>`<div class="row" data-lvl="1" data-ri="${ri}" data-gi="${gi}"><span class="rc">${esc(g.k||'')}</span><span class="rn">${esc(g.n)}</span><span class="chev">›</span></div>`).join('');
+  addCol(colHTML('Grupy',rows));
+}
+function showKat(ri,gi){
+  clearFrom(2);
+  const rows=TREE[ri][gi].c.map((c,ci)=>`<div class="row" data-lvl="2" data-ri="${ri}" data-gi="${gi}" data-ci="${ci}" data-code="${c.c}"><span class="rc">${c.c}</span><span class="rn">${esc(c.n)}</span>${c.s.length?'<span class="chev">›</span>':''}</div>`).join('');
+  addCol(colHTML('Kategorie',rows));
+}
+function showSub(ri,gi,ci){
+  clearFrom(3);
+  const c=TREE[ri][gi].c[ci];
+  if(!c.s.length) return;
+  const rows=c.s.map(s=>`<div class="row" data-lvl="3" data-code="${s.c}"><span class="rc">${s.c}</span><span class="rn">${esc(s.n)}</span></div>`).join('');
+  addCol(colHTML('Podkategorie',rows));
+}
+
+cols.addEventListener('click',e=>{
+  const row=e.target.closest('.row'); if(!row) return;
+  const lvl=+row.dataset.lvl;
+  // selekcja w obrębie kolumny
+  row.parentElement.querySelectorAll('.row.sel').forEach(r=>r.classList.remove('sel'));
+  row.classList.add('sel');
+  if(lvl===0){ showGrupy(+row.dataset.i); }
+  else if(lvl===1){ showKat(+row.dataset.ri,+row.dataset.gi); }
+  else if(lvl===2){ showSub(+row.dataset.ri,+row.dataset.gi,+row.dataset.ci); detail(row.dataset.code); }
+  else if(lvl===3){ detail(row.dataset.code); }
+});
+
+// — detal —
+const byCode={};
+function detail(code){
+  const f=byCode[code]; if(!f) return;
+  $('#dCode').textContent=code;
+  $('#dName').textContent=f.l;
+  $('#dRz').textContent=(ROZ[f.ch]?('Rozdział '+(ROM[f.ch]||'')+' · '+ROZ[f.ch].n):'');
+  $('#dSyn').innerHTML=f.t&&f.t.length?('<b>indeks:</b> '+f.t.map(esc).join(' · ')):'';
+  $('#detail').classList.add('on');
+}
+$('#dCopy').onclick=()=>{const c=$('#dCode').textContent;if(c&&c!=='—')copy(c)};
+function copy(code){
+  navigator.clipboard&&navigator.clipboard.writeText(code);
+  const t=$('#toast');t.textContent='skopiowano  '+code;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1200);
+}
+
+// — szukanie —
+function findPath(code){
+  for(let ri=0;ri<TREE.length;ri++)for(let gi=0;gi<TREE[ri].length;gi++){
+    const cs=TREE[ri][gi].c;
+    for(let ci=0;ci<cs.length;ci++){
+      if(cs[ci].c===code) return[ri,gi,ci,-1];
+      const ss=cs[ci].s; for(let si=0;si<ss.length;si++) if(ss[si].c===code) return[ri,gi,ci,si];
+    }
+  }
+  return null;
+}
+function score(f,nq,toks){
+  const code=f.c.toLowerCase(), nl=norm(f.l);
+  if(isCode(nq)){ if(code===nq)return 1000; if(code.replace('.','').startsWith(nq.replace('.','')))return 800-code.length; return -1; }
+  const hay=nl+' '+(f.t||[]).map(norm).join(' ');
+  let s=0; for(const t of toks){ if(!hay.includes(t))return -1; s+= nl.startsWith(t)?40: nl.includes(t)?20:8; }
+  return s+(nl===nq?200:0);
+}
+function runSearch(){
+  const raw=q.value.trim(); sb.classList.toggle('has',!!raw);
+  if(!raw){ results.style.display='none'; cols.style.display='flex'; return; }
+  const nq=norm(raw), toks=nq.split(/\s+/).filter(Boolean);
+  const out=[];
+  for(const f of FLAT){ const sc=score(f,nq,toks); if(sc>0)out.push([sc,f]); }
+  out.sort((a,b)=>b[0]-a[0]);
+  const top=out.slice(0,200);
+  cols.style.display='none'; results.style.display='block';
+  results.innerHTML=colHTML(out.length+(out.length===1?' wynik':' wyników'),
+    top.map(([,f])=>`<div class="row" data-code="${f.c}"><span class="rc">${f.c}</span><span class="rn">${esc(f.l)}</span><span class="rzc">${ROM[f.ch]||''}</span></div>`).join(''))
+    || '<div class="empty">Brak trafień.</div>';
+}
+results.addEventListener('click',e=>{const row=e.target.closest('.row');if(!row||!row.dataset.code)return;
+  results.querySelectorAll('.row.sel').forEach(r=>r.classList.remove('sel'));row.classList.add('sel');detail(row.dataset.code);});
+q.addEventListener('input',()=>{clearTimeout(q._t);q._t=setTimeout(runSearch,60)});
+$('#clr').onclick=()=>{q.value='';runSearch();q.focus()};
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();q.focus();q.select()}if(e.key==='Escape'&&document.activeElement===q){q.value='';runSearch()}});
+
+// — motyw (tylko CSS, bez repaintu) —
+const tgl=$('#tgl');
+function theme(t){document.documentElement.setAttribute('data-theme',t);tgl.textContent=t==='dark'?'☀':'☾'}
+theme(localStorage.getItem('theme')||'dark');
+tgl.onclick=()=>{const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';localStorage.setItem('theme',t);theme(t)};
+
+fetch('data/icd10.json?v=2').then(r=>r.json()).then(d=>{
+  D=d;ROZ=d.roz;TREE=d.tree;FLAT=d.flat;
+  FLAT.forEach(f=>byCode[f.c]=f);
+  showRoz();
+}).catch(()=>{cols.innerHTML='<div class="empty">Nie udało się wczytać bazy (data/icd10.json).</div>'});
+</script>
+</body>
+</html>

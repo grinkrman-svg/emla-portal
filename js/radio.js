@@ -29,7 +29,7 @@
 
   async function init() {
     try {
-      const r = await fetch('data/stations.json');
+      const r = await fetch('data/stations.json?v=2');
       STATIONS = (await r.json()).stations;
       currentStation = $s(state.stationId);
       buildDOM();
@@ -51,7 +51,7 @@
         <div class="rd-side-head">
           <div class="rd-side-title">
             <b>🎵 Radio</b>
-            <small>10 stacji · Polska</small>
+            <small>${STATIONS.length} stacji · Polska</small>
           </div>
           <div class="rd-side-actions">
             <button id="rdSideFull" title="Pełny ekran (F)">
@@ -168,7 +168,9 @@
 
     // Audio element
     audioEl = new Audio();
-    audioEl.crossOrigin = 'anonymous';
+    // NIE ustawiamy crossOrigin: strumienie radiowe bez nagłówków CORS
+    // przy crossOrigin='anonymous' nie załadują się, a routing przez Web Audio
+    // (MediaElementSource) wycisza dźwięk. Gramy bezpośrednio → wizualizer pseudo-spektrum.
     audioEl.preload = 'none';
     audioEl.volume = state.volume;
     audioEl.addEventListener('playing', () => { state.playing = true; save(); updatePlay(); startViz(); });
@@ -247,10 +249,9 @@
   function togglePlay() { state.playing ? pause() : play(); }
   function play() {
     if (!audioEl) return;
-    if (!audioCtx) initAudioGraph();
-    audioCtx?.resume?.();
+    // Bez Web Audio (initAudioGraph) — żeby dźwięk nie był wyciszony dla strumieni bez CORS.
     audioEl.play().catch(err => {
-      toast(`⚠️ ${currentStation.name} — CORS / offline`);
+      toast(`⚠️ ${currentStation.name} — stream chwilowo niedostępny`);
       console.warn('play fail:', err);
     });
   }

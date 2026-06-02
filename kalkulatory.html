@@ -6,7 +6,7 @@
 <title>Kalkulatory Kliniczne — EMLA SOR</title>
 <link rel="icon" href="icons/icon-32x32.png">
 <meta name="theme-color" content="#1e40af">
-<meta name="description" content="Kalkulatory kliniczne dla lekarzy SOR: GCS, Wells PE, CURB-65, Parkland, qSOFA, MAP, Dawkowanie infuzji, NaHCO3, Osmolalność, Anion Gap, NEWS2, Dawkowanie pediatryczne, Prędkość wlewu, HEART Score.">
+<meta name="description" content="Kalkulatory kliniczne dla lekarzy SOR: GCS, Wells PE, CURB-65, Parkland, qSOFA, Dawkowanie infuzji, NaHCO3, Osmolalność, Anion Gap, NEWS2, Dawkowanie pediatryczne, Prędkość wlewu, HEART Score.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -543,8 +543,90 @@
 
   <div class="page-header">
     <h1>Kalkulatory Kliniczne</h1>
-    <p>17 narzędzi · Wyniki w czasie rzeczywistym · Dane nie są zapisywane</p>
+    <p>31 narzędzi · Wyniki w czasie rzeczywistym · Dane nie są zapisywane</p>
   </div>
+
+  <style>
+    /* — wąskie szukanie — */
+    .kf-search{max-width:430px;margin:2px auto 8px;display:flex;align-items:center;gap:10px;background:var(--bgc);
+      border:1px solid var(--bd);border-radius:13px;padding:11px 15px;box-shadow:var(--sh);transition:.18s}
+    .kf-search:focus-within{border-color:var(--ac);box-shadow:var(--sh),0 0 0 3px var(--acs)}
+    .kf-search svg{width:17px;height:17px;color:var(--t3);flex-shrink:0}
+    .kf-search input{flex:1;border:0;background:transparent;outline:none;font-family:var(--f);font-size:14px;color:var(--t0)}
+    .kf-search input::placeholder{color:var(--t3)}
+    .kf-search kbd{font-family:var(--m);font-size:10px;color:var(--t3);background:var(--bg2);
+      border:1px solid var(--bd);border-radius:6px;padding:2px 6px}
+
+    /* — siatka bloków (jak na stronie głównej) — */
+    .calc-grid{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))!important;gap:15px!important;padding-bottom:2rem}
+    @media (max-width:560px){ .calc-grid{grid-template-columns:1fr!important} }
+    .cc-sec{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:22px 2px 4px;font-size:11px;
+      font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3)}
+    .cc-sec::after{content:'';flex:1;height:1px;background:var(--bd)}
+    .cc-sec:first-child{margin-top:2px}
+
+    /* karta-blok */
+    .cc{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:9px;padding:18px 17px 16px;
+      background:var(--bgc);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);cursor:pointer;
+      opacity:0;transform:translateY(14px);animation:ccIn .5s cubic-bezier(.2,.8,.3,1) forwards;
+      transition:transform .32s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .4s}
+    .cc:hover{transform:translateY(-4px);border-color:var(--bdh);box-shadow:var(--shh)}
+    .cc:active{transform:translateY(-1px) scale(.99)}
+    @keyframes ccIn{to{opacity:1;transform:none}}
+    .cc:nth-child(2){animation-delay:.04s}.cc:nth-child(3){animation-delay:.07s}
+    .cc:nth-child(4){animation-delay:.1s}.cc:nth-child(5){animation-delay:.13s}
+    .cc:nth-child(6){animation-delay:.16s}.cc:nth-child(7){animation-delay:.19s}
+    /* górny pasek + poświata akcentu */
+    .cc-stripe{position:absolute;top:0;left:0;right:0;height:3px;background:var(--cc-fg);opacity:0;transition:opacity .3s}
+    .cc:hover .cc-stripe{opacity:.95}
+    .cc::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.55;transition:opacity .3s;
+      background:radial-gradient(125% 80% at 88% -12%,var(--cc-bg),transparent 62%)}
+    .cc:hover::before{opacity:1}
+    .cc-top{display:flex;align-items:center;gap:10px;position:relative}
+    /* animowana ikona */
+    .cc-ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;flex-shrink:0;
+      background:var(--cc-bg);color:var(--cc-fg);transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s}
+    .cc:hover .cc-ic{transform:scale(1.1) rotate(-6deg);box-shadow:0 6px 20px var(--cc-bg)}
+    .cc-ic svg{width:25px;height:25px;stroke-dasharray:64;stroke-dashoffset:0;transition:stroke-dashoffset .65s ease}
+    .cc:hover .cc-ic svg{animation:ccDraw .85s ease}
+    @keyframes ccDraw{from{stroke-dashoffset:64}to{stroke-dashoffset:0}}
+    .cc-badge{margin-left:auto;font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.07em;
+      text-transform:uppercase;padding:3px 9px;border-radius:100px;color:var(--cc-fg);background:var(--cc-bg);white-space:nowrap}
+    .cc-title{font-size:15px;font-weight:700;color:var(--t0);line-height:1.25;letter-spacing:-.01em;position:relative}
+    .cc-desc{font-size:12px;color:var(--t2);line-height:1.38;position:relative}
+    .cc-go{margin-top:auto;padding-top:4px;font-size:11px;font-weight:600;color:var(--cc-fg);opacity:0;
+      transform:translateX(-4px);transition:opacity .25s,transform .25s;position:relative}
+    .cc:hover .cc-go{opacity:1;transform:none}
+    #calcStore{display:none}
+
+    /* — modal: powolne wypłynięcie — */
+    .kf-modal{position:fixed;inset:0;z-index:300;display:none;align-items:flex-start;justify-content:center;
+      padding:48px 16px;overflow-y:auto;background:rgba(8,14,28,.5);backdrop-filter:blur(8px);
+      opacity:0;transition:opacity .35s ease}
+    .kf-modal.on{display:flex;opacity:1}
+    .kf-mbody{max-width:680px;width:100%;transform:scale(.88) translateY(20px);opacity:0;
+      transition:transform .55s cubic-bezier(.16,.84,.3,1),opacity .45s ease}
+    .kf-modal.on .kf-mbody{transform:none;opacity:1}
+    .kf-mbody>.ck{cursor:default;box-shadow:var(--shh)}
+    .kf-mbody>.ck .ck-body{display:block!important}
+    .kf-mbody>.ck .ck-chevron{display:none}
+    .kf-mbody>.ck .ck-head{pointer-events:none}
+    .kf-mclose{position:fixed;top:18px;right:20px;z-index:301;width:42px;height:42px;border-radius:50%;
+      border:1px solid var(--bd);background:var(--bgc);color:var(--t1);font-size:22px;line-height:0;cursor:pointer;
+      box-shadow:var(--shh);transition:.15s;display:none}
+    .kf-mclose.on{display:grid;place-items:center}
+    .kf-mclose:hover{color:var(--t0);transform:rotate(90deg)}
+    .kf-empty{grid-column:1/-1;text-align:center;color:var(--t3);padding:30px;font-size:13px}
+  </style>
+
+  <div class="kf-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="kfQ" type="text" placeholder="Szukaj kalkulatora…" autocomplete="off" spellcheck="false">
+    <kbd>⌘K</kbd>
+  </div>
+
+  <div class="kf-modal" id="kfModal"><div class="kf-mbody" id="kfMbody"></div></div>
+  <button class="kf-mclose" id="kfMclose" aria-label="Zamknij">×</button>
 
   <div class="calc-grid">
 
@@ -565,8 +647,15 @@
       </div>
       <div class="ck-body">
 
+        <!-- Typ pacjenta + intubacja -->
+        <div style="display:flex;gap:8px;margin:10px 0 2px;flex-wrap:wrap">
+          <button class="btn-opt sel" id="gcs-adult-btn" onclick="gcsSetType('adult',this)">Dorosły</button>
+          <button class="btn-opt" id="gcs-child-btn" onclick="gcsSetType('child',this)">Dziecko (przedwerbalne)</button>
+          <button class="btn-opt" id="gcs-intub-btn" onclick="gcsToggleIntub(this)">Zaintubowany (V niedostępne)</button>
+        </div>
+
         <!-- Otwieranie oczu -->
-        <div class="btn-group" style="margin-top:10px">
+        <div class="btn-group" style="margin-top:8px">
           <div class="btn-group-label">
             Otwieranie oczu (E)
             <span class="score-badge" id="gcs-e-badge">–</span>
@@ -580,17 +669,17 @@
         </div>
 
         <!-- Reakcja słowna -->
-        <div class="btn-group">
+        <div class="btn-group" id="gcs-v-group">
           <div class="btn-group-label">
             Reakcja słowna (V)
             <span class="score-badge" id="gcs-v-badge">–</span>
           </div>
           <div class="btn-options">
-            <button class="btn-opt" data-group="gcs-v" data-val="5" onclick="gcsSet('v',5,this)">Orientowany <span class="val">5</span></button>
-            <button class="btn-opt" data-group="gcs-v" data-val="4" onclick="gcsSet('v',4,this)">Splątany <span class="val">4</span></button>
-            <button class="btn-opt" data-group="gcs-v" data-val="3" onclick="gcsSet('v',3,this)">Nieadekwatne słowa <span class="val">3</span></button>
-            <button class="btn-opt" data-group="gcs-v" data-val="2" onclick="gcsSet('v',2,this)">Niezrozumiałe dźwięki <span class="val">2</span></button>
-            <button class="btn-opt" data-group="gcs-v" data-val="1" onclick="gcsSet('v',1,this)">Brak <span class="val">1</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="5" data-adult="Orientowany" data-child="Gaworzy / gruchanie" onclick="gcsSet('v',5,this)"><span class="gcs-v-txt">Orientowany</span> <span class="val">5</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="4" data-adult="Splątany" data-child="Płacz drażliwy" onclick="gcsSet('v',4,this)"><span class="gcs-v-txt">Splątany</span> <span class="val">4</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="3" data-adult="Nieadekwatne słowa" data-child="Płacz na ból" onclick="gcsSet('v',3,this)"><span class="gcs-v-txt">Nieadekwatne słowa</span> <span class="val">3</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="2" data-adult="Niezrozumiałe dźwięki" data-child="Jęki na ból" onclick="gcsSet('v',2,this)"><span class="gcs-v-txt">Niezrozumiałe dźwięki</span> <span class="val">2</span></button>
+            <button class="btn-opt" data-group="gcs-v" data-val="1" data-adult="Brak" data-child="Brak" onclick="gcsSet('v',1,this)"><span class="gcs-v-txt">Brak</span> <span class="val">1</span></button>
           </div>
         </div>
 
@@ -619,7 +708,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           GCS ≤ 8 — ROZWAŻ INTUBACJĘ
         </div>
-        <div class="calc-source">Źródło: Teasdale G, Jennett B. Assessment of coma and impaired consciousness. Lancet 1974.</div>
+        <div class="calc-source">Źródło: Teasdale G, Jennett B. Lancet 1974 · pediatryczna skala werbalna: James HE, Trauner DA · zapis „T" przy intubacji (składowa V nieoceniana).</div>
         <button class="btn-reset" onclick="resetGCS()">Wyczyść / Reset</button>
       </div>
     </div>
@@ -682,11 +771,12 @@
           <div class="result-label" id="wells-label">Małe prawdopodobieństwo PE</div>
           <div class="result-detail" id="wells-detail">Oznacz kryteria powyżej</div>
         </div>
+        <div id="wells-dich" style="margin-top:8px;padding:10px 14px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--bd);font-size:0.82rem;color:var(--t1);line-height:1.5">—</div>
         <div class="calc-alert" id="wells-alert" style="display:none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           DUŻE RYZYKO — natychmiast CTA lub LMWH empirycznie
         </div>
-        <div class="calc-source">Źródło: Wells PS et al. Ann Intern Med 2000; ESC Guidelines PE 2019.</div>
+        <div class="calc-source">Źródło: Wells PS et al. Ann Intern Med 2000 · model dwustopniowy: Christopher Study, JAMA 2006 · ESC Guidelines 2019 (acute PE).</div>
         <button class="btn-reset" onclick="resetWells()">Wyczyść / Reset</button>
       </div>
     </div>
@@ -707,28 +797,33 @@
         <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="ck-body">
-        <ul class="criteria-list" style="margin-top:10px" id="curb-list">
-          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+        <!-- Wariant skali -->
+        <div style="display:flex;gap:8px;margin:10px 0 2px">
+          <button class="btn-opt sel" id="curb-full-btn" onclick="curbSetMode('curb',this)">CURB-65</button>
+          <button class="btn-opt" id="curb-crb-btn" onclick="curbSetMode('crb',this)">CRB-65 (bez mocznika)</button>
+        </div>
+        <ul class="criteria-list" style="margin-top:8px" id="curb-list">
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1" data-curb="C">
             <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
             <span class="crit-text"><strong>C — Confusion</strong> · Nowe splątanie (orientacja c/m/o)</span>
             <span class="crit-pts">+1</span>
           </li>
-          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1" data-curb="U" id="curb-urea-item">
             <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
             <span class="crit-text"><strong>U — Urea</strong> · Mocznik &gt; 7 mmol/l (BUN &gt; 19 mg/dl)</span>
             <span class="crit-pts">+1</span>
           </li>
-          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1" data-curb="R">
             <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
             <span class="crit-text"><strong>R — RR</strong> · Częstość oddechów ≥ 30/min</span>
             <span class="crit-pts">+1</span>
           </li>
-          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1" data-curb="B">
             <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
             <span class="crit-text"><strong>B — BP</strong> · RR skurczowe &lt; 90 mmHg lub rozkurczowe ≤ 60 mmHg</span>
             <span class="crit-pts">+1</span>
           </li>
-          <li class="crit-item" onclick="curbToggle(this)" data-pts="1">
+          <li class="crit-item" onclick="curbToggle(this)" data-pts="1" data-curb="65">
             <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
             <span class="crit-text"><strong>65</strong> · Wiek ≥ 65 lat</span>
             <span class="crit-pts">+1</span>
@@ -741,9 +836,9 @@
         </div>
         <div class="calc-alert" id="curb-alert" style="display:none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          CURB ≥ 3 — Rozważ OIT / Ciężkie ZP
+          Wysokie ryzyko — rozważ OIT / ciężkie zapalenie płuc
         </div>
-        <div class="calc-source">Źródło: Lim WS et al. Thorax 2003; BTS Guidelines CAP 2009.</div>
+        <div class="calc-source">Źródło: Lim WS et al. Thorax 2003 (CURB-65 i CRB-65 · śmiertelność wg punktacji) · BTS Guidelines CAP 2009.</div>
         <button class="btn-reset" onclick="resetCURB()">Wyczyść / Reset</button>
       </div>
     </div>
@@ -776,23 +871,27 @@
             <span class="inp-unit">kg</span>
           </div>
           <div class="inp-row">
-            <label>TBSA (%)</label>
+            <label>TBSA (%)<br><small style="font-size:.66rem;color:var(--t3);font-weight:400">tylko II°+III°; dłoń pacjenta ≈ 1%</small></label>
             <input type="range" id="park-tbsa" min="1" max="99" value="20" oninput="calcParkland()">
             <span class="range-val" id="park-tbsa-val">20%</span>
           </div>
           <div class="inp-row">
-            <label>Stopień oparzenia</label>
-            <select id="park-degree" onchange="calcParkland()">
-              <option value="II">II stopień (niepełnej grubości)</option>
-              <option value="III">III stopień (pełnej grubości)</option>
-              <option value="mix">Mieszany (II+III)</option>
+            <label>Czas od oparzenia<br><small style="font-size:.66rem;color:var(--t3);font-weight:400">8h liczy się OD oparzenia, nie od przyjęcia</small></label>
+            <input type="range" id="park-elapsed" min="0" max="16" step="0.5" value="0" oninput="calcParkland()">
+            <span class="range-val" id="park-elapsed-val">0 h</span>
+          </div>
+          <div class="inp-row">
+            <label>Formuła</label>
+            <select id="park-formula" onchange="calcParkland()">
+              <option value="4">Parkland · 4 ml/kg/%TBSA</option>
+              <option value="2">Brooke zmod. · 2 ml/kg/%TBSA</option>
             </select>
           </div>
           <div class="inp-row">
-            <label>Oparzenie inhalacyjne</label>
+            <label>Uraz wziewny</label>
             <select id="park-inhale" onchange="calcParkland()">
               <option value="no">Nie</option>
-              <option value="yes">Tak (+2 ml/kg/%TBSA)</option>
+              <option value="yes">Tak — oparzenie dróg oddechowych</option>
             </select>
           </div>
         </div>
@@ -812,7 +911,7 @@
               <div class="val" id="park-8h-vol">—</div>
             </div>
             <div class="park-box">
-              <div class="lbl">ml/h (8h)</div>
+              <div class="lbl" id="park-8h-lbl">ml/h (1. połowa)</div>
               <div class="val" id="park-8h">—</div>
             </div>
             <div class="park-box">
@@ -830,11 +929,19 @@
           </div>
           <div style="margin-top:8px;padding:10px 14px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--bd);font-size:0.82rem;color:var(--t1)" id="park-day2">—</div>
         </div>
+        <div class="calc-alert" id="park-ivy-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span id="park-ivy-txt"></span>
+        </div>
+        <div class="calc-alert" id="park-inhale-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span><b>Uraz wziewny → WCZESNA INTUBACJA</b> (obrzęk dróg oddechowych narasta). Kryterium centrum oparzeń. Zapotrzebowanie płynowe zwykle większe — miareczkuj wg diurezy (górna granica). NIE zwiększaj objętości wzoru z góry (ryzyko przepłynięcia).</span>
+        </div>
         <div class="calc-alert" id="park-alert" style="display:none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span id="park-alert-txt">TBSA &gt; 20% — hospitalizacja OIT, konsultacja centrum oparzelniczego</span>
+          <span id="park-alert-txt"></span>
         </div>
-        <div class="calc-source">Źródło: Baxter CR. J Trauma 1979 · Galveston formula for pediatrics · ABA Guidelines 2018.</div>
+        <div class="calc-source">Źródło: ABA (American Burn Association) · Baxter CR, J Trauma 1979. Reguła dziewiątek; rumień (I°) NIE liczy się do TBSA. Pediatria: 3 ml/kg/%TBSA + płyny podtrzymujące (Holliday-Segar). Próg przepłynięcia: Ivy ML, J Burn Care 2000 (>250 ml/kg/24h → zespół ciasnoty wewnątrzbrzusznej). Rule of Ten: ABA ABLS (Chung 2010).</div>
         <button class="btn-reset" onclick="resetParkland()">Wyczyść / Reset</button>
       </div>
     </div>
@@ -1148,13 +1255,18 @@
             <input type="number" id="cg-weight" min="30" max="250" step="0.1" placeholder="np. 75" oninput="calcCG()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/>
           </label>
           <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem">
-            <span style="color:var(--t2)">Kreatynina (mg/dl)</span>
-            <input type="number" id="cg-creat" min="0.3" max="15" step="0.01" placeholder="np. 1.1" oninput="calcCG()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/>
+            <span style="color:var(--t2)">Kreatynina (<span id="cg-cr-unit">µmol/L</span>)</span>
+            <input type="number" id="cg-creat" min="10" max="1500" step="0.1" placeholder="np. 97" oninput="calcCG()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/>
           </label>
         </div>
-        <div style="margin-top:10px;display:flex;gap:8px">
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn-opt on" id="cg-male" onclick="setCGSex('M',this)">Mężczyzna</button>
           <button class="btn-opt" id="cg-female" onclick="setCGSex('K',this)">Kobieta (×0.85)</button>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="color:var(--t2);font-size:0.82rem">Jednostka kreatyniny:</span>
+          <button class="btn-opt on" id="cg-umol" onclick="setCGUnit('umol',this)">µmol/L</button>
+          <button class="btn-opt" id="cg-mgdl" onclick="setCGUnit('mgdl',this)">mg/dl</button>
         </div>
         <div class="calc-result" style="margin-top:14px">
           <div style="font-size:0.85rem;color:var(--t2);margin-bottom:6px">Wynik</div>
@@ -1216,52 +1328,7 @@
     </div>
 
     <!-- ════════════════════════════════════════
-         11. MAP — Średnie Ciśnienie Tętnicze
-    ════════════════════════════════════════ -->
-    <div class="ck" id="ck-map" data-calc-id="map">
-      <div class="ck-stripe teal"></div>
-      <div class="ck-head" onclick="toggleCalc('ck-map')">
-        <div class="ck-title-row">
-          <span class="ck-icon">🩺</span>
-          <div>
-            <div class="ck-name">MAP — Średnie Ciśnienie Tętnicze</div>
-            <div class="ck-sub">Mean Arterial Pressure · próg perfuzji narządowej</div>
-          </div>
-        </div>
-        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="ck-body">
-        <div class="calc-inputs" style="margin-top:10px">
-          <div class="inp-row">
-            <label>RRs (skurczowe)</label>
-            <input type="number" id="map-sbp" min="40" max="300" placeholder="np. 120" oninput="calcMAP()">
-            <span class="inp-unit">mmHg</span>
-          </div>
-          <div class="inp-row">
-            <label>RRr (rozkurczowe)</label>
-            <input type="number" id="map-dbp" min="20" max="200" placeholder="np. 80" oninput="calcMAP()">
-            <span class="inp-unit">mmHg</span>
-          </div>
-        </div>
-        <p style="font-size:0.8rem;color:var(--t3);margin-bottom:8px">
-          Wzór: <strong style="font-family:var(--m)">MAP = RRr + (RRs − RRr) / 3</strong>
-        </p>
-        <div class="calc-result" id="map-result">
-          <div class="result-score c-blue" id="map-score">—</div>
-          <div class="result-label" id="map-label">Podaj RRs i RRr</div>
-          <div class="result-detail" id="map-detail"></div>
-        </div>
-        <div class="calc-alert" id="map-alert" style="display:none">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          MAP &lt; 65 mmHg — WSTRZĄS · pilnie wazopresory (noradrenalina)
-        </div>
-        <div class="calc-source">Wzór: MAP = DBP + (SBP−DBP)/3 · Cel terapeutyczny: MAP ≥ 65 mmHg (sepsa, wstrząs).</div>
-        <button class="btn-reset" onclick="resetMAP()">Wyczyść / Reset</button>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════
-         12. Dawkowanie infuzji katecholamin
+         11. Dawkowanie infuzji katecholamin
     ════════════════════════════════════════ -->
     <div class="ck" id="ck-catecholamine" data-calc-id="catecholamine">
       <div class="ck-stripe pur"></div>
@@ -1509,6 +1576,13 @@
             <span class="inp-unit">%</span>
           </div>
           <div class="inp-row">
+            <label>Skala SpO₂</label>
+            <select id="news-spo2scale" onchange="calcNEWS2()">
+              <option value="1">Skala 1 — cel 94–98%</option>
+              <option value="2">Skala 2 — hiperkapnia / POChP (cel 88–92%)</option>
+            </select>
+          </div>
+          <div class="inp-row">
             <label>Tlenoterapia</label>
             <select id="news-o2" onchange="calcNEWS2()">
               <option value="no">Nie (powietrze)</option>
@@ -1551,7 +1625,7 @@
           NEWS2 ≥ 7 — PILNA ESKALACJA · wezwij lekarza dyżurnego / OIT
         </div>
         <div id="news-subscores" style="margin-top:10px;font-size:0.8rem;color:var(--t2);display:none"></div>
-        <div class="calc-source">Źródło: Royal College of Physicians. NEWS2. London: RCP, 2017.</div>
+        <div class="calc-source">Źródło: Royal College of Physicians. NEWS2. London: RCP, 2017 · Skala 1: cel SpO₂ 94–98% · Skala 2: cel 88–92% przy hiperkapnii / POChP.</div>
         <button class="btn-reset" onclick="resetNEWS2()">Wyczyść / Reset</button>
       </div>
     </div>
@@ -1604,6 +1678,59 @@
       </div>
     </div>
 
+    <!-- QTc (Bazett) -->
+    <div class="ck" id="ck-qtc" data-calc-id="qtc">
+      <div class="ck-stripe" style="background:#e11d48"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-qtc')">
+        <div class="ck-title-row"><span class="ck-icon">📈</span>
+          <div><div class="ck-name">QTc (Bazett)</div><div class="ck-sub">Skorygowany odstęp QT · ryzyko Torsade</div></div></div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px">
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem"><span style="color:var(--t2)">QT (ms)</span>
+            <input type="number" id="qtc-qt" min="200" max="700" placeholder="np. 400" oninput="calcQTc()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/></label>
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem"><span style="color:var(--t2)">Tętno (HR /min)</span>
+            <input type="number" id="qtc-hr" min="20" max="250" placeholder="np. 75" oninput="calcQTc()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/></label>
+        </div>
+        <div class="calc-result" style="margin-top:14px"><div class="result-score c-blue" id="qtc-score">—</div>
+          <div class="result-label" id="qtc-label">Podaj QT i HR</div><div class="result-detail" id="qtc-detail"></div></div>
+        <div class="calc-alert" id="qtc-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+          QTc > 500 ms — wysokie ryzyko Torsade de Pointes
+        </div>
+        <div class="calc-source">Źródło: Bazett HC. Heart 1920. QTc = QT / √(RR), RR = 60/HR.</div>
+        <button class="btn-reset" onclick="document.getElementById('qtc-qt').value='';document.getElementById('qtc-hr').value='';calcQTc()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
+    <!-- Skorygowany Na przy hiperglikemii -->
+    <div class="ck" id="ck-nacorr" data-calc-id="nacorr">
+      <div class="ck-stripe" style="background:#0d9488"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-nacorr')">
+        <div class="ck-title-row"><span class="ck-icon">🧪</span>
+          <div><div class="ck-name">Skorygowany Na (hiperglikemia)</div><div class="ck-sub">Rzeczywista natremia w DKA / HHS</div></div></div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px">
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem"><span style="color:var(--t2)">Na zmierzone (mmol/L)</span>
+            <input type="number" id="nacorr-na" min="100" max="180" step="0.1" placeholder="np. 130" oninput="calcNaCorr()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/></label>
+          <label style="display:flex;flex-direction:column;gap:4px;font-size:0.85rem"><span style="color:var(--t2)">Glukoza (<span id="nacorr-glu-unit">mmol/L</span>)</span>
+            <input type="number" id="nacorr-glu" min="3" max="100" step="0.1" placeholder="np. 30" oninput="calcNaCorr()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t0);font-size:1rem;font-family:var(--m)"/></label>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="color:var(--t2);font-size:0.82rem">Jednostka glukozy:</span>
+          <button class="btn-opt on" id="nacorr-mmol" onclick="setNaUnit('mmol',this)">mmol/L</button>
+          <button class="btn-opt" id="nacorr-mgdl" onclick="setNaUnit('mgdl',this)">mg/dl</button>
+        </div>
+        <div class="calc-result" style="margin-top:14px"><div class="result-score c-blue" id="nacorr-score">—</div>
+          <div class="result-label" id="nacorr-label">Podaj Na i glukozę</div><div class="result-detail" id="nacorr-detail"></div></div>
+        <div class="calc-source">Źródło: Hillier TA et al. Am J Med 1999. Na_koryg = Na + 2,4 × (glukoza[mg/dl] − 100)/100.</div>
+        <button class="btn-reset" onclick="document.getElementById('nacorr-na').value='';document.getElementById('nacorr-glu').value='';calcNaCorr()">Wyczyść / Reset</button>
+      </div>
+    </div>
+
   </div><!-- /calc-grid -->
 
   <!-- LPR BAR -->
@@ -1649,6 +1776,8 @@ function fmt0(n) { return Math.round(n) }
    1. GCS
 ══════════════════════════════════════════════ */
 const GCS = { e: null, v: null, m: null };
+let GCS_TYPE = 'adult';
+let GCS_INTUB = false;
 
 function gcsSet(comp, val, btn) {
   GCS[comp] = val;
@@ -1659,12 +1788,58 @@ function gcsSet(comp, val, btn) {
   calcGCS();
 }
 
+function gcsSetType(t, btn) {
+  GCS_TYPE = t;
+  document.getElementById('gcs-adult-btn').classList.toggle('sel', t === 'adult');
+  document.getElementById('gcs-child-btn').classList.toggle('sel', t === 'child');
+  // podmień etykiety skali werbalnej (dorosły ↔ dziecko przedwerbalne)
+  document.querySelectorAll('#gcs-v-group .gcs-v-txt').forEach(s => {
+    const b = s.closest('.btn-opt');
+    s.textContent = (t === 'child') ? b.getAttribute('data-child') : b.getAttribute('data-adult');
+  });
+  calcGCS();
+}
+
+function gcsToggleIntub(btn) {
+  GCS_INTUB = !GCS_INTUB;
+  btn.classList.toggle('sel', GCS_INTUB);
+  const vg = document.getElementById('gcs-v-group');
+  if (GCS_INTUB) {
+    GCS.v = null;
+    document.querySelectorAll('[data-group="gcs-v"]').forEach(b => b.classList.remove('sel'));
+    document.getElementById('gcs-v-badge').textContent = 'T';
+    vg.style.opacity = '0.4'; vg.style.pointerEvents = 'none';
+  } else {
+    document.getElementById('gcs-v-badge').textContent = '–';
+    vg.style.opacity = ''; vg.style.pointerEvents = '';
+  }
+  calcGCS();
+}
+
 function calcGCS() {
-  const res = document.getElementById('gcs-result');
   const scoreEl = document.getElementById('gcs-score');
   const labelEl = document.getElementById('gcs-label');
   const detailEl = document.getElementById('gcs-detail');
   const alertEl = document.getElementById('gcs-alert');
+  const pedNote = (GCS_TYPE === 'child') ? ' · skala dziecięca (przedwerbalne)' : '';
+
+  // Intubacja: składowa V nieoceniana → zapis E+M z literą „T"
+  if (GCS_INTUB) {
+    if (GCS.e === null || GCS.m === null) {
+      scoreEl.textContent = '—'; scoreEl.className = 'result-score c-blue';
+      labelEl.textContent = 'Wybierz E i M (V niedostępne — intubacja)';
+      detailEl.textContent = `E=${GCS.e ?? '?'} + M=${GCS.m ?? '?'} (V = T)`;
+      alertEl.style.display = 'none';
+      return;
+    }
+    const em = GCS.e + GCS.m;
+    scoreEl.textContent = em + 'T';
+    scoreEl.className = 'result-score c-amb';
+    labelEl.textContent = 'V nieoceniana (intubacja) — zapis z literą „T"';
+    detailEl.innerHTML = `E=${GCS.e} + M=${GCS.m} = ${em}T${pedNote}<br><span style="font-size:0.82rem;color:var(--t2)">Drogi oddechowe już zabezpieczone. Pełna skala 3–15 niedostępna — interpretuj E+M; udokumentuj jako ${em}T.</span>`;
+    alertEl.style.display = 'none';
+    return;
+  }
 
   if (GCS.e === null || GCS.v === null || GCS.m === null) {
     scoreEl.textContent = '—';
@@ -1677,30 +1852,36 @@ function calcGCS() {
 
   const total = GCS.e + GCS.v + GCS.m;
   scoreEl.textContent = total;
-  detailEl.textContent = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}`;
+  const base = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}${pedNote}`;
 
   if (total >= 13) {
     scoreEl.className = 'result-score c-grn';
     labelEl.textContent = 'Łagodne zaburzenia świadomości (13–15)';
-    detailEl.innerHTML = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}<br><span style="font-size:0.82rem;color:var(--t2)">TK głowy rozważ gdy: utrata przytomności, amnezja, wymioty ≥2×, wiek &gt;65 lat, skaza krwotoczna, ogniskowy deficyt nerwowy (wg NICE)</span>`;
+    detailEl.innerHTML = `${base}<br><span style="font-size:0.82rem;color:var(--t2)">TK głowy rozważ gdy: utrata przytomności, amnezja, wymioty ≥2×, wiek &gt;65 lat, skaza krwotoczna, ogniskowy deficyt nerwowy (wg NICE)</span>`;
     alertEl.style.display = 'none';
   } else if (total >= 9) {
     scoreEl.className = 'result-score c-amb';
     labelEl.textContent = 'Umiarkowane zaburzenia świadomości (9–12)';
-    detailEl.innerHTML = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}<br><span style="font-size:0.82rem;color:var(--t2)">Wskazana TK głowy · Monitorowanie co 30 min · Najsilniejszy predyktor — składnik ruchowy (M)</span>`;
+    detailEl.innerHTML = `${base}<br><span style="font-size:0.82rem;color:var(--t2)">Wskazana TK głowy · Monitorowanie co 30 min · Najsilniejszy predyktor — składnik ruchowy (M)</span>`;
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
     labelEl.textContent = 'Ciężkie zaburzenia świadomości (≤ 8)';
-    detailEl.innerHTML = `E=${GCS.e} + V=${GCS.v} + M=${GCS.m} = ${total}<br><span style="font-size:0.82rem;color:var(--t2)">GCS ≤ 8 = kryterium intubacji · TK głowy pilna · Neurolodzy/neurochirurgia w trybie nagłym</span>`;
+    detailEl.innerHTML = `${base}<br><span style="font-size:0.82rem;color:var(--t2)">GCS ≤ 8 = kryterium intubacji · TK głowy pilna · Neurologia/neurochirurgia w trybie nagłym</span>`;
     alertEl.style.display = 'flex';
   }
 }
 
 function resetGCS() {
   GCS.e = null; GCS.v = null; GCS.m = null;
+  GCS_TYPE = 'adult'; GCS_INTUB = false;
   document.querySelectorAll('[data-group^="gcs-"]').forEach(b => b.classList.remove('sel'));
   ['gcs-e-badge','gcs-v-badge','gcs-m-badge'].forEach(id => document.getElementById(id).textContent = '–');
+  document.getElementById('gcs-adult-btn').classList.add('sel');
+  document.getElementById('gcs-child-btn').classList.remove('sel');
+  const ib = document.getElementById('gcs-intub-btn'); if (ib) ib.classList.remove('sel');
+  const vg = document.getElementById('gcs-v-group'); if (vg) { vg.style.opacity = ''; vg.style.pointerEvents = ''; }
+  document.querySelectorAll('#gcs-v-group .gcs-v-txt').forEach(s => { const b = s.closest('.btn-opt'); s.textContent = b.getAttribute('data-adult'); });
   calcGCS();
 }
 
@@ -1723,24 +1904,31 @@ function calcWells() {
   const detailEl = document.getElementById('wells-detail');
   const alertEl = document.getElementById('wells-alert');
 
+  const dichEl = document.getElementById('wells-dich');
   scoreEl.textContent = fmt1(total);
 
-  if (total <= 1) {
+  if (total < 2) {
     scoreEl.className = 'result-score c-grn';
-    labelEl.textContent = 'Małe prawdopodobieństwo PE (~8%)';
-    detailEl.innerHTML = 'D-dimer: wartość graniczna <b>wiek × 10 μg/L</b> u pacjentów >50 lat · Jeśli ujemny — PE wykluczona bez CTA<br><span style="font-size:0.82rem;color:var(--t2)">Standardowy próg: 500 μg/L · U >80 lat rozważ próg 800 μg/L</span>';
+    labelEl.textContent = 'Małe prawdopodobieństwo PE (<2 pkt)';
+    detailEl.innerHTML = 'D-dimer: próg <b>wiek × 10 μg/L</b> u >50 r.ż. · ujemny wyklucza PE bez angio-TK<br><span style="font-size:0.82rem;color:var(--t2)">Próg standardowy 500 μg/L · w grupie bardzo niskiego ryzyka rozważ regułę PERC (odstąpienie od D-dimeru)</span>';
     alertEl.style.display = 'none';
   } else if (total <= 6) {
     scoreEl.className = 'result-score c-amb';
-    labelEl.textContent = 'Pośrednie prawdopodobieństwo PE (~28%)';
-    detailEl.innerHTML = '<b>CTA tętnic płucnych</b> — metoda z wyboru · Scyntygrafia V/Q gdy kontraindykacje do jodu lub ciąża<br><span style="font-size:0.82rem;color:var(--t2)">Heparyna pomostowa do czasu wyniku CTA · Monitoruj SpO₂ i RR</span>';
+    labelEl.textContent = 'Pośrednie prawdopodobieństwo PE (2–6 pkt)';
+    detailEl.innerHTML = '<b>Angio-TK tętnic płucnych</b> — metoda z wyboru · scyntygrafia V/Q gdy przeciwwskazania do jodu lub ciąża<br><span style="font-size:0.82rem;color:var(--t2)">Heparyna pomostowa do czasu wyniku · monitoruj SpO₂ i RR</span>';
     alertEl.style.display = 'none';
   } else {
     scoreEl.className = 'result-score c-red';
-    labelEl.textContent = 'Duże prawdopodobieństwo PE (~60%)';
-    detailEl.innerHTML = '<b>Natychmiastowe leczenie przeciwkrzepliwe</b> — nie czekaj na CTA<br>NFH: bolus 80 IU/kg IV → 18 IU/kg/h · lub LMWH: enoksaparyna 1 mg/kg sc co 12h<br><span style="font-size:0.82rem;color:var(--t2)">Przy niestabilności hemo → tromboliza: rtPA 100 mg/2h lub bolus 0,6 mg/kg</span>';
+    labelEl.textContent = 'Duże prawdopodobieństwo PE (>6 pkt)';
+    detailEl.innerHTML = '<b>Natychmiastowa antykoagulacja</b> — nie czekaj na angio-TK<br>HNF: bolus 80 j.m./kg IV → 18 j.m./kg/h · lub enoksaparyna 1 mg/kg sc co 12h<br><span style="font-size:0.82rem;color:var(--t2)">Niestabilność hemodynamiczna → tromboliza (alteplaza 100 mg/2h lub 0,6 mg/kg) — zator wysokiego ryzyka</span>';
     alertEl.style.display = 'flex';
   }
+
+  // Model dwustopniowy (ESC 2019 / Christopher) — zawsze widoczny, podświetl aktywną gałąź
+  const unlikely = total <= 4;
+  dichEl.innerHTML = `<strong>Model dwustopniowy (ESC 2019) — suma ${fmt1(total)}:</strong><br>`
+    + `<span style="${unlikely ? 'font-weight:700;color:var(--grn)' : 'opacity:.5'}">≤ 4 → PE mało prawdopodobne — oznacz D-dimer (ujemny wyklucza, ~12% PE)</span><br>`
+    + `<span style="${!unlikely ? 'font-weight:700;color:var(--red)' : 'opacity:.5'}">&gt; 4 → PE prawdopodobne — angio-TK tętnic płucnych (~37% PE)</span>`;
 }
 
 function resetWells() {
@@ -1749,17 +1937,32 @@ function resetWells() {
 }
 
 /* ══════════════════════════════════════════════
-   3. CURB-65
+   3. CURB-65 / CRB-65
 ══════════════════════════════════════════════ */
+let CURB_MODE = 'curb';
 function curbToggle(el) {
   el.classList.toggle('checked');
   calcCURB();
 }
+function curbSetMode(m, btn) {
+  CURB_MODE = m;
+  document.getElementById('curb-full-btn').classList.toggle('sel', m === 'curb');
+  document.getElementById('curb-crb-btn').classList.toggle('sel', m === 'crb');
+  const urea = document.getElementById('curb-urea-item');
+  if (urea) {
+    const off = (m === 'crb');
+    urea.style.opacity = off ? '0.4' : '';
+    urea.style.pointerEvents = off ? 'none' : '';
+  }
+  calcCURB();
+}
 
 function calcCURB() {
-  let total = 0;
+  const crb = CURB_MODE === 'crb';
+  let total = 0; const letters = [];
   document.querySelectorAll('#curb-list .crit-item.checked').forEach(el => {
-    total += parseInt(el.getAttribute('data-pts'));
+    if (crb && el.getAttribute('data-curb') === 'U') return;   // CRB-65 pomija mocznik
+    total += 1; letters.push(el.getAttribute('data-curb'));
   });
 
   const scoreEl = document.getElementById('curb-score');
@@ -1768,27 +1971,40 @@ function calcCURB() {
   const alertEl = document.getElementById('curb-alert');
 
   scoreEl.textContent = total;
+  const maxS = crb ? 4 : 5;
+  const sel = letters.length ? letters.join(', ') + ' = ' + total + '/' + maxS : '0/' + maxS;
 
-  if (total <= 1) {
-    scoreEl.className = 'result-score c-grn';
-    labelEl.textContent = 'Niskie ryzyko — leczenie ambulatoryjne';
-    detailEl.innerHTML = 'Śmiertelność &lt;3% · Leczenie w domu<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: amoksycylina 500 mg 3×/d p.o. (7 dni) · Alternatywa: doksycyklina 100 mg 2×/d · Kontrola po 48h</span>';
-    alertEl.style.display = 'none';
-  } else if (total === 2) {
-    scoreEl.className = 'result-score c-amb';
-    labelEl.textContent = 'Umiarkowane ryzyko — hospitalizacja';
-    detailEl.innerHTML = 'Śmiertelność ~9% · Hospitalizacja na oddziale<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: ceftriakson 2g IV 1×/d + azytromycyna 500 mg IV/p.o. · lub lewofloksacyna 750 mg IV · Tlen, nawodnienie IV</span>';
-    alertEl.style.display = 'none';
+  const lowD = 'Leczenie ambulatoryjne (w domu)<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: amoksycylina 500 mg 3×/d p.o. (7 dni) · alternatywa: doksycyklina 100 mg 2×/d · kontrola po 48h</span>';
+  const modD = 'Hospitalizacja na oddziale<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: ceftriakson 2g IV 1×/d + azytromycyna 500 mg IV/p.o. · lub lewofloksacyna 750 mg IV · tlen, nawodnienie IV</span>';
+  const highD = 'OIT / intensywna opieka — ciężkie ZP (kryteria IDSA/ATS)<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: pip/taz 4,5g IV co 8h + azytromycyna 500 mg IV · przy podejrzeniu MRSA: wankomycyna lub linezolid · oceń wskazania do wentylacji</span>';
+
+  let sev, label, mort;
+  if (crb) {
+    if (total === 0) { sev = 0; label = 'Niskie ryzyko (CRB-65 = 0) — leczenie ambulatoryjne'; mort = '≈ 0,9%'; }
+    else if (total <= 2) { sev = 1; label = 'Pośrednie (CRB-65 1–2) — rozważ hospitalizację / obserwację'; mort = '≈ 5%'; }
+    else { sev = 2; label = 'Wysokie (CRB-65 3–4) — pilna hospitalizacja, rozważ OIT'; mort = '≈ 31%'; }
   } else {
-    scoreEl.className = 'result-score c-red';
-    labelEl.textContent = 'Wysokie ryzyko — OIT / intensywna opieka';
-    detailEl.innerHTML = 'Śmiertelność &gt;22% (CURB≥3) · Kryteria ciężkiego ZP (IDSA/ATS)<br><span style="font-size:0.82rem;color:var(--t2)">Antybiotyk: pip/taz 4,5g IV co 8h + azytromycyna 500 mg IV · Przy podejrzeniu MRSA: wankomycyna lub linezolid · Ocena wskazań do wentylacji mechanicznej</span>';
-    alertEl.style.display = 'flex';
+    const curbMort = { 0:'0,6%', 1:'2,7%', 2:'6,8%', 3:'14%', 4:'27,8%', 5:'27,8%' };
+    if (total <= 1) { sev = 0; label = 'Niskie ryzyko (CURB 0–1) — leczenie ambulatoryjne'; }
+    else if (total === 2) { sev = 1; label = 'Umiarkowane ryzyko (CURB 2) — hospitalizacja'; }
+    else { sev = 2; label = 'Wysokie ryzyko (CURB ≥3) — OIT / intensywna opieka'; }
+    mort = curbMort[total];
   }
+
+  scoreEl.className = 'result-score ' + (sev === 0 ? 'c-grn' : sev === 1 ? 'c-amb' : 'c-red');
+  labelEl.textContent = label;
+  detailEl.innerHTML = (sev === 0 ? lowD : sev === 1 ? modD : highD)
+    + '<br><span style="font-size:0.8rem;color:var(--t3)">Zaznaczone: ' + sel + ' · śmiertelność 30-dniowa ' + mort + ' (Lim 2003)</span>';
+  alertEl.style.display = (sev === 2) ? 'flex' : 'none';
 }
 
 function resetCURB() {
+  CURB_MODE = 'curb';
   document.querySelectorAll('#curb-list .crit-item').forEach(el => el.classList.remove('checked'));
+  document.getElementById('curb-full-btn').classList.add('sel');
+  document.getElementById('curb-crb-btn').classList.remove('sel');
+  const urea = document.getElementById('curb-urea-item');
+  if (urea) { urea.style.opacity = ''; urea.style.pointerEvents = ''; }
   calcCURB();
 }
 
@@ -1805,16 +2021,24 @@ function parkSetType(t, btn) {
 
 function calcParkland() {
   const wt = parseFloat(document.getElementById('park-wt').value);
-  const tbsaEl = document.getElementById('park-tbsa');
-  const tbsa = parseFloat(tbsaEl.value);
+  const tbsa = parseFloat(document.getElementById('park-tbsa').value);
   document.getElementById('park-tbsa-val').textContent = tbsa + '%';
+  const elapsed = parseFloat(document.getElementById('park-elapsed').value) || 0;
+  const eDisp = (elapsed % 1) ? elapsed.toFixed(1) : String(elapsed);
+  document.getElementById('park-elapsed-val').textContent = eDisp + ' h';
   const inhale = document.getElementById('park-inhale').value === 'yes';
+  const formulaSel = parseFloat(document.getElementById('park-formula').value) || 4;
 
   const scoreEl = document.getElementById('park-score');
   const labelEl = document.getElementById('park-label');
   const detailEl = document.getElementById('park-detail');
   const alertEl = document.getElementById('park-alert');
+  const inhaleAlert = document.getElementById('park-inhale-alert');
   const breakdown = document.getElementById('park-breakdown-ext');
+  const lbl8 = document.getElementById('park-8h-lbl');
+
+  // Uraz wziewny: skutek kliniczny (wczesna intubacja / centrum oparzeń), NIE mnożnik objętości (ABA — ryzyko przepłynięcia)
+  inhaleAlert.style.display = inhale ? 'flex' : 'none';
 
   if (!wt || wt <= 0 || !tbsa || tbsa <= 0) {
     scoreEl.textContent = '—';
@@ -1826,66 +2050,105 @@ function calcParkland() {
     return;
   }
 
-  // Współczynnik: 4 ml dorosły, 3 ml pediatryczny
-  const factor = (PARK_TYPE === 'child') ? 3 : 4;
-  // Dodatkowe płyny przy oparzeniu inhalacyjnym
-  const extraFactor = inhale ? 2 : 0;
-  const totalFactor = factor + extraFactor;
+  const isChild = (PARK_TYPE === 'child');
+  const factor = isChild ? 3 : formulaSel;   // dziecko: 3 ml + maintenance; dorosły: 4 (Parkland) lub 2 (Brooke zmod.)
+  const formulaName = isChild ? 'pediatryczna 3 ml/kg/%' : (factor === 2 ? 'Brooke zmod. 2 ml/kg/%' : 'Parkland 4 ml/kg/%');
 
-  let total = totalFactor * wt * tbsa;
-
-  // Płyny podtrzymujące u dzieci (Holliday-Segar): 100 ml/kg dla ≤10kg, +50 ml/kg 10-20kg, +20 ml/kg >20kg
+  const resus = factor * wt * tbsa;           // objętość resuscytacyjna 24h
   let maintenance = 0;
-  if (PARK_TYPE === 'child') {
+  if (isChild) {                              // Holliday-Segar: 100/50/20 ml/kg
     if (wt <= 10) maintenance = 100 * wt;
     else if (wt <= 20) maintenance = 1000 + 50 * (wt - 10);
     else maintenance = 1500 + 20 * (wt - 20);
-    total += maintenance;
   }
+  const total = resus + maintenance;
+  const half = resus / 2;
+  const maintRate = maintenance / 24;
+  const mlkg = resus / wt;                     // objętość resuscytacyjna na kg — wskaźnik przepłynięcia (Ivy)
+  const mlkgR = fmt0(mlkg);
 
-  const half = total / 2;
-  const rate8h = fmt0(half / 8);
-  const rate16h = fmt0(half / 16);
-  const day2Vol = fmt0(total * 0.5);
+  // okno pierwszej połowy = 8h OD oparzenia (nie od przyjęcia)
+  const firstRemain = Math.max(0, 8 - elapsed);
+  const rDisp = (firstRemain % 1) ? firstRemain.toFixed(1) : String(firstRemain);
+  let rate1txt, rate1lbl, rate2;
+  if (elapsed < 8) {
+    rate1txt = fmt0((firstRemain > 0 ? half / firstRemain : half) + maintRate) + ' ml/h';
+    rate1lbl = (firstRemain >= 8) ? 'ml/h (1. połowa, 8h)' : ('ml/h — nadrób w ' + rDisp + 'h');
+    rate2 = half / 16 + maintRate;
+  } else {
+    const secondRemain = Math.max(1, 24 - elapsed);
+    rate1txt = '—';
+    rate1lbl = '1. połowa: już minęła';
+    rate2 = half / Math.min(16, secondRemain) + maintRate;
+  }
 
   scoreEl.textContent = fmt0(total) + ' ml';
   scoreEl.className = 'result-score c-blue';
-  const formulaStr = PARK_TYPE === 'child'
-    ? `3 ml × ${wt} kg × ${tbsa}% + ${fmt0(maintenance)} ml maintenance`
-    : `4 ml × ${wt} kg × ${tbsa}%`;
-  labelEl.textContent = `Łącznie 24h: ${fmt0(total)} ml Ringera mleczanowego`;
-  detailEl.textContent = formulaStr + (inhale ? ` + ${fmt0(2*wt*tbsa)} ml (inhalacja)` : '');
+  labelEl.textContent = '24h: ' + fmt0(total) + ' ml Ringera mleczanowego';
+  detailEl.textContent = formulaName + ': ' + factor + ' × ' + wt + ' kg × ' + tbsa + '% = ' + fmt0(resus) + ' ml'
+    + (isChild ? ' + ' + fmt0(maintenance) + ' ml podtrzymujące' : '') + ' · ½ = ' + fmt0(half) + ' ml · ' + mlkgR + ' ml/kg/24h';
 
   document.getElementById('park-total').textContent = fmt0(total) + ' ml';
   document.getElementById('park-8h-vol').textContent = fmt0(half) + ' ml';
-  document.getElementById('park-8h').textContent = rate8h + ' ml/h';
+  document.getElementById('park-8h').textContent = rate1txt;
+  if (lbl8) lbl8.textContent = rate1lbl;
   document.getElementById('park-16h-vol').textContent = fmt0(half) + ' ml';
-  document.getElementById('park-16h').textContent = rate16h + ' ml/h';
-  document.getElementById('park-fluid').textContent = 'Ringer\nmleczanowy';
+  document.getElementById('park-16h').textContent = fmt0(rate2) + ' ml/h';
+  document.getElementById('park-fluid').innerHTML = 'Ringer<br>mleczanowy';
 
-  const urineTarget = PARK_TYPE === 'child' ? `${fmt0(1*wt)}–${fmt0(2*wt)} ml/h (1–2 ml/kg/h)` : `${fmt0(0.5*wt)}–${fmt0(wt)} ml/h (0,5–1 ml/kg/h)`;
-  const day2Note = `<strong>2. doba (24–48h):</strong> 0,5 × V₁ = ${day2Vol} ml — koloidy (5% albuminy lub FFP) + glukoza 5%. Dostosuj tempo do diurezy.<br><br><strong>🎯 Cel diurezy:</strong> ${urineTarget} · Jeśli za mała — przyspiesz wlew o 20% · Jeśli za duża — zwolnij o 20% · Diureza <b>nie &lt;0,5 ml/kg/h</b> (ryzyko AKI). Nie stosuj forsowanej diurezy (mannitol) bez wskazań.`;
-  document.getElementById('park-day2').innerHTML = day2Note;
+  const urineTarget = isChild
+    ? fmt0(1 * wt) + '–' + fmt0(2 * wt) + ' ml/h (1–2 ml/kg/h)'
+    : fmt0(0.5 * wt) + '–' + fmt0(wt) + ' ml/h (0,5–1 ml/kg/h)';
+  let timeNote = '';
+  if (elapsed > 0 && elapsed < 8) {
+    timeNote = '<strong>⏱ Minęło ' + eDisp + 'h od oparzenia:</strong> 1. połowę (' + fmt0(half) + ' ml) podaj w pozostałe ' + rDisp + 'h → ' + fmt0(half / firstRemain) + ' ml/h (nadrabianie wczesnej resuscytacji).<br><br>';
+  } else if (elapsed >= 8) {
+    timeNote = '<strong>⏱ Minęło ' + eDisp + 'h:</strong> okno 1. połowy (8h) zamknięte — jeśli był niedopłyn, nadrabiaj ostrożnie pod kontrolą diurezy.<br><br>';
+  }
+  let rorLine = '';
+  if (!isChild && wt >= 40) {                  // Rule of Ten (ABA): %TBSA × 10 ml/h dla 40–80 kg; +100 ml/h na każde 10 kg >80
+    const rorExtra = wt > 80 ? Math.floor((wt - 80) / 10) * 100 : 0;
+    const ror = tbsa * 10 + rorExtra;
+    rorLine = '<br><br><strong>Rule of Ten (ABA — prosty start):</strong> ' + tbsa + '% × 10' + (rorExtra ? ' + ' + rorExtra + ' (>80 kg)' : '') + ' = <b>' + ror + ' ml/h</b> na start, dalej miareczkuj wg diurezy. Wzór Parkland bywa zawyżony przy dużym TBSA.';
+  }
+  document.getElementById('park-day2').innerHTML = timeNote
+    + '<strong>2. doba (24–48h):</strong> ≈0,5 × objętość 1. doby = ' + fmt0(resus * 0.5) + ' ml — koloidy (5% albuminy lub FFP) + glukoza 5%.<br><br>'
+    + '<strong>🎯 Cel diurezy:</strong> ' + urineTarget + '. Za mała → przyspiesz o 20%; za duża (>1 ml/kg/h) → zwolnij o 20% (ryzyko przepłynięcia). Nie forsuj diurezy (bez mannitolu).'
+    + rorLine;
   breakdown.style.display = 'block';
 
-  let alertTxt = '';
-  if (tbsa > 60) {
-    alertEl.style.display = 'flex';
-    alertTxt = 'TBSA > 60% — omów rokowanie z rodziną; konsultacja centrum oparzelniczego pilna';
-  } else if (tbsa > 20) {
-    alertEl.style.display = 'flex';
-    alertTxt = 'TBSA > 20% — hospitalizacja OIT, konsultacja centrum oparzelniczego (CLO)';
+  // Guard przepłynięcia (Ivy) — objętość resuscytacyjna na kg
+  const ivyAlert = document.getElementById('park-ivy-alert');
+  const ivyTxt = document.getElementById('park-ivy-txt');
+  if (mlkg >= 250) {
+    ivyAlert.style.display = 'flex';
+    ivyAlert.style.background = 'oklch(0.62 0.22 25/.14)';
+    ivyAlert.style.borderColor = 'var(--red)';
+    ivyTxt.innerHTML = '<b>' + mlkgR + ' ml/kg/24h — przekroczony próg Ivy (250 ml/kg).</b> Bardzo wysokie ryzyko jatrogennej hiperwolemii: zespół ciasnoty wewnątrzbrzusznej, obrzęk płuc / ARDS, ciasnota przedziałów powięziowych. To objętość STARTOWA wzoru — NIE przetaczaj jej automatycznie. Miareczkuj wg diurezy, rozważ wczesne koloidy / ograniczenie krystaloidów, monitoruj ciśnienie śródbrzuszne i szczytowe w drogach oddechowych.';
+  } else if (mlkg >= 200) {
+    ivyAlert.style.display = 'flex';
+    ivyAlert.style.background = 'oklch(0.72 0.16 75/.14)';
+    ivyAlert.style.borderColor = 'var(--amb)';
+    ivyTxt.innerHTML = '<b>' + mlkgR + ' ml/kg/24h — zbliżasz się do progu Ivy (250 ml/kg).</b> Realne ryzyko przepłynięcia. Traktuj objętość jako startową, ściśle miareczkuj wg diurezy.';
   } else {
-    alertEl.style.display = 'none';
+    ivyAlert.style.display = 'none';
   }
-  const alertTxtEl = document.getElementById('park-alert-txt');
-  if (alertTxtEl) alertTxtEl.textContent = alertTxt;
+
+  let alertTxt = '';
+  const critChild = isChild && tbsa > 5;
+  const critAdult = !isChild && tbsa > 10;
+  if (tbsa > 60) alertTxt = 'TBSA > 60% — oparzenie krytyczne; pilna konsultacja centrum oparzeń, omów rokowanie.';
+  else if (tbsa > 20) alertTxt = 'TBSA > 20% — hospitalizacja OIT + konsultacja centrum oparzeń (CLO).';
+  else if (critChild || critAdult || inhale) alertTxt = 'Kryteria centrum oparzeń: ' + (isChild ? 'dziecko >5% TBSA' : 'dorosły >10% TBSA') + (inhale ? ' · uraz wziewny' : '') + ' · także III°/twarz/ręce/krocze/elektryczne → rozważ transfer.';
+  if (alertTxt) { alertEl.style.display = 'flex'; document.getElementById('park-alert-txt').textContent = alertTxt; }
+  else alertEl.style.display = 'none';
 }
 
 function resetParkland() {
   document.getElementById('park-wt').value = '';
   document.getElementById('park-tbsa').value = '20';
-  document.getElementById('park-degree').value = 'II';
+  document.getElementById('park-elapsed').value = '0';
+  document.getElementById('park-formula').value = '4';
   document.getElementById('park-inhale').value = 'no';
   PARK_TYPE = 'adult';
   document.querySelectorAll('#ck-park .btn-opt').forEach(b => b.classList.remove('sel'));
@@ -1948,9 +2211,8 @@ function calcPed() {
   const diaz = Math.min(0.5 * wt, 10);
   const diazStr = fmt1(diaz) + ' mg doodbytniczo';
 
-  // Płyny bolus
-  const fluid = 10 * wt;
-  const fluidStr = fmt0(fluid) + ' ml NaCl 0.9% IV/IO (wstrząs: do 3×)';
+  // Płyny bolus (ERC: 10–20 ml/kg; 10 ostrożnie w DKA/kardiogennym, 20 w hipowolemii/sepsie)
+  const fluidStr = fmt0(10 * wt) + '–' + fmt0(20 * wt) + ' ml NaCl 0.9% IV/IO';
 
   // Paracetamol IV
   const pcm = Math.min(15 * wt, 1000);
@@ -1966,7 +2228,7 @@ function calcPed() {
     ['Atropina', '0.02 mg/kg IV (min 0.1 mg)', atropStr, isAdolescent ? 'max 1 mg' : 'max 0.5 mg'],
     ['Midazolam – drgawki', '0.2 mg/kg IM/IN (max 10 mg)', midazStr, 'Buccal / IN: takie same dawki'],
     ['Diazepam PR', '0.5 mg/kg PR (max 10 mg)', diazStr, 'Doodbytniczo'],
-    ['Płyny – bolus', '10 ml/kg NaCl 0.9%', fluidStr, 'W wstrząsie do 3 bolusów'],
+    ['Płyny – bolus', '10–20 ml/kg NaCl 0.9%', fluidStr, 'Powtarzaj do 3× · 10 ml/kg w DKA/kardiogennym'],
     ['Paracetamol IV', '15 mg/kg (max 1000 mg)', pcmStr, '>10 kg: wlew 15 min'],
     ['Salbutamol – nebulizacja', '<20 kg: 2.5 mg / >20 kg: 5 mg', salbStr, 'Co 20 min (max 3×)'],
   ];
@@ -2222,19 +2484,28 @@ function resetTBSA() {
    9. COCKCROFT-GAULT
 ══════════════════════════════════════════════ */
 let CG_SEX = 'M';
+let CG_CRUNIT = 'umol';
 function setCGSex(s, btn) {
   CG_SEX = s;
-  document.querySelectorAll('#ck-cg .btn-opt').forEach(b => b.classList.remove('on'));
+  [document.getElementById('cg-male'), document.getElementById('cg-female')].forEach(b => b && b.classList.remove('on'));
   btn.classList.add('on');
+  calcCG();
+}
+function setCGUnit(u, btn) {
+  CG_CRUNIT = u;
+  [document.getElementById('cg-umol'), document.getElementById('cg-mgdl')].forEach(b => b && b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('cg-cr-unit').textContent = (u === 'umol') ? 'µmol/L' : 'mg/dl';
   calcCG();
 }
 function calcCG() {
   const age = parseFloat(document.getElementById('cg-age').value);
   const wt  = parseFloat(document.getElementById('cg-weight').value);
-  const cr  = parseFloat(document.getElementById('cg-creat').value);
+  let cr    = parseFloat(document.getElementById('cg-creat').value);
   const out = document.getElementById('cg-result');
   const interp = document.getElementById('cg-interp');
   if (!(age > 0 && wt > 0 && cr > 0)) { out.textContent = '—'; interp.textContent = ''; return; }
+  if (CG_CRUNIT === 'umol') cr = cr / 88.4;   // µmol/L → mg/dl (1 mg/dl = 88,4 µmol/L)
   let cl = ((140 - age) * wt) / (72 * cr);
   if (CG_SEX === 'K') cl *= 0.85;
   cl = Math.round(cl);
@@ -2295,57 +2566,7 @@ function resetQSOFA() {
 }
 
 /* ══════════════════════════════════════════════
-   11. MAP
-══════════════════════════════════════════════ */
-function calcMAP() {
-  const sbp = parseFloat(document.getElementById('map-sbp').value);
-  const dbp = parseFloat(document.getElementById('map-dbp').value);
-  const scoreEl = document.getElementById('map-score');
-  const labelEl = document.getElementById('map-label');
-  const detailEl = document.getElementById('map-detail');
-  const alertEl = document.getElementById('map-alert');
-  if (!sbp || !dbp || sbp <= dbp) {
-    scoreEl.textContent = '—';
-    scoreEl.className = 'result-score c-blue';
-    labelEl.textContent = !sbp || !dbp ? 'Podaj RRs i RRr' : 'Błąd: RRs musi być > RRr';
-    detailEl.textContent = '';
-    alertEl.style.display = 'none';
-    return;
-  }
-  const map = dbp + (sbp - dbp) / 3;
-  const mapR = Math.round(map * 10) / 10;
-  scoreEl.textContent = mapR;
-  detailEl.textContent = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg`;
-  if (map < 65) {
-    scoreEl.className = 'result-score c-red';
-    labelEl.textContent = 'WSTRZĄS / krytyczna hipoperfuzja (MAP < 65)';
-    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Noradrenalina: wazopressor z wyboru · Cel w sepsie: MAP ≥65 · Cel w TBI/udarze: MAP ≥80 · Cel w krwotoku: MAP 50–65 (do hemostazy)</span>`;
-    alertEl.style.display = 'flex';
-  } else if (map < 70) {
-    scoreEl.className = 'result-score c-amb';
-    labelEl.textContent = 'Graniczna perfuzja narządowa (MAP 65–70)';
-    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Cele MAP wg kontekstu: sepsa ≥65 · TBI ≥80 · Udar niedokrwienny <180/105 · AKI ryzyko → cel ≥75</span>`;
-    alertEl.style.display = 'none';
-  } else if (map <= 100) {
-    scoreEl.className = 'result-score c-grn';
-    labelEl.textContent = 'Prawidłowe MAP (70–100 mmHg)';
-    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Cele MAP wg kontekstu: sepsa ≥65 · TBI ≥80–90 · Udar niedokrwienny ≤180 · Ciśnienie perfuzji mózgu: CPP = MAP − ICP (cel ≥60)</span>`;
-    alertEl.style.display = 'none';
-  } else {
-    scoreEl.className = 'result-score c-amb';
-    labelEl.textContent = 'Podwyższone MAP (> 100 mmHg) — nadciśnienie';
-    detailEl.innerHTML = `${dbp} + (${sbp} − ${dbp}) / 3 = ${mapR} mmHg<br><span style="font-size:0.82rem;color:var(--t2)">Pilna interwencja przy MAP &gt;130 + uszkodzenie narządów (udar, OZW, dyssekacja aorty, ostra nefropatia)</span>`;
-    alertEl.style.display = 'none';
-  }
-}
-function resetMAP() {
-  document.getElementById('map-sbp').value = '';
-  document.getElementById('map-dbp').value = '';
-  calcMAP();
-}
-
-/* ══════════════════════════════════════════════
-   12. KATECHOLAMINY
+   11. KATECHOLAMINY
 ══════════════════════════════════════════════ */
 const CAT_DRUGS = {
   dopamina: {
@@ -2630,6 +2851,17 @@ function scoreNEWS_SpO2(spo2) {
   if (spo2 >= 92) return 2;
   return 3;
 }
+// NEWS2 Skala 2 — docelowa SpO₂ 88–92% (hiperkapniczna niewydolność oddechowa, np. POChP)
+function scoreNEWS_SpO2_Scale2(spo2, onOxygen) {
+  if (spo2 <= 83) return 3;
+  if (spo2 <= 85) return 2;
+  if (spo2 <= 87) return 1;
+  if (spo2 <= 92) return 0;
+  if (!onOxygen) return 0;        // ≥93% na powietrzu → 0
+  if (spo2 <= 94) return 1;       // 93–94% na tlenie
+  if (spo2 <= 96) return 2;       // 95–96% na tlenie
+  return 3;                       // ≥97% na tlenie
+}
 function scoreNEWS_SBP(sbp) {
   if (sbp <= 90) return 3;
   if (sbp <= 100) return 2;
@@ -2679,8 +2911,9 @@ function calcNEWS2() {
     return;
   }
 
+  const scale2 = document.getElementById('news-spo2scale').value === '2';
   const sRR = scoreNEWS_RR(rr);
-  const sSpO2 = scoreNEWS_SpO2(spo2);
+  const sSpO2 = scale2 ? scoreNEWS_SpO2_Scale2(spo2, o2) : scoreNEWS_SpO2(spo2);
   const sO2 = o2 ? 2 : 0;
   const sSBP = scoreNEWS_SBP(sbp);
   const sHR = scoreNEWS_HR(hr);
@@ -2690,7 +2923,7 @@ function calcNEWS2() {
   const total = sRR + sSpO2 + sO2 + sSBP + sHR + sTemp + sAVPU;
 
   scoreEl.textContent = total;
-  subscoresEl.innerHTML = `RR:${sRR} · SpO₂:${sSpO2} · O₂:${sO2} · RRs:${sSBP} · HR:${sHR} · Temp:${sTemp} · AVPU:${sAVPU}`;
+  subscoresEl.innerHTML = `RR:${sRR} · SpO₂${scale2 ? ' (S2)' : ''}:${sSpO2} · O₂:${sO2} · RRs:${sSBP} · HR:${sHR} · Temp:${sTemp} · AVPU:${sAVPU}`;
   subscoresEl.style.display = 'block';
 
   // Check for single parameter score = 3 (high risk regardless of total)
@@ -2721,6 +2954,7 @@ function calcNEWS2() {
 function resetNEWS2() {
   ['news-rr','news-spo2','news-sbp','news-hr','news-temp'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('news-o2').value = 'no';
+  document.getElementById('news-spo2scale').value = '1';
   document.getElementById('news-avpu').value = 'A';
   calcNEWS2();
 }
@@ -2759,8 +2993,8 @@ function calcResus() {
   // Glukoza 10%
   const gluc_ml = fmt0(2 * wt); // 2ml/kg
 
-  // NaCl bolus
-  const nacl_ml = fmt0(20 * wt);
+  // NaCl bolus (ERC ped: 10–20 ml/kg)
+  const nacl_ml = fmt0(10 * wt) + '–' + fmt0(20 * wt);
 
   // Diazepam doodbytniczy
   const diaz_mg = Math.min(0.5 * wt, 10);
@@ -2798,9 +3032,9 @@ function calcResus() {
     ['Glukoza 10% IV/IO', '2 ml/kg',
       `<span class="drug-calc">${gluc_ml} ml glukozy 10%</span>`,
       'Hipoglikemia · Noworodki: glukoza 10%, starsze: 10%'],
-    ['NaCl 0,9% — bolus', '20 ml/kg IV/IO',
+    ['NaCl 0,9% — bolus', '10–20 ml/kg IV/IO',
       `<span class="drug-calc">${nacl_ml} ml NaCl 0,9%</span>`,
-      'Wstrząs · powtarzaj do 3× · Monitoruj objawy przeciążenia'],
+      'Wstrząs · powtarzaj do 3× · 10 ml/kg w DKA/kardiogennym · Monitoruj przeciążenie'],
     ['Diazepam — doodbytniczo', '0,5 mg/kg PR (maks 10 mg)',
       `<span class="drug-calc">${fmt1(diaz_mg)} mg PR</span>`,
       'Drgawki · dostępna też wersja donosowa'],
@@ -2834,9 +3068,388 @@ function resetResus() {
 }
 
 /* ══════════════════════════════════════════════
+   NOWE KALKULATORY — silnik data-driven (checklisty)
+══════════════════════════════════════════════ */
+const NEW_SCORES = {
+  cha2ds2: {
+    name:'CHA₂DS₂-VASc', sub:'Ryzyko udaru w migotaniu przedsionków (AF)', icon:'🫀', stripe:'#dc2626',
+    items:[
+      {t:'<b>C</b> — Zastoinowa niewydolność serca / dysfunkcja LK', p:1},
+      {t:'<b>H</b> — Nadciśnienie tętnicze', p:1},
+      {t:'<b>A₂</b> — Wiek ≥ 75 lat', p:2},
+      {t:'<b>D</b> — Cukrzyca', p:1},
+      {t:'<b>S₂</b> — Przebyty udar / TIA / zatorowość', p:2},
+      {t:'<b>V</b> — Choroba naczyniowa (zawał, PAD, blaszka aorty)', p:1},
+      {t:'<b>A</b> — Wiek 65–74 lat', p:1},
+      {t:'<b>Sc</b> — Płeć żeńska', p:1},
+    ],
+    bands:[
+      {max:0, cls:'c-grn', label:'Niskie ryzyko (0 pkt)', detail:'Mężczyzna 0 pkt — bez antykoagulacji. Ryzyko udaru ~0,2%/rok'},
+      {max:1, cls:'c-amb', label:'Pośrednie (1 pkt)', detail:'Mężczyzna 1 pkt — rozważ antykoagulację. Kobieta 1 pkt (sama płeć) — niskie ryzyko, bez AK'},
+      {max:99, cls:'c-red', label:'Wysokie ryzyko (≥ 2 pkt)', detail:'Antykoagulacja wskazana (NOAC preferowany). Próg: ≥2 (M) / ≥3 (K)', alert:true},
+    ],
+    alertTxt:'Antykoagulacja wskazana — oceń też ryzyko krwawienia (HAS-BLED)',
+    source:'Lip GYH et al. Chest 2010; ESC AF Guidelines 2020.'
+  },
+  hasbled: {
+    name:'HAS-BLED', sub:'Ryzyko krwawienia przy antykoagulacji', icon:'🩸', stripe:'#be123c',
+    items:[
+      {t:'<b>H</b> — Nadciśnienie (SBP > 160 mmHg)', p:1},
+      {t:'<b>A</b> — Nieprawidłowa funkcja nerek (dializa/Cr>200 µmol/L)', p:1},
+      {t:'<b>A</b> — Nieprawidłowa funkcja wątroby (marskość/bilirubina>2×)', p:1},
+      {t:'<b>S</b> — Przebyty udar', p:1},
+      {t:'<b>B</b> — Krwawienie w wywiadzie / predyspozycja', p:1},
+      {t:'<b>L</b> — Labilne INR (TTR < 60%)', p:1},
+      {t:'<b>E</b> — Wiek > 65 lat (Elderly)', p:1},
+      {t:'<b>D</b> — Leki zwiększające krwawienie (NLPZ, antyagregant)', p:1},
+      {t:'<b>D</b> — Alkohol ≥ 8 jedn./tydzień', p:1},
+    ],
+    bands:[
+      {max:2, cls:'c-grn', label:'Niskie ryzyko krwawienia (0–2)', detail:'Antykoagulacja względnie bezpieczna. Standardowa kontrola'},
+      {max:99, cls:'c-red', label:'Wysokie ryzyko krwawienia (≥ 3)', detail:'Ostrożność + częsta kontrola. NIE jest przeciwwskazaniem do AK — koryguj czynniki odwracalne (RR, NLPZ, alkohol, INR)', alert:true},
+    ],
+    alertTxt:'Wysokie ryzyko krwawienia — koryguj czynniki odwracalne, nie odstawiaj AK automatycznie',
+    source:'Pisters R et al. Chest 2010; ESC AF Guidelines 2020.'
+  },
+  wellsdvt: {
+    name:'Wells — DVT', sub:'Prawdopodobieństwo zakrzepicy żył głębokich', icon:'🦵', stripe:'#0ea5e9',
+    items:[
+      {t:'Aktywny nowotwór (leczenie w ciągu 6 mies.)', p:1},
+      {t:'Porażenie / niedowład / unieruchomienie kończyny w gipsie', p:1},
+      {t:'Unieruchomienie > 3 dni lub operacja < 12 tyg.', p:1},
+      {t:'Tkliwość wzdłuż przebiegu żył głębokich', p:1},
+      {t:'Obrzęk całej kończyny', p:1},
+      {t:'Obrzęk łydki > 3 cm vs. zdrowa', p:1},
+      {t:'Obrzęk ciastowaty (objawowa kończyna)', p:1},
+      {t:'Widoczne żyły powierzchowne poboczne (nie żylakowe)', p:1},
+      {t:'Przebyta udokumentowana DVT', p:1},
+      {t:'Rozpoznanie alternatywne równie/bardziej prawdopodobne', p:-2},
+    ],
+    bands:[
+      {max:1, cls:'c-grn', label:'Małe prawdopodobieństwo DVT (< 2)', detail:'D-dimer: jeśli ujemny — DVT wykluczona. Jeśli dodatni — USG żył'},
+      {max:99, cls:'c-amb', label:'DVT prawdopodobna (≥ 2)', detail:'USG uciskowe żył (Doppler) — metoda z wyboru. Rozważ LMWH do czasu badania'},
+    ],
+    source:'Wells PS et al. Lancet 1997; NEJM 2003.'
+  },
+  sgarbossa: {
+    name:'Sgarbossa', sub:'STEMI przy LBBB / stymulatorze', icon:'📈', stripe:'#f59e0b',
+    items:[
+      {t:'Zgodne uniesienie ST ≥ 1 mm (konkordancja z QRS)', p:5},
+      {t:'Obniżenie ST ≥ 1 mm w V1–V3', p:3},
+      {t:'Niezgodne uniesienie ST ≥ 5 mm (dyskordancja z QRS)', p:2},
+    ],
+    bands:[
+      {max:2, cls:'c-grn', label:'Kryteria niespełnione (< 3)', detail:'STEMI mało prawdopodobny wg Sgarbossa. Rozważ kryteria zmodyfikowane (Smith): ST/S ≤ −0,25'},
+      {max:99, cls:'c-red', label:'STEMI prawdopodobny (≥ 3)', detail:'Wysoka swoistość zawału przy LBBB. Pilna konsultacja kardiologiczna / hemodynamika (PCI)', alert:true},
+    ],
+    alertTxt:'STEMI prawdopodobny przy LBBB — aktywuj ścieżkę PCI',
+    source:'Sgarbossa EB et al. NEJM 1996; Smith SW et al. 2012.'
+  },
+  spesi: {
+    name:'sPESI', sub:'Ryzyko 30-dniowe w zatorowości płucnej', icon:'🫁', stripe:'#0891b2',
+    items:[
+      {t:'Wiek > 80 lat', p:1},
+      {t:'Czynny nowotwór', p:1},
+      {t:'Przewlekła choroba serca lub płuc', p:1},
+      {t:'Tętno ≥ 110/min', p:1},
+      {t:'SBP < 100 mmHg', p:1},
+      {t:'SpO₂ < 90%', p:1},
+    ],
+    bands:[
+      {max:0, cls:'c-grn', label:'Niskie ryzyko (0 pkt)', detail:'Śmiertelność 30-dniowa ~1%. Rozważ leczenie ambulatoryjne / wczesny wypis (jeśli stabilny i warunki domowe)'},
+      {max:99, cls:'c-red', label:'Wysokie ryzyko (≥ 1 pkt)', detail:'Śmiertelność 30-dniowa ~11%. Hospitalizacja; przy niestabilności hemodynamicznej rozważ OIT i trombolizę', alert:true},
+    ],
+    alertTxt:'sPESI ≥1 — hospitalizacja, monitoruj niestabilność',
+    source:'Jiménez D et al. Arch Intern Med 2010.'
+  },
+  centor: {
+    name:'Centor / McIsaac', sub:'Prawdopodobieństwo anginy paciorkowcowej (GAS)', icon:'😷', stripe:'#84cc16',
+    items:[
+      {t:'Gorączka > 38°C', p:1},
+      {t:'Brak kaszlu', p:1},
+      {t:'Powiększone, tkliwe węzły szyjne przednie', p:1},
+      {t:'Wysięk / obrzęk migdałków', p:1},
+      {t:'Wiek 3–14 lat', p:1},
+      {t:'Wiek ≥ 45 lat', p:-1},
+    ],
+    bands:[
+      {max:1, cls:'c-grn', label:'Niskie (0–1 pkt)', detail:'Paciorkowiec mało prawdopodobny. Bez antybiotyku i bez wymazu — leczenie objawowe'},
+      {max:3, cls:'c-amb', label:'Pośrednie (2–3 pkt)', detail:'Wykonaj szybki test/wymaz na GAS; antybiotyk tylko jeśli dodatni'},
+      {max:99, cls:'c-red', label:'Wysokie (≥ 4 pkt)', detail:'Wysokie prawdopodobieństwo GAS. Rozważ antybiotyk (fenoksymetylopenicylina 1000 mg 2×/d 10 dni) lub test potwierdzający'},
+    ],
+    source:'Centor RM et al. 1981; McIsaac WJ et al. CMAJ 1998.'
+  },
+  canadianct: {
+    name:'Canadian CT Head', sub:'Wskazania do TK głowy (uraz, GCS 13–15)', icon:'🧠', stripe:'#7c3aed',
+    items:[
+      {t:'GCS < 15 po 2 h od urazu', p:1},
+      {t:'Podejrzenie otwartego / wgłobionego złamania czaszki', p:1},
+      {t:'Objawy złamania podstawy czaszki (krwiak okularowy, płynotok)', p:1},
+      {t:'Wymioty ≥ 2 epizody', p:1},
+      {t:'Wiek ≥ 65 lat', p:1},
+      {t:'Amnezja wsteczna ≥ 30 min przed urazem', p:1},
+      {t:'Niebezpieczny mechanizm (pieszy/rower vs auto, upadek > 1 m / 5 schodów)', p:1},
+    ],
+    bands:[
+      {max:0, cls:'c-grn', label:'Brak kryteriów — TK nie jest wymagane', detail:'Wg Canadian CT Head Rule (uraz głowy, GCS 13–15). Obserwacja kliniczna. Reguła NIE dotyczy antykoagulacji/zaburzeń krzepnięcia — wtedy TK rozważ zawsze'},
+      {max:99, cls:'c-amb', label:'Spełnione kryterium → TK głowy wskazane', detail:'Wykonaj TK głowy bez kontrastu. Konsultacja neurochirurgiczna przy zmianach pourazowych'},
+    ],
+    source:'Stiell IG et al. Lancet 2001.'
+  },
+  pecarn_lt2: {
+    name:'PECARN < 2 lat', sub:'Wskazania do TK głowy u niemowląt/małych dzieci', icon:'🍼', stripe:'#0ea5e9',
+    items:[
+      {t:'GCS ≤ 14 / zaburzenia świadomości / palpacyjne złamanie czaszki', p:1},
+      {t:'Krwiak głowy (ciemieniowy / skroniowy / potyliczny)', p:1},
+      {t:'Utrata przytomności ≥ 5 sekund', p:1},
+      {t:'Ciężki mechanizm urazu', p:1},
+      {t:'Nieprawidłowe zachowanie wg rodzica', p:1},
+    ],
+    bands:[
+      {max:0, cls:'c-grn', label:'Brak kryteriów — TK nie jest zalecane', detail:'Ryzyko ciTBI < 0,02%. Obserwacja, bez narażania na promieniowanie'},
+      {max:99, cls:'c-amb', label:'Obecne kryterium — rozważ TK lub obserwację', detail:'Wysokie ryzyko (GCS↓/złamanie) → TK. Pośrednie → obserwacja 4–6 h lub TK wg decyzji klinicysty'},
+    ],
+    source:'Kuppermann N et al. (PECARN) Lancet 2009.'
+  },
+  pecarn_ge2: {
+    name:'PECARN ≥ 2 lat', sub:'Wskazania do TK głowy u dzieci', icon:'🧒', stripe:'#06b6d4',
+    items:[
+      {t:'GCS ≤ 14 / zaburzenia świadomości / objawy złamania podstawy czaszki', p:1},
+      {t:'Utrata przytomności', p:1},
+      {t:'Wymioty', p:1},
+      {t:'Ciężki mechanizm urazu', p:1},
+      {t:'Silny ból głowy', p:1},
+    ],
+    bands:[
+      {max:0, cls:'c-grn', label:'Brak kryteriów — TK nie jest zalecane', detail:'Ryzyko ciTBI < 0,05%. Obserwacja, bez TK'},
+      {max:99, cls:'c-amb', label:'Obecne kryterium — rozważ TK lub obserwację', detail:'Wysokie ryzyko (GCS↓/złamanie podstawy) → TK. Pośrednie → obserwacja lub TK wg decyzji klinicysty'},
+    ],
+    source:'Kuppermann N et al. (PECARN) Lancet 2009.'
+  },
+};
+function nsToggle(el){ el.classList.toggle('checked'); calcNewScore(el.closest('[data-ns]').getAttribute('data-ns')); }
+function calcNewScore(id){
+  const cfg = NEW_SCORES[id]; if(!cfg) return;
+  let total = 0;
+  document.querySelectorAll(`[data-ns="${id}"] .crit-item.checked`).forEach(el => total += parseFloat(el.getAttribute('data-pts')));
+  const band = cfg.bands.find(b => total <= b.max) || cfg.bands[cfg.bands.length-1];
+  const sc = document.getElementById(id+'-score'); sc.textContent = total; sc.className = 'result-score ' + band.cls;
+  document.getElementById(id+'-label').textContent = band.label;
+  document.getElementById(id+'-detail').innerHTML = band.detail;
+  const al = document.getElementById(id+'-alert'); if(al) al.style.display = band.alert ? 'flex' : 'none';
+}
+function resetNewScore(id){ document.querySelectorAll(`[data-ns="${id}"] .crit-item`).forEach(el => el.classList.remove('checked')); calcNewScore(id); }
+function renderNewScores(){
+  const grid = document.querySelector('.calc-grid'); if(!grid) return;
+  let html = '';
+  for(const id in NEW_SCORES){ const c = NEW_SCORES[id];
+    html += `<div class="ck" id="ck-${id}" data-calc-id="${id}" data-ns="${id}">
+      <div class="ck-stripe" style="background:${c.stripe}"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-${id}')">
+        <div class="ck-title-row"><span class="ck-icon">${c.icon}</span>
+          <div><div class="ck-name">${c.name}</div><div class="ck-sub">${c.sub}</div></div></div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        <ul class="criteria-list" style="margin-top:10px">
+          ${c.items.map(it => `<li class="crit-item" onclick="nsToggle(this)" data-pts="${it.p}">
+            <div class="crit-cb"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2 6 5 9 10 3"/></svg></div>
+            <span class="crit-text">${it.t}</span><span class="crit-pts">${it.p>0?'+':''}${it.p}</span></li>`).join('')}
+        </ul>
+        <div class="calc-result"><div class="result-score c-blue" id="${id}-score">0</div>
+          <div class="result-label" id="${id}-label">—</div><div class="result-detail" id="${id}-detail">Oznacz kryteria powyżej</div></div>
+        <div class="calc-alert" id="${id}-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+          <span>${c.alertTxt || 'Wysokie ryzyko'}</span></div>
+        <div class="calc-source">Źródło: ${c.source}</div>
+        <button class="btn-reset" onclick="resetNewScore('${id}')">Wyczyść / Reset</button>
+      </div></div>`;
+  }
+  grid.insertAdjacentHTML('beforeend', html);
+  for(const id in NEW_SCORES) calcNewScore(id);
+}
+
+/* ══════════════════════════════════════════════
+   KALKULATORY STOPNIOWANE (0–N pkt za parametr)
+══════════════════════════════════════════════ */
+const GRADED_SCORES = {
+  apgar: {
+    name:'APGAR', sub:'Ocena noworodka (1, 5 i 10 min)', icon:'👶', stripe:'#ec4899',
+    items:[
+      { q:'Akcja serca', opts:[['Brak',0],['< 100/min',1],['≥ 100/min',2]] },
+      { q:'Oddech', opts:[['Brak',0],['Wolny, nieregularny / słaby płacz',1],['Dobry, głośny płacz',2]] },
+      { q:'Napięcie mięśniowe', opts:[['Wiotkość',0],['Pewne zgięcie kończyn',1],['Aktywne ruchy',2]] },
+      { q:'Reakcja na bodźce (odruchy)', opts:[['Brak',0],['Grymas',1],['Płacz / kaszel / kichanie',2]] },
+      { q:'Zabarwienie skóry', opts:[['Sina / blada',0],['Tułów różowy, kończyny sine',1],['Cała różowa',2]] },
+    ],
+    bands:[
+      {max:3, cls:'c-red', label:'Ciężki stan (0–3)', detail:'Resuscytacja noworodka natychmiast — wentylacja, rozważ uciśnięcia klatki', alert:true},
+      {max:6, cls:'c-amb', label:'Stan umiarkowany (4–6)', detail:'Wsparcie oddechu, stymulacja, tlen. Ponowna ocena w 5. min'},
+      {max:99, cls:'c-grn', label:'Dobry stan (7–10)', detail:'Standardowa opieka. Ocena w 1. i 5. min (oraz 10. min jeśli < 7)'},
+    ],
+    alertTxt:'APGAR ≤ 3 — resuscytacja noworodka',
+    source:'Apgar V. 1953; AAP/AHA NRP 2020.'
+  },
+  fourt: {
+    name:'4T — HIT', sub:'Małopłytkowość poheparynowa (HIT)', icon:'🩸', stripe:'#9333ea',
+    items:[
+      { q:'Trombocytopenia', opts:[['Spadek < 30% / nadir < 10',0],['30–50% / nadir 10–19',1],['> 50% / nadir ≥ 20',2]] },
+      { q:'Timing (czas spadku płytek)', opts:[['< 4 dni (bez ekspozycji)',0],['Niejasny / > 10 dni',1],['5–10 dni lub ≤ 1 dzień przy ekspozycji < 30 dni',2]] },
+      { q:'Thrombosis (zakrzepica)', opts:[['Brak',0],['Nawrotowa / podejrzewana / rumień',1],['Nowa potwierdzona / martwica skóry / reakcja po bolusie',2]] },
+      { q:'oTher — inna przyczyna', opts:[['Wyraźna inna przyczyna',0],['Możliwa inna przyczyna',1],['Brak innej przyczyny',2]] },
+    ],
+    bands:[
+      {max:3, cls:'c-grn', label:'Niskie prawdopodobieństwo (0–3)', detail:'HIT mało prawdopodobny (< 5%). Kontynuuj heparynę, monitoruj płytki'},
+      {max:5, cls:'c-amb', label:'Pośrednie (4–5)', detail:'Odstaw heparynę, oznacz przeciwciała anty-PF4, rozważ antykoagulant nieheparynowy'},
+      {max:99, cls:'c-red', label:'Wysokie (6–8)', detail:'Natychmiast odstaw KAŻDĄ heparynę. Antykoagulant nieheparynowy (argatroban / fondaparynuks). Testy potwierdzające', alert:true},
+    ],
+    alertTxt:'Wysokie ryzyko HIT — odstaw wszelką heparynę natychmiast',
+    source:'Lo GK et al. J Thromb Haemost 2006.'
+  },
+  gbs: {
+    name:'Glasgow-Blatchford', sub:'Krwawienie z górnego odc. przewodu pokarmowego', icon:'🩸', stripe:'#b91c1c',
+    items:[
+      { q:'Mocznik (mmol/L)', opts:[['< 6,5',0],['6,5–7,9',2],['8,0–9,9',3],['10–24,9',4],['≥ 25',6]] },
+      { q:'Hemoglobina (g/dL) — M ≥13 / K ≥12 norma', opts:[['≥ 12',0],['10–11,9',1],['< 10',6]] },
+      { q:'SBP (mmHg)', opts:[['≥ 110',0],['100–109',1],['90–99',2],['< 90',3]] },
+      { q:'Tętno ≥ 100/min', opts:[['Nie',0],['Tak',1]] },
+      { q:'Smolisty stolec (melena)', opts:[['Nie',0],['Tak',1]] },
+      { q:'Omdlenie', opts:[['Nie',0],['Tak',2]] },
+      { q:'Choroba wątroby', opts:[['Nie',0],['Tak',2]] },
+      { q:'Niewydolność serca', opts:[['Nie',0],['Tak',2]] },
+    ],
+    bands:[
+      {max:0, cls:'c-grn', label:'Bardzo niskie ryzyko (0 pkt)', detail:'Rozważ leczenie ambulatoryjne i endoskopię w trybie planowym (GBS = 0)'},
+      {max:6, cls:'c-amb', label:'Niskie–pośrednie ryzyko (1–6)', detail:'Hospitalizacja, endoskopia. Monitoruj parametry, dostęp IV, grupa krwi'},
+      {max:99, cls:'c-red', label:'Wysokie ryzyko (≥ 7)', detail:'Pilna endoskopia. Resuscytacja płynowa, rozważ przetoczenie, IPP iv, konsultacja gastro/chirurg', alert:true},
+    ],
+    alertTxt:'GBS ≥ 7 — wysokie ryzyko interwencji, pilna endoskopia',
+    source:'Blatchford O et al. Lancet 2000.'
+  },
+  nihss: {
+    name:'NIHSS', sub:'Skala ciężkości udaru (0–42)', icon:'🧠', stripe:'#6d28d9',
+    items:[
+      { q:'1a. Przytomność', opts:[['Czujny',0],['Senny, reaguje',1],['Reaguje na ból',2],['Brak reakcji',3]] },
+      { q:'1b. Pytania (wiek, miesiąc)', opts:[['2 poprawne',0],['1 poprawna',1],['0 poprawnych',2]] },
+      { q:'1c. Polecenia (oczy, dłoń)', opts:[['2 wykonane',0],['1 wykonane',1],['0',2]] },
+      { q:'2. Ruchy gałek ocznych', opts:[['Prawidłowe',0],['Częściowe porażenie',1],['Pełne porażenie',2]] },
+      { q:'3. Pole widzenia', opts:[['Bez ubytków',0],['Częściowa hemianopia',1],['Pełna hemianopia',2],['Ślepota obustronna',3]] },
+      { q:'4. Niedowład twarzy', opts:[['Brak',0],['Niewielki',1],['Częściowy',2],['Pełny',3]] },
+      { q:'5a. Kończyna górna LEWA', opts:[['Bez opadania',0],['Opada',1],['Pewien opór',2],['Brak oporu',3],['Brak ruchu',4]] },
+      { q:'5b. Kończyna górna PRAWA', opts:[['Bez opadania',0],['Opada',1],['Pewien opór',2],['Brak oporu',3],['Brak ruchu',4]] },
+      { q:'6a. Kończyna dolna LEWA', opts:[['Bez opadania',0],['Opada',1],['Pewien opór',2],['Brak oporu',3],['Brak ruchu',4]] },
+      { q:'6b. Kończyna dolna PRAWA', opts:[['Bez opadania',0],['Opada',1],['Pewien opór',2],['Brak oporu',3],['Brak ruchu',4]] },
+      { q:'7. Ataksja kończyn', opts:[['Brak',0],['W 1 kończynie',1],['W 2 kończynach',2]] },
+      { q:'8. Czucie', opts:[['Prawidłowe',0],['Częściowy ubytek',1],['Ciężki ubytek',2]] },
+      { q:'9. Mowa / afazja', opts:[['Brak',0],['Łagodna',1],['Ciężka',2],['Mutyzm / afazja globalna',3]] },
+      { q:'10. Dyzartria', opts:[['Brak',0],['Łagodna',1],['Ciężka',2]] },
+      { q:'11. Wygaszanie / zaniedbywanie', opts:[['Brak',0],['Częściowe (1 zmysł)',1],['Pełne (>1 zmysł)',2]] },
+    ],
+    bands:[
+      {max:0, cls:'c-grn', label:'Bez objawów udaru (0)', detail:'Brak deficytu wg NIHSS'},
+      {max:4, cls:'c-grn', label:'Łagodny udar (1–4)', detail:'Rozważ trombolizę wg okna czasowego i przeciwwskazań'},
+      {max:15, cls:'c-amb', label:'Udar umiarkowany (5–15)', detail:'Kandydat do trombektomii (NIHSS ≥6 + okluzja dużego naczynia). Pilnie CTA / ośrodek udarowy'},
+      {max:20, cls:'c-amb', label:'Umiarkowany–ciężki (16–20)', detail:'Pilna kwalifikacja do trombektomii / trombolizy. Ośrodek udarowy z trombektomią'},
+      {max:99, cls:'c-red', label:'Ciężki udar (21–42)', detail:'Wysoka ciężkość. Pilna kwalifikacja interwencyjna; ocena ryzyka ukrwotocznienia', alert:true},
+    ],
+    alertTxt:'Ciężki udar — pilny ośrodek udarowy / trombektomia',
+    source:'NIH Stroke Scale; Brott T et al. Stroke 1989.'
+  },
+};
+const GRADED_STATE = {};
+function gradedSet(id, idx, val, btn){
+  GRADED_STATE[id] = GRADED_STATE[id] || {};
+  GRADED_STATE[id][idx] = val;
+  btn.parentNode.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  calcGraded(id);
+}
+function calcGraded(id){
+  const cfg = GRADED_SCORES[id]; const st = GRADED_STATE[id] || {};
+  const sc = document.getElementById(id+'-score'), lb = document.getElementById(id+'-label'), dt = document.getElementById(id+'-detail'), al = document.getElementById(id+'-alert');
+  const done = Object.keys(st).length;
+  if(done < cfg.items.length){ sc.textContent='—'; sc.className='result-score c-blue'; lb.textContent=`Wybierz wszystkie (${done}/${cfg.items.length})`; dt.textContent=''; if(al)al.style.display='none'; return; }
+  let total=0; for(const k in st) total += st[k];
+  const band = cfg.bands.find(b => total <= b.max) || cfg.bands[cfg.bands.length-1];
+  sc.textContent = total; sc.className='result-score '+band.cls; lb.textContent=band.label; dt.innerHTML=band.detail;
+  if(al) al.style.display = band.alert ? 'flex' : 'none';
+}
+function resetGraded(id){ GRADED_STATE[id]={}; document.querySelectorAll(`[data-gs="${id}"] .btn-opt`).forEach(b => b.classList.remove('sel')); calcGraded(id); }
+function renderGradedScores(){
+  const grid = document.querySelector('.calc-grid'); if(!grid) return;
+  let html='';
+  for(const id in GRADED_SCORES){ const c = GRADED_SCORES[id];
+    html += `<div class="ck" id="ck-${id}" data-calc-id="${id}" data-gs="${id}">
+      <div class="ck-stripe" style="background:${c.stripe}"></div>
+      <div class="ck-head" onclick="toggleCalc('ck-${id}')">
+        <div class="ck-title-row"><span class="ck-icon">${c.icon}</span>
+          <div><div class="ck-name">${c.name}</div><div class="ck-sub">${c.sub}</div></div></div>
+        <svg class="ck-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ck-body">
+        ${c.items.map((it,i) => `<div style="margin-top:10px">
+          <div style="font-size:0.85rem;font-weight:600;margin-bottom:5px;color:var(--t1)">${it.q}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${it.opts.map(([t,p]) => `<button class="btn-opt" onclick="gradedSet('${id}',${i},${p},this)">${t} <b>(${p})</b></button>`).join('')}
+          </div></div>`).join('')}
+        <div class="calc-result" style="margin-top:12px"><div class="result-score c-blue" id="${id}-score">—</div>
+          <div class="result-label" id="${id}-label">Wybierz parametry</div><div class="result-detail" id="${id}-detail"></div></div>
+        <div class="calc-alert" id="${id}-alert" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+          <span>${c.alertTxt || 'Stan krytyczny'}</span></div>
+        <div class="calc-source">Źródło: ${c.source}</div>
+        <button class="btn-reset" onclick="resetGraded('${id}')">Wyczyść / Reset</button>
+      </div></div>`;
+  }
+  grid.insertAdjacentHTML('beforeend', html);
+}
+
+/* ══════════════════════════════════════════════
+   QTc (Bazett) + skorygowany Na (formuły)
+══════════════════════════════════════════════ */
+function calcQTc(){
+  const qt = parseFloat(document.getElementById('qtc-qt').value), hr = parseFloat(document.getElementById('qtc-hr').value);
+  const sc = document.getElementById('qtc-score'), lb = document.getElementById('qtc-label'), dt = document.getElementById('qtc-detail'), al = document.getElementById('qtc-alert');
+  if(!qt || !hr || qt<=0 || hr<=0){ sc.textContent='—'; sc.className='result-score c-blue'; lb.textContent='Podaj QT i HR'; dt.textContent=''; al.style.display='none'; return; }
+  const rr = 60/hr;
+  const qtc = Math.round(qt / Math.sqrt(rr));
+  sc.textContent = qtc;
+  dt.textContent = `QT ${qt} ms ÷ √(${rr.toFixed(2)} s) = ${qtc} ms`;
+  if(qtc > 500){ sc.className='result-score c-red'; lb.textContent='Znacznie wydłużony — wysokie ryzyko Torsade (> 500 ms)'; al.style.display='flex'; }
+  else if(qtc > 470){ sc.className='result-score c-amb'; lb.textContent='Wydłużony QTc (kobieta > 470, mężczyzna > 450 ms)'; al.style.display='none'; }
+  else if(qtc > 450){ sc.className='result-score c-amb'; lb.textContent='Graniczny (mężczyzna > 450 ms)'; al.style.display='none'; }
+  else { sc.className='result-score c-grn'; lb.textContent='Prawidłowy QTc (< 450 ms)'; al.style.display='none'; }
+}
+let NA_GLUUNIT = 'mmol';
+function setNaUnit(u, btn){
+  NA_GLUUNIT = u;
+  [document.getElementById('nacorr-mmol'), document.getElementById('nacorr-mgdl')].forEach(b => b && b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('nacorr-glu-unit').textContent = (u === 'mmol') ? 'mmol/L' : 'mg/dl';
+  calcNaCorr();
+}
+function calcNaCorr(){
+  const na = parseFloat(document.getElementById('nacorr-na').value); let glu = parseFloat(document.getElementById('nacorr-glu').value);
+  const sc = document.getElementById('nacorr-score'), lb = document.getElementById('nacorr-label'), dt = document.getElementById('nacorr-detail');
+  if(!na || !glu || na<=0 || glu<=0){ sc.textContent='—'; sc.className='result-score c-blue'; lb.textContent='Podaj Na i glukozę'; dt.textContent=''; return; }
+  const glu_mgdl = (NA_GLUUNIT === 'mmol') ? glu*18 : glu;
+  const corr = na + 2.4 * (glu_mgdl - 100) / 100;
+  const corrR = Math.round(corr*10)/10;
+  sc.textContent = corrR;
+  dt.textContent = `${na} + 2,4 × (${Math.round(glu_mgdl)} − 100)/100 = ${corrR} mmol/L (Hillier)`;
+  if(corrR < 135){ sc.className='result-score c-amb'; lb.textContent='Rzeczywista hiponatremia (skoryg. < 135)'; }
+  else if(corrR <= 145){ sc.className='result-score c-grn'; lb.textContent='Prawidłowa natremia po korekcie (135–145)'; }
+  else { sc.className='result-score c-amb'; lb.textContent='Rzeczywista hipernatremia (skoryg. > 145) — ostrożna podaż płynów'; }
+}
+
+/* ══════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
+  renderNewScores();
+  renderGradedScores();
+  calcQTc();
+  calcNaCorr();
   pedAgeUpdate();
   calcWells();
   calcCURB();
@@ -2857,15 +3470,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-/* W opracowaniu banner + back-home */
+/* Back-home */
 (function(){
-  var b=document.createElement('div');
-  b.style.cssText='max-width:1100px;margin:72px auto 0;padding:10px 14px;border-radius:10px;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.38);color:#f59e0b;font-family:Inter,system-ui,sans-serif;font-size:12.5px;line-height:1.45;display:flex;gap:10px;align-items:flex-start;position:relative;z-index:5';
-  b.innerHTML='<span style="font-size:16px;line-height:1">⚠️</span><span><b>Kalkulatory w opracowaniu — weryfikacja dokładności klinicznej w toku.</b> Zawsze porównuj wynik z oryginalną formułą (Parkland, Cockcroft-Gault, Wells, CURB-65). Nie używaj wyłącznie tego narzędzia do decyzji klinicznych.</span>';
-  var main = document.querySelector('main, .app, body > :first-child');
-  if (main && main.parentNode) main.parentNode.insertBefore(b, main.nextSibling);
-  else document.body.insertBefore(b,document.body.firstChild);
-
   if(!document.getElementById('emlaBackHome')){
     var a=document.createElement('a');a.id='emlaBackHome';a.href='index.html';
     a.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg><span>EMLA</span>';
@@ -2873,6 +3479,105 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(a);
   }
   document.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!['INPUT','TEXTAREA'].includes(document.activeElement&&document.activeElement.tagName)){e.preventDefault();location.href='index.html';}});
+})();
+</script>
+<script>
+/* Bloki-karty kalkulatorów + wypływająca modalka + animowane ikony (logika liczenia bez zmian) */
+(function(){
+  function norm(s){return (s||'').toLowerCase().replace(/[ąćęłńóśżź]/g,function(c){return {'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ż':'z','ź':'z'}[c]||c;});}
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var IC={
+    pkt:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+    daw:'<path d="M12 2.5S5 10 5 14a7 7 0 0 0 14 0c0-4-7-11.5-7-11.5z"/>',
+    gaz:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/>',
+    ner:'<path d="M3 12h4l2 7 4-16 2 9h6"/>',
+    inn:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h8M8 19h5"/>'
+  };
+  var CAT={
+    pkt:{t:'Skale i punktacje',b:'Skala',bg:'oklch(0.62 0.17 255/.14)',fg:'oklch(0.56 0.17 255)',kw:['gcs','glasgow','wells','qsofa','news','heart','cha','chads','bled','centor','canadian','pecarn','apgar','4t','nihss','blatchford','sgarbossa','spesi','curb','perc','score','skala','punktacja','ocena','qtc','bazett','torsade']},
+    daw:{t:'Dawkowanie i płyny',b:'Dawka',bg:'oklch(0.65 0.14 195/.15)',fg:'oklch(0.5 0.13 195)',kw:['parkland','dawkow','pediatr','bolus','wlew','infuzj','dawk','kropl','predkosc','predko','oparz','plyn','tbsa']},
+    gaz:{t:'Gazometria i elektrolity',b:'Gazy',bg:'oklch(0.6 0.2 285/.15)',fg:'oklch(0.58 0.19 285)',kw:['anion','osmolal','osmol','nahco','wodorow','skorygowany','luka','gazometr','sodu','sod','potas','elektrolit','wyrownanie']},
+    ner:{t:'Nerki',b:'Nerki',bg:'oklch(0.72 0.16 75/.16)',fg:'oklch(0.55 0.16 70)',kw:['cockcroft','gfr','egfr','klirens','kreatynin','nerk']},
+    inn:{t:'Parametry i inne',b:'Param.',bg:'oklch(0.62 0.22 25/.13)',fg:'oklch(0.6 0.21 25)',kw:[]}
+  };
+  var ORDER=['pkt','daw','gaz','ner','inn'];             // kolejność wyświetlania sekcji
+  var CATPRIO=['pkt','ner','gaz','daw'];                 // kolejność dopasowania: ner/gaz przed daw (generyczne 'dawkow' nie kradnie kalk. nerkowych/gazometrii)
+  function catOf(s){var n=norm(s);for(var i=0;i<CATPRIO.length;i++){var k=CATPRIO[i];if(CAT[k].kw.some(function(w){return n.indexOf(w)>=0;}))return k;}return 'inn';}
+
+  function buildCard(it){
+    var cc=document.createElement('div');
+    cc.className='cc'; cc.dataset.target=it.id; cc.__cat=it.k; cc.__q=norm(it.name+' '+it.sub);
+    cc.style.cssText='--cc-bg:'+CAT[it.k].bg+';--cc-fg:'+CAT[it.k].fg;
+    cc.innerHTML=
+      '<span class="cc-stripe"></span>'+
+      '<div class="cc-top"><span class="cc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+IC[it.k]+'</svg></span>'+
+      '<span class="cc-badge">'+CAT[it.k].b+'</span></div>'+
+      '<div class="cc-title">'+esc(it.name)+'</div>'+
+      (it.sub?'<div class="cc-desc">'+esc(it.sub)+'</div>':'')+
+      '<div class="cc-go">Otwórz →</div>';
+    return cc;
+  }
+
+  function init(){
+    var grid=document.querySelector('.calc-grid'); if(!grid) return null;
+    var cks=[].slice.call(grid.querySelectorAll(':scope > .ck')).filter(function(c){return c.querySelector('.ck-name');});
+    if(!cks.length) return false;
+    var store=document.getElementById('calcStore');
+    if(!store){ store=document.createElement('div'); store.id='calcStore'; document.body.appendChild(store); }
+    var auto=0;
+    var items=cks.map(function(c){
+      if(!c.id){ c.id='ck-auto-'+(++auto); }
+      var name=((c.querySelector('.ck-name')||{}).textContent||'').trim();
+      var sub=((c.querySelector('.ck-sub')||{}).textContent||'').trim();
+      var k=catOf(name+' '+sub);
+      store.appendChild(c);                 // chowamy realny kalkulator
+      return {id:c.id,name:name,sub:sub,k:k};
+    });
+    // siatka ładnych bloków pogrupowanych wg kategorii
+    grid.innerHTML='';
+    var cards=[];
+    ORDER.forEach(function(k){
+      var inCat=items.filter(function(it){return it.k===k;});
+      if(!inCat.length) return;
+      var h=document.createElement('div'); h.className='cc-sec'; h.dataset.sec=k; h.textContent=CAT[k].t;
+      grid.appendChild(h);
+      inCat.forEach(function(it){ var cc=buildCard(it); grid.appendChild(cc); cards.push(cc); });
+    });
+
+    // — modalka (wypływa) —
+    var modal=document.getElementById('kfModal'), mbody=document.getElementById('kfMbody'), mclose=document.getElementById('kfMclose');
+    var openId=null, t=null;
+    function openModal(id){
+      var ck=document.getElementById(id); if(!ck||openId) return;
+      openId=id; if(t){clearTimeout(t);t=null;}
+      mbody.appendChild(ck); ck.classList.add('open');
+      modal.classList.add('on'); mclose.classList.add('on'); document.body.style.overflow='hidden'; mbody.scrollTop=0;
+    }
+    function closeModal(){
+      if(!openId) return;
+      var ck=document.getElementById(openId); openId=null;
+      modal.classList.remove('on'); mclose.classList.remove('on'); document.body.style.overflow='';
+      t=setTimeout(function(){ if(ck){ ck.classList.remove('open'); store.appendChild(ck);} t=null; },440);
+    }
+    grid.addEventListener('click',function(e){ var cc=e.target.closest('.cc'); if(cc&&cc.dataset.target) openModal(cc.dataset.target); });
+    if(mclose) mclose.onclick=closeModal;
+    if(modal) modal.addEventListener('click',function(e){ if(e.target===modal) closeModal(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&openId) closeModal(); });
+
+    // — szukanie (filtruje bloki + ukrywa puste sekcje) —
+    var q=document.getElementById('kfQ');
+    function run(){
+      var v=norm(q.value.trim()); var shown={};
+      cards.forEach(function(cc){ var ok=!v||cc.__q.indexOf(v)>=0; cc.style.display=ok?'':'none'; if(ok)shown[cc.__cat]=1; });
+      [].forEach.call(grid.querySelectorAll('.cc-sec'),function(h){ h.style.display=shown[h.dataset.sec]?'':'none'; });
+    }
+    if(q){ q.addEventListener('input',run);
+      document.addEventListener('keydown',function(e){ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();q.focus();q.select();} }); }
+    return true;
+  }
+  var tries=0;
+  function boot(){ if(init()===false && tries++<30){ setTimeout(boot,40); } }
+  document.addEventListener('DOMContentLoaded',function(){ setTimeout(boot,30); });
 })();
 </script>
 </body>

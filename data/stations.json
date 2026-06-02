@@ -1,14 +1,116 @@
 {
-  "stations": [
-    {"id": "rmf",     "name": "RMF FM",           "sub": "Najwięcej muzyki",      "url": "https://stream.rcs.revma.com/ypqt40u0x1zuv",     "color": "#e53935", "abbr": "RMF", "genre": "pop"},
-    {"id": "zet",     "name": "Radio Zet",        "sub": "Pop hits",              "url": "https://stream.rcs.revma.com/em74fbxyq0hvv",     "color": "#ff6f00", "abbr": "ZET", "genre": "pop"},
-    {"id": "pr1",     "name": "Polskie Radio 1",  "sub": "Wiadomości 24h",        "url": "https://stream3.polskieradio.pl:8904/;",         "color": "#1e88e5", "abbr": "PR1", "genre": "news"},
-    {"id": "trojka",  "name": "Trójka",           "sub": "Rock / indie classics", "url": "https://stream3.polskieradio.pl:8906/;",         "color": "#7b1fa2", "abbr": "3",   "genre": "rock"},
-    {"id": "pr24",    "name": "PR 24",            "sub": "News non-stop",         "url": "https://stream3.polskieradio.pl:8080/;",         "color": "#5d4037", "abbr": "24",  "genre": "news"},
-    {"id": "open",    "name": "Open FM",          "sub": "100% Hits",             "url": "https://stream.open.fm/128",                     "color": "#00acc1", "abbr": "OFM", "genre": "pop"},
-    {"id": "eska",    "name": "Eska Warszawa",    "sub": "Dance / pop",           "url": "https://waw.ic.smcdn.pl/t046-1.mp3",              "color": "#43a047", "abbr": "ES",  "genre": "dance"},
-    {"id": "maryja",  "name": "Radio Maryja",     "sub": "Katolickie",            "url": "https://live.radiomaryja.pl:8000/rm.mp3",        "color": "#fdd835", "abbr": "RM",  "genre": "talk"},
-    {"id": "chill",   "name": "Trójka Chillout",  "sub": "Relaxing",              "url": "https://stream3.polskieradio.pl:8910/;",         "color": "#ec407a", "abbr": "CH",  "genre": "chill"},
-    {"id": "classic", "name": "Radio Classic",    "sub": "Klasyczna",             "url": "https://stream.rcs.revma.com/zv2j6d7y2zhvv",     "color": "#8d6e63", "abbr": "CL",  "genre": "classical"}
-  ]
+ "stations": [
+  {
+   "id": "rmffm",
+   "name": "RMF FM",
+   "sub": "Najwięcej muzyki",
+   "url": "https://rs202-krk.rmfstream.pl/rmf_fm",
+   "color": "#e53935",
+   "abbr": "RMF"
+  },
+  {
+   "id": "rmfmaxxx",
+   "name": "RMF MAXXX",
+   "sub": "Hity i dance",
+   "url": "https://rs9-krk2-cyfronet.rmfstream.pl/RMFMAXXX48",
+   "color": "#ff6f00",
+   "abbr": "MAXX"
+  },
+  {
+   "id": "radio357",
+   "name": "Radio 357",
+   "sub": "Muzyka bez reklam",
+   "url": "https://n-11-21.dcs.redcdn.pl/sc/o2/radio357/live/radio357_pr.livx?preroll=0",
+   "color": "#1e88e5",
+   "abbr": "357"
+  },
+  {
+   "id": "radionowywiat",
+   "name": "Radio Nowy Świat",
+   "sub": "Nieoczywiste",
+   "url": "https://go-audio.toya.net.pl/63214",
+   "color": "#7b1fa2",
+   "abbr": "RNŚ"
+  },
+  {
+   "id": "antyradio",
+   "name": "Anty Radio",
+   "sub": "Rock / alternatywa",
+   "url": "https://an.cdn.eurozet.pl/ant-web.mp3?t=1713710188361",
+   "color": "#455a64",
+   "abbr": "ANTY"
+  },
+  {
+   "id": "eska",
+   "name": "ESKA",
+   "sub": "Gorące hity",
+   "url": "https://waw.ic.smcdn.pl/6130-1.mp3",
+   "color": "#43a047",
+   "abbr": "ESKA"
+  },
+  {
+   "id": "eskarock",
+   "name": "ESKA ROCK",
+   "sub": "Rock",
+   "url": "https://ic2.smcdn.pl/5380-1.mp3#ESKA_ROCK",
+   "color": "#6d4c41",
+   "abbr": "ROCK"
+  },
+  {
+   "id": "tokfm",
+   "name": "TOK FM",
+   "sub": "Informacje / talk",
+   "url": "https://radiostream.pl/tuba10-1.mp3",
+   "color": "#00acc1",
+   "abbr": "TOK"
+  },
+  {
+   "id": "voxfm",
+   "name": "VOX FM",
+   "sub": "Przeboje",
+   "url": "https://ic2.smcdn.pl/3990-1.mp3",
+   "color": "#c0ca33",
+   "abbr": "VOX"
+  },
+  {
+   "id": "zoteprzeboje",
+   "name": "Złote Przeboje",
+   "sub": "Złote przeboje",
+   "url": "https://radiostream.pl/tuba9-1.mp3",
+   "color": "#fbc02d",
+   "abbr": "ZŁP"
+  },
+  {
+   "id": "radiopogoda",
+   "name": "Radio Pogoda",
+   "sub": "Spokojne hity",
+   "url": "https://radiostream.pl/tuba140-1.mp3",
+   "color": "#039be5",
+   "abbr": "POG"
+  },
+  {
+   "id": "radioparty",
+   "name": "Radio Party",
+   "sub": "Dance / electro",
+   "url": "https://s2.radioparty.pl:8015/stream?nocache=4171",
+   "color": "#d81b60",
+   "abbr": "PRTY"
+  },
+  {
+   "id": "chillizet",
+   "name": "Chilli ZET",
+   "sub": "Chillout",
+   "url": "https://ch.cdn.eurozet.pl/chi-net.mp3",
+   "color": "#ec407a",
+   "abbr": "CHIL"
+  },
+  {
+   "id": "radiorepublika",
+   "name": "Radio Republika",
+   "sub": "Wiadomości 24h",
+   "url": "https://ssl-1.radiotvrepublika.pl:12698/stream",
+   "color": "#3949ab",
+   "abbr": "REP"
+  }
+ ]
 }
